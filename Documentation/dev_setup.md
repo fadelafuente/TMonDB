@@ -46,4 +46,4 @@ django-admin --version
 ### OPTIONAL VS Code Extensions
 The following extensions may be useful:
 
-<img src="images/extensions.jpg" alt="drawing" width="350"/>
+<img src="images/extensions.jpg" alt="drawing" width="450"/>
