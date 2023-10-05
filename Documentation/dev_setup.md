@@ -45,4 +45,5 @@ django-admin --version
 
 ### OPTIONAL VS Code Extensions
 The following extensions may be useful:
-![](images/extensions.jpg)
+
+<img src="images/extensions.jpg" alt="drawing" width="350"/>
