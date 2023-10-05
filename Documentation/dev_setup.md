@@ -1,6 +1,6 @@
 # Development Setup
-###Python 3.12.0
-Python has a new version as of October 2nd, 2023, and it has bug fixes, so we are currently using 3.12.0.  We also need Python to install django.
+### Python 3.12.0
+Python has a new version as of 10/02/2023, and it has bug fixes, so we are currently using 3.12.0.  We also need Python to install django.
 * [Download Python | Python.org](https://www.python.org/downloads/)
 * **NOTE:** when downloading Python, pip can also be installed under optional features. Because pip is also required, if you did not choose to install pip, follow the [pip documentation](https://pip.pypa.io/en/stable/installation/).
 
