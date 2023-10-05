@@ -18,6 +18,8 @@ pip install pipenv
 To install the python packages used by the app, run one of the two following commands:
 ```
 pip install -r requirements.txt
+```
+```
 pipenv run pip install -r requirements.txt
 ```
 **NOTE:** We might consider moving this into a docker container.
