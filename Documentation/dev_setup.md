@@ -59,7 +59,7 @@ django-admin --version
 cd tmdb-app
 ```
 ```
-py manage.py runserver
+py manage.py migrate
 ```
 
 ### Run npm
@@ -76,6 +76,10 @@ Return to the root folder, then run:
 ```
 ..\scripts\start-app
 ```
+If you installed the python packages to pipenv, run:
+```
+..\scripts\pipenv-start
+```
 
 ### OPTIONAL VS Code Extensions
 The following extensions may be useful:
@@ -83,4 +87,5 @@ The following extensions may be useful:
 <img src="images/extensions.jpg" alt="drawing" width="450"/>
 
 This extension is useful to preview how markdown files will look in GitHub.
+
 <img src="images/markdown.png" alt="drawing" width="450"/>
