@@ -1,4 +1,8 @@
 # Development Setup
+### VS Code
+[Download VS Code](https://code.visualstudio.com/)
+### Git
+[Download Git](https://git-scm.com/downloads)
 ### Python 3.12.0
 Python has a new version as of 10/02/2023, and it has bug fixes, so we are currently using 3.12.0.  We also need Python to install django.
 * [Download Python | Python.org](https://www.python.org/downloads/)
@@ -9,13 +13,18 @@ Check if successfully installed:
 py --version
 pip --version
 ```
+**NOTE:** If VS Code doesn't recognize python, then you may need to restart it.
 
-You can install pipenv if you want to use a virtual environment and not have a ton of packages everywhere
+(Optional) You can install pipenv if you want to use a virtual environment and not have a ton of packages everywhere
 ```
 pip install pipenv
 ```
+If it doesn't work, try  uninstalling it then running:
+```
+py -m pip install pipenv
+```
 
-To install the python packages used by the app, run one of the two following commands:
+At this point log into git and clone the repository if you haven't down so already. Then install the python packages used by the app, run one of the two following commands:
 ```
 pip install -r requirements.txt
 ```
@@ -26,7 +35,7 @@ pipenv run pip install -r requirements.txt
 
 If you use pipenv, make sure to activate the environment using:
 ```
-pipenv shell
+py -m pipenv shell
 ```
 
 ### Node.js
@@ -34,7 +43,7 @@ We need node.js to install React. As of 10/04/2023, the version we are using is 
 * [Download | Node.js](https://nodejs.org/en/download)
 
 ### Django
-The version we are using is 4.2.5.
+Django is already in the requirements.txt, but if you need to reinstall, try:
 ```
 pip install Django==4.2.5
 ```
@@ -45,7 +54,33 @@ Check if successfully installed:
 django-admin --version
 ```
 
+### Run migrations
+```
+cd tmdb-app
+```
+```
+py manage.py runserver
+```
+
+### Run npm
+Return to the root folder, then run:
+```
+cd frontend
+```
+```
+npm install
+```
+
+### Start the app
+Return to the root folder, then run:
+```
+..\scripts\start-app
+```
+
 ### OPTIONAL VS Code Extensions
 The following extensions may be useful:
 
 <img src="images/extensions.jpg" alt="drawing" width="450"/>
+
+This extension is useful to preview how markdown files will look in GitHub.
+<img src="images/markdown.png" alt="drawing" width="450"/>
