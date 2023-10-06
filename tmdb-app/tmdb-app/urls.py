@@ -21,7 +21,7 @@ from user_api.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', MonsterView.as_view(), name="anything"),
+    path('', MonsterView.as_view(), name="root"),
     path('register', UserRegister.as_view(), name="register"),
     path('login', UserLogin.as_view(), name="login"),
     path('logout', UserLogout.as_view(), name="logout"),
