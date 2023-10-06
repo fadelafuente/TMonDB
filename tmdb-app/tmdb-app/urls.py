@@ -17,8 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from app.views import *
+from user_api import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', MonsterView.as_view(), name="anything")
+    path('', MonsterView.as_view(), name="anything"),
+    path('register'),
+    path('login'),
+    path('logout'),
+    path('user'),
 ]
