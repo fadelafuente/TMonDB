@@ -14,7 +14,7 @@ class App extends React.Component {
     state = {details: [],};
     componentDidMount() {
         let data;
-        axios.get(process.env.DJANGO_URL)
+        axios.get(process.env.REACT_APP_DJANGO_URL)
         .then(res => {
             data = res.data;
             this.setState({
