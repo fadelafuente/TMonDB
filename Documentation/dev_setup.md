@@ -74,11 +74,11 @@ npm install
 ### Start the app
 Return to the root folder, then run:
 ```
-..\scripts\start-app
+.\scripts\start-app
 ```
 If you installed the python packages to pipenv, run:
 ```
-..\scripts\pipenv-start
+.\scripts\pipenv-start
 ```
 
 ### OPTIONAL VS Code Extensions

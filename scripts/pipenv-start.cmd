@@ -1,6 +1,5 @@
 @echo off
 
-cd ..
 cd tmdb-app
 start pipenv run py manage.py runserver
 

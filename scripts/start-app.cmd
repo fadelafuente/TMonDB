@@ -1,6 +1,5 @@
 @echo off
 
-cd ..
 cd tmdb-app
 start py manage.py runserver
 
