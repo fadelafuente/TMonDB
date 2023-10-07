@@ -10,9 +10,9 @@ class MonsterView(APIView):
         output = [{"name": output.name,
                    "species": output.species,
                    "abilities": output.abilities}
-                   for output in Monsters.objects.all()]
+                   for output in Monster.objects.all()]
         return Response(output)
-    
+
     def post(self, request):
         serializer = MonsterSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):

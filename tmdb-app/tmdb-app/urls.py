@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from app.views import *
+from monster_api.views import *
 from user_api.views import *
 
 urlpatterns = [
