@@ -4,13 +4,4 @@ from .models import *
 class MoveSerializer(serializers.ModelSerializer):
     class Meta:
         model = Move
-        fields = [
-            'name',
-            'description',
-            'damage',
-            'accuracy',
-            'priority',
-            'use_limit',
-            'category',
-            'contact'
-        ]
+        fields = "__all__"

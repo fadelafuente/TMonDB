@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'monster_api',
     'move_api',
+    'type_api',
     'rest_framework',
     'corsheaders',
     'user_api.apps.UserApiConfig',
