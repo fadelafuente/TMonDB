@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
     'app',
     'rest_framework',
     'corsheaders',
+    'user_api.apps.UserApiConfig',
 ]
 
 MIDDLEWARE = [
@@ -53,11 +53,21 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-REST_FRAMEWORK = {'DEFAULT_PERMISSION_CLASSES': [
-    'rest_framework.permissions.AllowAny'
-]}
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000'
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'tmdb-app.urls'
 
@@ -90,6 +100,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'user_api.AppUser'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
