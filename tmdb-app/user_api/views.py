@@ -5,13 +5,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
 from rest_framework import permissions, status
-from .validations import custom_validation, validate_email, validate_password
+from .validations import customValidation, validateEmail, validatePassword
 
 class UserRegister(APIView):
     permission_classes = (permissions.AllowAny,)
     
     def post(self, request):
-        clean_data = custom_validation(request.data)
+        clean_data = customValidation(request.data)
         serializer = UserRegisterSerializer(data=clean_data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.create(clean_data)
@@ -25,8 +25,8 @@ class UserLogin(APIView):
 
     def post(self, request):
         data = request.data
-        assert validate_email(data)
-        assert validate_password(data)
+        assert validateEmail(data)
+        assert validatePassword(data)
         serializer = UserLoginSerializer(data=data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.check_user(data)

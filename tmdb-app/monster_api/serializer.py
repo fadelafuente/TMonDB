@@ -3,5 +3,5 @@ from .models import *
 
 class MonsterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Monsters
+        model = Monster
         fields = ['name', 'species', 'abilities']

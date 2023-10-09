@@ -4,17 +4,17 @@ import re
 
 UserModel = get_user_model()
 
-def custom_validation(data):
+def customValidation(data):
     email = data['email'].strip()
     username = data['username'].strip()
     password = data['password'].strip()
 
     if not email or UserModel.objects.filter(email=email).exists():
         raise ValidationError('Invalid email or email is already taken.')
-    
+
     if not username or UserModel.objects.filter(username=username).exists():
         raise ValidationError('Invalid username or username already exists.')
-    
+
     regex = re.compile('[@_!#$%^&*()<>?/|}{~:]')
     if len(password) < 8:
         raise ValidationError('Password needs to be at least 8 characters.') 
@@ -31,19 +31,19 @@ def custom_validation(data):
     
     return data
 
-def validate_email(data):
+def validateEmail(data):
     email = data['email'].strip()
     if not email:
         raise ValidationError('Input a valid email')
     return True
 
-def validate_username(data):
+def validateUsername(data):
     username = data['username'].strip()
     if not username:
         raise ValidationError('choose another username')
     return True
 
-def validate_password(data):
+def validatePassword(data):
     password = data['password'].strip()
     if not password:
         raise ValidationError('Input a valid password')
