@@ -3,7 +3,7 @@
   flex-direction: column;
   margin: 5% auto;
   padding: 20px 40px;
-  background-color: #303030;
+  background-color: var(--background-content-color);
   text-align: center;
   width: 30%;
   border-radius: 10px;
@@ -11,7 +11,7 @@
 
 .form-title {
   margin: 0px 0px 20px 0px;
-  color: white;
+  color: var(--text-color);
 }
 
 .default-form {
@@ -23,39 +23,39 @@
   }
   
   .default-form > input {
-    border: 1px solid #404040;
+    border: 1px solid var(--input-box-color);
     height: 40px;
     text-indent: 10px;
     font-family: "Inter", sans-serif;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
     font-weight: 400;
-    background-color: #404040;
-    color: white;
+    background-color: var(--input-box-color);
+    color: var(--text-color);
   }
 
   .default-form > ::placeholder {
-    color: #969696;
+    color: var(--placeholder-text-color);
   }
 
   /* Change color of autofills to match rest of the form */
   .default-form > input:-webkit-autofill {
-    border: 1px solid #404040;
+    border: 1px solid var(--input-box-color);
     -webkit-text-fill-color: white;
-    -webkit-box-shadow: 0 0 0px 1000px #404040 inset;
+    -webkit-box-shadow: 0 0 0px 1000px var(--input-box-color) inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 
   .default-form > input:-webkit-autofill:focus {
-    border-color: #4f7942;
-    outline: 2px solid #4f7942;
-    -webkit-text-fill-color: white;
+    border-color: var(--accent-color);
+    outline: 2px solid var(--accent-color);
+    -webkit-text-fill-color: var(--text-color);
     -webkit-box-shadow: 0 0 0px 1000px 303030 inset;
     transition: background-color 5000s ease-in-out 0s;
   }
   
   .default-form > input:focus {
-    outline: 2px solid #4f7942;
-    border-color: #4f7942;
+    outline: 2px solid var(--accent-color);
+    border-color: var(--accent-color);
   }
   
   .default-form > input {
@@ -63,20 +63,20 @@
   }
   
   .default-form > button {
-    background-color: #3f6135;
+    background-color: var(--accent-secondary-color);
     border: none;
     border-radius: 6px;
     height: 40px;
-    color: white;
+    color: var(--text-color);
     font-family: "Inter", sans-serif;
   }
 
   .default-form > button:hover {
     outline: none;
-    background-color: #4f7942;
+    background-color: var(--accent-color);
   }
 
   .default-form > button:active {
     outline: none;
-    background-color: #3f6135;
+    background-color: var(--accent-secondary-color);
   }
