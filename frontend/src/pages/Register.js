@@ -7,10 +7,10 @@ export async function action() {
     return null
 }
 
-export default function Login() {
+export default function Register() {
     return (
         <div className="form-container">
-            <h2 className="form-title">Log In</h2>
+            <h2 className="form-title">Create Your Account</h2>
             <Form method="post" className="default-form">
                 <input 
                     type="email"
@@ -19,9 +19,21 @@ export default function Login() {
                 />
                 <br />
                 <input 
+                    type="username"
+                    name="username"
+                    placeholder="username"
+                />
+                <br />
+                <input 
                     type="password"
                     name="password"
                     placeholder="Password"
+                />
+                <br />
+                <input 
+                    type="password"
+                    name="password2"
+                    placeholder="Retype Password"
                 />
                 <br />
                 <button>Log in</button>

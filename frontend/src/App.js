@@ -1,5 +1,6 @@
 import './assets/styling/App.css';
-import Login, {action as loginAction} from './pages/Login'
+import Register, { action as registerAction } from './pages/Register';
+import Login, { action as loginAction } from './pages/Login'
 import { Outlet, RouterProvider } from 'react-router-dom';
 import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 import Trending from './pages/Trending';
@@ -7,6 +8,7 @@ import Trending from './pages/Trending';
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Root />}>
+      <Route path="register" element={<Register />} action={registerAction} />
       <Route path="login" element={<Login />} action={loginAction} />
       <Route path="trending" element={<Trending />} />
     </Route>
