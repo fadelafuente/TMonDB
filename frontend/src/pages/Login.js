@@ -1,6 +1,8 @@
 import '../assets/styling/forms.css';
 import React from "react";
-import { useNavigate, Form } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 export async function action() {
     console.log("THIS FUCKING WORKS!!!")
@@ -11,20 +13,20 @@ export default function Login() {
     return (
         <div className="form-container">
             <h2 className="form-title">Log In</h2>
-            <Form method="post" className="default-form">
-                <input 
-                    type="email"
-                    name="email"
-                    placeholder="Email address"
-                />
+            <Form className="Form">
+                <Form.Group controlId="formBasicEmail">
+                    <Form.Control type="email" placeholder="Email" />
+                    <br />
+                </Form.Group>
                 <br />
-                <input 
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                />
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Control type="password" placeholder="Password" className="form-control" />
+                </Form.Group>
                 <br />
-                <button>Log in</button>
+                <Button variant="primary" type="submit">
+                    Log In
+                </Button>
             </Form>
         </div>
     )
