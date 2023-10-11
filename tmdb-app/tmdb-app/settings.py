@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'type_api',
     'rest_framework',
     'corsheaders',
+    'djoser',
     'user_api.apps.UserApiConfig',
 ]
 
