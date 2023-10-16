@@ -65,7 +65,8 @@
     border: none;
     border-radius: 6px;
     height: 40px;
-    color: var(--text-color);
+    color: var(--background-content-color);
+    font-weight: bold;
     font-family: "Inter", sans-serif;
   }
 

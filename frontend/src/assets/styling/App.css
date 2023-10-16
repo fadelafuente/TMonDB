@@ -12,7 +12,7 @@
 }
 
 .title {
-  background-color: #E47B00;
+  background-color: var(--accent-color);
   color: #ffffff;
   font-size: larger;
   padding: 0px;
@@ -33,7 +33,7 @@
   border-radius: 50% !important;
   padding: 10px !important;
   border: none !important;
-  background-color: #E47B00 !important;
+  background-color: var(--accent-color) !important;
 }
 
 .dropdown-button:hover {
@@ -57,7 +57,7 @@
 
 .dropdown-content a:hover {
   color: #ffffff;
-  background-color: #E47B00;
+  background-color: var(--accent-color);;
 }
 
 .appBar {
@@ -66,12 +66,12 @@
   padding: 10px;
   padding-left: 20px;
   padding-right: 20px;
-  border-bottom: #E47B00;
+  border-bottom: var(--accent-color);;
 }
 
 .appBar input[type=search] {
   border-radius: 10px;
-  border-color: #E47B00;
+  border-color: var(--accent-color);;
   background-color: #232323;
   color: #ffffff;
   float: right;

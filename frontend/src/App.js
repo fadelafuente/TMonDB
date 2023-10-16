@@ -1,12 +1,15 @@
 import './assets/styling/App.css';
 import Register, { action as registerAction } from './pages/Register';
 import Login, { action as loginAction } from './pages/Login'
-import { Outlet, RouterProvider } from 'react-router-dom';
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
+import { Outlet, RouterProvider, createBrowserRouter, 
+  createRoutesFromElements, Route } from 'react-router-dom';
 import Trending from './pages/Trending';
 import Activate from './pages/Activate';
 import ResetPassword from './pages/ResetPassword';
 import ResetPasswordConfirm from './pages/ResetPasswordConfirm';
+
+import { Provider } from 'react-redux';
+import store from './store';
 
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(
@@ -21,7 +24,9 @@ export default function App() {
   ))
 
   return (
-    <RouterProvider router={router} />
+    <Provider store={ store }>
+      <RouterProvider router={router} />
+    </Provider>
   );
 }
 
