@@ -1,6 +1,7 @@
 import '../assets/styling/forms.css';
 import { React, useState } from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
+import { login } from '../actions/auth';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -10,7 +11,7 @@ export async function action() {
     return null
 }
 
-function Login() {
+function Login({ login }) {
 //const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
@@ -26,7 +27,7 @@ function Login() {
     function onSubmit(e) {
         e.preventDefault();
 
-        // login(email, password);
+        login(email, password);
     }
 
     // Is user authenticated?
@@ -80,4 +81,4 @@ function Login() {
 //     // is authenticated?
 // }
 
-export default connect(null, {  })(Login);
+export default connect(null, { login })(Login);
