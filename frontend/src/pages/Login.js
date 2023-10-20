@@ -1,10 +1,11 @@
-import '../assets/styling/forms.css';
 import { React, useState } from "react";
 import { Link, useNavigate, Navigate } from "react-router-dom";
 import { login } from '../actions/auth';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+
+import '../assets/styling/forms.css';
 
 export async function action() {
     console.log("THIS FUCKING WORKS!!!")
@@ -36,7 +37,7 @@ function Login({ login }) {
     return (
         <div className="form-container">
             <h2 className="form-title">Login</h2>
-            <Form className="Form" onSubmit={ e=> onSubmit(e) }>
+            <Form className="form" onSubmit={ e=> onSubmit(e) }>
                 <Form.Group controlId="formEmail">
                     <Form.Control
                         type="email" 

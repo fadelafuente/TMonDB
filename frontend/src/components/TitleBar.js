@@ -1,51 +1,78 @@
-import { Col, Container, Dropdown, Row } from 'react-bootstrap';
-import { BsPlus } from "react-icons/bs";
-import { Link } from 'react-router-dom';
+import { Container, Dropdown, Form, InputGroup } from 'react-bootstrap';
+import { BsPlusCircle, BsPersonCircle, BsSearch } from 'react-icons/bs';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+
+import "../assets/styling/forms.css";
+import "../assets/styling/App.css";
 
 function TitleBar() {
     return (
-        <div>
-            <Container fluid className="title">
-                <Row>
-                    <Col>
-                        <h1>The Monster Database</h1>
-                    </Col>
-
-                    <Col>
-                        <Dropdown className="dropdown">
-                            <Dropdown.Toggle id="dropdown" className="dropdown-button">
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu className="dropdown-content">
-                                <Dropdown.Item href="/">Account</Dropdown.Item>
-                                <Dropdown.Item href="/">My Regions</Dropdown.Item>
-                                <Dropdown.Item href="/">My Fakemon</Dropdown.Item>
-                                <Dropdown.Item href="/">Settings</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-
-                        <Dropdown className="dropdown">
-                            <Dropdown.Toggle id="dropdown" className="dropdown-button">
-                                <BsPlus/>
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu className="dropdown-content">
-                                <Dropdown.Item href="/CreateRegion" >New Region</Dropdown.Item>
-                                <Dropdown.Item href="/CreateFakemon">New Fakemon</Dropdown.Item>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </Col>
-                </Row>
+        <Navbar expand="bg-body-tertiary mb-3">
+            <Container>
+                <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" id="navbar-toggler" className="navbar-dark" />
+                <Navbar.Brand href="#home">The Monster Database</Navbar.Brand>
+                <Navbar.Offcanvas
+                    id="offcanvasNavbar-expand-lg"
+                    aria-labelledby="offcanvasNavbarLabel-expand-lg"
+                    placement="start"
+                >
+                    <Offcanvas.Header closeButton closeVariant="white">
+                        <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg">
+                        The Monster Database
+                        </Offcanvas.Title>
+                    </Offcanvas.Header>
+                <Offcanvas.Body>
+                    <Nav className="me-auto">
+                        <Nav.Link href="#home">Trending</Nav.Link>
+                        <Nav.Link href="#link">Monsters</Nav.Link>
+                        <Nav.Link href="#link">Regions</Nav.Link>
+                    </Nav>
+                </Offcanvas.Body>
+                </Navbar.Offcanvas>
+                <Form className="form search">
+                    <InputGroup>
+                    <InputGroup.Text>
+                        <BsSearch />
+                    </InputGroup.Text>
+                    <Form.Control type="search" className="me-2 search" placeholder="Search" />
+                    </InputGroup>   
+                </Form>
+                <NavDropdown title={ <BsPlusCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
+                    <NavDropdown.Item href="#action/3.1">
+                        Create Region
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                        Create Monster
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">
+                        Create Type
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                        Create Move
+                    </NavDropdown.Item>
+                </NavDropdown> 
+                <NavDropdown title={ <BsPersonCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
+                    <NavDropdown.Item href="#action/3.1">
+                        Account
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                        My Regions
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">
+                        My Monsters
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                        Settings
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">
+                        Logout
+                    </NavDropdown.Item>
+                </NavDropdown> 
             </Container>
-
-            <nav className="appBar" >
-                <Link to="/FakeDB" className="appBar-text">Fakemon DB</Link>
-                <Link to="/PokeDB" className="appBar-text">Pokemon DB</Link>
-                <Link to="/FakeDB" className="appBar-text">Temtem DB</Link>
-                <Link to="/FakeDB" className="appBar-text">Nexomon DB</Link>
-                <input type="search" placeholder="Search..." />
-            </nav>
-        </div>
+        </Navbar>
     );
 
 }

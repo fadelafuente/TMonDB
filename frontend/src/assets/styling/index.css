@@ -6,6 +6,7 @@
   --placeholder-text-color: #969696;
   --accent-secondary-color: #FDB750;
   --accent-color: #e19742;
+  --accent-secondary-color-transparent: #FDB75050;
 }
 
 body {
@@ -15,7 +16,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-color);
+  background-color: var(--background-color) !important;
 }
 
 code {
