@@ -1,5 +1,5 @@
 import { React, useState } from "react";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { login } from '../actions/auth';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
@@ -12,7 +12,7 @@ export async function action() {
     return null
 }
 
-function Login({ login }) {
+function Login({ login, isAuthenticated }) {
 //const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
@@ -31,8 +31,9 @@ function Login({ login }) {
         login(email, password);
     }
 
-    // Is user authenticated?
-    // redirect them to the home page
+    if(isAuthenticated) {
+        return <Navigate replace to="/trending" />
+    }
 
     return (
         <div className="form-container">
@@ -78,8 +79,8 @@ function Login({ login }) {
     )
 }
 
-// function mapStateToProps(state) {
-//     // is authenticated?
-// }
+    const mapStateToProps = state => ({
+        isAuthenticated: state.auth.isAuthenticated
+    });
 
-export default connect(null, { login })(Login);
+export default connect(mapStateToProps, { login })(Login);

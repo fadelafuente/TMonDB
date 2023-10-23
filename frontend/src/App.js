@@ -11,6 +11,8 @@ import ResetPasswordConfirm from './pages/ResetPasswordConfirm';
 import { Provider } from 'react-redux';
 import store from './store';
 
+import Layout from './hocs/Layout';
+
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Root />}>
@@ -25,7 +27,9 @@ export default function App() {
 
   return (
     <Provider store={ store }>
-      <RouterProvider router={router} />
+      <Layout>
+        <RouterProvider router={router} />
+      </Layout>
     </Provider>
   );
 }

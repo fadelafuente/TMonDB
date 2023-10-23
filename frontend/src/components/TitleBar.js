@@ -1,14 +1,38 @@
-import { Container, Dropdown, Form, InputGroup } from 'react-bootstrap';
+import { React, Fragment } from 'react';
+import { Container, Form, InputGroup } from 'react-bootstrap';
 import { BsPlusCircle, BsPersonCircle, BsSearch } from 'react-icons/bs';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import { connect } from 'react-redux';
+import { logout } from '../actions/auth';
 
 import "../assets/styling/forms.css";
 import "../assets/styling/App.css";
 
-function TitleBar() {
+function TitleBar({ logout, isAuthenticated }) {
+    function guestLinks() {
+        return (
+            <Fragment>
+                <NavDropdown.Item href="/login">
+                    Login
+                </NavDropdown.Item>
+                <NavDropdown.Item href="/register">
+                    Register
+                </NavDropdown.Item>
+            </Fragment>
+        )
+    };
+
+    function authLinks() {
+        return (
+            <NavDropdown.Item href="#!" onClick={ logout }>
+                Logout
+            </NavDropdown.Item>
+        )
+    }
+
     return (
         <Navbar expand="bg-body-tertiary mb-3">
             <Container>
@@ -67,9 +91,7 @@ function TitleBar() {
                     <NavDropdown.Item href="#action/3.2">
                         Settings
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">
-                        Logout
-                    </NavDropdown.Item>
+                    { isAuthenticated ? authLinks() : guestLinks() }
                 </NavDropdown> 
             </Container>
         </Navbar>
@@ -77,4 +99,8 @@ function TitleBar() {
 
 }
 
-export default TitleBar;
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { logout })(TitleBar);
