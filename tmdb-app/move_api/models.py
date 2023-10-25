@@ -12,13 +12,13 @@ class Move(models.Model):
         ("ST", "Status"),
     ]
 
-    type, created = Type.objects.get_or_create(
-        name="Grass",
-        locked=True
-    )
+    # type, created = Type.objects.get_or_create(
+    #     name="Grass",
+    #     locked=True
+    # )
 
     name = models.CharField(max_length=30)
-    type = models.ForeignKey(Type, on_delete=models.PROTECT, related_name='type', default=type.id)
+    type = models.ForeignKey(Type, on_delete=models.PROTECT, related_name='moves')
     description = models.CharField(max_length=300)
     damage = models.IntegerField()
     accuracy = models.IntegerField()
@@ -30,7 +30,7 @@ class Move(models.Model):
         default="PH",
         null=True)
     contact = models.BooleanField()
-    synergy_type = models.ForeignKey(Type, on_delete=models.PROTECT, null=True, related_name='synergy_type')
+    synergy_type = models.ForeignKey(Type, on_delete=models.PROTECT, null=True, related_name='synergy_moves')
     synergy_description = models.CharField(max_length=300, null=True)
-    # author = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name="move_author")
+    # author = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name="moves")
     

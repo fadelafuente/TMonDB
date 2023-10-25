@@ -15,15 +15,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
 from monster_api.views import *
+from django.urls import path, include, re_path
+from django.views.generic import TemplateView
 from user_api.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', MonsterView.as_view(), name="root"),
-    path('register', UserRegister.as_view(), name="register"),
-    path('login', UserLogin.as_view(), name="login"),
-    path('logout', UserLogout.as_view(), name="logout"),
-    path('user', UserView.as_view(), name="user"),
+    # path('register', UserRegister.as_view(), name="register"),
+    # path('login', UserLogin.as_view(), name="login"),
+    # path('logout', UserLogout.as_view(), name="logout"),
+    # path('user', UserView.as_view(), name="user"),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
 ]
+
+urlpatterns += [re_path(r'^.*', TemplateView.as_view(template_name='index.html'))]

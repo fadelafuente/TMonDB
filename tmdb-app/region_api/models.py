@@ -13,10 +13,10 @@ class Region(models.Model):
     moves = models.ManyToManyField(Move, related_name="regions")
     map_url = models.CharField(max_length=300)
     description = models.CharField(max_length=1000)
-    authorized_users = models.ManyToManyField(UserModel, related_name="regions")
-    # author = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name="region_author")
+    # authorized_users = models.ManyToManyField(UserModel, related_name="authorized_regions")
+    # author = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name="regions")
 
 class Gallery(models.model):
     image_url = models.CharField(max_length=300)
     image_description = models.CharField(max_length=300)
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name="region")
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name="gallery")

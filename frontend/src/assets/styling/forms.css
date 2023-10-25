@@ -14,7 +14,7 @@
     text-align: center;
   }
 
-  .Form {
+  .form {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -22,7 +22,7 @@
     margin: 0 auto; 
   }
   
-  .form-control {
+  input.form-control {
     border: 1px solid var(--input-box-color);
     height: 40px;
     width: 100%;
@@ -35,32 +35,35 @@
     border-radius: 6px;
   }
 
-  .form-control::placeholder {
+  input.form-control::placeholder {
     color: var(--placeholder-text-color);
   }
 
   /* Change color of autofills to match rest of the form */
-  .form-control:-webkit-autofill {
+  input.form-control:-webkit-autofill {
     border: 1px solid var(--input-box-color);
     -webkit-text-fill-color: var(--text-color);
     -webkit-box-shadow: 0 0 0px 1000px var(--input-box-color) inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 
-  .form-control:-webkit-autofill:focus {
+  input.form-control:-webkit-autofill:focus {
     border-color: var(--accent-color);
     outline: 2px solid var(--accent-color);
     -webkit-text-fill-color: var(--text-color);
-    -webkit-box-shadow: 0 0 0px 1000px 303030 inset;
+    -webkit-box-shadow: none;
     transition: background-color 5000s ease-in-out 0s;
   }
   
-  .form-control:focus {
-    outline: 2px solid var(--accent-color);
+  input.form-control:focus {
     border-color: var(--accent-color);
+    outline: 2px solid var(--accent-color);
+    color: var(--text-color);
+    box-shadow: none;
+    transition: background-color 5000s ease-in-out 0s;
   }
   
-  .Form > button {
+  form > button.btn {
     background-color: var(--accent-secondary-color);
     border: none;
     border-radius: 6px;
@@ -69,17 +72,31 @@
     font-family: "Inter", sans-serif;
   }
 
-  .Form > button:hover {
+  form > button.btn:hover {
     outline: none;
     background-color: var(--accent-color);
   }
 
-  .Form > button:active {
+  form > button.btn:active {
     outline: none;
     background-color: var(--accent-secondary-color);
   }
 
-  .form-text {
+  small.form-text {
     color: var(--placeholder-text-color);
-    text-align: left !important;
+    text-align: left;
+  }
+
+  form.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto; 
+  }
+
+  span.input-group-text {
+    background-color: var(--input-box-color);
+    border: none;
+    color: var(--text-color); 
   }
