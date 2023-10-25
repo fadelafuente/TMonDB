@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 from dotenv import load_dotenv
+from datetime import timedelta
 import os
 
 load_dotenv()
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'move_api',
     'type_api',
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
     'djoser',
     'user_api.apps.UserApiConfig',
@@ -71,6 +73,8 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
 CORS_ALLOWED_ORIGINS = [
