@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 export async function action() {
-    console.log("THIS FUCKING WORKS!!!")
     return null
 }
 
