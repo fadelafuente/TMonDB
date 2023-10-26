@@ -8,7 +8,6 @@ import Form from 'react-bootstrap/Form';
 import '../assets/styling/forms.css';
 
 export async function action() {
-    console.log("THIS FUCKING WORKS!!!")
     return null
 }
 
