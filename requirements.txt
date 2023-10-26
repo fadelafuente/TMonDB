@@ -11,6 +11,7 @@ filelock==3.12.4
 firebase
 pipenv==2023.10.3
 platformdirs==3.11.0
+psycopg[binary]
 python-dotenv
 setuptools==68.2.2
 sqlparse==0.4.4
