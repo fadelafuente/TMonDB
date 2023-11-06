@@ -23,12 +23,9 @@ from user_api.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', MonsterView.as_view(), name="root"),
-    # path('register', UserRegister.as_view(), name="register"),
-    # path('login', UserLogin.as_view(), name="login"),
-    # path('logout', UserLogout.as_view(), name="logout"),
-    # path('user', UserView.as_view(), name="user"),
     path('auth/', include('djoser.urls')),
     path('auth/', include('djoser.urls.jwt')),
+    path('auth/', include('djoser.social.urls')),
 ]
 
 urlpatterns += [re_path(r'^.*', TemplateView.as_view(template_name='index.html'))]

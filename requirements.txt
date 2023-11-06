@@ -13,6 +13,7 @@ pipenv==2023.10.3
 platformdirs==3.11.0
 python-dotenv
 setuptools==68.2.2
+social-auth-app-django
 sqlparse==0.4.4
 tzdata==2023.3
 virtualenv==20.24.5
