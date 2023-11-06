@@ -12,7 +12,6 @@ export async function action() {
 }
 
 function Login({ login, isAuthenticated }) {
-//const Login = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -47,7 +46,6 @@ function Login({ login, isAuthenticated }) {
                         onChange={ e => handleChange(e) }
                         required
                     />
-                    <br />
                 </Form.Group>
                 <br />
 
@@ -63,16 +61,16 @@ function Login({ login, isAuthenticated }) {
                     />
                 </Form.Group>
                 <br />
+                <Button variant="primary" type="submit">
+                    Login
+                </Button>
+                <br />
                 <Form.Text>
                     Don't have an account? <Link to="/register">register here</Link>
                 </Form.Text>
                 <Form.Text>
                     Forgot password? <Link to="/reset_password">reset password here</Link>
                 </Form.Text>
-                <br />
-                <Button variant="primary" type="submit">
-                    Login
-                </Button>
             </Form>
         </div>
     )

@@ -5,6 +5,7 @@
     padding: 20px 40px;
     background-color: var(--background-content-color);
     width: 30%;
+    min-width: 300px;
     border-radius: 10px;
   }
 
@@ -68,6 +69,7 @@
     border: none;
     border-radius: 6px;
     height: 40px;
+    width: 100%;
     color: var(--text-color);
     font-family: "Inter", sans-serif;
   }
