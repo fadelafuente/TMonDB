@@ -15,21 +15,53 @@ function TitleBar({ logout, isAuthenticated }) {
     function guestLinks() {
         return (
             <Fragment>
-                <NavDropdown.Item href="/login">
-                    Login
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/register">
-                    Register
-                </NavDropdown.Item>
+                <NavDropdown title={ <BsPersonCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
+                    <NavDropdown.Item href="/login">
+                        Login
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/register">
+                        Register
+                    </NavDropdown.Item>
+                </NavDropdown>
             </Fragment>
         )
     };
 
     function authLinks() {
         return (
-            <NavDropdown.Item href="#!" onClick={ logout }>
-                Logout
-            </NavDropdown.Item>
+            <div className='create-and-more'>
+                <NavDropdown title={ <BsPlusCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
+                    <NavDropdown.Item href="#action/3.1">
+                        Create Region
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                        Create Monster
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">
+                        Create Type
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                        Create Move
+                    </NavDropdown.Item>
+                </NavDropdown> 
+                <NavDropdown title={ <BsPersonCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
+                    <NavDropdown.Item href="#action/3.1">
+                        Account
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                        My Regions
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.3">
+                        My Monsters
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#action/3.2">
+                        Settings
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#!" onClick={ logout }>
+                        Logout
+                    </NavDropdown.Item>
+                </NavDropdown>
+            </div>
         )
     }
 
@@ -58,41 +90,13 @@ function TitleBar({ logout, isAuthenticated }) {
                 </Navbar.Offcanvas>
                 <Form className="form search">
                     <InputGroup>
-                    <InputGroup.Text>
-                        <BsSearch />
+                        <InputGroup.Text>
+                            <BsSearch />
                     </InputGroup.Text>
                     <Form.Control type="search" className="me-2 search" placeholder="Search" />
                     </InputGroup>   
                 </Form>
-                <NavDropdown title={ <BsPlusCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
-                    <NavDropdown.Item href="#action/3.1">
-                        Create Region
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                        Create Monster
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">
-                        Create Type
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                        Create Move
-                    </NavDropdown.Item>
-                </NavDropdown> 
-                <NavDropdown title={ <BsPersonCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
-                    <NavDropdown.Item href="#action/3.1">
-                        Account
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                        My Regions
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">
-                        My Monsters
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                        Settings
-                    </NavDropdown.Item>
-                    { isAuthenticated ? authLinks() : guestLinks() }
-                </NavDropdown> 
+                { isAuthenticated ? authLinks() : guestLinks() }
             </Container>
         </Navbar>
     );
