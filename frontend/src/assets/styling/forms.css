@@ -24,6 +24,7 @@
   }
   
   input.form-control {
+    margin: 10px auto;
     border: 1px solid var(--input-box-color);
     height: 40px;
     width: 100%;
@@ -65,6 +66,7 @@
   }
   
   form > button.btn {
+    margin: 10px auto;
     background-color: var(--accent-secondary-color);
     border: none;
     border-radius: 6px;
@@ -81,7 +83,8 @@
 
   form > button.btn:active {
     outline: none;
-    background-color: var(--accent-secondary-color);
+    background-color: var(--accent-color) !important;
+    border: none;
   }
 
   small.form-text {
@@ -98,7 +101,30 @@
   }
 
   span.input-group-text {
+    margin: 10px auto;
     background-color: var(--input-box-color);
-    border: none;
     color: var(--text-color); 
+    border: none;
+    height: 40px;
   }
+
+small.or-social-auth {
+  margin: 0 auto;
+  text-align: center;
+}
+
+hr.break-line {
+  color: var(--placeholder-text-color);
+}
+
+form > button.google-button {
+  background-color: #DB4437;
+}
+
+form > button.google-button:hover {
+  background-color: #b2372b;
+}
+
+form > button.google-button:active {
+  background-color: #b2372b !important;
+}

@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 import '../assets/styling/forms.css';
+import axios from "axios";
 
 export async function action() {
     return null
@@ -29,6 +30,16 @@ function Login({ login, isAuthenticated }) {
         login(email, password);
     }
 
+    async function handleGoogleAuth(e) {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:3000`);
+
+            window.location.replace(res.data.authorization_url)
+        } catch(err) {
+
+        }
+    }
+
     if(isAuthenticated) {
         return <Navigate replace to="/trending" />
     }
@@ -47,8 +58,6 @@ function Login({ login, isAuthenticated }) {
                         required
                     />
                 </Form.Group>
-                <br />
-
                 <Form.Group controlId="formPassword">
                     <Form.Control
                         type="password" 
@@ -60,17 +69,26 @@ function Login({ login, isAuthenticated }) {
                         required 
                     />
                 </Form.Group>
-                <br />
                 <Button variant="primary" type="submit">
                     Login
                 </Button>
-                <br />
                 <Form.Text>
                     Don't have an account? <Link to="/register">register here</Link>
                 </Form.Text>
                 <Form.Text>
                     Forgot password? <Link to="/reset_password">reset password here</Link>
                 </Form.Text>
+                <hr className="break-line" />
+                <Form.Text className="or-social-auth">
+                    OR
+                </Form.Text>
+                <Button 
+                    className="google-button"
+                    type="submit"
+                    onClick={ e => handleGoogleAuth(e) }
+                >
+                    Login with Google
+                </Button>
             </Form>
         </div>
     )

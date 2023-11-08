@@ -13,7 +13,9 @@ import {
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
-    PASSWORD_RESET_CONFIRM_FAIL
+    PASSWORD_RESET_CONFIRM_FAIL,
+    GOOGLE_AUTH_SUCCESS,
+    GOOGLE_AUTH_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -56,6 +58,16 @@ export default function auth(state = initialState, action) {
                 ...state,
                 isAuthenticated: false
             }
+        case GOOGLE_AUTH_SUCCESS:
+            localStorage.setItem("access", payload.access);
+
+            return {
+                ...state,
+                isAuthenticated: true,
+                access: payload.access,
+                refresh: payload.refresh
+            }
+        case GOOGLE_AUTH_FAIL:
         case LOGIN_FAIL:
         case REGISTER_FAIL:
         case LOGOUT:

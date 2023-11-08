@@ -1,12 +1,26 @@
 import { React, useEffect } from "react";
 import { connect } from "react-redux";
-import { check_authenticated, load_user } from "../actions/auth";
+import { check_authenticated, load_user, google_authenticate } from "../actions/auth";
+import { useLocation } from "react-router-dom";
 
-function Layout({ check_authenticated, load_user, children }) {
+function Layout({ check_authenticated, load_user, children, google_authenticate }) {
+    let location = useLocation();
+
     useEffect(() => {
-        check_authenticated();
-        load_user();
-    }, [check_authenticated, load_user]);
+        const values = new URLSearchParams(location.search);
+        const state = values.state ? values.state : null;
+        const code = values.code ? values.code : null;
+
+        console.log('State: ' + state);
+        console.log('Code: ' + code);
+
+        if(state && code) {
+            google_authenticate(state, code)
+        } else {
+            check_authenticated();
+            load_user();
+        }
+    }, [check_authenticated, load_user, google_authenticate, location]);
 
     return (
         <div>
@@ -15,4 +29,4 @@ function Layout({ check_authenticated, load_user, children }) {
     )
 }
 
-export default connect(null, { check_authenticated, load_user })(Layout);
+export default connect(null, { check_authenticated, load_user, google_authenticate })(Layout);

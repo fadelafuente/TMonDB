@@ -58,7 +58,6 @@ function Register({ register, isAuthenticated }) {
                         We will never share your email with anyone else.
                     </Form.Text>
                 </Form.Group>
-
                 <Form.Group controlId="formBasicUsername">
                     <Form.Control 
                         type="text" 
@@ -69,7 +68,6 @@ function Register({ register, isAuthenticated }) {
                         required
                     />
                 </Form.Group>
-                <br />
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Text>
                         Your password must be: <br/>
@@ -97,12 +95,9 @@ function Register({ register, isAuthenticated }) {
                         required
                     />
                 </Form.Group>
-                <br />
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
-                <br />
-                <br />
                 <Form.Text>
                     Already have an account? <Link to="/login">Login here</Link>
                 </Form.Text>

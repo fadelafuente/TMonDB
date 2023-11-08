@@ -27,18 +27,18 @@ export default function App() {
 
   return (
     <Provider store={ store }>
-      <Layout>
         <RouterProvider router={router} />
-      </Layout>
     </Provider>
   );
 }
 
 const Root = () => {
   return <> 
-    <div>
-      <Outlet />
-    </div>
+    <Layout>
+      <div>
+        <Outlet />
+      </div>
+    </Layout>
   </>
 }
 
