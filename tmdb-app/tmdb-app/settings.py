@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'monster_api',
     'move_api',
     'type_api',
-    'user_api.apps.UserApiConfig',
+    'user_api',
 ]
 
 MIDDLEWARE = [
@@ -85,12 +85,14 @@ SIMPLE_JWT = {
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'social_core.backends.google.GoogleOAuth2'
+    'social_core.backends.google.GoogleOAuth2',
 )
 
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'http://localhost:8000',
+    'http://127.0.0.1:8000'
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -144,6 +146,8 @@ DJOSER = {
     'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
+    'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:3000/trending'],
     'SERIALIZERS': {
         'user_create': 'user_api.serializers.UserCreateSerializer',
         'user': 'user_api.serializers.UserCreateSerializer',
