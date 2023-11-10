@@ -231,9 +231,3 @@ a.dropdown-item:active {
 div.input-group {
   min-width: 150px;
 }
-
-div.create-and-more {
-  display: flex;
-  flex-direction: row;
-  max-height: 32px;
-}

@@ -13,13 +13,14 @@ export async function action() {
 function Register({ register, isAuthenticated }) {
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
+        first_name: '',
+        last_name: '',
         email: '',
-        username: '',
         password: '',
         re_password: ''
     });
 
-    const { email, username, password, re_password } = formData;
+    const { first_name, last_name, email, password, re_password } = formData;
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,7 +30,7 @@ function Register({ register, isAuthenticated }) {
         e.preventDefault();
 
         if(password === re_password) {
-            register(email, username, password, re_password);
+            register(first_name, last_name, email, password, re_password);
             setAccountCreated(true);
         }
     }
@@ -45,10 +46,28 @@ function Register({ register, isAuthenticated }) {
         <div className="form-container">
             <h2 className="form-title">Create a New Account</h2>
             <Form className="Form" onSubmit={ e=> onSubmit(e) }>
+                <Form.Group>
+                    <Form.Control 
+                        type="text" 
+                        placeholder="First Name*" 
+                        name="first_name"
+                        value={ first_name }
+                        onChange={ e => handleChange(e) }
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Control 
+                        type="text" 
+                        placeholder="Last Name*" 
+                        name="last_name"
+                        value={ last_name }
+                        onChange={ e => handleChange(e) }
+                    />
+                </Form.Group>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Control 
                         type="email" 
-                        placeholder="Email" 
+                        placeholder="Email*" 
                         name="email"
                         value={ email }
                         onChange={ e => handleChange(e) }
@@ -57,16 +76,6 @@ function Register({ register, isAuthenticated }) {
                     <Form.Text>
                         We will never share your email with anyone else.
                     </Form.Text>
-                </Form.Group>
-                <Form.Group controlId="formBasicUsername">
-                    <Form.Control 
-                        type="text" 
-                        placeholder="Username" 
-                        name="username"
-                        value={ username }
-                        onChange={ e => handleChange(e) }
-                        required
-                    />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Text>
@@ -78,7 +87,7 @@ function Register({ register, isAuthenticated }) {
                     </Form.Text>
                     <Form.Control 
                         type="password" 
-                        placeholder="Password" 
+                        placeholder="Password*" 
                         name="password"
                         value={ password }
                         onChange={ e => handleChange(e) }
@@ -88,7 +97,7 @@ function Register({ register, isAuthenticated }) {
                 <Form.Group className="mb-3" controlId="formBasicPassword2">
                     <Form.Control 
                         type="password" 
-                        placeholder="Repeat Password" 
+                        placeholder="Repeat Password*" 
                         name="re_password"
                         value={ re_password }
                         onChange={ e => handleChange(e) }

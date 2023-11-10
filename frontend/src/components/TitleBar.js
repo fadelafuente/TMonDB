@@ -29,7 +29,7 @@ function TitleBar({ logout, isAuthenticated }) {
 
     function authLinks() {
         return (
-            <div className='create-and-more'>
+            <Fragment>
                 <NavDropdown title={ <BsPlusCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
                     <NavDropdown.Item href="#action/3.1">
                         Create Region
@@ -61,7 +61,7 @@ function TitleBar({ logout, isAuthenticated }) {
                         Logout
                     </NavDropdown.Item>
                 </NavDropdown>
-            </div>
+            </Fragment>
         )
     }
 

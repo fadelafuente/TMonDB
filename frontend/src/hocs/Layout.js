@@ -8,12 +8,9 @@ function Layout({ check_authenticated, load_user, children, google_authenticate 
 
     useEffect(() => {
         const values = new URLSearchParams(location.search);
-        const state = values.state ? values.state : null;
-        const code = values.code ? values.code : null;
-
-        console.log('State: ' + state);
-        console.log('Code: ' + code);
-
+        const state = values.has("state") ? values.get("state") : null;
+        const code = values.has("code") ? values.get("code") : null;
+        
         if(state && code) {
             google_authenticate(state, code)
         } else {

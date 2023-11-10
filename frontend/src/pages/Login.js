@@ -8,6 +8,8 @@ import Form from 'react-bootstrap/Form';
 import '../assets/styling/forms.css';
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 export async function action() {
     return null
 }
@@ -32,7 +34,7 @@ function Login({ login, isAuthenticated }) {
 
     async function handleGoogleAuth(e) {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:3000`);
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/trending`);
 
             window.location.replace(res.data.authorization_url)
         } catch(err) {

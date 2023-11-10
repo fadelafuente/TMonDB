@@ -19,6 +19,8 @@ import {
     GOOGLE_AUTH_FAIL
 } from './types';
 
+axios.defaults.withCredentials = true;
+
 export const check_authenticated = () => async dispatch => {
     if(localStorage.getItem("access")) {
         const config = {
@@ -146,14 +148,14 @@ export const logout = () => async dispatch => {
     });
 }
 
-export const register = (email, username, password, re_password) => async dispatch => {
+export const register = (email, first_name, last_name, password, re_password) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
         }
     };
 
-    const body = JSON.stringify({ email, username, password, re_password });
+    const body = JSON.stringify({ email, first_name, last_name, password, re_password });
 
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/`, body, config);
