@@ -84,6 +84,8 @@ function Login({ login, isAuthenticated }) {
                 <Form.Text className="or-social-auth">
                     OR
                 </Form.Text>
+            </Form>
+            <div className="google-oauth-container">
                 <Button 
                     className="google-button"
                     type="submit"
@@ -91,7 +93,7 @@ function Login({ login, isAuthenticated }) {
                 >
                     Login with Google
                 </Button>
-            </Form>
+            </div>
         </div>
     )
 }

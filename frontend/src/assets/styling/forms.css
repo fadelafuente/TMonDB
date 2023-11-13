@@ -117,14 +117,33 @@ hr.break-line {
   color: var(--placeholder-text-color);
 }
 
-form > button.google-button {
+div.google-oauth-container > button {
+  margin: 10px auto;
+  border: none;
+  border-radius: 6px;
+  height: 40px;
+  width: 100%;
+  color: var(--text-color);
+  font-family: "Inter", sans-serif;
+}
+
+div.google-oauth-container > button:hover {
+  outline: none;
+}
+
+div.google-oauth-container > button:active {
+  outline: none;
+  border: none;
+}
+
+button.google-button {
   background-color: #DB4437;
 }
 
-form > button.google-button:hover {
+button.google-button:hover {
   background-color: #b2372b;
 }
 
-form > button.google-button:active {
+button.google-button:active {
   background-color: #b2372b !important;
 }

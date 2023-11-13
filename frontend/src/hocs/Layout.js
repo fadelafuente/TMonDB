@@ -1,10 +1,11 @@
 import { React, useEffect } from "react";
 import { connect } from "react-redux";
 import { check_authenticated, load_user, google_authenticate } from "../actions/auth";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Layout({ check_authenticated, load_user, children, google_authenticate }) {
     let location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const values = new URLSearchParams(location.search);
@@ -12,7 +13,8 @@ function Layout({ check_authenticated, load_user, children, google_authenticate 
         const code = values.has("code") ? values.get("code") : null;
         
         if(state && code) {
-            google_authenticate(state, code)
+            google_authenticate(state, code);
+            navigate("/trending");
         } else {
             check_authenticated();
             load_user();

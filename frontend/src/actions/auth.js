@@ -148,7 +148,7 @@ export const logout = () => async dispatch => {
     });
 }
 
-export const register = (email, first_name, last_name, password, re_password) => async dispatch => {
+export const register = (first_name, last_name, email, password, re_password) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
