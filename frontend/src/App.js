@@ -7,7 +7,7 @@ import Trending from './pages/Trending';
 import Activate from './pages/Activate';
 import ResetPassword from './pages/ResetPassword';
 import ResetPasswordConfirm from './pages/ResetPasswordConfirm';
-import GoogleOauth from './pages/google-oauth';
+import GoogleOauth from './pages/GoogleOauth';
 
 import { Provider } from 'react-redux';
 import store from './store';
