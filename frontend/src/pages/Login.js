@@ -34,7 +34,7 @@ function Login({ login, isAuthenticated }) {
 
     async function handleGoogleAuth(e) {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/trending`);
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/google-oauth`);
 
             window.location.replace(res.data.authorization_url)
         } catch(err) {

@@ -7,6 +7,7 @@ import Trending from './pages/Trending';
 import Activate from './pages/Activate';
 import ResetPassword from './pages/ResetPassword';
 import ResetPasswordConfirm from './pages/ResetPasswordConfirm';
+import GoogleOauth from './pages/google-oauth';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -22,6 +23,7 @@ export default function App() {
       <Route path="activate/:uid/:token" element={<Activate />} />
       <Route path="reset_password" element={<ResetPassword />} />
       <Route path="password/reset/confirm/:uid/:token" element={<ResetPasswordConfirm />} />
+      <Route path="google-oauth" element={ <GoogleOauth /> } />
     </Route>
   ))
 
