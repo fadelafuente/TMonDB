@@ -42,6 +42,16 @@ function Login({ login, isAuthenticated }) {
         }
     }
 
+    async function handleFacebookAuth(e) {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/facebook/?redirect_uri=http://localhost:3000/facebook-oauth`);
+
+            window.location.replace(res.data.authorization_url)
+        } catch(err) {
+
+        }
+    }
+
     if(isAuthenticated) {
         return <Navigate replace to="/trending" />
     }
@@ -87,11 +97,18 @@ function Login({ login, isAuthenticated }) {
             </Form>
             <div className="google-oauth-container">
                 <Button 
-                    className="google-button"
+                    className="google-button social-button"
                     type="submit"
                     onClick={ e => handleGoogleAuth(e) }
                 >
                     Login with Google
+                </Button>
+                <Button 
+                    className="facebook-button social-button"
+                    type="submit"
+                    onClick={ e => handleFacebookAuth(e) }
+                >
+                    Login with Facebook
                 </Button>
             </div>
         </div>

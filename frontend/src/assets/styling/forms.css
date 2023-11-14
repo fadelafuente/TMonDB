@@ -117,7 +117,7 @@ hr.break-line {
   color: var(--placeholder-text-color);
 }
 
-div.google-oauth-container > button {
+button.social-button {
   margin: 10px auto;
   border: none;
   border-radius: 6px;
@@ -127,11 +127,11 @@ div.google-oauth-container > button {
   font-family: "Inter", sans-serif;
 }
 
-div.google-oauth-container > button:hover {
+button.social-button:hover {
   outline: none;
 }
 
-div.google-oauth-container > button:active {
+button.social-button:active {
   outline: none;
   border: none;
 }
@@ -141,9 +141,21 @@ button.google-button {
 }
 
 button.google-button:hover {
-  background-color: #b2372b;
+  background-color: #E57368;
 }
 
 button.google-button:active {
-  background-color: #b2372b !important;
+  background-color: #E57368 !important;
+}
+
+button.facebook-button {
+  background-color: #0a65ff;
+}
+
+button.facebook-button:hover {
+  background-color: #7cb6ff;
+}
+
+button.facebook-button:active {
+  background-color: #7cb6ff !important;
 }

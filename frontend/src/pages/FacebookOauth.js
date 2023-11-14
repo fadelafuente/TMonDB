@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Form, useLocation, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { google_authenticate } from '../actions/auth';
+import { facebook_authenticate } from '../actions/auth';
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
-function GoogleOauth({ google_authenticate }) {
+function FacebookOauth({ facebook_authenticate }) {
     let location = useLocation();
     const navigate = useNavigate();
 
@@ -15,10 +15,10 @@ function GoogleOauth({ google_authenticate }) {
         const code = values.has("code") ? values.get("code") : null;
 
         if (state && code) {
-            google_authenticate(state, code);
+            facebook_authenticate(state, code);
             navigate("/trending");
         }
-    }, [google_authenticate, location]);
+    }, [facebook_authenticate, location]);
 
     function redirectBackToLogin(e) {
         e.preventDefault();
@@ -28,7 +28,7 @@ function GoogleOauth({ google_authenticate }) {
 
     return (
         <div className="form-container">
-            <h2 className="form-title">Logging in with Google</h2>
+            <h2 className="form-title">Logging in with Facebook</h2>
             <Form className="form">
                 <FormText>
                     If you do not get redirected, go back to the login page.
@@ -45,4 +45,4 @@ function GoogleOauth({ google_authenticate }) {
     );
 };
 
-export default connect(null, { google_authenticate })(GoogleOauth);
+export default connect(null, { facebook_authenticate })(FacebookOauth);
