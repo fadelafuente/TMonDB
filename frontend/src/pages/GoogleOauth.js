@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Form, useLocation, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { google_authenticate } from '../actions/auth';
+import { social_authenticate } from '../actions/auth';
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
-function GoogleOauth({ google_authenticate }) {
+function GoogleOauth({ social_authenticate }) {
     let location = useLocation();
     const navigate = useNavigate();
 
@@ -15,10 +15,10 @@ function GoogleOauth({ google_authenticate }) {
         const code = values.has("code") ? values.get("code") : null;
 
         if (state && code) {
-            google_authenticate(state, code);
+            social_authenticate(state, code, "google-oauth2");
             navigate("/trending");
         }
-    }, [google_authenticate, location]);
+    }, [social_authenticate, location]);
 
     function redirectBackToLogin(e) {
         e.preventDefault();
@@ -45,4 +45,4 @@ function GoogleOauth({ google_authenticate }) {
     );
 };
 
-export default connect(null, { google_authenticate })(GoogleOauth);
+export default connect(null, { social_authenticate })(GoogleOauth);

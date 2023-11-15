@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { Form, useLocation, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { facebook_authenticate } from '../actions/auth';
+import { social_authenticate } from '../actions/auth';
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 
-function FacebookOauth({ facebook_authenticate }) {
+function FacebookOauth({ social_authenticate }) {
     let location = useLocation();
     const navigate = useNavigate();
 
@@ -15,10 +15,10 @@ function FacebookOauth({ facebook_authenticate }) {
         const code = values.has("code") ? values.get("code") : null;
 
         if (state && code) {
-            facebook_authenticate(state, code);
+            social_authenticate(state, code, "facebook");
             navigate("/trending");
         }
-    }, [facebook_authenticate, location]);
+    }, [social_authenticate, location]);
 
     function redirectBackToLogin(e) {
         e.preventDefault();
@@ -45,4 +45,4 @@ function FacebookOauth({ facebook_authenticate }) {
     );
 };
 
-export default connect(null, { facebook_authenticate })(FacebookOauth);
+export default connect(null, { social_authenticate })(FacebookOauth);

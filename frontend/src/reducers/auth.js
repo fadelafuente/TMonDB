@@ -14,10 +14,8 @@ import {
     PASSWORD_RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
-    GOOGLE_AUTH_SUCCESS,
-    GOOGLE_AUTH_FAIL,
-    FACEBOOK_AUTH_SUCCESS,
-    FACEBOOK_AUTH_FAIL
+    SOCIAL_AUTH_SUCCESS,
+    SOCIAL_AUTH_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -37,6 +35,7 @@ export default function auth(state = initialState, action) {
                 isAuthenticated: true
             }
         case LOGIN_SUCCESS:
+        case SOCIAL_AUTH_SUCCESS:
             localStorage.setItem('access', payload.access);
             localStorage.setItem('refresh', payload.refresh);
             return {
@@ -60,18 +59,7 @@ export default function auth(state = initialState, action) {
                 ...state,
                 isAuthenticated: false
             }
-        case GOOGLE_AUTH_SUCCESS:
-        case FACEBOOK_AUTH_SUCCESS:
-            localStorage.setItem('access', payload.access);
-
-            return {
-                ...state,
-                isAuthenticated: true,
-                access: payload.access,
-                refresh: payload.refresh
-            }
-        case GOOGLE_AUTH_FAIL:
-        case FACEBOOK_AUTH_FAIL:
+        case SOCIAL_AUTH_FAIL:
         case LOGIN_FAIL:
         case REGISTER_FAIL:
         case LOGOUT:
