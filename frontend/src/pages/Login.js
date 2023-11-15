@@ -10,10 +10,6 @@ import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-export async function action() {
-    return null
-}
-
 function Login({ login, isAuthenticated }) {
     const [formData, setFormData] = useState({
         email: '',

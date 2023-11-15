@@ -1,8 +1,8 @@
 import './assets/styling/App.css';
-import Register, { action as registerAction } from './pages/Register';
-import Login, { action as loginAction } from './pages/Login'
+import Register from './pages/Register';
 import { Outlet, RouterProvider, createBrowserRouter, 
   createRoutesFromElements, Route } from 'react-router-dom';
+import Login from './pages/Login';
 import Trending from './pages/Trending';
 import Activate from './pages/Activate';
 import ResetPassword from './pages/ResetPassword';
@@ -18,8 +18,8 @@ import Layout from './hocs/Layout';
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={<Root />}>
-      <Route path="register" element={<Register />} action={registerAction} />
-      <Route path="login" element={<Login />} action={loginAction} />
+      <Route path="register" element={<Register />} />
+      <Route path="login" element={<Login />} />
       <Route path="trending" element={<Trending />} />
       <Route path="activate/:uid/:token" element={<Activate />} />
       <Route path="reset_password" element={<ResetPassword />} />

@@ -6,10 +6,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { register } from '../actions/auth';
 
-export async function action() {
-    return null
-}
-
 function Register({ register, isAuthenticated }) {
     const [accountCreated, setAccountCreated] = useState(false);
     const [formData, setFormData] = useState({
