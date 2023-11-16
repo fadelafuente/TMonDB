@@ -16,7 +16,8 @@ import {
     PASSWORD_RESET_CONFIRM_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
     SOCIAL_AUTH_SUCCESS,
-    SOCIAL_AUTH_FAIL
+    SOCIAL_AUTH_FAIL,
+    LOGIN_ATTEMPT
 } from './types';
 
 axios.defaults.withCredentials = true;
@@ -235,5 +236,16 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
         dispatch({
             type: PASSWORD_RESET_CONFIRM_FAIL
         });
+    }
+}
+
+export const attempt_login_again = () => dispatch => {
+    try {
+        dispatch({
+            type: LOGIN_ATTEMPT
+        });
+    }
+    catch(err) {
+
     }
 }

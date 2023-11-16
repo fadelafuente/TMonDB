@@ -136,6 +136,8 @@
   }
 }
 
+/* Titlebar Styling */
+
 .dropdown-toggle::after {
   display: none !important; 
 }
@@ -230,4 +232,11 @@ a.dropdown-item:active {
 
 div.input-group {
   min-width: 150px;
+}
+
+/*  Modal Styling */
+
+div.modal-content {
+  background-color: var(--background-content-color);
+  color: var(--text-color);
 }

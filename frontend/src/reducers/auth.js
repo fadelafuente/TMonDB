@@ -15,7 +15,8 @@ import {
     PASSWORD_RESET_CONFIRM_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
     SOCIAL_AUTH_SUCCESS,
-    SOCIAL_AUTH_FAIL
+    SOCIAL_AUTH_FAIL,
+    LOGIN_ATTEMPT
 } from '../actions/types';
 
 const initialState = {
@@ -35,6 +36,15 @@ export default function auth(state = initialState, action) {
                 isAuthenticated: true
             }
         case LOGIN_SUCCESS:
+            localStorage.setItem('access', payload.access);
+            localStorage.setItem('refresh', payload.refresh);
+            return {
+                ...state,
+                isAuthenticated: true,
+                access: payload.access,
+                refresh: payload.refresh,
+                loginFailed: false
+            }
         case SOCIAL_AUTH_SUCCESS:
             localStorage.setItem('access', payload.access);
             localStorage.setItem('refresh', payload.refresh);
@@ -59,8 +69,18 @@ export default function auth(state = initialState, action) {
                 ...state,
                 isAuthenticated: false
             }
-        case SOCIAL_AUTH_FAIL:
         case LOGIN_FAIL:
+            localStorage.removeItem('access');
+            localStorage.removeItem('refresh');
+            return {
+                ...state,
+                access: null,
+                refresh: null,
+                isAuthenticated: false,
+                user: null,
+                loginFailed: true
+            }
+        case SOCIAL_AUTH_FAIL:
         case REGISTER_FAIL:
         case LOGOUT:
             localStorage.removeItem('access');
@@ -85,6 +105,11 @@ export default function auth(state = initialState, action) {
         case ACTIVATION_FAIL:
             return {
                 ...state
+            }
+        case LOGIN_ATTEMPT:
+            return {
+                ...state,
+                loginFailed: false
             }
         default:
             return state

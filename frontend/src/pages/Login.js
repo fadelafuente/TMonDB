@@ -1,22 +1,29 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { login } from '../actions/auth';
+import { login, attempt_login_again } from '../actions/auth';
 import { connect } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { Modal } from "react-bootstrap";
 
+import "../assets/styling/App.css";
 import '../assets/styling/forms.css';
 import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
-function Login({ login, isAuthenticated }) {
+function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
+    const [show, setShow] = useState(false);
 
     const { email, password } = formData;
+
+    useEffect(() => {
+        handleShow();
+    }, [handleShow]);
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,12 +55,37 @@ function Login({ login, isAuthenticated }) {
         }
     }
 
+    function handleShow() {
+        if(loginFailed && !isAuthenticated) {
+            setShow(true);
+        }
+    }
+
+    function handleClose() {
+        attempt_login_again();
+        setShow(false);
+    }
+
     if(isAuthenticated) {
         return <Navigate replace to="/trending" />
     }
 
     return (
         <div className="form-container">
+            <Modal
+                backdrop="static"
+                keyboard={false}
+                show={ show }
+                onHide={ handleClose }
+                id="error-modal"
+            >
+                <Modal.Header closeButton closeVariant="white">
+                <Modal.Title>Invalid Field</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    Either the email or password is incorrect.
+                </Modal.Body>
+            </Modal>
             <h2 className="form-title">Login</h2>
             <Form className="form" onSubmit={ e=> onSubmit(e) }>
                 <Form.Group controlId="formEmail">
@@ -112,7 +144,8 @@ function Login({ login, isAuthenticated }) {
 }
 
     const mapStateToProps = state => ({
-        isAuthenticated: state.auth.isAuthenticated
+        isAuthenticated: state.auth.isAuthenticated,
+        loginFailed: state.auth.loginFailed
     });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login, attempt_login_again })(Login);
