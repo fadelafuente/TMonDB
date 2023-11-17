@@ -62,7 +62,7 @@ function ResetPasswordConfirm({ reset_password_confirm }) {
                     <InputGroup>
                         <Form.Control
                             type="password" 
-                            placeholder="Password*" 
+                            placeholder="New Password" 
                             name="new_password"
                             value={ new_password }
                             onChange={ e => handleChange(e) }
@@ -80,7 +80,7 @@ function ResetPasswordConfirm({ reset_password_confirm }) {
                     <InputGroup>
                         <Form.Control 
                             type="password" 
-                            placeholder="Repeat Password*" 
+                            placeholder="Confirm New Password" 
                             name="re_new_password"
                             value={ re_new_password }
                             onChange={ e => handleChange(e) }
