@@ -1,4 +1,5 @@
 import { register } from '../actions/auth';
+import { handleValidation } from '../functions/helpers';
 import { React, useState } from "react";
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -38,6 +39,8 @@ function Register({ register, isAuthenticated }) {
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        if(e.target.name === "password") 
+            handleValidation(e.target.value);
     }
 
     function onSubmit(e) {
@@ -92,13 +95,12 @@ function Register({ register, isAuthenticated }) {
                     </Form.Text>
                 </Form.Group>
                 <Form.Group controlId="password-input" className="form-group">
-                    <Form.Text>
-                        Your password must be: <br/>
-                        8-20 characters long <br/>
-                        have at least 1 uppercase letter <br/>
-                        have at least 1 lowercase letter <br/>
-                        have at least one special character <br/>
-                    </Form.Text>
+                    <Form.Text>Your password must have: <br/></Form.Text>
+                    <Form.Text id="lowercase" className="invalid">at least 1 lowercase letter <br/></Form.Text>
+                    <Form.Text id="uppercase" className="invalid">at least 1 uppercase letter <br/></Form.Text>
+                    <Form.Text id="number" className="invalid">at least 1 number <br/></Form.Text>
+                    <Form.Text id="special" className="invalid">at least one special character <br/></Form.Text>
+                    <Form.Text id="length" className="invalid">between 8-20 characters <br/></Form.Text>
                     <InputGroup>
                         <Form.Control
                             type="password" 

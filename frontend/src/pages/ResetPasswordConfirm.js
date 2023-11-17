@@ -1,4 +1,5 @@
 import { reset_password_confirm } from "../actions/auth";
+import { handleValidation } from "../functions/helpers";
 import React, { useState } from "react";
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -34,6 +35,8 @@ function ResetPasswordConfirm({ reset_password_confirm }) {
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        if(e.target.name === "new_password") 
+            handleValidation(e.target.value);
     }
 
     function onSubmit(e) {
@@ -51,14 +54,13 @@ function ResetPasswordConfirm({ reset_password_confirm }) {
         <div className="form-container">
             <h2 className="form-title">Enter New Password</h2>
             <Form className="form" onSubmit={ e=> onSubmit(e) }>
-            <Form.Group controlId="password-input" className="form-group">
-                    <Form.Text>
-                        Your password must be: <br/>
-                        8-20 characters long <br/>
-                        have at least 1 uppercase letter <br/>
-                        have at least 1 lowercase letter <br/>
-                        have at least one special character <br/>
-                    </Form.Text>
+                <Form.Group controlId="password-input" className="form-group">
+                    <Form.Text>Your password must have: <br/></Form.Text>
+                    <Form.Text id="lowercase" className="invalid">at least 1 lowercase letter <br/></Form.Text>
+                    <Form.Text id="uppercase" className="invalid">at least 1 uppercase letter <br/></Form.Text>
+                    <Form.Text id="number" className="invalid">at least 1 number <br/></Form.Text>
+                    <Form.Text id="special" className="invalid">at least one special character <br/></Form.Text>
+                    <Form.Text id="length" className="invalid">between 8-20 characters <br/></Form.Text>
                     <InputGroup>
                         <Form.Control
                             type="password" 
