@@ -1,14 +1,15 @@
-import { React, useEffect, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
 import { login, attempt_login_again } from '../actions/auth';
-import { connect } from 'react-redux';
+import axios from "axios";
+import { React, useEffect, useState } from "react";
+import { InputGroup, Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { Modal } from "react-bootstrap";
+import { BsEye, BsEyeSlashFill } from 'react-icons/bs';
+import { connect } from 'react-redux';
+import { Link, Navigate } from "react-router-dom";
 
 import "../assets/styling/App.css";
 import '../assets/styling/forms.css';
-import axios from "axios";
 
 axios.defaults.withCredentials = true;
 
@@ -18,16 +19,12 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
         password: ''
     });
     const [show, setShow] = useState(false);
-
     const { email, password } = formData;
+    const [showPass, setShowPass] = useState(false);
 
     useEffect(() => {
         handleShow();
     }, [handleShow]);
-
-    function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
 
     function onSubmit(e) {
         e.preventDefault();
@@ -66,6 +63,17 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
         setShow(false);
     }
 
+    function handleChange(e) {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+
+    function handleShowPass() {
+        setShowPass((prev) => !prev);
+        const password_input = document.querySelector("#login-password");
+        const type = showPass ? "password" : "text";
+        password_input.setAttribute("type", type);
+    }
+
     if(isAuthenticated) {
         return <Navigate replace to="/trending" />
     }
@@ -88,7 +96,7 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
             </Modal>
             <h2 className="form-title">Login</h2>
             <Form className="form" onSubmit={ e=> onSubmit(e) }>
-                <Form.Group controlId="formEmail">
+                <Form.Group controlId="formEmail" className="form-group">
                     <Form.Control
                         type="email" 
                         placeholder="Email" 
@@ -98,16 +106,24 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
                         required
                     />
                 </Form.Group>
-                <Form.Group controlId="formPassword">
-                    <Form.Control
-                        type="password" 
-                        placeholder="Password"
-                        name="password"
-                        value={ password }
-                        onChange={ e => handleChange(e) }
-                        minLength="8"
-                        required 
-                    />
+                <Form.Group controlId="login-password" className="form-group">
+                    <InputGroup>
+                        <Form.Control
+                            type="password" 
+                            placeholder="Password"
+                            name="password"
+                            value={ password }
+                            onChange={ e => handleChange(e) }
+                            minLength="8"
+                            required 
+                        />
+                        <InputGroup.Text 
+                            onClick={ () => handleShowPass() }
+                            id="password-toggle"
+                        >
+                        { showPass ? <BsEyeSlashFill /> : <BsEye /> }
+                        </InputGroup.Text>
+                    </InputGroup>
                 </Form.Group>
                 <Button variant="primary" type="submit">
                     Login

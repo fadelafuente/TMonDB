@@ -1,9 +1,9 @@
-import { React, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
 import { verify } from '../actions/auth';
-import { connect } from 'react-redux';
+import { React, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { connect } from 'react-redux';
+import { Navigate, useParams } from "react-router-dom";
 
 import '../assets/styling/forms.css';
 

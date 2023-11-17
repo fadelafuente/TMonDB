@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { Form, useLocation, useNavigate } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { social_authenticate } from '../actions/auth';
+import React, { useEffect } from 'react';
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import { connect } from 'react-redux';
+import { Form, useLocation, useNavigate } from 'react-router-dom';
 
 function GoogleOauth({ social_authenticate }) {
     let location = useLocation();
