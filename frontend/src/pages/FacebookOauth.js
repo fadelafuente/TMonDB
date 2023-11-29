@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import { Form, useLocation, useNavigate } from 'react-router-dom';
+import { Form, useLocation, useNavigate, Navigate } from 'react-router-dom';
 
-function FacebookOauth({ social_authenticate }) {
+function FacebookOauth({ social_authenticate, isAuthenticated }) {
     let location = useLocation();
     const navigate = useNavigate();
 
@@ -16,7 +16,6 @@ function FacebookOauth({ social_authenticate }) {
 
         if (state && code) {
             social_authenticate(state, code, "facebook");
-            navigate("/trending");
         }
     }, [social_authenticate, location]);
 
@@ -24,6 +23,10 @@ function FacebookOauth({ social_authenticate }) {
         e.preventDefault();
 
         navigate("/login");
+    }
+
+    if(isAuthenticated) {
+        return <Navigate replace to="/trending" />
     }
 
     return (
@@ -45,4 +48,8 @@ function FacebookOauth({ social_authenticate }) {
     );
 };
 
-export default connect(null, { social_authenticate })(FacebookOauth);
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { social_authenticate })(FacebookOauth);

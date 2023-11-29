@@ -6,17 +6,19 @@ from rest_framework_simplejwt.tokens import Token
 class CustomJWTAuthentication(JWTAuthentication):
     def authenticate(self, request: Request) -> Optional[Tuple[AuthUser, Token]]:
         header = self.get_header(request)
-        signature = request.COOKIES.get("signature")
         if header is None:
             return None
+        
+        signature = request.COOKIES.get("signature")
         if signature is None:
             return None
 
-        raw_token = self.get_raw_token(header).decode("utf-8")
-        raw_token += "." + signature
-        raw_token = raw_token.encode()
+        raw_token = self.get_raw_token(header)
         if raw_token is None:
             return None
+        
+        raw_token = raw_token.decode("utf-8") + "." + signature
+        raw_token = raw_token.encode()
 
         validated_token = self.get_validated_token(raw_token)
 

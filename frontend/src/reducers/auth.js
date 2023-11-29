@@ -40,7 +40,6 @@ export default function auth(state = initialState, action) {
             localStorage.setItem('refresh', payload.refresh);
             return {
                 ...state,
-                isAuthenticated: true,
                 access: payload.access,
                 refresh: payload.refresh,
                 loginFailed: false
@@ -50,7 +49,6 @@ export default function auth(state = initialState, action) {
             localStorage.setItem('refresh', payload.refresh);
             return {
                 ...state,
-                isAuthenticated: true,
                 access: payload.access,
                 refresh: payload.refresh
             }
@@ -62,6 +60,7 @@ export default function auth(state = initialState, action) {
         case LOAD_USER_SUCCESS:
             return {
                 ...state,
+                isAuthenticated: true,
                 user: payload
             }
         case AUTHENTICATED_FAIL:
@@ -95,6 +94,7 @@ export default function auth(state = initialState, action) {
         case LOAD_USER_FAIL:
             return {
                 ...state,
+                isAuthenticated: false,
                 user: null
             }
         case PASSWORD_RESET_SUCCESS:

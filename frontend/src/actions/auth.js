@@ -86,6 +86,10 @@ export const social_authenticate = (state, code, provider) => async dispatch => 
                 type: SOCIAL_AUTH_FAIL
             });
         }
+    } else {
+        dispatch({
+            type: SOCIAL_AUTH_FAIL
+        });
     }
 }
 
@@ -188,7 +192,6 @@ export const verify = (uid, token) => async dispatch => {
             type: ACTIVATION_SUCCESS
         });
     } catch (err) {
-        console.log(body);
         dispatch({
             type: ACTIVATION_FAIL
         });
