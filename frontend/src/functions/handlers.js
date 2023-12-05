@@ -1,3 +1,38 @@
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
+
+export function handleChange(e, setFormData, formData) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+}
+
+export function handleClose(resetFunc, setShow) {
+    resetFunc();
+    setShow(false);
+}
+
+export function handleChangeAndValidation(e, setFormData, formData) {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    handleValidation(e.target.value);
+}
+
+export function handleShowPass(id, setFunc, showPass) {
+    const password_input = document.querySelector(id);
+    setFunc((prev) => !prev);
+    const type = showPass ? "password" : "text";
+    password_input.setAttribute("type", type);
+}
+
+export async function handleSocialAuth(e, provider, redirectUri) {
+    try {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/${provider}/?redirect_uri=${redirectUri}`);
+
+        window.location.replace(res.data.authorization_url)
+    } catch(err) {
+
+    }
+}
+
 export function handleValidation(pw) {
     const lowercase = document.getElementById("lowercase");
     const uppercase = document.getElementById("uppercase");

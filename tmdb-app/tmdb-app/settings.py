@@ -90,10 +90,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'http://localhost:8000',
-    'http://127.0.0.1:8000'
+    os.getenv("FRONTEND_WEB_URL"),
+    os.getenv("BACKEND_API_URL")
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -134,7 +132,7 @@ DATABASES = {
     },
 }
 
-DOMAIN = 'localhost:3000'
+DOMAIN = os.getenv("DOMAIN")
 
 DJOSER = {
     'LOGIN_FIELD': 'email',
@@ -148,7 +146,7 @@ DJOSER = {
     'ACTIVATION_URL': 'activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
-    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:3000/google-oauth', 'http://localhost:3000/facebook-oauth'],
+    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': [f'{os.getenv("FRONTEND_WEB_URL")}/google-oauth', f'{os.getenv("FRONTEND_WEB_URL")}/facebook-oauth'],
     'SERIALIZERS': {
         'user_create': 'user_api.serializers.UserCreateSerializer',
         'user': 'user_api.serializers.UserCreateSerializer',

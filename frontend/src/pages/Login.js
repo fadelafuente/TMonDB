@@ -1,17 +1,15 @@
 import { login, attempt_login_again } from '../actions/auth';
-import axios from "axios";
+import { handleShowPass, handleChange, handleSocialAuth, handleClose, handleShow } from '../functions/handlers';
 import { React, useEffect, useState } from "react";
 import { InputGroup, Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { BsEye, BsEyeSlashFill } from 'react-icons/bs';
+import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { Link, Navigate } from "react-router-dom";
 
 import "../assets/styling/App.css";
 import '../assets/styling/forms.css';
-
-axios.defaults.withCredentials = true;
 
 function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
     const [formData, setFormData] = useState({
@@ -23,55 +21,15 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
     const [showPass, setShowPass] = useState(false);
 
     useEffect(() => {
-        handleShow();
-    }, [handleShow]);
+        if(loginFailed && !isAuthenticated) {
+            setShow(true);
+        }
+    }, [loginFailed, isAuthenticated]);
 
     function onSubmit(e) {
         e.preventDefault();
 
         login(email, password);
-    }
-
-    async function handleGoogleAuth(e) {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/google-oauth`);
-
-            window.location.replace(res.data.authorization_url)
-        } catch(err) {
-
-        }
-    }
-
-    async function handleFacebookAuth(e) {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/o/facebook/?redirect_uri=http://localhost:3000/facebook-oauth`);
-
-            window.location.replace(res.data.authorization_url)
-        } catch(err) {
-
-        }
-    }
-
-    function handleShow() {
-        if(loginFailed && !isAuthenticated) {
-            setShow(true);
-        }
-    }
-
-    function handleClose() {
-        attempt_login_again();
-        setShow(false);
-    }
-
-    function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
-
-    function handleShowPass() {
-        setShowPass((prev) => !prev);
-        const password_input = document.querySelector("#login-password");
-        const type = showPass ? "password" : "text";
-        password_input.setAttribute("type", type);
     }
 
     if(isAuthenticated) {
@@ -84,7 +42,7 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
                 backdrop="static"
                 keyboard={false}
                 show={ show }
-                onHide={ handleClose }
+                onHide={ e => handleClose(attempt_login_again, setShow) }
                 id="error-modal"
             >
                 <Modal.Header closeButton closeVariant="white">
@@ -102,7 +60,7 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
                         placeholder="Email" 
                         name="email"
                         value={ email }
-                        onChange={ e => handleChange(e) }
+                        onChange={ e => handleChange(e, setFormData, formData) }
                         required
                     />
                 </Form.Group>
@@ -113,15 +71,15 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
                             placeholder="Password"
                             name="password"
                             value={ password }
-                            onChange={ e => handleChange(e) }
+                            onChange={ e => handleChange(e, setFormData, formData) }
                             minLength="8"
                             required 
                         />
                         <InputGroup.Text 
-                            onClick={ () => handleShowPass() }
+                            onClick={ () => handleShowPass("#login-password", setShowPass, showPass) }
                             id="password-toggle"
                         >
-                        { showPass ? <BsEyeSlashFill /> : <BsEye /> }
+                        { showPass ? <BsEyeFill /> : <BsEyeSlash /> }
                         </InputGroup.Text>
                     </InputGroup>
                 </Form.Group>
@@ -143,14 +101,14 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
                 <Button 
                     className="google-button social-button"
                     type="submit"
-                    onClick={ e => handleGoogleAuth(e) }
+                    onClick={ e => handleSocialAuth(e, "google-oauth2", `${process.env.REACT_APP_WEB_URL}/google-oauth`) }
                 >
                     Login with Google
                 </Button>
                 <Button 
                     className="facebook-button social-button"
                     type="submit"
-                    onClick={ e => handleFacebookAuth(e) }
+                    onClick={ e => handleSocialAuth(e, "facebook", `${process.env.REACT_APP_WEB_URL}/facebook-oauth`) }
                 >
                     Login with Facebook
                 </Button>

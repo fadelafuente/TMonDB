@@ -1,4 +1,5 @@
 import { reset_password } from "../actions/auth";
+import { handleChange } from '../functions/handlers';
 import React, { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -12,10 +13,6 @@ function ResetPassword({ reset_password }) {
     });
 
     const { email } = formData;
-
-    function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
 
     function onSubmit(e) {
         e.preventDefault();
@@ -38,7 +35,7 @@ function ResetPassword({ reset_password }) {
                         placeholder="Email" 
                         name="email"
                         value={ email }
-                        onChange={ e => handleChange(e) }
+                        onChange={ e => handleChange(e, setFormData, formData) }
                         required
                     />
                 </Form.Group>

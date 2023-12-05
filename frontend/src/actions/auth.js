@@ -242,6 +242,7 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
     }
 }
 
+// Reset login attempt back to false
 export const attempt_login_again = () => dispatch => {
     try {
         dispatch({

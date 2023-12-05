@@ -1,10 +1,10 @@
 import { register } from '../actions/auth';
-import { handleValidation } from '../functions/helpers';
+import { handleShowPass, handleChange, handleChangeAndValidation } from '../functions/handlers';
 import { React, useState } from "react";
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { BsEye, BsEyeSlashFill } from 'react-icons/bs';
+import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { Navigate, Link } from "react-router-dom";
 
@@ -24,32 +24,13 @@ function Register({ register, isAuthenticated }) {
 
     const { first_name, last_name, email, password, re_password } = formData;
 
-    function handleShowPass(id) {
-        const password_input = document.querySelector(id);
-        let type = "";
-        if(id === "#password-input") {
-            setShowPass((prev) => !prev);
-            type = showPass ? "password" : "text";
-        } else {
-            setShowPassRe((prev) => !prev);
-            type = showPassRe ? "password" : "text";
-        }
-        password_input.setAttribute("type", type);
-    }
-
-    function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-        if(e.target.name === "password") 
-            handleValidation(e.target.value);
-    }
-
     function onSubmit(e) {
         e.preventDefault();
 
         if(password === re_password) {
             register(first_name, last_name, email, password, re_password);
             setAccountCreated(true);
-        }
+        }   
     }
 
     if(isAuthenticated) {
@@ -69,7 +50,7 @@ function Register({ register, isAuthenticated }) {
                         placeholder="First Name*" 
                         name="first_name"
                         value={ first_name }
-                        onChange={ e => handleChange(e) }
+                        onChange={ e => handleChange(e, setFormData, formData) }
                     />
                 </Form.Group>
                 <Form.Group className="form-group">
@@ -78,7 +59,7 @@ function Register({ register, isAuthenticated }) {
                         placeholder="Last Name*" 
                         name="last_name"
                         value={ last_name }
-                        onChange={ e => handleChange(e) }
+                        onChange={ e => handleChange(e, setFormData, formData) }
                     />
                 </Form.Group>
                 <Form.Group controlId="formBasicEmail" className="form-group">
@@ -87,7 +68,7 @@ function Register({ register, isAuthenticated }) {
                         placeholder="Email*" 
                         name="email"
                         value={ email }
-                        onChange={ e => handleChange(e) }
+                        onChange={ e => handleChange(e, setFormData, formData) }
                         required
                     />
                     <Form.Text>
@@ -107,32 +88,32 @@ function Register({ register, isAuthenticated }) {
                             placeholder="Password*" 
                             name="password"
                             value={ password }
-                            onChange={ e => handleChange(e) }
+                            onChange={ e => handleChangeAndValidation(e, setFormData, formData) }
                             required
                         />
                         <InputGroup.Text 
-                            onClick={ () => handleShowPass("#password-input") }
+                            onClick={ () => handleShowPass("#password-input", setShowPass, showPass) }
                             id="password-toggle"
                         >
-                            { showPass ? <BsEyeSlashFill /> : <BsEye /> }
+                            { showPass ? <BsEyeFill /> : <BsEyeSlash /> }
                         </InputGroup.Text>
                     </InputGroup>
                 </Form.Group>
-                <Form.Group controlId="password-input-re" className="form-group">
+                <Form.Group controlId="re-password-input" className="form-group">
                     <InputGroup>
                         <Form.Control 
                             type="password" 
                             placeholder="Repeat Password*" 
                             name="re_password"
                             value={ re_password }
-                            onChange={ e => handleChange(e) }
+                            onChange={ e => handleChange(e, setFormData, formData) }
                             required
                         />
                         <InputGroup.Text 
-                            onClick={ () => handleShowPass("#password-input-re") }
+                            onClick={ () => handleShowPass("#re-password-input", setShowPassRe, showPassRe) }
                             id="password-toggle"
                         >
-                            { showPassRe ? <BsEyeSlashFill /> : <BsEye /> }
+                            { showPassRe ? <BsEyeFill /> : <BsEyeSlash /> }
                         </InputGroup.Text>
                     </InputGroup>
                 </Form.Group>

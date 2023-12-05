@@ -1,10 +1,10 @@
 import { reset_password_confirm } from "../actions/auth";
-import { handleValidation } from "../functions/helpers";
+import { handleShowPass, handleChange, handleChangeAndValidation } from "../functions/handlers";
 import React, { useState } from "react";
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { BsEye, BsEyeSlashFill } from 'react-icons/bs';
+import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from "react-redux";
 import { Navigate, useParams } from "react-router-dom";
 
@@ -19,25 +19,6 @@ function ResetPasswordConfirm({ reset_password_confirm }) {
     });
 
     const { new_password, re_new_password } = formData;
-
-    function handleShowPass(id) {
-        const password_input = document.querySelector(id);
-        let type = "";
-        if(id === "#password-input") {
-            setShowPass((prev) => !prev);
-            type = showPass ? "password" : "text";
-        } else {
-            setShowPassRe((prev) => !prev);
-            type = showPassRe ? "password" : "text";
-        }
-        password_input.setAttribute("type", type);
-    }
-
-    function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-        if(e.target.name === "new_password") 
-            handleValidation(e.target.value);
-    }
 
     function onSubmit(e) {
         e.preventDefault();
@@ -67,32 +48,32 @@ function ResetPasswordConfirm({ reset_password_confirm }) {
                             placeholder="New Password" 
                             name="new_password"
                             value={ new_password }
-                            onChange={ e => handleChange(e) }
+                            onChange={ e => handleChangeAndValidation(e, setFormData, formData) }
                             required
                         />
                         <InputGroup.Text 
-                            onClick={ () => handleShowPass("#password-input") }
+                            onClick={ () => handleShowPass("#password-input", setShowPass, showPass) }
                             id="password-toggle"
                         >
-                            { showPass ? <BsEyeSlashFill /> : <BsEye /> }
+                            { showPass ? <BsEyeFill /> : <BsEyeSlash /> }
                         </InputGroup.Text>
                     </InputGroup>
                 </Form.Group>
-                <Form.Group controlId="password-input-re" className="form-group">
+                <Form.Group controlId="re-password-input" className="form-group">
                     <InputGroup>
                         <Form.Control 
                             type="password" 
                             placeholder="Confirm New Password" 
                             name="re_new_password"
                             value={ re_new_password }
-                            onChange={ e => handleChange(e) }
+                            onChange={ e => handleChange(e, setFormData, formData) }
                             required
                         />
                         <InputGroup.Text 
-                            onClick={ () => handleShowPass("#password-input-re") }
+                            onClick={ () => handleShowPass("#re-password-input", setShowPassRe, showPassRe) }
                             id="password-toggle"
                         >
-                            { showPassRe ? <BsEyeSlashFill /> : <BsEye /> }
+                            { showPassRe ? <BsEyeFill /> : <BsEyeSlash /> }
                         </InputGroup.Text>
                     </InputGroup>
                 </Form.Group>
