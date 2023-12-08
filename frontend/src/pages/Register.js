@@ -1,7 +1,7 @@
-import { register } from '../actions/auth';
-import { handleShowPass, handleChange, handleChangeAndValidation } from '../functions/handlers';
-import { React, useState } from "react";
-import { InputGroup } from 'react-bootstrap';
+import { register, register_attempt } from '../actions/auth';
+import { handleShowPass, handleChange, handleChangeAndValidation, handleClose } from '../functions/handlers';
+import { React, useEffect, useState, useCallback } from "react";
+import { InputGroup, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
@@ -10,10 +10,11 @@ import { Navigate, Link } from "react-router-dom";
 
 import '../assets/styling/forms.css';
 
-function Register({ register, isAuthenticated }) {
-    const [accountCreated, setAccountCreated] = useState(false);
+function Register({ register, isAuthenticated, errMessage, register_attempt, accountCreated }) {
     const [showPass, setShowPass] = useState(false);
     const [showPassRe, setShowPassRe] = useState(false);
+    const [show, setShow] = useState(false);
+    const [message, setMessage] = useState('');
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -24,24 +25,59 @@ function Register({ register, isAuthenticated }) {
 
     const { first_name, last_name, email, password, re_password } = formData;
 
+    const errorMessageCallback = useCallback(() => {
+        if(errMessage && 'email' in errMessage) {
+            const err_message = errMessage['email'][0];
+            setMessage(err_message);
+        } else {
+            setMessage('');   
+        }
+    }, [errMessage]);
+
+    useEffect(() => {
+        if(errMessage && !isAuthenticated) {
+            setShow(true);
+            errorMessageCallback();
+        }
+
+        // if register is successful, reset accountCreated in redux store before redirecting
+        if(accountCreated && !errMessage) {
+            register_attempt();
+        }
+    }, [errMessage, isAuthenticated, errorMessageCallback, register_attempt, accountCreated]);
+
     function onSubmit(e) {
         e.preventDefault();
 
         if(password === re_password) {
             register(first_name, last_name, email, password, re_password);
-            setAccountCreated(true);
-        }   
+        }  
     }
 
     if(isAuthenticated) {
         return <Navigate replace to="/trending" />
     }
+
     if(accountCreated) {
         return <Navigate replace to="/login" />
     }
 
     return (
         <div className="form-container">
+            <Modal
+                backdrop="static"
+                keyboard={ false }
+                show={ show }
+                onHide={ () => handleClose(register_attempt, setShow) }
+                id="error-modal"
+            >
+                <Modal.Header closeButton closeVariant="white">
+                <Modal.Title>Invalid Field</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    { message ? <p>{ message }</p> : <p>Either the email or password is incorrect.</p> }
+                </Modal.Body>
+            </Modal>
             <h2 className="form-title">Create a New Account</h2>
             <Form className="Form" onSubmit={ e=> onSubmit(e) }>
                 <Form.Group className="form-group">
@@ -129,7 +165,9 @@ function Register({ register, isAuthenticated }) {
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    errMessage: state.auth.errMessage,
+    accountCreated: state.auth.accountCreated
 });
 
-export default connect(mapStateToProps, { register })(Register);
+export default connect(mapStateToProps, { register, register_attempt })(Register);

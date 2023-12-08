@@ -1,5 +1,5 @@
-import { login, attempt_login_again } from '../actions/auth';
-import { handleShowPass, handleChange, handleSocialAuth, handleClose, handleShow } from '../functions/handlers';
+import { login, login_attempt } from '../actions/auth';
+import { handleShowPass, handleChange, handleSocialAuth, handleClose } from '../functions/handlers';
 import { React, useEffect, useState } from "react";
 import { InputGroup, Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
@@ -11,7 +11,7 @@ import { Link, Navigate } from "react-router-dom";
 import "../assets/styling/App.css";
 import '../assets/styling/forms.css';
 
-function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
+function Login({ login, isAuthenticated, loginFailed, login_attempt }) {
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -40,9 +40,9 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
         <div className="form-container">
             <Modal
                 backdrop="static"
-                keyboard={false}
+                keyboard={ false }
                 show={ show }
-                onHide={ e => handleClose(attempt_login_again, setShow) }
+                onHide={ () => handleClose(login_attempt, setShow) }
                 id="error-modal"
             >
                 <Modal.Header closeButton closeVariant="white">
@@ -122,4 +122,4 @@ function Login({ login, isAuthenticated, loginFailed, attempt_login_again }) {
         loginFailed: state.auth.loginFailed
     });
 
-export default connect(mapStateToProps, { login, attempt_login_again })(Login);
+export default connect(mapStateToProps, { login, login_attempt })(Login);

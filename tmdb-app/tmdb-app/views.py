@@ -4,20 +4,20 @@ from rest_framework_simplejwt import views
 from djoser.social import views as social_views
 
 def _post(response):
-        # if the response did not return an access token, returns response
-        if "access" not in response.data:
-            return response
-        
-        # split access token into two parts, header.payload, and signature.
-        access = response.data["access"]
-        access, signature = access.rsplit(".", 1)
-        data = {"access": access}
+    # if the response did not return an access token, returns response
+    if "access" not in response.data:
+        return response
+    
+    # split access token into two parts, header.payload, and signature.
+    access = response.data["access"]
+    access, signature = access.rsplit(".", 1)
+    data = {"access": access}
 
-        # create a new response without the refresh token and with the signature as a cookie.
-        new_response = Response(data=data, status=response.status_code)
-        new_response.set_cookie(key="signature", value=signature, httponly=True)
-        
-        return new_response
+    # create a new response without the refresh token and with the signature as a cookie.
+    new_response = Response(data=data, status=response.status_code)
+    new_response.set_cookie(key="signature", value=signature, httponly=True)
+    
+    return new_response
 
 class CustomTokenCreateView(views.TokenObtainPairView):
     def post(self, request: Request, *args, **kwargs) -> Response:
@@ -31,7 +31,7 @@ class CustomTokenVerifyView(views.TokenVerifyView):
             raise KeyError("No access token provided.")
 
         # check if signature is in cookies before appending to token
-        signature = request.COOKIES.get("signature")
+        signature = request.COOKIES.get("signature", None)
         if signature is None:
             raise KeyError("No signature provided.")
 

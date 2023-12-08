@@ -19,7 +19,6 @@ class AppUserManager(BaseUserManager):
         # if not AppUser.objects.filter(username="check").exists():
         #   raise ValueError("username already exists")
 
-
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()

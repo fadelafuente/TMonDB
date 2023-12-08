@@ -17,7 +17,8 @@ import {
     PASSWORD_RESET_CONFIRM_FAIL,
     SOCIAL_AUTH_SUCCESS,
     SOCIAL_AUTH_FAIL,
-    LOGIN_ATTEMPT
+    LOGIN_ATTEMPT,
+    REGISTER_ATTEMPT
 } from './types';
 
 axios.defaults.withCredentials = true;
@@ -141,6 +142,7 @@ export const login = (email, password) => async dispatch => {
 
         dispatch(load_user());
     } catch (err) {
+        console.log(err.response);
         dispatch({
             type: LOGIN_FAIL
         });
@@ -171,7 +173,8 @@ export const register = (first_name, last_name, email, password, re_password) =>
         });
     } catch (err) {
         dispatch({
-            type: REGISTER_FAIL
+            type: REGISTER_FAIL,
+            payload: err.response.data
         });
     }
 }
@@ -243,13 +246,23 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
 }
 
 // Reset login attempt back to false
-export const attempt_login_again = () => dispatch => {
+export const login_attempt = () => dispatch => {
     try {
         dispatch({
             type: LOGIN_ATTEMPT
         });
     }
     catch(err) {
+
+    }
+}
+
+export const register_attempt = () => dispatch => {
+    try {
+        dispatch({
+            type: REGISTER_ATTEMPT
+        });
+    } catch(err) {
 
     }
 }
