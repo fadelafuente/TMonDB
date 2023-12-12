@@ -97,7 +97,7 @@ function Login({ login, isAuthenticated, loginFailed, login_attempt }) {
                     OR
                 </Form.Text>
             </Form>
-            <div className="google-oauth-container">
+            <div className="social-oauth-container">
                 <Button 
                     className="google-button social-button"
                     type="submit"

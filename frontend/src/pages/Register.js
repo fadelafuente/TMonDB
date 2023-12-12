@@ -59,7 +59,7 @@ function Register({ register, isAuthenticated, errMessage, register_attempt, acc
     }
 
     if(accountCreated) {
-        return <Navigate replace to="/login" />
+        return <Navigate replace to="/verify" state={{ email: email }} />
     }
 
     return (

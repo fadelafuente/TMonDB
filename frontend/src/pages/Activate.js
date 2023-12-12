@@ -23,7 +23,7 @@ function Activate({ verify }) {
     }
 
     if(verified) {
-        return <Navigate replace to="/trending" />
+        return <Navigate replace to="/login" />
     }
 
     return (

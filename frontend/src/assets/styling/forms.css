@@ -192,3 +192,11 @@ button.facebook-button:hover {
 button.facebook-button:active {
   background-color: #7cb6ff !important;
 }
+
+#centered-text {
+  text-align: center;
+}
+
+div.verify-container {
+  min-width: 500px;
+}

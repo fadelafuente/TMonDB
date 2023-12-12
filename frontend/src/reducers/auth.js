@@ -17,7 +17,9 @@ import {
     SOCIAL_AUTH_SUCCESS,
     SOCIAL_AUTH_FAIL,
     LOGIN_ATTEMPT,
-    REGISTER_ATTEMPT
+    REGISTER_ATTEMPT,
+    ACTIVATION_RESENT_SUCCESS,
+    ACTIVATION_RESENT_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -117,6 +119,8 @@ export default function auth(state = initialState, action) {
         case PASSWORD_RESET_CONFIRM_FAIL:
         case ACTIVATION_SUCCESS:
         case ACTIVATION_FAIL:
+        case ACTIVATION_RESENT_SUCCESS:
+        case ACTIVATION_RESENT_FAIL:
             return {
                 ...state
             }
