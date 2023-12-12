@@ -6,12 +6,13 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "../assets/styling/App.css";
 import '../assets/styling/forms.css';
 
 function Login({ login, isAuthenticated, loginFailed, login_attempt }) {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -26,14 +27,17 @@ function Login({ login, isAuthenticated, loginFailed, login_attempt }) {
         }
     }, [loginFailed, isAuthenticated]);
 
+    useEffect(() => {
+        if(isAuthenticated) {
+            return navigate("/trending");
+        }
+        // eslint-disable-next-line
+    }, [isAuthenticated]);
+
     function onSubmit(e) {
         e.preventDefault();
 
         login(email, password);
-    }
-
-    if(isAuthenticated) {
-        return <Navigate replace to="/trending" />
     }
 
     return (

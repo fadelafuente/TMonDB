@@ -5,7 +5,7 @@ import { Form, Navigate, useLocation } from 'react-router-dom';
 import { resend_activation } from '../actions/auth';
 import { useEffect, useState } from 'react';
 
-function VerifyEmail({ isAuthenticated }) {
+function VerifyEmail({ isAuthenticated, resend_activation }) {
     const location = useLocation();
     const [email, setEmail] = useState('');
 
@@ -37,7 +37,6 @@ function VerifyEmail({ isAuthenticated }) {
                     Click on the link to verify your email and activate your account.
                 </FormText>
                 <Button 
-                    variant="primary" 
                     type="submit"
                     onClick={ () => resend_activation(email) }
                 >
@@ -52,4 +51,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, null)(VerifyEmail);
+export default connect(mapStateToProps, { resend_activation })(VerifyEmail);

@@ -6,11 +6,12 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { Navigate, Link } from "react-router-dom";
+import { Navigate, Link, useNavigate } from "react-router-dom";
 
 import '../assets/styling/forms.css';
 
 function Register({ register, isAuthenticated, errMessage, register_attempt, accountCreated }) {
+    const navigate = useNavigate();
     const [showPass, setShowPass] = useState(false);
     const [showPassRe, setShowPassRe] = useState(false);
     const [show, setShow] = useState(false);
@@ -39,12 +40,16 @@ function Register({ register, isAuthenticated, errMessage, register_attempt, acc
             setShow(true);
             errorMessageCallback();
         }
+    }, [errMessage, isAuthenticated, errorMessageCallback]);
 
+    useEffect(() => {
         // if register is successful, reset accountCreated in redux store before redirecting
         if(accountCreated && !errMessage) {
             register_attempt();
+            navigate("/verify", { state: { email: email } });
         }
-    }, [errMessage, isAuthenticated, errorMessageCallback, register_attempt, accountCreated]);
+        // eslint-disable-next-line
+    }, [accountCreated, errMessage, email, register_attempt]);
 
     function onSubmit(e) {
         e.preventDefault();
@@ -56,10 +61,6 @@ function Register({ register, isAuthenticated, errMessage, register_attempt, acc
 
     if(isAuthenticated) {
         return <Navigate replace to="/trending" />
-    }
-
-    if(accountCreated) {
-        return <Navigate replace to="/verify" state={{ email: email }} />
     }
 
     return (
@@ -79,7 +80,7 @@ function Register({ register, isAuthenticated, errMessage, register_attempt, acc
                 </Modal.Body>
             </Modal>
             <h2 className="form-title">Create a New Account</h2>
-            <Form className="Form" onSubmit={ e=> onSubmit(e) }>
+            <Form className="Form" onSubmit={ e => onSubmit(e) }>
                 <Form.Group className="form-group">
                     <Form.Control 
                         type="text" 
