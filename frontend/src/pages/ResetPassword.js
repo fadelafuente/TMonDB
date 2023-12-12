@@ -4,9 +4,10 @@ import React, { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ResetPassword({ reset_password }) {
+    const navigate = useNavigate();
     const [requestSent, setRequestSent] = useState(false);
     const [formData, setFormData] = useState({
         email: ''
@@ -14,15 +15,18 @@ function ResetPassword({ reset_password }) {
 
     const { email } = formData;
 
+    useEffect(() => {
+        if(requestSent) {
+            return navigate("/trending");
+        }
+        // eslint-disable-next-line
+    }, [requestSent]);
+
     function onSubmit(e) {
         e.preventDefault();
 
         reset_password(email);
         setRequestSent(true);
-    }
-
-    if(requestSent) {
-        return <Navigate replace to="/trending" />
     }
 
     return (

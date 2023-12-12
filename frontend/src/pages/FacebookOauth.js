@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import { Form, useLocation, useNavigate, Navigate } from 'react-router-dom';
+import { Form, useLocation, useNavigate } from 'react-router-dom';
 
 function FacebookOauth({ social_authenticate, isAuthenticated }) {
     let location = useLocation();
@@ -19,14 +19,17 @@ function FacebookOauth({ social_authenticate, isAuthenticated }) {
         }
     }, [social_authenticate, location]);
 
+    useEffect(() => {
+        if(isAuthenticated) {
+            return navigate("/trending");
+        }
+        // eslint-disable-next-line
+    }, [isAuthenticated]);
+
     function redirectBackToLogin(e) {
         e.preventDefault();
 
         navigate("/login");
-    }
-
-    if(isAuthenticated) {
-        return <Navigate replace to="/trending" />
     }
 
     return (

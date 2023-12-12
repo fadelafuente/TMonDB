@@ -1,11 +1,12 @@
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import { Form, Navigate, useLocation } from 'react-router-dom';
+import { Form, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { resend_activation } from '../actions/auth';
 import { useEffect, useState } from 'react';
 
 function VerifyEmail({ isAuthenticated, resend_activation }) {
+    const navigate = useNavigate();
     const location = useLocation();
     const [email, setEmail] = useState('');
 
@@ -15,13 +16,19 @@ function VerifyEmail({ isAuthenticated, resend_activation }) {
         }
     }, [location.state]);
 
-    if(isAuthenticated) {
-        return <Navigate replace to="/trending" />
-    }
+    useEffect(() => {
+        if(isAuthenticated) {
+            return navigate("/trending");
+        }
+        // eslint-disable-next-line
+    }, [isAuthenticated]);
 
-    if(!location.state && !email) {
-        return <Navigate replace to="/login" />
-    }
+    useEffect(() => {
+        if(!location.state && !email) {
+            return navigate("/login");
+        }
+        // eslint-disable-next-line
+    }, [location.state, email]);
 
     return (
         <div className="form-container verify-container">

@@ -6,9 +6,10 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from "react-redux";
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ResetPasswordConfirm({ reset_password_confirm }) {
+    const navigate = useNavigate();
     const { uid, token } = useParams();
     const [requestSent, setRequestSent] = useState(false);
     const [showPass, setShowPass] = useState(false);
@@ -20,15 +21,18 @@ function ResetPasswordConfirm({ reset_password_confirm }) {
 
     const { new_password, re_new_password } = formData;
 
+    useEffect(() => {
+        if(requestSent) {
+            return navigate("/trending");
+        }
+        // eslint-disable-next-line
+    }, [requestSent]);
+
     function onSubmit(e) {
         e.preventDefault();
 
         reset_password_confirm(uid, token, new_password, re_new_password);
         setRequestSent(true);
-    }
-
-    if(requestSent) {
-        return <Navigate replace to="/login" />
     }
 
     return (

@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { Navigate, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import '../assets/styling/forms.css';
 
@@ -51,16 +51,19 @@ function Register({ register, isAuthenticated, errMessage, register_attempt, acc
         // eslint-disable-next-line
     }, [accountCreated, errMessage, email, register_attempt]);
 
+    useEffect(() => {
+        if(isAuthenticated) {
+            return navigate("/trending");
+        }
+        // eslint-disable-next-line
+    }, [isAuthenticated]);
+
     function onSubmit(e) {
         e.preventDefault();
 
         if(password === re_password) {
             register(first_name, last_name, email, password, re_password);
         }  
-    }
-
-    if(isAuthenticated) {
-        return <Navigate replace to="/trending" />
     }
 
     return (
