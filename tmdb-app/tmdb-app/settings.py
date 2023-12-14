@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'move_api',
     'type_api',
     'user_api',
+    'posts'
 ]
 
 MIDDLEWARE = [
