@@ -19,16 +19,15 @@ from monster_api.views import *
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from user_api.views import *
+from .views import CustomTokenCreateView, CustomTokenVerifyView, CustomProviderAuthView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', MonsterView.as_view(), name="root"),
-    # path('register', UserRegister.as_view(), name="register"),
-    # path('login', UserLogin.as_view(), name="login"),
-    # path('logout', UserLogout.as_view(), name="logout"),
-    # path('user', UserView.as_view(), name="user"),
+    path("auth/jwt/create/", CustomTokenCreateView.as_view(), name="jwt-create"),
+    path("auth/jwt/verify/", CustomTokenVerifyView.as_view(), name="jwt-verify"),
+    path("auth/o/<slug:provider>/", CustomProviderAuthView.as_view(), name="provider-auth"),
     path('auth/', include('djoser.urls')),
-    path('auth/', include('djoser.urls.jwt')),
 ]
 
 urlpatterns += [re_path(r'^.*', TemplateView.as_view(template_name='index.html'))]

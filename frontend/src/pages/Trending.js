@@ -1,6 +1,6 @@
 import TitleBar from "../components/TitleBar";
 
-export default function Login() {
+export default function Trending() {
     return (
         <>
             <TitleBar/>

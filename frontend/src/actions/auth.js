@@ -14,8 +14,16 @@ import {
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
-    PASSWORD_RESET_CONFIRM_FAIL
+    PASSWORD_RESET_CONFIRM_FAIL,
+    SOCIAL_AUTH_SUCCESS,
+    SOCIAL_AUTH_FAIL,
+    LOGIN_ATTEMPT,
+    REGISTER_ATTEMPT,
+    ACTIVATION_RESENT_SUCCESS,
+    ACTIVATION_RESENT_FAIL
 } from './types';
+
+axios.defaults.withCredentials = true;
 
 export const check_authenticated = () => async dispatch => {
     if(localStorage.getItem("access")) {
@@ -48,6 +56,42 @@ export const check_authenticated = () => async dispatch => {
     } else {
         dispatch({
             type: AUTHENTICATED_FAIL
+        });
+    }
+}
+
+export const social_authenticate = (state, code, provider) => async dispatch => {
+    if(state && code && !localStorage.getItem("access")) {
+        const config = {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        };
+
+        const details = {
+            "state": state,
+            "code": code
+        };
+
+        const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
+
+        try {
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/o/${provider}/?${body}`, config);
+
+            dispatch({
+                type: SOCIAL_AUTH_SUCCESS,
+                payload: res.data
+            });
+
+            dispatch(load_user());
+        } catch(err) {
+            dispatch({
+                type: SOCIAL_AUTH_FAIL
+            });
+        }
+    } else {
+        dispatch({
+            type: SOCIAL_AUTH_FAIL
         });
     }
 }
@@ -100,6 +144,7 @@ export const login = (email, password) => async dispatch => {
 
         dispatch(load_user());
     } catch (err) {
+        console.log(err.response);
         dispatch({
             type: LOGIN_FAIL
         });
@@ -112,14 +157,14 @@ export const logout = () => async dispatch => {
     });
 }
 
-export const register = (email, username, password, re_password) => async dispatch => {
+export const register = (first_name, last_name, email, password, re_password) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
         }
     };
 
-    const body = JSON.stringify({ email, username, password, re_password });
+    const body = JSON.stringify({ email, first_name, last_name, password, re_password });
 
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/`, body, config);
@@ -130,7 +175,8 @@ export const register = (email, username, password, re_password) => async dispat
         });
     } catch (err) {
         dispatch({
-            type: REGISTER_FAIL
+            type: REGISTER_FAIL,
+            payload: err.response.data
         });
     }
 }
@@ -151,7 +197,6 @@ export const verify = (uid, token) => async dispatch => {
             type: ACTIVATION_SUCCESS
         });
     } catch (err) {
-        console.log(body);
         dispatch({
             type: ACTIVATION_FAIL
         });
@@ -198,6 +243,50 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
     } catch(err) {
         dispatch({
             type: PASSWORD_RESET_CONFIRM_FAIL
+        });
+    }
+}
+
+// Reset login attempt back to false
+export const login_attempt = () => dispatch => {
+    try {
+        dispatch({
+            type: LOGIN_ATTEMPT
+        });
+    }
+    catch(err) {
+
+    }
+}
+
+export const register_attempt = () => dispatch => {
+    try {
+        dispatch({
+            type: REGISTER_ATTEMPT
+        });
+    } catch(err) {
+
+    }
+}
+
+export const resend_activation = (email) => async dispatch => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    };
+
+    const body = JSON.stringify({ email });
+
+    try {
+        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/resend_activation/`, body, config);
+
+        dispatch({
+            type: ACTIVATION_RESENT_SUCCESS
+        });
+    } catch(err) {
+        dispatch({
+            type: ACTIVATION_RESENT_FAIL
         });
     }
 }

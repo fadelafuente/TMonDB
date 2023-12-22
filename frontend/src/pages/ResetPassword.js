@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { connect } from "react-redux";
 import { reset_password } from "../actions/auth";
+import { handleChange } from '../functions/handlers';
+import React, { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function ResetPassword({ reset_password }) {
+    const navigate = useNavigate();
     const [requestSent, setRequestSent] = useState(false);
     const [formData, setFormData] = useState({
         email: ''
@@ -13,9 +15,12 @@ function ResetPassword({ reset_password }) {
 
     const { email } = formData;
 
-    function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
+    useEffect(() => {
+        if(requestSent) {
+            return navigate("/trending");
+        }
+        // eslint-disable-next-line
+    }, [requestSent]);
 
     function onSubmit(e) {
         e.preventDefault();
@@ -24,26 +29,20 @@ function ResetPassword({ reset_password }) {
         setRequestSent(true);
     }
 
-    if(requestSent) {
-        return <Navigate replace to="/trending" />
-    }
-
     return (
         <div className="form-container">
             <h2 className="form-title">Request Password Reset</h2>
             <Form className="form" onSubmit={ e=> onSubmit(e) }>
-                <Form.Group controlId="formEmail">
+                <Form.Group controlId="formEmail" className="form-group">
                     <Form.Control
                         type="email" 
                         placeholder="Email" 
                         name="email"
                         value={ email }
-                        onChange={ e => handleChange(e) }
+                        onChange={ e => handleChange(e, setFormData, formData) }
                         required
                     />
-                    <br />
                 </Form.Group>
-                <br />
                 <Button variant="primary" type="submit">
                     Request Reset
                 </Button>

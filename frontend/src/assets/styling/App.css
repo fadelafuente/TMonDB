@@ -136,6 +136,8 @@
   }
 }
 
+/* Titlebar Styling */
+
 .dropdown-toggle::after {
   display: none !important; 
 }
@@ -226,4 +228,15 @@ a.dropdown-item:hover {
 a.dropdown-item:active {
   color: var(--background-content-color);
   background-color: var(--accent-secondary-color);
+}
+
+div.input-group {
+  min-width: 150px;
+}
+
+/*  Modal Styling */
+
+div.modal-content {
+  background-color: var(--background-content-color);
+  color: var(--text-color);
 }

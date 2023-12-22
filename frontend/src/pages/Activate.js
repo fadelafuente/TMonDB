@@ -1,9 +1,9 @@
-import { React, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
 import { verify } from '../actions/auth';
-import { connect } from 'react-redux';
+import { React, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { connect } from 'react-redux';
+import { useNavigate, useParams } from "react-router-dom";
 
 import '../assets/styling/forms.css';
 
@@ -12,18 +12,22 @@ export async function action() {
 }
 
 function Activate({ verify }) {
+    const navigate = useNavigate();
     const { uid, token } = useParams();
     const [verified, setVerified] = useState(false);
+
+    useEffect(() => {
+        if(verified) {
+            return navigate("/login");
+        }
+        // eslint-disable-next-line
+    }, [verified]);
 
     function verify_account(e) {
         e.preventDefault();
 
         verify(uid, token);
         setVerified(true);
-    }
-
-    if(verified) {
-        return <Navigate replace to="/trending" />
     }
 
     return (
