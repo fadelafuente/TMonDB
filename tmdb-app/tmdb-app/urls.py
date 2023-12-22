@@ -20,6 +20,7 @@ from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from user_api.views import *
 from .views import CustomTokenCreateView, CustomTokenVerifyView, CustomProviderAuthView
+from posts.views import GetPostByIdView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,6 +29,7 @@ urlpatterns = [
     path("auth/jwt/verify/", CustomTokenVerifyView.as_view(), name="jwt-verify"),
     path("auth/o/<slug:provider>/", CustomProviderAuthView.as_view(), name="provider-auth"),
     path('auth/', include('djoser.urls')),
+    path('posts', GetPostByIdView.as_view())
 ]
 
 urlpatterns += [re_path(r'^.*', TemplateView.as_view(template_name='index.html'))]
