@@ -1,51 +1,47 @@
-from django.shortcuts import render
-from django.contrib.auth import get_user_model, login, logout
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.views import APIView
+from rest_framework.request import Request
 from rest_framework.response import Response
-# from .serializers import UserRegisterSerializer, UserLoginSerializer, UserSerializer
-from rest_framework import permissions, status
-from .validations import customValidation, validateEmail, validatePassword
+from rest_framework_simplejwt import views
+from djoser.social import views as social_views
 
-# class UserRegister(APIView):
-#     permission_classes = (permissions.AllowAny,)
+def _post(response):
+    # if the response did not return an access token, returns response
+    if "access" not in response.data:
+        return response
     
-    # def post(self, request):
-    #     clean_data = customValidation(request.data)
-    #     serializer = UserRegisterSerializer(data=clean_data)
-    #     if serializer.is_valid(raise_exception=True):
-    #         user = serializer.create(clean_data)
-    #         if user:
-    #             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #         return Response(status=status.HTTP_400_BAD_REQUEST)
+    # split access token into two parts, header.payload, and signature.
+    access = response.data["access"]
+    access, signature = access.rsplit(".", 1)
+    data = {"access": access}
 
-# class UserLogin(APIView):
-#     permission_classes = (permissions.AllowAny,)
-#     authentication_classes = (SessionAuthentication,)
+    # create a new response without the refresh token and with the signature as a cookie.
+    new_response = Response(data=data, status=response.status_code)
+    new_response.set_cookie(key="signature", value=signature, httponly=True)
+    
+    return new_response
 
-    # def post(self, request):
-    #     data = request.data
-    #     assert validateEmail(data)
-    #     assert validatePassword(data)
-    #     serializer = UserLoginSerializer(data=data)
-    #     if serializer.is_valid(raise_exception=True):
-    #         user = serializer.check_user(data)
-    #         login(request, user)
-    #         return Response(serializer.data, status=status.HTTP_200_OK)
-        
+class CustomTokenCreateView(views.TokenObtainPairView):
+    def post(self, request: Request, *args, **kwargs) -> Response:
+        response = super().post(request, *args, **kwargs)
+        return _post(response)
+    
+class CustomTokenVerifyView(views.TokenVerifyView):
+    def post(self, request: Request, *args, **kwargs) -> Response:
+        token = request.data["token"]
+        if token is None:
+            raise KeyError("No access token provided.")
 
-# class UserLogout(APIView):
-#     permission_classes = (permissions.AllowAny,)
-#     authentication_classes = ()
+        # check if signature is in cookies before appending to token
+        signature = request.COOKIES.get("signature", None)
+        if signature is None:
+            raise KeyError("No signature provided.")
 
-#     def post(self, request):
-#         logout(request=request)
-#         return Response(status=status.HTTP_200_OK)
+        # update token and send post request
+        token += "." + signature
+        request.data["token"] = token
+        return super().post(request, *args, **kwargs)
+    
 
-# class UserView(APIView):
-#     permission_classes = (permissions.IsAuthenticated,)
-#     authentication_classes = (SessionAuthentication,)
-
-#     def get(self, request):
-#         serializer = UserSerializer(request.user)
-#         return Response({'user': serializer.data}, status=status.HTTP_200_OK)
+class CustomProviderAuthView(social_views.ProviderAuthView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+        return _post(response)

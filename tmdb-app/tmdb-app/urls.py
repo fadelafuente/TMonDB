@@ -19,7 +19,6 @@ from monster_api.views import *
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 from user_api.views import *
-from .views import CustomTokenCreateView, CustomTokenVerifyView, CustomProviderAuthView
 from posts.views import GetPostByIdView
 
 urlpatterns = [
