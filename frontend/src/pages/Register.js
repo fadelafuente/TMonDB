@@ -1,4 +1,4 @@
-import { register, register_attempt } from '../actions/auth';
+import { register, registerAttempt } from '../actions/auth';
 import { handleShowPass, handleChange, handleChangeAndValidation, handleClose } from '../functions/handlers';
 import { React, useEffect, useState, useCallback } from "react";
 import { InputGroup, Modal } from 'react-bootstrap';
@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import '../assets/styling/forms.css';
 
-function Register({ register, isAuthenticated, errMessage, register_attempt, accountCreated }) {
+function Register({ register, isAuthenticated, errMessage, registerAttempt, accountCreated }) {
     const navigate = useNavigate();
     const [showPass, setShowPass] = useState(false);
     const [showPassRe, setShowPassRe] = useState(false);
@@ -45,11 +45,11 @@ function Register({ register, isAuthenticated, errMessage, register_attempt, acc
     useEffect(() => {
         // if register is successful, reset accountCreated in redux store before redirecting
         if(accountCreated && !errMessage) {
-            register_attempt();
+            registerAttempt();
             navigate("/verify", { state: { email: email } });
         }
         // eslint-disable-next-line
-    }, [accountCreated, errMessage, email, register_attempt]);
+    }, [accountCreated, errMessage, email, registerAttempt]);
 
     useEffect(() => {
         if(isAuthenticated) {
@@ -72,7 +72,7 @@ function Register({ register, isAuthenticated, errMessage, register_attempt, acc
                 backdrop="static"
                 keyboard={ false }
                 show={ show }
-                onHide={ () => handleClose(register_attempt, setShow) }
+                onHide={ () => handleClose(registerAttempt, setShow) }
                 id="error-modal"
             >
                 <Modal.Header closeButton closeVariant="white">
@@ -174,4 +174,4 @@ const mapStateToProps = state => ({
     accountCreated: state.auth.accountCreated
 });
 
-export default connect(mapStateToProps, { register, register_attempt })(Register);
+export default connect(mapStateToProps, { register, registerAttempt: registerAttempt })(Register);

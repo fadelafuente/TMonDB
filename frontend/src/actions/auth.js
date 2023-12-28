@@ -25,7 +25,7 @@ import {
 
 axios.defaults.withCredentials = true;
 
-export const check_authenticated = () => async dispatch => {
+export const checkAuthenticated = () => async dispatch => {
     if(localStorage.getItem("access")) {
         const config = {
             headers: {
@@ -60,7 +60,7 @@ export const check_authenticated = () => async dispatch => {
     }
 }
 
-export const social_authenticate = (state, code, provider) => async dispatch => {
+export const socialAuthenticate = (state, code, provider) => async dispatch => {
     if(state && code && !localStorage.getItem("access")) {
         const config = {
             headers: {
@@ -83,7 +83,7 @@ export const social_authenticate = (state, code, provider) => async dispatch => 
                 payload: res.data
             });
 
-            dispatch(load_user());
+            dispatch(loadUser());
         } catch(err) {
             dispatch({
                 type: SOCIAL_AUTH_FAIL
@@ -96,7 +96,7 @@ export const social_authenticate = (state, code, provider) => async dispatch => 
     }
 }
 
-export const load_user = () => async dispatch => {
+export const loadUser = () => async dispatch => {
     if(localStorage.getItem("access")) {
         const config = {
             headers: {
@@ -142,7 +142,7 @@ export const login = (email, password) => async dispatch => {
             payload: res.data
         });
 
-        dispatch(load_user());
+        dispatch(loadUser());
     } catch (err) {
         console.log(err.response);
         dispatch({
@@ -203,7 +203,7 @@ export const verify = (uid, token) => async dispatch => {
     }
 }
 
-export const reset_password = (email) => async dispatch => {
+export const resetPassword = (email) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -225,7 +225,7 @@ export const reset_password = (email) => async dispatch => {
     }
 }
 
-export const reset_password_confirm = (uid, token, new_password, re_new_password) => async dispatch => {
+export const resetPasswordConfirm = (uid, token, new_password, re_new_password) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -248,7 +248,7 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
 }
 
 // Reset login attempt back to false
-export const login_attempt = () => dispatch => {
+export const loginAttempt = () => dispatch => {
     try {
         dispatch({
             type: LOGIN_ATTEMPT
@@ -259,7 +259,7 @@ export const login_attempt = () => dispatch => {
     }
 }
 
-export const register_attempt = () => dispatch => {
+export const registerAttempt = () => dispatch => {
     try {
         dispatch({
             type: REGISTER_ATTEMPT
@@ -269,7 +269,7 @@ export const register_attempt = () => dispatch => {
     }
 }
 
-export const resend_activation = (email) => async dispatch => {
+export const resendActivation = (email) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"

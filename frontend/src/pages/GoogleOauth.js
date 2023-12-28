@@ -1,11 +1,11 @@
-import { social_authenticate } from '../actions/auth';
+import { socialAuthenticate } from '../actions/auth';
 import React, { useEffect } from 'react';
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { Form, useLocation, useNavigate } from 'react-router-dom';
 
-function GoogleOauth({ social_authenticate, isAuthenticated }) {
+function GoogleOauth({ socialAuthenticate, isAuthenticated }) {
     let location = useLocation();
     const navigate = useNavigate();
 
@@ -15,9 +15,9 @@ function GoogleOauth({ social_authenticate, isAuthenticated }) {
         const code = values.has("code") ? values.get("code") : null;
 
         if (state && code) {
-            social_authenticate(state, code, "google-oauth2");
+            socialAuthenticate(state, code, "google-oauth2");
         }
-    }, [social_authenticate, location]);
+    }, [socialAuthenticate, location]);
 
     useEffect(() => {
         if(isAuthenticated) {
@@ -55,4 +55,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { social_authenticate })(GoogleOauth);
+export default connect(mapStateToProps, { socialAuthenticate })(GoogleOauth);

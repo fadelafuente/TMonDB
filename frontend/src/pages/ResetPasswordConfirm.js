@@ -1,6 +1,6 @@
-import { reset_password_confirm } from "../actions/auth";
+import { resetPasswordConfirm } from "../actions/auth";
 import { handleShowPass, handleChange, handleChangeAndValidation } from "../functions/handlers";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -8,7 +8,7 @@ import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
-function ResetPasswordConfirm({ reset_password_confirm }) {
+function ResetPasswordConfirm({ resetPasswordConfirm }) {
     const navigate = useNavigate();
     const { uid, token } = useParams();
     const [requestSent, setRequestSent] = useState(false);
@@ -31,7 +31,7 @@ function ResetPasswordConfirm({ reset_password_confirm }) {
     function onSubmit(e) {
         e.preventDefault();
 
-        reset_password_confirm(uid, token, new_password, re_new_password);
+        resetPasswordConfirm(uid, token, new_password, re_new_password);
         setRequestSent(true);
     }
 
@@ -89,4 +89,4 @@ function ResetPasswordConfirm({ reset_password_confirm }) {
     )
 }
 
-export default connect(null, { reset_password_confirm })(ResetPasswordConfirm);
+export default connect(null, { resetPasswordConfirm })(ResetPasswordConfirm);

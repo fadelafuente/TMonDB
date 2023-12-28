@@ -1,11 +1,11 @@
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import { Form, Navigate, useLocation, useNavigate } from 'react-router-dom';
-import { resend_activation } from '../actions/auth';
+import { Form, useLocation, useNavigate } from 'react-router-dom';
+import { resendActivation } from '../actions/auth';
 import { useEffect, useState } from 'react';
 
-function VerifyEmail({ isAuthenticated, resend_activation }) {
+function VerifyEmail({ isAuthenticated, resendActivation }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [email, setEmail] = useState('');
@@ -45,7 +45,7 @@ function VerifyEmail({ isAuthenticated, resend_activation }) {
                 </FormText>
                 <Button 
                     type="submit"
-                    onClick={ () => resend_activation(email) }
+                    onClick={ () => resendActivation(email) }
                 >
                     Resend Activation Email
                 </Button>
@@ -58,4 +58,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { resend_activation })(VerifyEmail);
+export default connect(mapStateToProps, { resendActivation })(VerifyEmail);

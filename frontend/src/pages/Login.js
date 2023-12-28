@@ -1,4 +1,4 @@
-import { login, login_attempt } from '../actions/auth';
+import { login, loginAttempt } from '../actions/auth';
 import { handleShowPass, handleChange, handleSocialAuth, handleClose } from '../functions/handlers';
 import { React, useEffect, useState } from "react";
 import { InputGroup, Modal } from "react-bootstrap";
@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../assets/styling/App.css";
 import '../assets/styling/forms.css';
 
-function Login({ login, isAuthenticated, loginFailed, login_attempt }) {
+function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
@@ -46,7 +46,7 @@ function Login({ login, isAuthenticated, loginFailed, login_attempt }) {
                 backdrop="static"
                 keyboard={ false }
                 show={ show }
-                onHide={ () => handleClose(login_attempt, setShow) }
+                onHide={ () => handleClose(loginAttempt, setShow) }
                 id="error-modal"
             >
                 <Modal.Header closeButton closeVariant="white">
@@ -126,4 +126,4 @@ function Login({ login, isAuthenticated, loginFailed, login_attempt }) {
         loginFailed: state.auth.loginFailed
     });
 
-export default connect(mapStateToProps, { login, login_attempt })(Login);
+export default connect(mapStateToProps, { login, loginAttempt })(Login);

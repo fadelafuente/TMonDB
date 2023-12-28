@@ -1,14 +1,12 @@
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, renderer_classes
 from rest_framework.views import APIView
 
 from .models import Post
 
 # Create your views here.
 class GetPostByIdView(APIView):
-    def get(self, request):
+    def post(self, request):
         data = {
                 "id": request.data["post_id"]
             }

@@ -1,12 +1,12 @@
-import { reset_password } from "../actions/auth";
+import { resetPassword } from "../actions/auth";
 import { handleChange } from '../functions/handlers';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function ResetPassword({ reset_password }) {
+function ResetPassword({ resetPassword }) {
     const navigate = useNavigate();
     const [requestSent, setRequestSent] = useState(false);
     const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ function ResetPassword({ reset_password }) {
     function onSubmit(e) {
         e.preventDefault();
 
-        reset_password(email);
+        resetPassword(email);
         setRequestSent(true);
     }
 
@@ -51,4 +51,4 @@ function ResetPassword({ reset_password }) {
     )
 }
 
-export default connect(null, { reset_password })(ResetPassword);
+export default connect(null, { resetPassword })(ResetPassword);
