@@ -2,17 +2,9 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-export async function getPostById(post_id) {
-    const config = {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    };
-
-    const body = JSON.stringify({ post_id });
-
+export async function getAllPosts() {
     try {
-        return await axios.post(`${process.env.REACT_APP_API_URL}/posts`, body, config);
+        return await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/`);
     } catch(err) {
         return null;
     }
