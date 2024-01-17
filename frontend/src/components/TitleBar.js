@@ -66,7 +66,7 @@ function TitleBar({ logout, isAuthenticated }) {
     }
 
     return (
-        <Navbar expand="bg-body-tertiary mb-3">
+        <Navbar expand="bg-body-tertiary mb-3" id="navbar">
             <Container>
                 <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" id="navbar-toggler" className="navbar-dark" />
                 <Navbar.Brand href="#home">The Monster Database</Navbar.Brand>

@@ -1,5 +1,5 @@
 import { verify } from '../actions/auth';
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';

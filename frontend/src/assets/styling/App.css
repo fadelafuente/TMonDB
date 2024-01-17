@@ -137,6 +137,16 @@
 }
 
 /* Titlebar Styling */
+#navbar {
+  margin-bottom: 4px !important;
+  margin-top: 4px;
+}
+
+.navbar-container {
+  width: 100%;
+  position: fixed;
+  top: 0;
+}
 
 .dropdown-toggle::after {
   display: none !important; 
