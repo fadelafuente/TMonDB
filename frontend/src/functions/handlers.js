@@ -1,4 +1,6 @@
 import axios from "axios";
+import PostCard from "../components/PostCard";
+import { renderToString } from "react-dom/server";
 
 axios.defaults.withCredentials = true;
 
@@ -89,4 +91,67 @@ export function handleValidation(pw) {
         length.classList.remove("valid");
         length.classList.add("invalid");
     }
+}
+
+export function handlePosts(response) {
+    const post_element = document.getElementById("posts");
+    let formatted_posts = "";
+    for(let index = 0; index < response.length; index++) {
+        const postHTML = <PostCard post={response[index]}/>;
+        formatted_posts += `${renderToString(postHTML)}`;
+    }
+
+    if(formatted_posts) {
+        post_element.innerHTML = formatted_posts;
+    } else {
+        post_element.innerHTML = "<p>Posts failed to load.</p>"
+    }
+}
+
+export function handleTimeDifference(posted_date) {
+    const current_date = new Date();
+    const time = Date.parse(posted_date);
+    const seconds = (current_date - time) / 1000;
+    const minutes = Math.floor(seconds/60);
+    const hours = Math.floor(minutes/60);
+    const days = Math.floor(hours/24);
+    const months = Math.floor(days/31);
+    const years = Math.floor(months/12);
+
+    if(years > 0) {
+        return years + "y";
+    } else if(months > 0) {
+        return months + "M";
+    } else if(days > 0) {
+        return days + "d";
+    } else if(hours > 0) {
+        return hours + "h";
+    } else if(minutes > 0) {
+        return minutes + "m"
+    } else {
+        return "<1m";
+    } 
+}
+
+export function handleGallery(gallery) {
+    if(gallery != null) {
+        return;
+    }
+
+    /* TODO:
+            const image-gallery = document.getElementById("image-gallery");
+            if(gallery.length == 1) {
+                image-gallery.innerHTML = <img src={ gallery[0] } />
+            } else {
+                let formatted-gallery = "<Carousel interval={null}>";
+                for(let index = 0; index < gallery.length; index++) {
+                    formatted-gallery += 
+                        `<Carousel.Item>
+                                <img src={ ${gallery[i]} } />
+                            </Carousel.Item>`;
+                }
+                formatted-gallery += "</Carousel>";
+                image-gallery.innerHTML = formatted-gallery;
+            }
+    */
 }
