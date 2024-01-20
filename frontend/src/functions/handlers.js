@@ -134,24 +134,26 @@ export function handleTimeDifference(posted_date) {
 }
 
 export function handleGallery(gallery) {
-    if(gallery != null) {
+    if(gallery == null) {
+        const image_gallery = document.getElementById("image-gallery");
+        image_gallery.innerHTML = "";
         return;
     }
 
     /* TODO:
-            const image-gallery = document.getElementById("image-gallery");
+            const image_gallery = document.getElementById("image-gallery");
             if(gallery.length == 1) {
                 image-gallery.innerHTML = <img src={ gallery[0] } />
             } else {
-                let formatted-gallery = "<Carousel interval={null}>";
+                let formatted_gallery = "<Carousel interval={null}>";
                 for(let index = 0; index < gallery.length; index++) {
-                    formatted-gallery += 
+                    formatted_gallery += 
                         `<Carousel.Item>
                                 <img src={ ${gallery[i]} } />
                             </Carousel.Item>`;
                 }
-                formatted-gallery += "</Carousel>";
-                image-gallery.innerHTML = formatted-gallery;
+                formatted_gallery += "</Carousel>";
+                image_gallery.innerHTML = formatted-gallery;
             }
     */
 }

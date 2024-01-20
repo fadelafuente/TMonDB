@@ -1,33 +1,37 @@
 import { Col, Placeholder, Row } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
-import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsEye } from 'react-icons/bs';
+import { BsShare, BsHeart, BsRepeat, BsChatRightDots } from 'react-icons/bs';
 import { handleTimeDifference } from '../functions/handlers';
 
 import "../assets/styling/PostCard.css";
+import ImageGallery from './ImageGallery';
 
 function PostCard({ post }) {
-    console.log(post);
-
     return (
         <Card>
             <Card.Body>
                 <Card.Title>
-                    <Placeholder as={Card.Text} animation="wave">
-                        <Row>
-                            <Col>
-                                <Placeholder xs={8} />
-                            </Col>
-                            <Col className="time-col" id="time-col">
-                                { handleTimeDifference(post.posted_date) }
-                            </Col>
-                        </Row>
-                    </Placeholder>
+                    <Row>
+                        <Col>
+                            { post ? "PlaceholderUserName" : <Placeholder xs={8} /> }
+                        </Col>
+                        <Col className="time-col" id="time-col">
+                            { post ? handleTimeDifference(post.posted_date) : <Placeholder xs={4} /> }
+                        </Col>
+                    </Row>
                 </Card.Title>
                 <div className="image-gallery" id="image-gallery">
+                    { post ? <ImageGallery gallery={post.image}/> : <ImageGallery gallery={null} uploaded={false} /> }
                 </div>
-                <Card.Text>
-                    { post.content }
-                </Card.Text>
+                { post ? 
+                    <Card.Text>
+                        post.content
+                    </Card.Text> : 
+                    <Placeholder as={Card.Text} animation="wave">
+                        <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}
+                        <Placeholder xs={6} /> <Placeholder xs={8} />
+                    </Placeholder> 
+                }
             </Card.Body>
             <Card.Footer>
                 <Row className="interactions-row">
@@ -39,7 +43,7 @@ function PostCard({ post }) {
                                 </Col>
                                 <Col className='interaction-nums'>
                                     <span>
-                                        { post.comments_count }
+                                        { post ? post.comments_count : 0 }
                                     </span>
                                 </Col>
                             </Row>
@@ -53,7 +57,7 @@ function PostCard({ post }) {
                                 </Col>
                                 <Col className='interaction-nums'>
                                     <span>
-                                        { post.reposts_count }
+                                        { post ? post.reposts_count : 0 }
                                     </span>
                                 </Col>
                             </Row>
@@ -67,21 +71,7 @@ function PostCard({ post }) {
                                 </Col>
                                 <Col className='interaction-nums'>
                                     <span>
-                                        { post.likes_count }
-                                    </span>
-                                </Col>
-                            </Row>
-                        </button>
-                    </Col>
-                    <Col className='interaction-btn inner-btn'>
-                        <button>
-                            <Row className="inner-btn-div">
-                                <Col className='interaction-icon'>
-                                    <BsEye />
-                                </Col>
-                                <Col className='interaction-nums'>
-                                    <span>
-                                        0
+                                        { post ? post.likes_count : 0 }
                                     </span>
                                 </Col>
                             </Row>

@@ -3,9 +3,9 @@ import { getAllPosts } from "../actions/posts";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { handlePosts } from "../functions/handlers";
-import PlaceholderCard from "../components/PlaceholderCard";
 
 import "../assets/styling/content.css";
+import PostCard from "../components/PostCard";
 
 export default function Trending() {
     useEffect(() => {
@@ -37,7 +37,7 @@ export default function Trending() {
                     </div>
                 </div>
                 <div id="posts" className="content-center">
-                    <PlaceholderCard />
+                    <PostCard post={null} />
                 </div>
                 <div className="aside-container right-aside" id="sticky-element">
                     <div id="sticky-anchor"></div>
