@@ -1,23 +1,26 @@
 import TitleBar from "../components/TitleBar";
-import { getAllPosts } from "../actions/posts";
-import { useEffect } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { handlePosts } from "../functions/handlers";
+import useGetPosts from "../hooks/useGetPosts";
 
 import "../assets/styling/content.css";
 import PostCard from "../components/PostCard";
 
 export default function Trending() {
-    useEffect(() => {
-        getAllPosts().then((response) => {
-            if(response) {
-                handlePosts(response.data);
-            } else {
-                const post_element = document.getElementById("posts");
-                post_element.innerHTML = "<p>Posts failed to load.</p>";
+    const [query, setQuery] = useState("");
+    const [pageNumber, setPageNumber] = useState(1);
+    const { loading, error, posts, hasMore } = useGetPosts(query, pageNumber);
+    const observer = useRef();
+    const lastPost = useCallback(node => {
+        if(loading) return;
+        if(observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+            if(entries[0].isIntersecting && hasMore) {
+                setPageNumber(prevPageNumber => prevPageNumber + 1);
             }
         })
-    }, [])
+        if(node) observer.current.observe(node);
+    }, [loading, hasMore]);
 
     return (
         <>
@@ -37,7 +40,15 @@ export default function Trending() {
                     </div>
                 </div>
                 <div id="posts" className="content-center">
-                    <PostCard post={null} />
+                    { 
+                        posts.map((post, index) => {
+                            if(posts.length === index + 1) {
+                                return <div key={post.id} ref={lastPost}><PostCard post={post} /></div>
+                            } else {
+                                return <div key={post.id}><PostCard post={post} /></div>
+                            }
+                        })
+                    }
                 </div>
                 <div className="aside-container right-aside" id="sticky-element">
                     <div id="sticky-anchor"></div>

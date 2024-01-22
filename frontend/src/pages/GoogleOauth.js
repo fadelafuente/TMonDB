@@ -3,21 +3,12 @@ import React, { useEffect } from 'react';
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import { Form, useLocation, useNavigate } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
+import useSocialAuth from '../hooks/useSocialAuth';
 
 function GoogleOauth({ socialAuthenticate, isAuthenticated }) {
-    let location = useLocation();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        const values = new URLSearchParams(location.search);
-        const state = values.has("state") ? values.get("state") : null;
-        const code = values.has("code") ? values.get("code") : null;
-
-        if (state && code) {
-            socialAuthenticate(state, code, "google-oauth2");
-        }
-    }, [socialAuthenticate, location]);
+    useSocialAuth("google-oauth2", socialAuthenticate);
 
     useEffect(() => {
         if(isAuthenticated) {

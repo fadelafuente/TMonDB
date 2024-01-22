@@ -25,7 +25,7 @@ function PostCard({ post }) {
                 </div>
                 { post ? 
                     <Card.Text>
-                        post.content
+                        { post.content }
                     </Card.Text> : 
                     <Placeholder as={Card.Text} animation="wave">
                         <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}

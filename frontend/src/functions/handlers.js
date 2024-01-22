@@ -93,21 +93,6 @@ export function handleValidation(pw) {
     }
 }
 
-export function handlePosts(response) {
-    const post_element = document.getElementById("posts");
-    let formatted_posts = "";
-    for(let index = 0; index < response.length; index++) {
-        const postHTML = <PostCard post={response[index]}/>;
-        formatted_posts += `${renderToString(postHTML)}`;
-    }
-
-    if(formatted_posts) {
-        post_element.innerHTML = formatted_posts;
-    } else {
-        post_element.innerHTML = "<p>Posts failed to load.</p>"
-    }
-}
-
 export function handleTimeDifference(posted_date) {
     const current_date = new Date();
     const time = Date.parse(posted_date);
