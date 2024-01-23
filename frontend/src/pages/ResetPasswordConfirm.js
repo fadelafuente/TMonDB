@@ -1,15 +1,15 @@
 import { resetPasswordConfirm } from "../actions/auth";
 import { handleShowPass, handleChange, handleChangeAndValidation } from "../functions/handlers";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useRequestSent } from "../hooks/hooks";
 
 function ResetPasswordConfirm({ resetPasswordConfirm }) {
-    const navigate = useNavigate();
     const { uid, token } = useParams();
     const [requestSent, setRequestSent] = useState(false);
     const [showPass, setShowPass] = useState(false);
@@ -18,15 +18,9 @@ function ResetPasswordConfirm({ resetPasswordConfirm }) {
         new_password: '',
         re_new_password: ''
     });
+    useRequestSent(requestSent);
 
     const { new_password, re_new_password } = formData;
-
-    useEffect(() => {
-        if(requestSent) {
-            return navigate("/trending");
-        }
-        // eslint-disable-next-line
-    }, [requestSent]);
 
     function onSubmit(e) {
         e.preventDefault();

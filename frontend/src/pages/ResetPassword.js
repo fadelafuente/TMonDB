@@ -1,26 +1,19 @@
 import { resetPassword } from "../actions/auth";
 import { handleChange } from '../functions/handlers';
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useRequestSent } from "../hooks/hooks";
 
 function ResetPassword({ resetPassword }) {
-    const navigate = useNavigate();
     const [requestSent, setRequestSent] = useState(false);
     const [formData, setFormData] = useState({
         email: ''
     });
+    useRequestSent(requestSent);
 
     const { email } = formData;
-
-    useEffect(() => {
-        if(requestSent) {
-            return navigate("/trending");
-        }
-        // eslint-disable-next-line
-    }, [requestSent]);
 
     function onSubmit(e) {
         e.preventDefault();

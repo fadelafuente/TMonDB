@@ -1,6 +1,4 @@
 import axios from "axios";
-import PostCard from "../components/PostCard";
-import { renderToString } from "react-dom/server";
 
 axios.defaults.withCredentials = true;
 
@@ -141,4 +139,10 @@ export function handleGallery(gallery) {
                 image_gallery.innerHTML = formatted-gallery;
             }
     */
+}
+
+export function handleLoginRedirect(e, navigate) {
+    e.preventDefault();
+
+    navigate("/login");
 }

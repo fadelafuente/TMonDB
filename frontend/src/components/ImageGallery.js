@@ -1,12 +1,12 @@
 import { Carousel } from 'react-bootstrap';
 
-function handleCarouselItem(image) {
-    return (
-        <Carousel.Item>
-            <img src={ image } />
-        </Carousel.Item>
-    )
-}
+// function handleCarouselItem(image) {
+//     return (
+//         <Carousel.Item>
+//             <img src={ image } alt="" />
+//         </Carousel.Item>
+//     )
+// }
 
 function ImageGallery({ gallery, uploaded=true }) {
     if(uploaded) return;
@@ -14,10 +14,10 @@ function ImageGallery({ gallery, uploaded=true }) {
         return (
             <Carousel interval={null}>
                 <Carousel.Item>
-                    <img src={ 'https://placehold.co/600x400' } alt="placeholder image" />
+                    <img src={ 'https://placehold.co/600x400' } alt="placeholder" />
                 </Carousel.Item>
                 <Carousel.Item>
-                    <img src={ 'https://placehold.co/600x400' } alt="placeholder image" />
+                    <img src={ 'https://placehold.co/600x400' } alt="placeholder" />
                 </Carousel.Item>
             </Carousel>
         ) 

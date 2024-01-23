@@ -1,18 +1,18 @@
 import { login, loginAttempt } from '../actions/auth';
 import { handleShowPass, handleChange, handleSocialAuth, handleClose } from '../functions/handlers';
-import { React, useEffect, useState } from "react";
+import { React, useState } from "react";
 import { InputGroup, Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigateOnAuth, useLoginFailed } from '../hooks/hooks';
 
 import "../assets/styling/App.css";
 import '../assets/styling/forms.css';
 
 function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -20,19 +20,8 @@ function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
     const [show, setShow] = useState(false);
     const { email, password } = formData;
     const [showPass, setShowPass] = useState(false);
-
-    useEffect(() => {
-        if(loginFailed && !isAuthenticated) {
-            setShow(true);
-        }
-    }, [loginFailed, isAuthenticated]);
-
-    useEffect(() => {
-        if(isAuthenticated) {
-            return navigate("/trending");
-        }
-        // eslint-disable-next-line
-    }, [isAuthenticated]);
+    useNavigateOnAuth(isAuthenticated);
+    useLoginFailed(loginFailed, isAuthenticated, setShow);
 
     function onSubmit(e) {
         e.preventDefault();

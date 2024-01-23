@@ -1,34 +1,16 @@
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
-import { Form, useLocation, useNavigate } from 'react-router-dom';
+import { Form } from 'react-router-dom';
 import { resendActivation } from '../actions/auth';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useNavigateOnAuth, useFailedSocialAuth, useSetEmail } from '../hooks/hooks';
 
 function VerifyEmail({ isAuthenticated, resendActivation }) {
-    const navigate = useNavigate();
-    const location = useLocation();
     const [email, setEmail] = useState('');
-
-    useEffect (() => {
-        if(location.state) {
-            setEmail(location.state.email);
-        }
-    }, [location.state]);
-
-    useEffect(() => {
-        if(isAuthenticated) {
-            return navigate("/trending");
-        }
-        // eslint-disable-next-line
-    }, [isAuthenticated]);
-
-    useEffect(() => {
-        if(!location.state && !email) {
-            return navigate("/login");
-        }
-        // eslint-disable-next-line
-    }, [location.state, email]);
+    useNavigateOnAuth(isAuthenticated);
+    useFailedSocialAuth(email);
+    useSetEmail(setEmail);
 
     return (
         <div className="form-container verify-container">

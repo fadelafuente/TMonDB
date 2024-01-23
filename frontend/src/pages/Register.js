@@ -1,17 +1,17 @@
 import { register, registerAttempt } from '../actions/auth';
 import { handleShowPass, handleChange, handleChangeAndValidation, handleClose } from '../functions/handlers';
-import { React, useEffect, useState, useCallback } from "react";
+import { React, useState } from "react";
 import { InputGroup, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useNavigateOnAuth, useRequestAttempt, useSetErrorMessage } from '../hooks/hooks';
 
 import '../assets/styling/forms.css';
 
 function Register({ register, isAuthenticated, errMessage, registerAttempt, accountCreated }) {
-    const navigate = useNavigate();
     const [showPass, setShowPass] = useState(false);
     const [showPassRe, setShowPassRe] = useState(false);
     const [show, setShow] = useState(false);
@@ -26,37 +26,9 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
 
     const { first_name, last_name, email, password, re_password } = formData;
 
-    const errorMessageCallback = useCallback(() => {
-        if(errMessage && 'email' in errMessage) {
-            const err_message = errMessage['email'][0];
-            setMessage(err_message);
-        } else {
-            setMessage('');   
-        }
-    }, [errMessage]);
-
-    useEffect(() => {
-        if(errMessage && !isAuthenticated) {
-            setShow(true);
-            errorMessageCallback();
-        }
-    }, [errMessage, isAuthenticated, errorMessageCallback]);
-
-    useEffect(() => {
-        // if register is successful, reset accountCreated in redux store before redirecting
-        if(accountCreated && !errMessage) {
-            registerAttempt();
-            navigate("/verify", { state: { email: email } });
-        }
-        // eslint-disable-next-line
-    }, [accountCreated, errMessage, email, registerAttempt]);
-
-    useEffect(() => {
-        if(isAuthenticated) {
-            return navigate("/trending");
-        }
-        // eslint-disable-next-line
-    }, [isAuthenticated]);
+    useNavigateOnAuth(isAuthenticated);
+    useSetErrorMessage(errMessage, setMessage, isAuthenticated, setShow);
+    useRequestAttempt(accountCreated, errMessage, email, registerAttempt);
 
     function onSubmit(e) {
         e.preventDefault();

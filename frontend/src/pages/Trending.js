@@ -1,7 +1,7 @@
 import TitleBar from "../components/TitleBar";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import useGetPosts from "../hooks/useGetPosts";
+import useGetPosts from "../hooks/hooks";
 
 import "../assets/styling/content.css";
 import PostCard from "../components/PostCard";
