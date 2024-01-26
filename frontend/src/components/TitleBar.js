@@ -1,4 +1,4 @@
-import { React, Fragment } from 'react';
+import { React, Fragment, useCallback, useState } from 'react';
 import { Container, Form, InputGroup } from 'react-bootstrap';
 import { BsPlusCircle, BsPersonCircle, BsSearch } from 'react-icons/bs';
 import Nav from 'react-bootstrap/Nav';
@@ -7,11 +7,14 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { connect } from 'react-redux';
 import { logout } from '../actions/auth';
+import CreatePost from './CreatePost';
 
 import "../assets/styling/forms.css";
 import "../assets/styling/App.css";
 
 function TitleBar({ logout, isAuthenticated }) {
+    const [show, setShow] = useState(false);
+
     function guestLinks() {
         return (
             <Fragment>
@@ -42,6 +45,9 @@ function TitleBar({ logout, isAuthenticated }) {
                     </NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.2">
                         Create Move
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="#" onClick={() => setShow(true) }>
+                        Create Post
                     </NavDropdown.Item>
                 </NavDropdown> 
                 <NavDropdown title={ <BsPersonCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
@@ -98,6 +104,7 @@ function TitleBar({ logout, isAuthenticated }) {
                 </Form>
                 { isAuthenticated ? authLinks() : guestLinks() }
             </Container>
+            <CreatePost show={show} setShow={() => setShow()} />
         </Navbar>
     );
 

@@ -33,10 +33,10 @@ function PostCard({ post }) {
                     </Placeholder> 
                 }
             </Card.Body>
-            <Card.Footer>
+            <Card.Footer className="no-select">
                 <Row className="interactions-row">
                     <Col className='interaction-btn left-btn'>
-                        <button>
+                        <button className="svg-btn">
                             <Row className="inner-btn-div">
                                 <Col className='interaction-icon'>
                                     <BsChatRightDots />
@@ -49,8 +49,8 @@ function PostCard({ post }) {
                             </Row>
                         </button>
                     </Col>
-                    <Col className='interaction-btn inner-btn'>
-                        <button>
+                    <Col className='interaction-btn'>
+                        <button className="svg-btn">
                             <Row className="inner-btn-div">
                                 <Col className='interaction-icon'>
                                     <BsRepeat />
@@ -63,8 +63,8 @@ function PostCard({ post }) {
                             </Row>
                         </button>
                     </Col>
-                    <Col className='interaction-btn inner-btn'>
-                        <button>
+                    <Col className='interaction-btn'>
+                        <button className="svg-btn">
                             <Row className="inner-btn-div">
                                 <Col className='interaction-icon'>
                                     <BsHeart />
@@ -77,8 +77,8 @@ function PostCard({ post }) {
                             </Row>
                         </button>
                     </Col>
-                    <Col className='interaction-btn right-btn share-btn'>
-                        <button>
+                    <Col className='interaction-btn share-btn'>
+                        <button className="svg-btn">
                             <div className='interaction-icon'>
                                 <BsShare />
                             </div>

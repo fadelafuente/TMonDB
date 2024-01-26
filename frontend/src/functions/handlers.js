@@ -146,3 +146,21 @@ export function handleLoginRedirect(e, navigate) {
 
     navigate("/login");
 }
+
+export function handleDiscard(setContent, setShowDiscard, setShow) {
+    setContent("");
+    setShowDiscard(false);
+    setShow(false);
+}
+
+export function handleContentChange(e, setContent) {
+    setContent(e.currentTarget.textContent)
+}
+
+export function HandleCreateClose( setShow, setShowDiscard, content) {
+    if(!content) {
+        setShow(false);
+    } else {
+        setShowDiscard(true);
+    }
+}

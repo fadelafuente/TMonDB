@@ -4,8 +4,9 @@
   --background-content-color: #303030; 
   --input-box-color: #404040;
   --placeholder-text-color: #b6b5b5;
-  --accent-secondary-color: #FDB750;
-  --accent-color: #e19742;
+  --button-hover-color: #303030;
+  --accent-color: #FDB750;
+  --accent-secondary-color: #e19742;
   --accent-secondary-color-transparent: #FDB75050;
 }
 
