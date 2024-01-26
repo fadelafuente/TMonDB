@@ -27,7 +27,7 @@ export default function Trending() {
             <div className="navbar-container">
                 <TitleBar />
             </div>
-            <div className="content-container">
+            <div className="content-container center-content">
                 <div className="aside-container left-aside" id="sticky-element">
                     <div id="sticky-anchor"></div>
                     <div className="content-left">
@@ -39,7 +39,7 @@ export default function Trending() {
                         </div>
                     </div>
                 </div>
-                <div id="posts" className="content-center">
+                <div id="posts" className="content-center center-content">
                     { posts && posts.length !== 0 ? 
                         posts.map((post, index) => {
                             if(posts.length === index + 1) {

@@ -36,7 +36,7 @@ export default function CreatePost({show, setShow}) {
                 <Modal.Footer>
                     <Col>
                         <Row className="no-select">
-                            <Col><Button className="svg-btn media-btn"><BsImages/></Button></Col>
+                            <Col><Button className="svg-btn media-btn center-content"><BsImages/></Button></Col>
                         </Row>
                     </Col>
                         <Button 
@@ -55,7 +55,7 @@ export default function CreatePost({show, setShow}) {
                                 Discard this post?
                             </h4>
                         </Row>
-                        <Row className="centered-btns-row">
+                        <Row className="center-content">
                             <Button className="rounded-btn close-btn" onClick={ () => setShowDiscard(false) }>Cancel</Button>
                             <Button 
                                 className="rounded-btn" 

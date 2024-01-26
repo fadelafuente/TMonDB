@@ -4,10 +4,8 @@
 }
 
 .content-container {
-    display: flex;
     flex-direction: row;
     margin: 0 auto;
-    justify-content: center;
 }
 
 /* aside content */
@@ -58,7 +56,6 @@
     width: 100%;
     padding: 0 10px;
     padding-top: 76px;
-    justify-content: center;
     border: 1px solid var(--input-box-color);
 }
 

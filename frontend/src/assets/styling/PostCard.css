@@ -111,7 +111,6 @@ button.media-btn, button.media-btn:hover {
     height: 24px;
     width: 24px;
     display: flex;   
-    justify-content: center;
     font-size: 24px;
 }
 
@@ -144,7 +143,6 @@ button.close-btn {
 
 /* Create Post Modal Styling */
 div.discard-post {
-    align-content: center;
     text-align: center;
 }
 
@@ -154,10 +152,6 @@ div.modal-header {
 
 div.modal-footer {
     border-top: 2px solid var(--background-content-color);
-}
-
-div.centered-btns-row {
-    justify-content: center;
 }
 
 div.modal-backdrop {

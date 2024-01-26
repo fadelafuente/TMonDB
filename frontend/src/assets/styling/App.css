@@ -60,6 +60,10 @@
   background-color: var(--accent-color);;
 }
 
+.dropdown-toggle::after {
+  display: none !important; 
+}
+
 .appBar {
   background-color: --background-content-color;
   font-size: large;
@@ -112,13 +116,16 @@
   }
 }
 
+.center-content {
+  display: flex;
+  justify-content: center;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
-  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -149,15 +156,11 @@
   border-bottom: 1px solid var(--input-box-color);
 }
 
-.dropdown-toggle::after {
-  display: none !important; 
-}
-
 #nav-dropdown {
   border-radius: 50% !important;
   margin: 0;
   padding: 0;
-  display: flex;   
+  display: flex;
   justify-content: center;
   width: 32px;
   height: 32px;
