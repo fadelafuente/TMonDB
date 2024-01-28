@@ -39,7 +39,7 @@ export default function Trending() {
                         </div>
                     </div>
                 </div>
-                <div id="posts" className="content-center center-content">
+                <div id="posts" className="content-center">
                     { posts && posts.length !== 0 ? 
                         posts.map((post, index) => {
                             if(posts.length === index + 1) {

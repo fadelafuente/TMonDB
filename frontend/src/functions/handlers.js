@@ -164,3 +164,8 @@ export function HandleCreateClose( setShow, setShowDiscard, content) {
         setShowDiscard(true);
     }
 }
+
+export function handleCreatePost(content, createPost, setShow) {
+    createPost(content);
+    setShow(false);
+}

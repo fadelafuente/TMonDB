@@ -3,7 +3,8 @@ import { Modal, Row, Col } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsImages } from "react-icons/bs";
-import { handleDiscard, handleContentChange, HandleCreateClose } from "../functions/handlers";
+import { handleDiscard, handleContentChange, HandleCreateClose, handleCreatePost } from "../functions/handlers";
+import { createPost } from "../actions/posts";
 
 export default function CreatePost({show, setShow}) {
     const [show_discard, setShowDiscard] = useState(false);
@@ -45,7 +46,7 @@ export default function CreatePost({show, setShow}) {
                         >
                             Close
                         </Button>
-                        <Button className="rounded-btn" onClick={() => console.log(content)}>Post</Button>
+                        <Button className="rounded-btn" onClick={() => handleCreatePost(content, createPost, setShow)}>Post</Button>
                 </Modal.Footer>
             </Modal>
             <Modal className="discard-post" backdrop="static" backdropClassName="modal-backdrop" show={show_discard} size="sm" centered>
