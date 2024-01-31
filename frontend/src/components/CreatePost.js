@@ -1,14 +1,20 @@
-import { useState } from "react";
 import { Modal, Row, Col } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsImages } from "react-icons/bs";
-import { handleDiscard, handleContentChange, HandleCreateClose, handleCreatePost } from "../functions/handlers";
-import { createPost } from "../actions/posts";
+import { handleCreatePost } from "../functions/handlers";
+import { DiscardModal } from "./DiscardModal";
+import { useCreatePost, useDiscardModal } from "../hooks/hooks";
 
 export default function CreatePost({show, setShow}) {
-    const [show_discard, setShowDiscard] = useState(false);
-    const [content, setContent] = useState("");
+    const initialForm = {
+        content: ''
+    };
+
+    const [formData, setFormData] = useCreatePost(initialForm);
+    const [showDiscard, setShowDiscard] = useDiscardModal(formData, setShow);
+    
+    const { content } = formData;
 
     return (
         <>
@@ -21,17 +27,16 @@ export default function CreatePost({show, setShow}) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Row>
-                            <Col>
-                            <span 
-                                className="input-content" 
-                                placeholder="howdy! What will you say?" 
-                                contentEditable="true"
-                                id="content-text"
-                                onInput={e => handleContentChange(e, setContent)}
-                            ></span>
-                            </Col>
-                        </Row>
+                        <Form.Group controlId="auto-resizing">
+                        <Form.Control 
+                            as="textarea"
+                            className="input-textarea" 
+                            placeholder="howdy! What will you say?"
+                            value={ content }
+                            name="content"
+                            onChange={ e => setFormData(e) } 
+                        />
+                        </Form.Group>
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
@@ -42,31 +47,15 @@ export default function CreatePost({show, setShow}) {
                     </Col>
                         <Button 
                             className="rounded-btn close-btn" 
-                            onClick={ () => HandleCreateClose(setShow, setShowDiscard, content) }
+                            id="discard-post-btn"
+                            onClick={ e => setShowDiscard(e) }
                         >
                             Close
                         </Button>
-                        <Button className="rounded-btn" onClick={() => handleCreatePost(content, createPost, setShow)}>Post</Button>
+                        <Button className="rounded-btn" onClick={e => handleCreatePost(e, content, setShow, setFormData)}>Post</Button>
                 </Modal.Footer>
             </Modal>
-            <Modal className="discard-post" backdrop="static" backdropClassName="modal-backdrop" show={show_discard} size="sm" centered>
-                <Modal.Body>
-                        <Row>
-                            <h4>
-                                Discard this post?
-                            </h4>
-                        </Row>
-                        <Row className="center-content">
-                            <Button className="rounded-btn close-btn" onClick={ () => setShowDiscard(false) }>Cancel</Button>
-                            <Button 
-                                className="rounded-btn" 
-                                onClick={() => handleDiscard(setContent, setShowDiscard, setShow)}
-                            >
-                                Discard
-                            </Button>
-                        </Row>
-                </Modal.Body>
-            </Modal>
+            <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} setFormData={setFormData} />
         </>
     )
 }

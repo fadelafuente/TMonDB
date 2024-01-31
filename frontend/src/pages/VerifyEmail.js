@@ -3,14 +3,12 @@ import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { Form } from 'react-router-dom';
 import { resendActivation } from '../actions/auth';
-import { useState } from 'react';
-import { useNavigateOnAuth, useFailedSocialAuth, useSetEmail } from '../hooks/hooks';
+import { useNavigateOnAuth, useFailedSocialAuth, useEmailFromLocation } from '../hooks/hooks';
 
 function VerifyEmail({ isAuthenticated, resendActivation }) {
-    const [email, setEmail] = useState('');
+    const email = useEmailFromLocation();
     useNavigateOnAuth(isAuthenticated);
     useFailedSocialAuth(email);
-    useSetEmail(setEmail);
 
     return (
         <div className="form-container verify-container">

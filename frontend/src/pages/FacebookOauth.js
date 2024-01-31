@@ -5,7 +5,6 @@ import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { Form, useNavigate } from 'react-router-dom';
 import { useNavigateOnAuth, useSocialAuth }from '../hooks/hooks';
-import { handleLoginRedirect } from '../functions/handlers';
 
 function FacebookOauth({ socialAuthenticate, isAuthenticated }) {
     const navigate = useNavigate();
@@ -22,7 +21,7 @@ function FacebookOauth({ socialAuthenticate, isAuthenticated }) {
                 <Button 
                     variant="primary" 
                     type="submit"
-                    onClick={ e => handleLoginRedirect(e, navigate) }
+                    onClick={ e => navigate("/login") }
                 >
                     Login
                 </Button>

@@ -1,26 +1,14 @@
 import TitleBar from "../components/TitleBar";
-import { useState, useRef, useCallback } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import useGetPosts from "../hooks/hooks";
+import { usePaginatedPosts } from "../hooks/hooks";
 
 import "../assets/styling/content.css";
 import PostCard from "../components/PostCard";
 
 export default function Trending() {
     const [query, setQuery] = useState("");
-    const [pageNumber, setPageNumber] = useState(1);
-    const { loading, error, posts, hasMore } = useGetPosts(query, pageNumber);
-    const observer = useRef();
-    const lastPost = useCallback(node => {
-        if(loading) return;
-        if(observer.current) observer.current.disconnect();
-        observer.current = new IntersectionObserver(entries => {
-            if(entries[0].isIntersecting && hasMore) {
-                setPageNumber(prevPageNumber => prevPageNumber + 1);
-            }
-        })
-        if(node) observer.current.observe(node);
-    }, [loading, hasMore]);
+    const [posts, lastPost] = usePaginatedPosts(query);
 
     return (
         <>

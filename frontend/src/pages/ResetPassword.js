@@ -1,14 +1,13 @@
 import { resetPassword } from "../actions/auth";
-import { handleChange } from '../functions/handlers';
 import React, { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
-import { useRequestSent } from "../hooks/hooks";
+import { useFormData, useRequestSent } from "../hooks/hooks";
 
 function ResetPassword({ resetPassword }) {
     const [requestSent, setRequestSent] = useState(false);
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useFormData({
         email: ''
     });
     useRequestSent(requestSent);
@@ -32,7 +31,7 @@ function ResetPassword({ resetPassword }) {
                         placeholder="Email" 
                         name="email"
                         value={ email }
-                        onChange={ e => handleChange(e, setFormData, formData) }
+                        onChange={ e => setFormData(e) }
                         required
                     />
                 </Form.Group>

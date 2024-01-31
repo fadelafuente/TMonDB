@@ -1,22 +1,19 @@
 import { register, registerAttempt } from '../actions/auth';
-import { handleShowPass, handleChange, handleChangeAndValidation, handleClose } from '../functions/handlers';
-import { React, useState } from "react";
+import { React } from "react";
 import { InputGroup, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { useNavigateOnAuth, useRequestAttempt, useSetErrorMessage } from '../hooks/hooks';
+import { useNavigateOnAuth, useRequestAttempt, useRegisterAttempt, useFormData, usePassword } from '../hooks/hooks';
 
 import '../assets/styling/forms.css';
 
 function Register({ register, isAuthenticated, errMessage, registerAttempt, accountCreated }) {
-    const [showPass, setShowPass] = useState(false);
-    const [showPassRe, setShowPassRe] = useState(false);
-    const [show, setShow] = useState(false);
-    const [message, setMessage] = useState('');
-    const [formData, setFormData] = useState({
+    const [showPass, setShowPass] = usePassword(false);
+    const [showPassRe, setShowPassRe] = usePassword(false);
+    const [formData, setFormData] = useFormData({
         first_name: '',
         last_name: '',
         email: '',
@@ -27,7 +24,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
     const { first_name, last_name, email, password, re_password } = formData;
 
     useNavigateOnAuth(isAuthenticated);
-    useSetErrorMessage(errMessage, setMessage, isAuthenticated, setShow);
+    const [show, setShow, message] = useRegisterAttempt(errMessage, isAuthenticated, registerAttempt);
     useRequestAttempt(accountCreated, errMessage, email, registerAttempt);
 
     function onSubmit(e) {
@@ -44,7 +41,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                 backdrop="static"
                 keyboard={ false }
                 show={ show }
-                onHide={ () => handleClose(registerAttempt, setShow) }
+                onHide={ () => setShow() }
                 id="error-modal"
             >
                 <Modal.Header closeButton closeVariant="white">
@@ -62,7 +59,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                         placeholder="First Name*" 
                         name="first_name"
                         value={ first_name }
-                        onChange={ e => handleChange(e, setFormData, formData) }
+                        onChange={ e => setFormData(e) }
                     />
                 </Form.Group>
                 <Form.Group className="form-group">
@@ -71,7 +68,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                         placeholder="Last Name*" 
                         name="last_name"
                         value={ last_name }
-                        onChange={ e => handleChange(e, setFormData, formData) }
+                        onChange={ e => setFormData(e) }
                     />
                 </Form.Group>
                 <Form.Group controlId="formBasicEmail" className="form-group">
@@ -80,7 +77,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                         placeholder="Email*" 
                         name="email"
                         value={ email }
-                        onChange={ e => handleChange(e, setFormData, formData) }
+                        onChange={ e => setFormData(e) }
                         required
                     />
                     <Form.Text>
@@ -100,11 +97,11 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                             placeholder="Password*" 
                             name="password"
                             value={ password }
-                            onChange={ e => handleChangeAndValidation(e, setFormData, formData) }
+                            onChange={ e => setFormData(e) }
                             required
                         />
                         <InputGroup.Text 
-                            onClick={ () => handleShowPass("#password-input", setShowPass, showPass) }
+                            onClick={ () => setShowPass("password-input") }
                             id="password-toggle"
                         >
                             { showPass ? <BsEyeFill /> : <BsEyeSlash /> }
@@ -118,11 +115,11 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                             placeholder="Repeat Password*" 
                             name="re_password"
                             value={ re_password }
-                            onChange={ e => handleChange(e, setFormData, formData) }
+                            onChange={ e => setFormData(e) }
                             required
                         />
                         <InputGroup.Text 
-                            onClick={ () => handleShowPass("#re-password-input", setShowPassRe, showPassRe) }
+                            onClick={ () => setShowPassRe("re-password-input") }
                             id="password-toggle"
                         >
                             { showPassRe ? <BsEyeFill /> : <BsEyeSlash /> }

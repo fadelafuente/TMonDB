@@ -1,27 +1,7 @@
 import axios from "axios";
+import { createPost } from "../actions/posts";
 
 axios.defaults.withCredentials = true;
-
-export function handleChange(e, setFormData, formData) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-}
-
-export function handleClose(resetFunc, setShow) {
-    resetFunc();
-    setShow(false);
-}
-
-export function handleChangeAndValidation(e, setFormData, formData) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    handleValidation(e.target.value);
-}
-
-export function handleShowPass(id, setFunc, showPass) {
-    const password_input = document.querySelector(id);
-    setFunc((prev) => !prev);
-    const type = showPass ? "password" : "text";
-    password_input.setAttribute("type", type);
-}
 
 export async function handleSocialAuth(e, provider, redirectUri) {
     try {
@@ -141,31 +121,23 @@ export function handleGallery(gallery) {
     */
 }
 
-export function handleLoginRedirect(e, navigate) {
-    e.preventDefault();
-
-    navigate("/login");
-}
-
-export function handleDiscard(setContent, setShowDiscard, setShow) {
-    setContent("");
-    setShowDiscard(false);
-    setShow(false);
-}
-
-export function handleContentChange(e, setContent) {
-    setContent(e.currentTarget.textContent)
-}
-
-export function HandleCreateClose( setShow, setShowDiscard, content) {
-    if(!content) {
+export function handleCreatePost(e, content, setShow, setFormData) {
+    if(content) {
+        createPost(content);
         setShow(false);
-    } else {
-        setShowDiscard(true);
+        setFormData(e, true);
     }
 }
 
-export function handleCreatePost(content, createPost, setShow) {
-    createPost(content);
-    setShow(false);
+export function handleDuplicatesInArray(source, result) {
+    if(!source) return [];
+    let id_set = new Set(result.map(item => {return item.id}));
+    source.forEach(item => {
+        if(!id_set.has(item.id)) {
+            id_set.add(item.id);
+            result.push(item);
+        }
+    });
+
+    return result;
 }

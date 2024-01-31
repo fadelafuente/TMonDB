@@ -1,27 +1,26 @@
 import { login, loginAttempt } from '../actions/auth';
-import { handleShowPass, handleChange, handleSocialAuth, handleClose } from '../functions/handlers';
-import { React, useState } from "react";
+import { handleSocialAuth } from '../functions/handlers';
+import { React } from "react";
 import { InputGroup, Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { useNavigateOnAuth, useLoginFailed } from '../hooks/hooks';
+import { useNavigateOnAuth, useLoginAttempt, useFormData, usePassword } from '../hooks/hooks';
 
 import "../assets/styling/App.css";
 import '../assets/styling/forms.css';
 
 function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useFormData({
         email: '',
         password: ''
     });
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useLoginAttempt(loginFailed, isAuthenticated, loginAttempt);
     const { email, password } = formData;
-    const [showPass, setShowPass] = useState(false);
+    const [showPass, setShowPass] = usePassword(false);
     useNavigateOnAuth(isAuthenticated);
-    useLoginFailed(loginFailed, isAuthenticated, setShow);
 
     function onSubmit(e) {
         e.preventDefault();
@@ -35,7 +34,7 @@ function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
                 backdrop="static"
                 keyboard={ false }
                 show={ show }
-                onHide={ () => handleClose(loginAttempt, setShow) }
+                onHide={ () => setShow() }
                 id="error-modal"
             >
                 <Modal.Header closeButton closeVariant="white">
@@ -53,7 +52,7 @@ function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
                         placeholder="Email" 
                         name="email"
                         value={ email }
-                        onChange={ e => handleChange(e, setFormData, formData) }
+                        onChange={ e => setFormData(e) }
                         required
                     />
                 </Form.Group>
@@ -64,15 +63,15 @@ function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
                             placeholder="Password"
                             name="password"
                             value={ password }
-                            onChange={ e => handleChange(e, setFormData, formData) }
+                            onChange={ e => setFormData(e) }
                             minLength="8"
                             required 
                         />
                         <InputGroup.Text 
-                            onClick={ () => handleShowPass("#login-password", setShowPass, showPass) }
+                            onClick={ () => setShowPass("login-password") }
                             id="password-toggle"
                         >
-                        { showPass ? <BsEyeFill /> : <BsEyeSlash /> }
+                            { showPass ? <BsEyeFill /> : <BsEyeSlash /> }
                         </InputGroup.Text>
                     </InputGroup>
                 </Form.Group>
