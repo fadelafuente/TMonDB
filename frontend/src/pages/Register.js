@@ -16,12 +16,13 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
     const [formData, setFormData] = useFormData({
         first_name: '',
         last_name: '',
+        username: '',
         email: '',
         password: '',
         re_password: ''
     });
 
-    const { first_name, last_name, email, password, re_password } = formData;
+    const { first_name, last_name, username, email, password, re_password } = formData;
 
     useNavigateOnAuth(isAuthenticated);
     const [show, setShow, message] = useRegisterAttempt(errMessage, isAuthenticated, registerAttempt);
@@ -31,7 +32,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
         e.preventDefault();
 
         if(password === re_password) {
-            register(first_name, last_name, email, password, re_password);
+            register(first_name, last_name, username, email, password, re_password);
         }  
     }
 
@@ -68,6 +69,15 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                         placeholder="Last Name*" 
                         name="last_name"
                         value={ last_name }
+                        onChange={ e => setFormData(e) }
+                    />
+                </Form.Group>
+                <Form.Group className="form-group">
+                    <Form.Control 
+                        type="text" 
+                        placeholder="Username*" 
+                        name="username"
+                        value={ username }
                         onChange={ e => setFormData(e) }
                     />
                 </Form.Group>

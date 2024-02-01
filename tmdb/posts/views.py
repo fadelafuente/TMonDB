@@ -4,12 +4,14 @@ from rest_framework.response import Response
 from dotenv import load_dotenv
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated, AllowAny
-
-load_dotenv()
-
+from django.contrib.auth import get_user_model
 from .serializers import PostSerializer
 from .models import Post
 from rest_framework.settings import api_settings
+
+load_dotenv()
+
+AppUser = get_user_model()
 
 # Create your views here.
 class PostViewSet(viewsets.ModelViewSet):
@@ -24,13 +26,24 @@ class PostViewSet(viewsets.ModelViewSet):
         return self.serializer_class
     
     def get_permissions(self):
-        if self.action != "create":
+        if self.action in ["list", "retrieve"]:
             self.permission_classes = (AllowAny,)
         return super().get_permissions()
     
-    def get_authenticators(self):
-        auth = super().get_authenticators()
-        return auth
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        username = self.request.query_params.get("username")
+
+        if username is not None:
+            try:
+                user = AppUser.objects.get(username=username)
+                queryset = queryset.filter(creator=user.id)
+            except:
+                queryset = Post.objects.none()
+
+            return queryset
+        else:
+            return super().get_queryset()
     
     def create(self, request, *args, **kwargs):
         #if not request.user.is_authenticated:
@@ -38,7 +51,7 @@ class PostViewSet(viewsets.ModelViewSet):
         posted_date = timezone.now()
         creator = request.user
         request.data["posted_date"] = posted_date
-        request.data["creator"] = 1
+        request.data["creator"] = creator.id
         
         return super().create(request, *args, **kwargs)
     

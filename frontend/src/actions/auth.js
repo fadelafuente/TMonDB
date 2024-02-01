@@ -156,14 +156,14 @@ export const logout = () => async dispatch => {
     });
 }
 
-export const register = (first_name, last_name, email, password, re_password) => async dispatch => {
+export const register = (first_name, last_name, username, email, password, re_password) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
         }
     };
 
-    const body = JSON.stringify({ email, first_name, last_name, password, re_password });
+    const body = JSON.stringify({ email, first_name, last_name, username, password, re_password });
 
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/`, body, config);

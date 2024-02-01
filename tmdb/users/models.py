@@ -36,7 +36,7 @@ class AppUserManager(BaseUserManager):
     
 class AppUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
-    username =  models.CharField(max_length=50)
+    username =  models.CharField(max_length=50, unique=True)
 
     # Considering removing:
     first_name = models.CharField(max_length=255)
