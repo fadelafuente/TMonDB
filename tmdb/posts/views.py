@@ -59,3 +59,13 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save()
         return super().perform_create(serializer)
     
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+
+        for post in response.data["results"]:
+            creator_id = post["creator"]
+            user = AppUser.objects.get(id=creator_id)
+            post["creator_username"] = user.get_username()
+        
+        return response
+    

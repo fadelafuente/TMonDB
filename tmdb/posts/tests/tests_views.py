@@ -28,10 +28,12 @@ class TestPosts(APITestCase):
     def test_create_post_anonymous(self):
         data = {"content": "TESTING!!!"}
         response = self.client.post("/api/posts/", data=data)
+        
         self.assertEqual(response.status_code, 401)
 
     def test_delete_post_anonymous(self):
         response = self.client.delete(f"/api/posts/{self.post_id}/")
+        
         self.assertEqual(response.status_code, 401)
     
     '''
@@ -43,6 +45,7 @@ class TestPosts(APITestCase):
 
         username = "anonymoususer"
         response = self.client.get(f"/api/posts/?username={username}")
+        
         self.assertFalse(response.data["results"])
 
     '''
@@ -50,13 +53,25 @@ class TestPosts(APITestCase):
     '''
     def test_get_posts(self):
         self.user = AnonymousUser()
+
         response = self.client.get("/api/posts/?page=1")
+        
         self.assertEqual(response.status_code, 200)
         self.assertFalse(self.user.is_authenticated)
 
+    def test_username_added_to_response_list(self):
+        self.user = AnonymousUser()
+        
+        response = self.client.get("/api/posts/?page=1")
+        results_list = response.data["results"]
+        
+        self.assertTrue("creator_username" in item for item in results_list)
+
     def test_get_post_by_id(self):
         self.user = AnonymousUser()
+
         response = self.client.get(f"/api/posts/{self.post_id}/")
+        
         self.assertEqual(response.status_code, 200)
         self.assertFalse(self.user.is_authenticated)
 
@@ -81,6 +96,7 @@ class TestPosts(APITestCase):
 
         data = {"content": "TESTING!!!"}
         response = self.client.post("/api/posts/", data=json.dumps(data), content_type="application/json")
+        
         self.assertEqual(response.status_code, 201)
 
     def test_creator_and_posted_date_added(self):
@@ -99,6 +115,7 @@ class TestPosts(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         response = self.client.delete(f"/api/posts/{self.post_id}/")
+        
         self.assertEqual(response.status_code, 204)
         with self.assertRaises(Post.DoesNotExist):
             Post.objects.get(id=self.post_id)
