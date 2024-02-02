@@ -22,11 +22,32 @@ class TestPosts(APITestCase):
         
         self.post_id = Post.objects.all()[1].id
 
+    '''
+        Request should fail without Authentication
+    '''
     def test_create_post_anonymous(self):
         data = {"content": "TESTING!!!"}
         response = self.client.post("/api/posts/", data=data)
         self.assertEqual(response.status_code, 401)
 
+    def test_delete_post_anonymous(self):
+        response = self.client.delete(f"/api/posts/{self.post_id}/")
+        self.assertEqual(response.status_code, 401)
+    
+    '''
+        Request should pass with or without Authentication
+            Returns an empty object
+    '''
+    def test_get_posts_by_username_user_not_found(self):
+        self.user = AnonymousUser()
+
+        username = "anonymoususer"
+        response = self.client.get(f"/api/posts/?username={username}")
+        self.assertFalse(response.data["results"])
+
+    '''
+        Request should pass without Authentication
+    '''
     def test_get_posts(self):
         self.user = AnonymousUser()
         response = self.client.get("/api/posts/?page=1")
@@ -43,20 +64,21 @@ class TestPosts(APITestCase):
         self.user = AnonymousUser()
 
         username = "testuser"
+        response_list = self.client.get("/api/posts/")
         response = self.client.get(f"/api/posts/?username={username}")
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.data["results"])
+        all_posts = response_list.data["results"]
+        user_posts = response.data["results"]
 
-    def test_get_posts_by_username_user_not_found(self):
-        self.user = AnonymousUser()
+        self.assertTrue(user_posts)
+        self.assertGreater(len(all_posts), len(user_posts))
+        self.assertTrue(self.user.id for item in user_posts)
 
-        username = "anonymoususer"
-        response = self.client.get(f"/api/posts/?username={username}")
-        self.assertEqual(response.status_code, 200)
-        self.assertFalse(response.data["results"])
-
-    def test_create_post_user(self):
+    '''
+        Request should pass with Authentication
+    '''
+    def test_create_post_user_authenticated(self):
         self.client.force_authenticate(user=self.user)
+
         data = {"content": "TESTING!!!"}
         response = self.client.post("/api/posts/", data=json.dumps(data), content_type="application/json")
         self.assertEqual(response.status_code, 201)
@@ -72,3 +94,11 @@ class TestPosts(APITestCase):
         self.assertEqual(response.data["creator"], self.user.id)
         self.assertGreaterEqual(timezone.now(), posted_date)
         self.assertLessEqual(before_creation, posted_date)
+
+    def test_delete_post_user_authenticated(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.delete(f"/api/posts/{self.post_id}/")
+        self.assertEqual(response.status_code, 204)
+        with self.assertRaises(Post.DoesNotExist):
+            Post.objects.get(id=self.post_id)
