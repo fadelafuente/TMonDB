@@ -5,9 +5,6 @@ UserModel = get_user_model()
 
 # Create your models here.
 class Post(models.Model):
-    class meta:
-        ordering = ['-id']
-
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to="images/", blank=True, null=True)
     likes_count = models.IntegerField(default=0)

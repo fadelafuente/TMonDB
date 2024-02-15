@@ -9,18 +9,19 @@ import json
 AppUser = get_user_model()
 
 class TestPosts(APITestCase):
-    def setUp(self):
-        self.user = AppUser.objects.create_user(email="testemail@domain.com", password="testpassword", username="testuser")
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = AppUser.objects.create_user(email="testemail@domain.com", password="testpassword", username="testuser", first_name="test", last_name="user")
 
         for index in range(1, 3):
-            Post.objects.create(content=f"test post {index}", posted_date=timezone.now(), creator=self.user)
+            Post.objects.create(content=f"test post {index}", posted_date=timezone.now(), creator=cls.user)
 
-        user = AppUser.objects.create_user(email="testemail2@domain.com", password="testpassword", username="testuser2")
+        user = AppUser.objects.create_user(email="testemail2@domain.com", password="testpassword", username="testuser2", first_name="test2", last_name="user2")
 
         for index in range(1, 3):
             Post.objects.create(content=f"test post {index}", posted_date=timezone.now(), creator=user)
         
-        self.post_id = Post.objects.all()[1].id
+        cls.post_id = Post.objects.all()[1].id
 
     '''
         Request should fail without Authentication
@@ -65,7 +66,7 @@ class TestPosts(APITestCase):
         response = self.client.get("/api/posts/?page=1")
         results_list = response.data["results"]
         
-        self.assertTrue("creator_username" in item for item in results_list)
+        self.assertTrue(item["creator_username"] in ["testuser", "testuser2"] for item in results_list)
 
     def test_get_post_by_id(self):
         self.user = AnonymousUser()
@@ -80,13 +81,13 @@ class TestPosts(APITestCase):
 
         username = "testuser"
         response_list = self.client.get("/api/posts/")
-        response = self.client.get(f"/api/posts/?username={username}")
+        response = self.client.get(f"/api/posts/?page=1&username={username}")
         all_posts = response_list.data["results"]
         user_posts = response.data["results"]
 
         self.assertTrue(user_posts)
         self.assertGreater(len(all_posts), len(user_posts))
-        self.assertTrue(self.user.id for item in user_posts)
+        self.assertTrue(self.user.id == item.id for item in user_posts)
 
     '''
         Request should pass with Authentication

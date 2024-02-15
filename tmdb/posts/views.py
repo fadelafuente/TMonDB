@@ -1,4 +1,4 @@
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from dotenv import load_dotenv
@@ -19,6 +19,9 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ("id", "posted_date")
+    ordering = ("-id")
 
     def get_serializer_class(self):
         if self.action =="create":
