@@ -61,6 +61,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                         name="first_name"
                         value={ first_name }
                         onChange={ e => setFormData(e) }
+                        required
                     />
                 </Form.Group>
                 <Form.Group className="form-group">
@@ -70,6 +71,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                         name="last_name"
                         value={ last_name }
                         onChange={ e => setFormData(e) }
+                        required
                     />
                 </Form.Group>
                 <Form.Group className="form-group">
@@ -79,6 +81,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                         name="username"
                         value={ username }
                         onChange={ e => setFormData(e) }
+                        required
                     />
                 </Form.Group>
                 <Form.Group controlId="formBasicEmail" className="form-group">

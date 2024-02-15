@@ -7,32 +7,35 @@ import "../assets/styling/PostCard.css";
 import ImageGallery from './ImageGallery';
 
 function PostCard({ post }) {
+    console.log(post);
     return (
         <Card>
-            <Card.Body>
-                <Card.Title>
-                    <Row>
-                        <Col>
-                            { post ? "PlaceholderUserName" : <Placeholder xs={8} /> }
-                        </Col>
-                        <Col className="time-col" id="time-col">
-                            { post ? handleTimeDifference(post.posted_date) : <Placeholder xs={4} /> }
-                        </Col>
-                    </Row>
-                </Card.Title>
-                <div className="image-gallery" id="image-gallery">
-                    { post ? <ImageGallery gallery={post.image}/> : <ImageGallery gallery={null} uploaded={false} /> }
-                </div>
-                { post ? 
-                    <Card.Text>
-                        { post.content }
-                    </Card.Text> : 
-                    <Placeholder as={Card.Text} animation="wave">
-                        <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}
-                        <Placeholder xs={6} /> <Placeholder xs={8} />
-                    </Placeholder> 
-                }
-            </Card.Body>
+            <a href={post ? `/${post.id}` : "/home" } className="post-link">
+                <Card.Body>
+                    <Card.Title>
+                        <Row>
+                            <Col>
+                                { post ? post.creator_username : <Placeholder xs={8} /> }
+                            </Col>
+                            <Col className="time-col" id="time-col">
+                                { post ? handleTimeDifference(post.posted_date) : <Placeholder xs={4} /> }
+                            </Col>
+                        </Row>
+                    </Card.Title>
+                    <div className="image-gallery" id="image-gallery">
+                        { post ? <ImageGallery gallery={post.image}/> : <ImageGallery gallery={null} uploaded={false} /> }
+                    </div>
+                    { post ? 
+                        <Card.Text>
+                            { post.content }
+                        </Card.Text> : 
+                        <Placeholder as={Card.Text} animation="wave">
+                            <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} />{' '}
+                            <Placeholder xs={6} /> <Placeholder xs={8} />
+                        </Placeholder> 
+                    }
+                </Card.Body>
+            </a>
             <Card.Footer className="no-select">
                 <Row className="interactions-row">
                     <Col className='interaction-btn left-btn'>
