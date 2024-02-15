@@ -72,3 +72,15 @@ class PostViewSet(viewsets.ModelViewSet):
         
         return response
     
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+
+        try:
+            creator_id = response.data["creator"]
+            user = AppUser.objects.get(id=creator_id)
+            response.data["creator_username"] = user.get_username()
+        except:
+            response.data = {}
+
+        return response
+    

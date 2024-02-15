@@ -15,6 +15,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 import Layout from './hocs/Layout';
+import ViewPost from './components/ViewPost';
 
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(
@@ -28,7 +29,7 @@ export default function App() {
       <Route path="password/reset/confirm/:uid/:token" element={ <ResetPasswordConfirm /> } />
       <Route path="google-oauth" element={ <GoogleOauth /> } />
       <Route path="facebook-oauth" element={ <FacebookOauth /> } />
-      <Route path=":pid/" element={ <Root /> } />
+      <Route path=":creator/:pid" element={ <ViewPost /> } />
     </Route>
   ))
 

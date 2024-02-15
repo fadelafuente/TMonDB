@@ -2,15 +2,14 @@ import { Col, Placeholder, Row } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { BsShare, BsHeart, BsRepeat, BsChatRightDots } from 'react-icons/bs';
 import { handleTimeDifference } from '../functions/handlers';
-
-import "../assets/styling/PostCard.css";
 import ImageGallery from './ImageGallery';
 
+import "../assets/styling/PostCard.css";
+
 function PostCard({ post }) {
-    console.log(post);
     return (
         <Card>
-            <a href={post ? `/${post.id}` : "/home" } className="post-link">
+            <a href={post ? `/${post.creator_username}/${post.id}` : "/home" } className="post-link">
                 <Card.Body>
                     <Card.Title>
                         <Row>
