@@ -44,7 +44,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255)
 
     # considering adding:
-    # bio = models.TextField(null=True)
+    # bio = models.TextField(default="Oh no! I have nothing to say about myself!")
     # profile_picture = models.ImageField(upload_to="", default="", null=True)
     # friends = models.ManyToManyField("self")
     # people_you_may_know = models.ManyToManyField("self")

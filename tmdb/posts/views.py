@@ -84,3 +84,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return response
     
+    def partial_update(self, request, *args, **kwargs):
+        if("content" in request.data):
+            request.data["is_edited"] = True
+        return super().partial_update(request, *args, **kwargs)

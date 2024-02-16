@@ -13,7 +13,10 @@ class PostSerializer(serializers.ModelSerializer):
 
     def check_content(self):
         content = self.validated_data.get("content")
-        if len(content) > MAX_POST_LENGTH:
+
+        # TODO: this check could be moved to frontend to reduce # of
+        #       requests to the backend 
+        if content and len(content) > MAX_POST_LENGTH:
             raise ValidationError("This post is too long")
     
     def is_valid(self, *, raise_exception=False):

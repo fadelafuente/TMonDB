@@ -36,6 +36,13 @@ class TestPosts(APITestCase):
         response = self.client.delete(f"/api/posts/{self.post_id}/")
         
         self.assertEqual(response.status_code, 401)
+
+    def test_increment_likes_count_anonymous(self):
+        response = self.client.get(f"/api/posts/{self.post_id}/")
+        data = {"likes_count": response.data["likes_count"] + 1}
+        response = self.client.patch(f"/api/posts/{self.post_id}/", data=json.dumps(data), content_type="application/json")
+        
+        self.assertEqual(response.status_code, 401)
     
     '''
         Request should pass with or without Authentication
@@ -120,3 +127,24 @@ class TestPosts(APITestCase):
         self.assertEqual(response.status_code, 204)
         with self.assertRaises(Post.DoesNotExist):
             Post.objects.get(id=self.post_id)
+
+    def test_post_content_not_edited(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.get(f"/api/posts/{self.post_id}/")
+        data = {"likes_count": response.data["likes_count"] + 1}
+        response = self.client.patch(f"/api/posts/{self.post_id}/", data=json.dumps(data), content_type="application/json")
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["likes_count"], 1)
+        self.assertFalse(response.data["is_edited"])
+
+    def test_post_content_is_edited(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {"content": "This is an updated test"}
+        response = self.client.patch(f"/api/posts/{self.post_id}/", data=json.dumps(data), content_type="application/json")
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["content"], "This is an updated test")
+        self.assertTrue(response.data["is_edited"])

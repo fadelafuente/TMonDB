@@ -13,6 +13,7 @@ class Post(models.Model):
     posted_date = models.DateTimeField(null=False)
     is_repost = models.BooleanField(default=False)
     is_reply = models.BooleanField(default=False)
+    is_edited = models.BooleanField(default=False)
     creator = models.ForeignKey(UserModel, related_name="posts", on_delete=models.CASCADE)
 
     '''
