@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import "../assets/styling/content.css";
 
-export default function CreatePost({}) {
+export default function CreatePost() {
     const [query, setQuery] = useState("");
     const [posts, lastPost] = usePaginatedPosts(query);
 
@@ -18,7 +18,7 @@ export default function CreatePost({}) {
                         return <div key={post.id}><PostCard post={post} /></div>
                     }
                 }) : 
-                <PostCard post={null} />
+                "loading..."
             }
         </>
     )

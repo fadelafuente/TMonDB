@@ -1,12 +1,16 @@
 import { Col, Placeholder, Row } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
-import { BsShare, BsHeart, BsRepeat, BsChatRightDots } from 'react-icons/bs';
+import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill } from 'react-icons/bs';
 import { handleTimeDifference } from '../functions/handlers';
 import ImageGallery from './ImageGallery';
 
 import "../assets/styling/PostCard.css";
+import { useInteractions } from '../hooks/hooks';
 
 function PostCard({ post }) {
+    const [liked, likes, setLike] = useInteractions(post.likes_count, post.user_liked);
+    const [reposted, reposts, setRepost] = useInteractions(post.likes_count, false);
+
     return (
         <Card>
             <a href={post ? `/${post.creator_username}/${post.id}` : "/home" } className="post-link">
@@ -52,28 +56,28 @@ function PostCard({ post }) {
                         </button>
                     </Col>
                     <Col className='interaction-btn'>
-                        <button className="svg-btn">
+                        <button className="svg-btn" name="reposts_count" onClick={e => setRepost(e, post.id)}>
                             <Row className="inner-btn-div">
-                                <Col className='interaction-icon'>
+                                <Col className={reposted ? 'interaction-icon interacted' : 'interaction-icon'}>
                                     <BsRepeat />
                                 </Col>
                                 <Col className='interaction-nums'>
                                     <span>
-                                        { post ? post.reposts_count : 0 }
+                                        { post ? reposts : 0 }
                                     </span>
                                 </Col>
                             </Row>
                         </button>
                     </Col>
                     <Col className='interaction-btn'>
-                        <button className="svg-btn">
+                        <button className="svg-btn" name="likes_count" onClick={e => setLike(e, post.id) }>
                             <Row className="inner-btn-div">
-                                <Col className='interaction-icon'>
-                                    <BsHeart />
+                                <Col className={liked ? 'interaction-icon interacted' : 'interaction-icon'}>
+                                    { liked ? <BsHeartFill /> : <BsHeart /> }
                                 </Col>
                                 <Col className='interaction-nums'>
                                     <span>
-                                        { post ? post.likes_count : 0 }
+                                        { likes }
                                     </span>
                                 </Col>
                             </Row>

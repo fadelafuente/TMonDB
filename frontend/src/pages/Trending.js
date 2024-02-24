@@ -36,7 +36,7 @@ export default function Trending() {
                                 return <div key={post.id}><PostCard post={post} /></div>
                             }
                         }) : 
-                        <PostCard post={null} />
+                        "Failed to load :("
                     }
                 </div>
                 <div className="aside-container right-aside" id="sticky-element">

@@ -14,11 +14,11 @@ class Post(models.Model):
     is_repost = models.BooleanField(default=False)
     is_reply = models.BooleanField(default=False)
     is_edited = models.BooleanField(default=False)
-    creator = models.ForeignKey(UserModel, related_name="posts", on_delete=models.CASCADE)
+    creator = models.ForeignKey(UserModel, related_name="posts", on_delete=models.PROTECT)
+    who_liked = models.ManyToManyField(UserModel, related_name="liked_posts")
+    who_reposted = models.ManyToManyField(UserModel, related_name="reposts")
 
     '''
     TO BE ADDED:
-    who_liked = models.ManyToManyField(userModel, related_name="likes")
-    who_reposted = models.ManyToManyField(userModel, related_name="reposts")
     comments = models.ManyToManyField("self", related_name="parent_post")
     '''

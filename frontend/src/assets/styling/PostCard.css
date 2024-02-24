@@ -74,6 +74,10 @@ div.interaction-icon {
     align-items: center;
 }
 
+div.interacted {
+    color: var(--accent-color);
+}
+
 div.share-btn {
     max-width: 20px;
     width: 100%;

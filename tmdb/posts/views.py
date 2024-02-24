@@ -69,6 +69,10 @@ class PostViewSet(viewsets.ModelViewSet):
             creator_id = post["creator"]
             user = AppUser.objects.get(id=creator_id)
             post["creator_username"] = user.get_username()
+            if request.user.is_authenticated and request.user.id in post["who_liked"]:
+                post["user_liked"] = True
+            else:
+                post["user_liked"] = False
         
         return response
     
@@ -88,3 +92,27 @@ class PostViewSet(viewsets.ModelViewSet):
         if("content" in request.data):
             request.data["is_edited"] = True
         return super().partial_update(request, *args, **kwargs)
+    
+    @action(detail=True, methods=['patch'])
+    def set_like(self, request, pk=None, change=1):
+        if(pk == None):
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
+        try:
+            post = Post.objects.get(id=pk)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
+
+        request.data["likes_count"] = post.likes_count + change
+        response = super().partial_update(request)
+        if(response.status_code == 200):
+            if change == 1:
+                post.who_liked.add(request.user)
+                response.data["user_liked"] = True
+            else:
+                post.who_liked.remove(request.user)
+                response.data["user_liked"] = False
+        return response
+    
+    @action(detail=True, methods=['patch'])
+    def unset_like(self, request, pk=None):
+        return self.set_like(request, pk, -1)

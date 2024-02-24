@@ -2,6 +2,7 @@ import { useEffect, useCallback, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { getAllPosts } from "../actions/posts";
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
+import { updatePostById } from "../actions/posts";
 
 export default function useGetPosts(query, pageNumber) {
     const [loading, setLoading] = useState(true);
@@ -262,4 +263,27 @@ export function usePaginatedPosts(query) {
     }, [loading, hasMore]);
 
     return [posts, lastPost];
+}
+
+export function useInteractions(initial_interaction, user_interacted) {
+    const [interaction, setInteraction] = useState(initial_interaction);
+    const [interacted, setInteracted] = useState(user_interacted);
+
+    function handleInteractions(e, pid) {
+        const changed_interaction = e.target.name;
+        let is_interact = true;
+        let change = 1;
+        if(interacted) {
+            is_interact = false;
+            change = -1;
+        }
+        updatePostById(pid, changed_interaction, is_interact).then((response) => {
+            if(response && response.status === 200) {
+                setInteraction(interaction + change);
+                setInteracted((prev) => !prev);
+            }
+        });
+    }
+
+    return [interacted, interaction, handleInteractions];
 }
