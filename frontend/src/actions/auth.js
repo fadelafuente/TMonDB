@@ -155,9 +155,8 @@ export const logout = () => async dispatch => {
     dispatch({
         type: LOGOUT
     });
-    
+
     if(window.location.pathname === "/home") {
-        console.log(window.location.pathname);
         window.location.reload();
     } else {
         redirect("/home");
