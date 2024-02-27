@@ -22,6 +22,7 @@ import {
     ACTIVATION_RESENT_SUCCESS,
     ACTIVATION_RESENT_FAIL
 } from './types';
+import { redirect } from 'react-router-dom';
 
 axios.defaults.withCredentials = true;
 
@@ -154,6 +155,13 @@ export const logout = () => async dispatch => {
     dispatch({
         type: LOGOUT
     });
+    
+    if(window.location.pathname === "/home") {
+        console.log(window.location.pathname);
+        window.location.reload();
+    } else {
+        redirect("/home");
+    }
 }
 
 export const register = (first_name, last_name, username, email, password, re_password) => async dispatch => {
