@@ -7,16 +7,14 @@ UserModel = get_user_model()
 class Post(models.Model):
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to="images/", blank=True, null=True)
-    likes_count = models.IntegerField(default=0)
     comments_count = models.IntegerField(default=0)
-    reposts_count = models.IntegerField(default=0)
     posted_date = models.DateTimeField(null=False)
     is_repost = models.BooleanField(default=False)
     is_reply = models.BooleanField(default=False)
     is_edited = models.BooleanField(default=False)
     creator = models.ForeignKey(UserModel, related_name="posts", on_delete=models.PROTECT)
-    who_liked = models.ManyToManyField(UserModel, related_name="liked_posts")
-    who_reposted = models.ManyToManyField(UserModel, related_name="reposts")
+    who_liked = models.ManyToManyField(UserModel, related_name="liked_posts", blank=True)
+    who_reposted = models.ManyToManyField(UserModel, related_name="reposts", blank=True)
 
     '''
     TO BE ADDED:

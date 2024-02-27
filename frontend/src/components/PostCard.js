@@ -9,7 +9,7 @@ import { useInteractions } from '../hooks/hooks';
 
 function PostCard({ post }) {
     const [liked, likes, setLike] = useInteractions(post.likes_count, post.user_liked);
-    const [reposted, reposts, setRepost] = useInteractions(post.likes_count, false);
+    const [reposted, reposts, setRepost] = useInteractions(post.reposts_count, post.user_reposted);
 
     return (
         <Card>
@@ -56,21 +56,21 @@ function PostCard({ post }) {
                         </button>
                     </Col>
                     <Col className='interaction-btn'>
-                        <button className="svg-btn" name="reposts_count" onClick={e => setRepost(e, post.id)}>
+                        <button className="svg-btn" name="set_repost" onClick={e => setRepost(e, post.id)}>
                             <Row className="inner-btn-div">
                                 <Col className={reposted ? 'interaction-icon interacted' : 'interaction-icon'}>
                                     <BsRepeat />
                                 </Col>
                                 <Col className='interaction-nums'>
                                     <span>
-                                        { post ? reposts : 0 }
+                                        { reposts }
                                     </span>
                                 </Col>
                             </Row>
                         </button>
                     </Col>
                     <Col className='interaction-btn'>
-                        <button className="svg-btn" name="likes_count" onClick={e => setLike(e, post.id) }>
+                        <button className="svg-btn" name="set_like" onClick={e => setLike(e, post.id) }>
                             <Row className="inner-btn-div">
                                 <Col className={liked ? 'interaction-icon interacted' : 'interaction-icon'}>
                                     { liked ? <BsHeartFill /> : <BsHeart /> }

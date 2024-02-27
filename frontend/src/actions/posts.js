@@ -69,7 +69,7 @@ export async function deletePostById(pid) {
     }
 }
 
-export async function updatePostById(pid, interaction_type="likes_count", is_interact) {
+export async function updatePostById(pid, interaction_type, data={}) {
     const access = localStorage.getItem("access");
     
     const config = {
@@ -79,15 +79,10 @@ export async function updatePostById(pid, interaction_type="likes_count", is_int
         }
     };
 
-    const body = JSON.stringify({});
+    const body = JSON.stringify(data);
 
     try {
-        if(interaction_type === "likes_count") {
-            if(is_interact) {
-                return await axios.patch(`${process.env.REACT_APP_API_URL}/api/posts/${pid}/set_like/`, body, config);
-            }
-            return await axios.patch(`${process.env.REACT_APP_API_URL}/api/posts/${pid}/unset_like/`, body, config);
-        }
+        return await axios.patch(`${process.env.REACT_APP_API_URL}/api/posts/${pid}/${interaction_type}/`, body, config);
     } catch(err) {
     }
 }
