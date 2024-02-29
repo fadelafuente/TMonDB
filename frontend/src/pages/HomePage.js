@@ -4,7 +4,7 @@ import Trending from "../components/Trending";
 
 import "../assets/styling/content.css";
 
-export default function HomeP() {
+export default function HomePage() {
     return (
         <>
             <div className="navbar-container">

@@ -16,13 +16,15 @@ AppUser = get_user_model()
 
 # Create your views here.
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all().annotate(likes_count=Count("who_liked", distinct=True), reposts_count=Count("who_reposted", distinct=True))
+    queryset = Post.objects.all().annotate(likes_count=Count("who_liked", distinct=True),
+                                            reposts_count=Count("who_reposted", distinct=True),
+                                            comments_count=Count("comments", distinct=True))
     serializer_class = PostSerializer
     permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
     filter_backends = (filters.OrderingFilter,)
     ordering_fields = ("id", "posted_date")
-    ordering = ("-id")
+    ordering = ("-posted_date")
 
     def get_serializer_class(self):
         if self.action == "create":
@@ -52,6 +54,14 @@ class PostViewSet(viewsets.ModelViewSet):
             return super().get_queryset()
     
     def create(self, request, *args, **kwargs):
+        if "is_reply" in request.data and request.data["is_reply"]:
+            try:
+                comments = Post.objects.filter(creator=request.user.id, parent=request.data["parent"]).all()
+                if comments:
+                    return Response(data={"message": "User already replied"}, status=status.HTTP_403_FORBIDDEN)
+            except:
+                return Response(data={"message": "Post could not be found"}, status=status.HTTP_404_NOT_FOUND)
+
         posted_date = timezone.now()
         creator = request.user
         request.data["posted_date"] = posted_date
@@ -72,9 +82,12 @@ class PostViewSet(viewsets.ModelViewSet):
             post["creator_username"] = user.get_username()
             post["user_liked"] = False
             post["user_reposted"] = False
+            post["user_commented"] = False
             if request.user.is_authenticated:
                 post["user_liked"] = request.user.id in post["who_liked"]
                 post["user_reposted"] = request.user.id in post["who_reposted"]
+                comments = Post.objects.filter(creator=request.user.id, parent=post["id"]).all()
+                post["user_commented"] = comments.exists()
         
         return response
     
@@ -101,6 +114,12 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
         try:
             post = Post.objects.get(id=pk)
+            if post.who_liked.exists():
+                user_liked = post.who_liked.filter(id=request.user.id)
+                if user_liked and change == 1:
+                    return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User already liked this post"})
+            elif not post.who_liked.exists() and change == -1:
+                return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User user can only unlike a liked post"})
         except:
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
 
@@ -124,6 +143,12 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
         try:
             post = Post.objects.get(id=pk)
+            if post.who_reposted.exists():
+                user_reposted = post.who_reposted.filter(id=request.user.id)
+                if user_reposted and change == 1:
+                    return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User already reposted this post"})
+            elif not post.who_reposted.exists() and change == -1:
+                return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User user has not reposted yet"})
         except:
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
 

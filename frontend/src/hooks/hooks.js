@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { getAllPosts } from "../actions/posts";
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
 import { updatePostById } from "../actions/posts";
+import { createPost } from "../actions/posts";
 
 export default function useGetPosts(query, pageNumber) {
     const [loading, setLoading] = useState(true);
@@ -221,7 +222,19 @@ export function useCreatePost(initialForm) {
         setFormData(e, resetPost);
     }
 
-    return [formData, handleFormData];
+    function handleCreatePost(e, content, is_reply, parent, setShow, setComment) {
+        if(content) {
+            createPost({content, is_reply, parent}).then(response => {
+                if(is_reply && response) {
+                    setComment(response.status === 201);
+                }
+            });
+            setShow(false);
+            setFormData(e, true);
+        }
+    }
+
+    return [formData, handleFormData, handleCreatePost];
 }
 
 export function useDiscardModal(formData, setShow) {
@@ -269,15 +282,29 @@ export function useInteractions(initial_interaction, user_interacted) {
     const [interaction, setInteraction] = useState(initial_interaction);
     const [interacted, setInteracted] = useState(user_interacted);
 
-    function handleInteractions(e, pid) {
-        let change = interacted ? -1 : 1;
+    function handleUpdateInteractions(e, pid) {
         const changed_interaction = !interacted ? e.currentTarget.name : "un" + e.currentTarget.name;
         updatePostById(pid, changed_interaction).then((response) => {
             if(response && response.status === 200) {
+                let change = interacted ? -1 : 1;
                 setInteraction(interaction + change);
                 setInteracted((prev) => !prev);
             }
         });
+    }
+
+    function handleInteractionsHelper(value) {
+        let change = value ? 1 : 0;
+        setInteraction(interaction + change);
+        setInteracted(value);
+    }
+
+    function handleInteractions(e, value) {
+        if(typeof value === "boolean") {
+            handleInteractionsHelper(value);
+        } else if(typeof value === "number") {
+            handleUpdateInteractions(e, value);
+        }
     }
 
     return [interacted, interaction, handleInteractions];

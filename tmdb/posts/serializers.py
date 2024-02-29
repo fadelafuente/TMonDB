@@ -28,11 +28,12 @@ class PostSerializer(serializers.ModelSerializer):
 class PostScrollSerializer(PostSerializer):
     likes_count = serializers.IntegerField()
     reposts_count = serializers.IntegerField()
-    # comments_count = serializers.IntegerField()
+    comments_count = serializers.IntegerField()
 
     class Meta:
         model = Post
         fields = ["id", "content", "posted_date", "who_liked", 
                   "who_reposted", "comments_count", 
-                  "likes_count", "reposts_count", "image", "creator"]
+                  "likes_count", "reposts_count", "image", "creator", 
+                  "comments", "parent", "is_reply"]
 

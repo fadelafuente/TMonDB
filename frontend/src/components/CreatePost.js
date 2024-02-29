@@ -2,16 +2,15 @@ import { Modal, Row, Col } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsImages } from "react-icons/bs";
-import { handleCreatePost } from "../functions/handlers";
 import { DiscardModal } from "./DiscardModal";
 import { useCreatePost, useDiscardModal } from "../hooks/hooks";
 
-export default function CreatePost({show, setShow}) {
+export default function CreatePost({show, setShow, is_reply=false, parent=null, setComment=(value)=>{}}) {
     const initialForm = {
         content: ''
     };
 
-    const [formData, setFormData] = useCreatePost(initialForm);
+    const [formData, resetFormData, setFormData] = useCreatePost(initialForm);
     const [showDiscard, setShowDiscard] = useDiscardModal(formData, setShow);
     
     const { content } = formData;
@@ -34,7 +33,7 @@ export default function CreatePost({show, setShow}) {
                             placeholder="howdy! What will you say?"
                             value={ content }
                             name="content"
-                            onChange={ e => setFormData(e) } 
+                            onChange={ e => resetFormData(e) } 
                         />
                         </Form.Group>
                     </Form>
@@ -52,10 +51,10 @@ export default function CreatePost({show, setShow}) {
                         >
                             Close
                         </Button>
-                        <Button className="rounded-btn" onClick={e => handleCreatePost(e, content, setShow, setFormData)}>Post</Button>
+                        <Button className="rounded-btn" onClick={e => setFormData(e, content, is_reply, parent, setShow, setComment)}>Post</Button>
                 </Modal.Footer>
             </Modal>
-            <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} setFormData={setFormData} />
+            <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} resetFormData={resetFormData} />
         </>
     )
 }

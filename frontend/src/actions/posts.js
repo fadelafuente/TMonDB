@@ -1,4 +1,8 @@
 import axios from 'axios';
+import { 
+    CREATE_POST_SUCCESS, 
+    CREATE_POST_FAIL 
+} from './types';
 
 axios.defaults.withCredentials = true;
 
@@ -35,7 +39,7 @@ export async function getPostById(pid) {
     }
 }
 
-export async function createPost(content) {
+export async function createPost(data) {
     const access = localStorage.getItem("access");
     
     const config = {
@@ -45,10 +49,10 @@ export async function createPost(content) {
         }
     };
 
-    const body = JSON.stringify({ content });
+    const body = JSON.stringify(data);
 
     try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/api/posts/`, body, config);
+        return await axios.post(`${process.env.REACT_APP_API_URL}/api/posts/`, body, config);
     } catch(err) {
     }
 }

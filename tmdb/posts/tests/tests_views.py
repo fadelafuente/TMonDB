@@ -128,16 +128,23 @@ class TestPosts(APITestCase):
         with self.assertRaises(Post.DoesNotExist):
             Post.objects.get(id=self.post_id)
 
-    def test_post_content_not_edited(self):
+    def test_unlike_post_fail(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.get(f"/api/posts/{self.post_id}/")
-        data = {"likes_count": response.data["likes_count"] + 1}
-        response = self.client.patch(f"/api/posts/{self.post_id}/", data=json.dumps(data), content_type="application/json")
+        response = self.client.patch(f"/api/posts/{self.post_id}/unset_like/", data=json.dumps({}), content_type="application/json")
         
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data["likes_count"], 1)
-        self.assertFalse(response.data["is_edited"])
+        self.assertEqual(response.status_code, 403)
+
+    def test_like_post(self):
+        self.client.force_authenticate(user=self.user)
+
+        response1 = self.client.get(f"/api/posts/{self.post_id}/")
+        response2 = self.client.patch(f"/api/posts/{self.post_id}/set_like/", data=json.dumps({}), content_type="application/json")
+        response3 = self.client.get(f"/api/posts/{self.post_id}/")
+        
+        self.assertEqual(response2.status_code, 200)
+        self.assertEqual(response1.data["likes_count"], response3.data["likes_count"] - 1)
+        self.assertFalse(response2.data["is_edited"])
 
     def test_post_content_is_edited(self):
         self.client.force_authenticate(user=self.user)
@@ -148,3 +155,32 @@ class TestPosts(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["content"], "This is an updated test")
         self.assertTrue(response.data["is_edited"])
+
+    def test_post_comment(self):
+        self.client.force_authenticate(user=self.user)
+        data = {"content": "TESTING!!!", "is_reply": True, "parent": self.post_id}
+        response = self.client.post("/api/posts/", data=json.dumps(data), content_type="application/json")
+        parent = Post.objects.get(id=self.post_id)
+
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue(response.data["is_reply"])
+        self.assertEqual(response.data["parent"], self.post_id)
+        self.assertEqual(parent.comments.all().first().id, response.data["id"])
+
+    def test_post_comment_twice(self):
+        self.client.force_authenticate(user=self.user)
+        data = {"content": "TESTING!!!", "is_reply": True, "parent": self.post_id}
+        response1 = self.client.post("/api/posts/", data=json.dumps(data), content_type="application/json")
+        response2 = self.client.post("/api/posts/", data=json.dumps(data), content_type="application/json")
+
+        self.assertEqual(response1.status_code, 201)
+        self.assertEqual(response2.status_code, 403)
+
+    def test_user_double_liked(self):
+        self.client.force_authenticate(user=self.user)
+
+        response1 = self.client.patch(f"/api/posts/{self.post_id}/set_like/", data=json.dumps({}), content_type="application/json")
+        response2 = self.client.patch(f"/api/posts/{self.post_id}/set_like/", data=json.dumps({}), content_type="application/json")
+
+        self.assertEqual(response1.status_code, 200)
+        self.assertEqual(response2.status_code, 403)

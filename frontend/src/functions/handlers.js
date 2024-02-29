@@ -121,14 +121,6 @@ export function handleGallery(gallery) {
     */
 }
 
-export function handleCreatePost(e, content, setShow, setFormData) {
-    if(content) {
-        createPost(content);
-        setShow(false);
-        setFormData(e, true);
-    }
-}
-
 export function handleDuplicatesInArray(source, result) {
     if(!source) return [];
     let id_set = new Set(result.map(item => {return item.id}));
