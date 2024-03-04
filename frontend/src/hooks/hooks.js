@@ -209,6 +209,7 @@ export function usePassword() {
 
 export function useCreatePost(initialForm) {
     const [formData, setFormData] = useFormData(initialForm);
+    const navigate = useNavigate();
 
     function handleFormData(e, resetPost=false) {
         if(e.target.id === "auto-resizing") {
@@ -222,15 +223,13 @@ export function useCreatePost(initialForm) {
         setFormData(e, resetPost);
     }
 
-    function handleCreatePost(e, content, is_reply, parent, setShow, setComment) {
+    function handleCreatePost(e, content, is_reply, parent) {
         if(content) {
             createPost({content, is_reply, parent}).then(response => {
-                if(is_reply && response) {
-                    setComment(response.status === 201);
+                if(response && response.status === 201) {
+                    navigate(`/${response.data["creator_username"]}/${response.data["id"]}`);
                 }
             });
-            setShow(false);
-            setFormData(e, true);
         }
     }
 

@@ -7,7 +7,6 @@ UserModel = get_user_model()
 class Post(models.Model):
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to="images/", blank=True, null=True)
-    # comments_count = models.IntegerField(default=0)
     posted_date = models.DateTimeField(null=False)
     is_repost = models.BooleanField(default=False)
     is_reply = models.BooleanField(default=False)

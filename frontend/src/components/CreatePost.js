@@ -5,7 +5,7 @@ import { BsImages } from "react-icons/bs";
 import { DiscardModal } from "./DiscardModal";
 import { useCreatePost, useDiscardModal } from "../hooks/hooks";
 
-export default function CreatePost({show, setShow, is_reply=false, parent=null, setComment=(value)=>{}}) {
+export default function CreatePost({show, setShow, is_reply=false, parent=null}) {
     const initialForm = {
         content: ''
     };
@@ -51,7 +51,7 @@ export default function CreatePost({show, setShow, is_reply=false, parent=null, 
                         >
                             Close
                         </Button>
-                        <Button className="rounded-btn" onClick={e => setFormData(e, content, is_reply, parent, setShow, setComment)}>Post</Button>
+                        <Button className="rounded-btn" onClick={e => setFormData(e, content, is_reply, parent)}>Post</Button>
                 </Modal.Footer>
             </Modal>
             <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} resetFormData={resetFormData} />

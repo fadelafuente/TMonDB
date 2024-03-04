@@ -67,7 +67,9 @@ class PostViewSet(viewsets.ModelViewSet):
         request.data["posted_date"] = posted_date
         request.data["creator"] = creator.id
         
-        return super().create(request, *args, **kwargs)
+        response = super().create(request, *args, **kwargs)
+        response.data["creator_username"] = creator.username
+        return response
     
     def perform_create(self, serializer):
         serializer.save()

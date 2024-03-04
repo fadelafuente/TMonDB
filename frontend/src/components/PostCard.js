@@ -20,7 +20,7 @@ function PostCard({ post, isAuthenticated }) {
 
     return (
         <>
-            <CreatePost show={show} setShow={() => setShow()} is_reply={true} parent={post.id} setComment={(value) => setComment(value)} />
+            <CreatePost show={show} setShow={() => setShow()} is_reply={true} parent={post.id} />
             <Card>
                 <a href={post ? `/${post.creator_username}/${post.id}` : "/home" } className="post-link">
                     <Card.Body>
