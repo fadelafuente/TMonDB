@@ -18,7 +18,12 @@ export default function useGetPosts(query, pageNumber) {
     useEffect(() => {
         setLoading(true);
         setError(false);
-        getAllPosts(query, {"page": pageNumber}).then((response) => {
+        let query_details = {"page": pageNumber}
+        if(query) {
+            query_details["search"] = query;
+        }
+
+        getAllPosts(query_details).then((response) => {
             if(response) {
                 setPosts(prevPosts => {
                     let result = [];
@@ -263,6 +268,11 @@ export function usePaginatedPosts(query) {
     const [pageNumber, setPageNumber] = useState(1);
     const { loading, error, posts, hasMore } = useGetPosts(query, pageNumber);
     const observer = useRef();
+
+    useEffect(() => {
+        setPageNumber(1);
+    }, [query])
+
     const lastPost = useCallback(node => {
         if(loading) return;
         if(observer.current) observer.current.disconnect();

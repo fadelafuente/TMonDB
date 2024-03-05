@@ -6,9 +6,7 @@ import {
 
 axios.defaults.withCredentials = true;
 
-export async function getAllPosts(query, details={"page": 1}) {
-    const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
-
+export async function getAllPosts(details={"page": 1}) {
     const access = localStorage.getItem("access");
     
     let config = undefined;
@@ -21,10 +19,10 @@ export async function getAllPosts(query, details={"page": 1}) {
         };
     }
 
+    const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
+
     try {
-        let url = `${process.env.REACT_APP_API_URL}/api/posts/?${body}`;
-        if(query) url += `$q=${query}`; 
-        return await axios.get(url, config);
+        return await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/?${body}`, config);
     } catch(err) {
         return null;
     }

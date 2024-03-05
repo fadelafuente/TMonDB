@@ -1,11 +1,9 @@
 import { usePaginatedPosts } from "../hooks/hooks";
-import PostCard from "../components/PostCard";
-import { useState } from "react";
+import PostCard from "./PostCard";
 
 import "../assets/styling/content.css";
 
-export default function CreatePost() {
-    const [query, setQuery] = useState("");
+export default function PostArticle({query}) {
     const [posts, lastPost] = usePaginatedPosts(query);
 
     return (

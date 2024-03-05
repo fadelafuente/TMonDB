@@ -1,14 +1,17 @@
 import TitleBar from "../components/TitleBar";
 import { Link } from "react-router-dom";
-import Trending from "../components/Trending";
+import PostArticle from "../components/PostArticle";
+import { useState } from "react";
 
 import "../assets/styling/content.css";
 
 export default function HomePage() {
+    const [query, setQuery] = useState("");
+
     return (
         <>
             <div className="navbar-container">
-                <TitleBar />
+                <TitleBar setQuery={(value) => setQuery(value)} />
             </div>
             <div className="content-container center-content">
                 <div className="aside-container left-aside" id="sticky-element">
@@ -23,7 +26,7 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div id="posts" className="content-center">
-                    <Trending />
+                    <PostArticle query={query} />
                 </div>
                 <div className="aside-container right-aside" id="sticky-element">
                     <div id="sticky-anchor"></div>

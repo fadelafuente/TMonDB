@@ -22,9 +22,10 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
-    filter_backends = (filters.OrderingFilter,)
-    ordering_fields = ("id", "posted_date")
+    filter_backends = (filters.OrderingFilter, filters.SearchFilter)
+    ordering_fields = ("id", "posted_date", "likes_count")
     ordering = ("-posted_date")
+    search_fields = ["content", "creator__username"]
 
     def get_serializer_class(self):
         if self.action == "create":
@@ -41,6 +42,10 @@ class PostViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super().get_queryset()
         username = self.request.query_params.get("username")
+        parent = self.request.query_params.get("parent")
+
+        if parent is not None: 
+            queryset = queryset.filter(parent=parent)
 
         if username is not None:
             try:
@@ -49,9 +54,7 @@ class PostViewSet(viewsets.ModelViewSet):
             except:
                 queryset = Post.objects.none()
 
-            return queryset
-        else:
-            return super().get_queryset()
+        return queryset
     
     def create(self, request, *args, **kwargs):
         if "is_reply" in request.data and request.data["is_reply"]:
