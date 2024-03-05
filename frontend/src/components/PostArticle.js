@@ -3,8 +3,8 @@ import PostCard from "./PostCard";
 
 import "../assets/styling/content.css";
 
-export default function PostArticle({query}) {
-    const [posts, lastPost] = usePaginatedPosts(query);
+export default function PostArticle({query, parent=null}) {
+    const [posts, lastPost] = usePaginatedPosts(query, parent);
 
     return (
         <>
@@ -15,8 +15,7 @@ export default function PostArticle({query}) {
                     } else {
                         return <div key={post.id}><PostCard post={post} /></div>
                     }
-                }) : 
-                "loading..."
+                }) : parent ? "" : "loading..."
             }
         </>
     )

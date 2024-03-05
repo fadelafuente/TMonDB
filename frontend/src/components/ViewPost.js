@@ -7,11 +7,11 @@ import { Link } from "react-router-dom";
 
 import "../assets/styling/content.css";
 import { getPostById } from "../actions/posts";
+import PostArticle from "./PostArticle";
 
 export default function ViewPost() {
     const { pid } = useParams();
     const [query, setQuery] = useState("");
-    // const [posts, lastPost] = usePaginatedPosts(query);
     const [post, setPost] = useState("");
     const [error, setError] = useState(false);
 
@@ -27,18 +27,8 @@ export default function ViewPost() {
 
     return (
         <>
-            {/* { posts && posts.length !== 0 ? 
-                posts.map((post, index) => {
-                    if(posts.length === index + 1) {
-                        return <div key={post.id} ref={lastPost}><PostCard post={post} /></div>
-                    } else {
-                        return <div key={post.id}><PostCard post={post} /></div>
-                    }
-                }) : 
-                <PostCard post={null} />
-            } */}
             <div className="navbar-container">
-                <TitleBar />
+                <TitleBar setQuery={(value) => setQuery(value)} />
             </div>
             <div className="content-container center-content">
                 <div className="aside-container left-aside" id="sticky-element">
@@ -54,7 +44,12 @@ export default function ViewPost() {
                 </div>
                 <div id="posts" className="content-center">
                     { post ? 
-                        <PostCard post={post} /> : 
+                        <div>
+                            <PostCard post={post} />
+                            <PostArticle query={query} parent={post.id} />
+                        </div>
+
+                         : 
                         "Error!!!"
                     }
                 </div>

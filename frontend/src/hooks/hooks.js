@@ -5,7 +5,7 @@ import { handleValidation, handleDuplicatesInArray } from "../functions/handlers
 import { updatePostById } from "../actions/posts";
 import { createPost } from "../actions/posts";
 
-export default function useGetPosts(query, pageNumber) {
+export default function useGetPosts(query, pageNumber, parent=null) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
     const [posts, setPosts] = useState([]);
@@ -22,6 +22,10 @@ export default function useGetPosts(query, pageNumber) {
         if(query) {
             query_details["search"] = query;
         }
+        if(parent) {
+            query_details["parent"] = parent;
+        }
+
 
         getAllPosts(query_details).then((response) => {
             if(response) {
@@ -264,9 +268,9 @@ export function useDiscardModal(formData, setShow) {
     return [showDiscard, handleDiscard];
 }
 
-export function usePaginatedPosts(query) {
+export function usePaginatedPosts(query, parent=null) {
     const [pageNumber, setPageNumber] = useState(1);
-    const { loading, error, posts, hasMore } = useGetPosts(query, pageNumber);
+    const { loading, error, posts, hasMore } = useGetPosts(query, pageNumber, parent);
     const observer = useRef();
 
     useEffect(() => {
