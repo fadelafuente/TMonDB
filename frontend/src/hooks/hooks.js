@@ -41,7 +41,7 @@ export default function useGetPosts(query, pageNumber, parent=null) {
         }).catch(e => {
             setError(true);
         });
-    }, [query, pageNumber])
+    }, [query, pageNumber, parent])
 
     return { loading, error, posts, hasMore };
 }
@@ -321,4 +321,15 @@ export function useInteractions(initial_interaction, user_interacted) {
     }
 
     return [interacted, interaction, handleInteractions];
+}
+
+export function useMiddleViewPort() {
+    const [aboveMid, setAboveMid] = useState(true);
+
+    function handleMiddleHeight(e) {
+        const middlehalf = window.innerHeight / 2;
+        setAboveMid(e.clientY > middlehalf);
+    }
+
+    return [aboveMid, handleMiddleHeight];
 }

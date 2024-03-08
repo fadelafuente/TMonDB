@@ -1,5 +1,4 @@
 import axios from "axios";
-import { createPost } from "../actions/posts";
 
 axios.defaults.withCredentials = true;
 

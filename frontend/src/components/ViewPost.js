@@ -1,4 +1,3 @@
-import { usePaginatedPosts } from "../hooks/hooks";
 import PostCard from "../components/PostCard";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";

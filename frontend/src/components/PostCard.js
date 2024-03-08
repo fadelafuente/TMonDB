@@ -1,26 +1,43 @@
-import { Col, Placeholder, Row } from 'react-bootstrap';
+import { Col, Placeholder, Row, NavDropdown, Alert } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
-import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDotsFill } from 'react-icons/bs';
+import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDotsFill, BsThreeDots } from 'react-icons/bs';
 import { handleTimeDifference } from '../functions/handlers';
 import ImageGallery from './ImageGallery';
-import { useInteractions } from '../hooks/hooks';
+import { useInteractions, useMiddleViewPort } from '../hooks/hooks';
 import { useState } from 'react';
 import CreatePost from './CreatePost';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { CopyAlert } from './CopyAlert';
 
 import "../assets/styling/PostCard.css";
 
 function PostCard({ post, isAuthenticated }) {
     const [liked, likes, setLike] = useInteractions(post.likes_count, post.user_liked);
     const [reposted, reposts, setRepost] = useInteractions(post.reposts_count, post.user_reposted);
-    const [commented, comments, setComment] = useInteractions(post.comments_count, post.user_commented)
+    const [commented, comments] = useInteractions(post.comments_count, post.user_commented);
     const [show, setShow] = useState(false);
+    const [aboveMid, setAboveMid] = useMiddleViewPort();
+    const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
+
+    function handleMoreClick(e) {
+        return (
+            <NavDropdown.Item onClick={() => {}}>
+                Block user
+            </NavDropdown.Item>
+        )
+    }
+
+    function handleCopyLink(path) {
+        navigator.clipboard.writeText(`${process.env.REACT_APP_WEB_URL}/${path}`);
+        setShowAlert(true);
+    }
 
     return (
         <>
             <CreatePost show={show} setShow={() => setShow()} is_reply={true} parent={post.id} />
+            { showAlert ? <CopyAlert showAlert={showAlert} setShowAlert={() => setShowAlert()} /> : "" }
             <Card>
                 <a href={post ? `/${post.creator_username}/${post.id}` : "/home" } className="post-link">
                     <Card.Body>
@@ -30,7 +47,19 @@ function PostCard({ post, isAuthenticated }) {
                                     { post ? post.creator_username : <Placeholder xs={8} /> }
                                 </Col>
                                 <Col className="time-col" id="time-col">
-                                    { post ? handleTimeDifference(post.posted_date) : <Placeholder xs={4} /> }
+                                    <Row>
+                                        <Col>
+                                            { post ? handleTimeDifference(post.posted_date) : <Placeholder xs={4} /> }
+                                        </Col>
+                                        <Col className="more-btn">
+                                            <NavDropdown title={<BsThreeDots/>} 
+                                                drop={ aboveMid ? "up-centered" : "down-centered" }
+                                                onClick={e => setAboveMid(e)}
+                                            >
+                                                { isAuthenticated ? handleMoreClick : "" }
+                                            </NavDropdown>
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
                         </Card.Title>
@@ -101,11 +130,15 @@ function PostCard({ post, isAuthenticated }) {
                             </button>
                         </Col>
                         <Col className='interaction-btn share-btn'>
-                            <button className="svg-btn">
-                                <div className='interaction-icon'>
-                                    <BsShare />
-                                </div>
-                            </button>
+                            <NavDropdown title={<BsShare/>} 
+                                drop={ aboveMid ? "up-centered" : "down-centered" }
+                                onClick={e => setAboveMid(e)}
+                            >
+                                <NavDropdown.Item onClick={() => handleCopyLink(`${post.creator_username}/${post.id}`)}>
+                                    Copy link
+                                </NavDropdown.Item>
+                                { isAuthenticated ? handleMoreClick : "" }
+                            </NavDropdown>
                         </Col>
                     </Row>
                 </Card.Footer>

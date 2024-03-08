@@ -31,6 +31,10 @@ div.time-col {
     justify-content: right;
 }
 
+div.more-btn {
+    padding-left: 0px;
+}
+
 /* interaction row */
 div.interactions-row {
     margin: 0;
@@ -183,4 +187,22 @@ div.modal-backdrop {
 
 div.modal-footer {
     padding: 4px 12px;
+}
+
+div.copy-alert {
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 75vh;
+    z-index: 1055;
+    background-color: var(--accent-color);
+    border: none;
+    color: var(--background-color);
+    font-weight: bold;
+    height: 8vh;
+    max-width: 30vw;
+    min-width: 250px; 
 }
