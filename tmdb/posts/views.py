@@ -56,6 +56,27 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return queryset
     
+    def get_extra_information(self, user, post):
+        creator_id = post["creator"]
+        try:
+            user = AppUser.objects.get(id=creator_id)
+            post["creator_username"] = user.get_username()
+        except:
+            post["creator_username"] = "anonymous"
+
+        # initialize booleans
+        post["user_liked"] = False
+        post["user_reposted"] = False
+        post["user_commented"] = False
+        post["is_current_user"] = False
+
+        if user.is_authenticated:
+            post["user_liked"] = user.id in post["who_liked"]
+            post["user_reposted"] = user.id in post["who_reposted"]
+            comments = Post.objects.filter(creator=user.id, parent=post["id"]).all()
+            post["user_commented"] = comments.exists()
+            post["is_current_user"] = creator_id == user.id
+    
     def create(self, request, *args, **kwargs):
         if "is_reply" in request.data and request.data["is_reply"]:
             try:
@@ -82,17 +103,7 @@ class PostViewSet(viewsets.ModelViewSet):
         response = super().list(request, *args, **kwargs)
 
         for post in response.data["results"]:
-            creator_id = post["creator"]
-            user = AppUser.objects.get(id=creator_id)
-            post["creator_username"] = user.get_username()
-            post["user_liked"] = False
-            post["user_reposted"] = False
-            post["user_commented"] = False
-            if request.user.is_authenticated:
-                post["user_liked"] = request.user.id in post["who_liked"]
-                post["user_reposted"] = request.user.id in post["who_reposted"]
-                comments = Post.objects.filter(creator=request.user.id, parent=post["id"]).all()
-                post["user_commented"] = comments.exists()
+            self.get_extra_information(request.user, post)
         
         return response
     
@@ -100,9 +111,7 @@ class PostViewSet(viewsets.ModelViewSet):
         response = super().retrieve(request, *args, **kwargs)
 
         try:
-            creator_id = response.data["creator"]
-            user = AppUser.objects.get(id=creator_id)
-            response.data["creator_username"] = user.get_username()
+            self.get_extra_information(request.user, response.data)
         except:
             response.data = {}
 
