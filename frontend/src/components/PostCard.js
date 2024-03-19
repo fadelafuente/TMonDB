@@ -4,7 +4,7 @@ import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDo
 import { handleTimeDifference } from '../functions/handlers';
 import ImageGallery from './ImageGallery';
 import { useInteractions, useMiddleViewPort } from '../hooks/hooks';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 import CreatePost from './CreatePost';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -21,11 +21,18 @@ function PostCard({ post, isAuthenticated }) {
     const [showAlert, setShowAlert] = useState(false);
     const navigate = useNavigate();
 
-    function handleMoreClick(e) {
+    function handleMoreClick() {
         return (
-            <NavDropdown.Item onClick={() => {}}>
-                Block user
-            </NavDropdown.Item>
+            <Fragment>
+                <NavDropdown.Item onClick={() => {}}>
+                    Block user
+                </NavDropdown.Item>
+                { post.is_current_user ? 
+                    <NavDropdown.Item onClick={() => {}}>
+                        Delete Post
+                    </NavDropdown.Item>
+                : "" }
+            </Fragment>
         )
     }
 
@@ -55,8 +62,9 @@ function PostCard({ post, isAuthenticated }) {
                                             <NavDropdown title={<BsThreeDots/>} 
                                                 drop={ aboveMid ? "up-centered" : "down-centered" }
                                                 onClick={e => setAboveMid(e)}
+                                                disabled={ !isAuthenticated }
                                             >
-                                                { isAuthenticated ? handleMoreClick : "" }
+                                                { handleMoreClick() }
                                             </NavDropdown>
                                         </Col>
                                     </Row>

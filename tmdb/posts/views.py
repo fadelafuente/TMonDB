@@ -56,7 +56,7 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return queryset
     
-    def get_extra_information(self, user, post):
+    def get_extra_information(self, request, post):
         creator_id = post["creator"]
         try:
             user = AppUser.objects.get(id=creator_id)
@@ -70,6 +70,7 @@ class PostViewSet(viewsets.ModelViewSet):
         post["user_commented"] = False
         post["is_current_user"] = False
 
+        user = request.user
         if user.is_authenticated:
             post["user_liked"] = user.id in post["who_liked"]
             post["user_reposted"] = user.id in post["who_reposted"]
@@ -103,7 +104,7 @@ class PostViewSet(viewsets.ModelViewSet):
         response = super().list(request, *args, **kwargs)
 
         for post in response.data["results"]:
-            self.get_extra_information(request.user, post)
+            self.get_extra_information(request, post)
         
         return response
     
@@ -111,7 +112,7 @@ class PostViewSet(viewsets.ModelViewSet):
         response = super().retrieve(request, *args, **kwargs)
 
         try:
-            self.get_extra_information(request.user, response.data)
+            self.get_extra_information(request, response.data)
         except:
             response.data = {}
 
