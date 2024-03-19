@@ -35,5 +35,5 @@ class PostScrollSerializer(PostSerializer):
         fields = ["id", "content", "posted_date", "who_liked", 
                   "who_reposted", "comments_count", 
                   "likes_count", "reposts_count", "image", "creator", 
-                  "comments", "parent", "is_reply"]
+                  "comments", "parent", "is_reply", "parent_deleted"]
 

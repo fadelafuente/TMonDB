@@ -167,6 +167,19 @@ class TestPosts(APITestCase):
         self.assertEqual(response.data["parent"], self.post_id)
         self.assertEqual(parent.comments.all().first().id, response.data["id"])
 
+    def test_delete_parent(self):
+        self.client.force_authenticate(user=self.user)
+        data = {"content": "TESTING!!!", "is_reply": True, "parent": self.post_id}
+        response = self.client.post("/api/posts/", data=json.dumps(data), content_type="application/json")
+        self.client.delete(f"/api/posts/{self.post_id}/")
+        comment_response = self.client.get(f"/api/posts/{response.data["id"]}/")
+
+        with self.assertRaises(Post.DoesNotExist):
+            Post.objects.get(id=self.post_id)
+        self.assertEqual(comment_response.data["parent"], None)
+        self.assertTrue(comment_response.data["parent_deleted"])
+        
+
     def test_post_comment_twice(self):
         self.client.force_authenticate(user=self.user)
         data = {"content": "TESTING!!!", "is_reply": True, "parent": self.post_id}

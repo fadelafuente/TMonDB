@@ -100,6 +100,15 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save()
         return super().perform_create(serializer)
     
+    def destroy(self, request, *args, **kwargs):
+        pid = request.path.split("/")[-2]
+
+        try: 
+            Post.objects.filter(parent=pid).update(parent_deleted=True)
+            return super().destroy(request, args, kwargs)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "Failed to delete post."})
+    
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
 

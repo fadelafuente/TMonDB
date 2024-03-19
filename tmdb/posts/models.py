@@ -14,4 +14,5 @@ class Post(models.Model):
     creator = models.ForeignKey(UserModel, related_name="posts", on_delete=models.PROTECT)
     who_liked = models.ManyToManyField(UserModel, related_name="liked_posts", blank=True)
     who_reposted = models.ManyToManyField(UserModel, related_name="reposts", blank=True)
-    parent = models.ForeignKey("self", related_name="comments", on_delete=models.PROTECT, blank=True, null=True)
+    parent = models.ForeignKey("self", related_name="comments", on_delete=models.SET_NULL, blank=True, null=True)
+    parent_deleted = models.BooleanField(default=False)
