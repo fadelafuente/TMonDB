@@ -66,7 +66,7 @@ export async function deletePostById(pid) {
     };
 
     try {
-        await axios.delete(`${process.env.REACT_APP_API_URL}/api/posts/${pid}/`, config);
+        return await axios.delete(`${process.env.REACT_APP_API_URL}/api/posts/${pid}/`, config);
     } catch(err) {
     }
 }

@@ -191,18 +191,27 @@ div.modal-footer {
 
 div.copy-alert {
     display: flex;
-    position: absolute;
+    position: fixed;
     left: 0;
     right: 0;
+    top: 80vh;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 75vh;
     z-index: 1055;
     background-color: var(--accent-color);
     border: none;
     color: var(--background-color);
     font-weight: bold;
-    height: 8vh;
+    height: 60px;
     max-width: 30vw;
     min-width: 250px; 
+}
+
+div.deleted-icon {
+    text-align: center;
+    font-size: 10vh;
+}
+
+div.deleted-text {
+    text-align: center;
 }

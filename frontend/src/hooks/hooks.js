@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getAllPosts } from "../actions/posts";
+import { deletePostById, getAllPosts } from "../actions/posts";
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
 import { updatePostById } from "../actions/posts";
 import { createPost } from "../actions/posts";
@@ -332,4 +332,18 @@ export function useMiddleViewPort() {
     }
 
     return [aboveMid, handleMiddleHeight];
+}
+
+export function useDeletePost(initial) {
+    const [isDeleted, setIsDeleted] = useState(initial);
+
+    function handleDelete(pid) {
+        deletePostById(pid).then((response) => {
+            if(response && response.status === 204) {
+                setIsDeleted(true);
+            }
+        });
+    }
+
+    return [isDeleted, handleDelete];
 }
