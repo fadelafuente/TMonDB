@@ -233,6 +233,8 @@ export function useCreatePost(initialForm) {
     }
 
     function handleCreatePost(e, content, is_reply, parent) {
+        e.preventDefault();
+
         if(content) {
             createPost({content, is_reply, parent}).then(response => {
                 if(response && response.status === 201) {

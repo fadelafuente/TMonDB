@@ -3,21 +3,29 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import TitleBar from "../components/TitleBar";
 import { Link } from "react-router-dom";
-
-import "../assets/styling/content.css";
 import { getPostById } from "../actions/posts";
 import PostArticle from "./PostArticle";
+import ReplyBar from "./ReplyBar";
+
+import "../assets/styling/content.css";
+import "../assets/styling/ViewPost.css"
 
 export default function ViewPost() {
     const { pid } = useParams();
     const [query, setQuery] = useState("");
     const [post, setPost] = useState("");
+    const [parent, setParent] = useState("");
     const [error, setError] = useState(false);
 
     useEffect(() => {
         getPostById(pid).then((response) => {
             if(response) {
                 setPost(response.data);
+                getPostById(response.data["parent"]).then((parent_response) => {
+                    if(parent_response) {
+                        setParent(parent_response.data);
+                    }
+                })
             }
         }).catch(e => {
             setError(true);
@@ -44,8 +52,18 @@ export default function ViewPost() {
                 <div id="posts" className="content-center">
                     { post ? 
                         <div>
+                            { parent ? 
+                                <div className="parent-container">
+                                    <PostCard post={parent} /> 
+                                </div>
+                            : "" }
                             <PostCard post={post} />
-                            <PostArticle query={query} parent={post.id} />
+                            <div className="reply-container">
+                                <ReplyBar parent={post.id} />
+                            </div>
+                            <div className="comments-container">
+                                <PostArticle query={query} parent={post.id} />
+                            </div>
                         </div>
 
                          : 
