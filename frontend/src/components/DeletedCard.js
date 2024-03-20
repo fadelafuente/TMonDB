@@ -10,7 +10,7 @@ export function DeletedCard() {
                 <BsTrash3/>
             </Card.Body>
             <Card.Footer className='deleted-text'>
-                Post has been deleted.
+                Post was deleted.
             </Card.Footer>
         </Card>
     )

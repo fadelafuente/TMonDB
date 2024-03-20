@@ -9,6 +9,7 @@ import ReplyBar from "./ReplyBar";
 
 import "../assets/styling/content.css";
 import "../assets/styling/ViewPost.css"
+import { DeletedCard } from "./DeletedCard";
 
 export default function ViewPost() {
     const { pid } = useParams();
@@ -52,11 +53,17 @@ export default function ViewPost() {
                 <div id="posts" className="content-center">
                     { post ? 
                         <div>
-                            { parent ? 
-                                <div className="parent-container">
-                                    <PostCard post={parent} /> 
-                                </div>
-                            : "" }
+                            { post.parent_deleted ?
+                                    <div className="parent-container">
+                                        <DeletedCard />
+                                    </div>
+                                :  
+                                    parent ? 
+                                    <div className="parent-container">
+                                        <PostCard post={parent} />
+                                    </div>
+                                    : ""
+                            }
                             <PostCard post={post} />
                             <div className="reply-container">
                                 <ReplyBar parent={post.id} />
