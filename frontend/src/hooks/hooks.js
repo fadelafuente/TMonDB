@@ -71,6 +71,17 @@ export function useNavigateOnAuth(isAuthenticated) {
     }, [isAuthenticated]);
 }
 
+export function useNavigateNotAuth(isAuthenticated) {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(isAuthenticated === false) {
+            return navigate("/login");
+        }
+        // eslint-disable-next-line
+    }, [isAuthenticated]);
+}
+
 export function useRequestSent(requestSent) {
     const navigate = useNavigate();
 
@@ -192,6 +203,10 @@ export function useFormData(initialForm) {
         if(resetForm) {
             setFormData(initialForm);
         } else {
+            if(e.target.id === "username-input") {
+                e.target.value = e.target.validity.valid || e.target.value === "" ? e.target.value : formData["username"];
+            }
+
             setFormData({ ...formData, [e.target.name]: e.target.value });
 
             if(e.target.id === "password-input") {

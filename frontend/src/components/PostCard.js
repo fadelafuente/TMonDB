@@ -51,7 +51,9 @@ function PostCard({ post, isAuthenticated }) {
                 <CreatePost show={show} setShow={() => setShow()} is_reply={true} parent={post.id} />
                 { showAlert ? <CopyAlert showAlert={showAlert} setShowAlert={() => setShowAlert()} /> : "" }
                 <Card>
-                    <a href={post ? `/${post.creator_username}/${post.id}` : "/home" } className="post-link">
+                    <a href={ post ? `/${post.creator_username}/${post.id}` : "/home" } 
+                        className="post-link"
+                    >
                         <Card.Body>
                             <Card.Title>
                                 <Row>

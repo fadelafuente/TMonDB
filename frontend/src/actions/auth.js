@@ -296,3 +296,18 @@ export const resendActivation = (email) => async dispatch => {
         });
     }
 }
+
+export async function setUsername(username) {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `JWT ${localStorage.getItem("access")}`        }
+    };
+
+    const body = JSON.stringify({ username });
+
+    try {
+        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/me/`, body, config);
+    } catch (err) {
+    }
+}

@@ -16,6 +16,8 @@ import store from './store';
 
 import Layout from './hocs/Layout';
 import ViewPost from './components/ViewPost';
+import SetUsername from './pages/SetUsername';
+import { SetUsernameConfirmation } from './pages/SetUsernameConfirmation';
 
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(
@@ -30,6 +32,8 @@ export default function App() {
       <Route path="google-oauth" element={ <GoogleOauth /> } />
       <Route path="facebook-oauth" element={ <FacebookOauth /> } />
       <Route path=":creator/:pid" element={ <ViewPost /> } />
+      <Route path="set_username" element={ <SetUsername /> } />
+      <Route path="username/reset/confirm" element={ <SetUsernameConfirmation /> } />
     </Route>
   ))
 

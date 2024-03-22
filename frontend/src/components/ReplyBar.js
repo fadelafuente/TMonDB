@@ -17,8 +17,6 @@ function ReplyBar({isAuthenticated, parent}) {
 
     const { content } = formData;
 
-    console.log(content);
-
     return (
         <Form className="reply-form" onSubmit={ isAuthenticated ? e => setFormData(e, content, true, parent) : () => {navigate("/login")} }>
             <InputGroup>

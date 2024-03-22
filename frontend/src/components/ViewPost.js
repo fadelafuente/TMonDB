@@ -20,10 +20,10 @@ export default function ViewPost() {
 
     useEffect(() => {
         getPostById(pid).then((response) => {
-            if(response) {
+            if(response && response.status === 200) {
                 setPost(response.data);
                 getPostById(response.data["parent"]).then((parent_response) => {
-                    if(parent_response) {
+                    if(parent_response && parent_response.status === 200) {
                         setParent(parent_response.data);
                     }
                 })

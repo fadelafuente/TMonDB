@@ -74,14 +74,16 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                         required
                     />
                 </Form.Group>
-                <Form.Group className="form-group">
+                <Form.Group className="form-group" controlId="username-input">
                     <Form.Control 
                         type="text" 
                         placeholder="Username*" 
                         name="username"
                         value={ username }
                         onChange={ e => setFormData(e) }
+                        pattern="[a-zA-Z0-9]*"
                         required
+                        maxLength={20}
                     />
                 </Form.Group>
                 <Form.Group controlId="formBasicEmail" className="form-group">

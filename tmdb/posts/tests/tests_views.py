@@ -28,7 +28,7 @@ class TestPosts(APITestCase):
     '''
     def test_create_post_anonymous(self):
         data = {"content": "TESTING!!!"}
-        response = self.client.post("/api/posts/", data=data)
+        response = self.client.post("/api/posts/", data=json.dumps(data), content_type="application/json")
         
         self.assertEqual(response.status_code, 401)
 
