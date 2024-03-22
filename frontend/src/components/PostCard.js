@@ -26,14 +26,15 @@ function PostCard({ post, isAuthenticated }) {
     function handleMoreClick() {
         return (
             <Fragment>
-                <NavDropdown.Item onClick={() => {}}>
-                    Block user
-                </NavDropdown.Item>
                 { post.is_current_user ? 
                     <NavDropdown.Item onClick={() => { setIsDeleted(post.id) }}>
                         Delete Post
                     </NavDropdown.Item>
-                : "" }
+                : 
+                    <NavDropdown.Item onClick={() => {}}>
+                        Block user
+                    </NavDropdown.Item>
+                }
             </Fragment>
         )
     }
