@@ -28,10 +28,20 @@ export async function getAllPosts(details={"page": 1}) {
     }
 }
 
-export async function getPostById(pid) {    
+export async function getPostById(pid) {  
+    const access = localStorage.getItem("access");  
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
+    }
+
     try {
-        let url = `${process.env.REACT_APP_API_URL}/api/posts/${pid}/`;
-        return await axios.get(url);
+        return await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/${pid}/`, config);
     } catch(err) {
         return null;
     }
