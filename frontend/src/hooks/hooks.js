@@ -7,7 +7,6 @@ import { createPost } from "../actions/posts";
 
 export default function useGetPosts(query, pageNumber, parent=null) {
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
     const [posts, setPosts] = useState([]);
     const [hasMore, setHasMore] = useState(false);
 
@@ -17,7 +16,6 @@ export default function useGetPosts(query, pageNumber, parent=null) {
     
     useEffect(() => {
         setLoading(true);
-        setError(false);
         let query_details = {"page": pageNumber}
         if(query) {
             query_details["search"] = query;
@@ -38,12 +36,14 @@ export default function useGetPosts(query, pageNumber, parent=null) {
                 setHasMore(response.data.results.length > 0);
                 setLoading(false);
             }
-        }).catch(e => {
-            setError(true);
+        }).catch(() => {
+            setPosts([]);
+            setHasMore(false);
+            setLoading(false);
         });
     }, [query, pageNumber, parent])
 
-    return { loading, error, posts, hasMore };
+    return { loading, posts, hasMore };
 }
 
 export function useSocialAuth(provider, socialAuthenticate) {
@@ -287,7 +287,7 @@ export function useDiscardModal(formData, setShow) {
 
 export function usePaginatedPosts(query, parent=null) {
     const [pageNumber, setPageNumber] = useState(1);
-    const { loading, error, posts, hasMore } = useGetPosts(query, pageNumber, parent);
+    const { loading, posts, hasMore } = useGetPosts(query, pageNumber, parent);
     const observer = useRef();
 
     useEffect(() => {

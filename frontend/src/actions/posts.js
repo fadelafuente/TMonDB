@@ -1,8 +1,4 @@
 import axios from 'axios';
-import { 
-    CREATE_POST_SUCCESS, 
-    CREATE_POST_FAIL 
-} from './types';
 
 axios.defaults.withCredentials = true;
 
