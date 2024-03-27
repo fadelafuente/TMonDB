@@ -114,6 +114,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                             value={ password }
                             onChange={ e => setFormData(e) }
                             required
+                            maxLength={20}
                         />
                         <InputGroup.Text 
                             onClick={ () => setShowPass("password-input") }
@@ -132,6 +133,7 @@ function Register({ register, isAuthenticated, errMessage, registerAttempt, acco
                             value={ re_password }
                             onChange={ e => setFormData(e) }
                             required
+                            maxLength={20}
                         />
                         <InputGroup.Text 
                             onClick={ () => setShowPassRe("re-password-input") }
