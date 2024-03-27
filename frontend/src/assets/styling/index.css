@@ -3,9 +3,10 @@
   --text-color: white;
   --background-content-color: #303030; 
   --input-box-color: #404040;
-  --placeholder-text-color: #969696;
-  --accent-secondary-color: #FDB750;
-  --accent-color: #e19742;
+  --placeholder-text-color: #b6b5b5;
+  --button-hover-color: #303030;
+  --accent-color: #FDB750;
+  --accent-secondary-color: #e19742;
   --accent-secondary-color-transparent: #FDB75050;
 }
 
@@ -17,6 +18,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
 }
 
 code {

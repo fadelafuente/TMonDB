@@ -1,12 +1,12 @@
 import { React, useEffect } from "react";
 import { connect } from "react-redux";
-import { check_authenticated, load_user } from "../actions/auth";
+import { checkAuthenticated, loadUser } from "../actions/auth";
 
-function Layout({ check_authenticated, load_user, children }) {
+function Layout({ checkAuthenticated, loadUser, children }) {
     useEffect(() => {
-        check_authenticated();
-        load_user();
-    }, [check_authenticated, load_user]);
+        checkAuthenticated();
+        loadUser();
+    }, [checkAuthenticated, loadUser]);
 
     return (
         <div>
@@ -15,4 +15,4 @@ function Layout({ check_authenticated, load_user, children }) {
     )
 }
 
-export default connect(null, { check_authenticated, load_user })(Layout);
+export default connect(null, { checkAuthenticated, loadUser })(Layout);

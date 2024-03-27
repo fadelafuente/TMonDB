@@ -1,49 +1,40 @@
+import { resetPassword } from "../actions/auth";
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { connect } from "react-redux";
-import { reset_password } from "../actions/auth";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { connect } from "react-redux";
+import { useFormData, useRequestSent } from "../hooks/hooks";
 
-function ResetPassword({ reset_password }) {
+function ResetPassword({ resetPassword }) {
     const [requestSent, setRequestSent] = useState(false);
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useFormData({
         email: ''
     });
+    useRequestSent(requestSent);
 
     const { email } = formData;
-
-    function handleChange(e) {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    }
 
     function onSubmit(e) {
         e.preventDefault();
 
-        reset_password(email);
+        resetPassword(email);
         setRequestSent(true);
-    }
-
-    if(requestSent) {
-        return <Navigate replace to="/trending" />
     }
 
     return (
         <div className="form-container">
             <h2 className="form-title">Request Password Reset</h2>
             <Form className="form" onSubmit={ e=> onSubmit(e) }>
-                <Form.Group controlId="formEmail">
+                <Form.Group controlId="formEmail" className="form-group">
                     <Form.Control
                         type="email" 
                         placeholder="Email" 
                         name="email"
                         value={ email }
-                        onChange={ e => handleChange(e) }
+                        onChange={ e => setFormData(e) }
                         required
                     />
-                    <br />
                 </Form.Group>
-                <br />
                 <Button variant="primary" type="submit">
                     Request Reset
                 </Button>
@@ -52,4 +43,4 @@ function ResetPassword({ reset_password }) {
     )
 }
 
-export default connect(null, { reset_password })(ResetPassword);
+export default connect(null, { resetPassword })(ResetPassword);

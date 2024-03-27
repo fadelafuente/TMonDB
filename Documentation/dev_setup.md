@@ -56,7 +56,7 @@ django-admin --version
 
 ### Run migrations
 ```
-cd tmdb-app
+cd tmdb
 ```
 ```
 py manage.py migrate

@@ -14,10 +14,19 @@ import {
     PASSWORD_RESET_SUCCESS,
     PASSWORD_RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
-    PASSWORD_RESET_CONFIRM_FAIL
+    PASSWORD_RESET_CONFIRM_FAIL,
+    SOCIAL_AUTH_SUCCESS,
+    SOCIAL_AUTH_FAIL,
+    LOGIN_ATTEMPT,
+    REGISTER_ATTEMPT,
+    ACTIVATION_RESENT_SUCCESS,
+    ACTIVATION_RESENT_FAIL
 } from './types';
+import { redirect } from 'react-router-dom';
 
-export const check_authenticated = () => async dispatch => {
+axios.defaults.withCredentials = true;
+
+export const checkAuthenticated = () => async dispatch => {
     if(localStorage.getItem("access")) {
         const config = {
             headers: {
@@ -52,7 +61,43 @@ export const check_authenticated = () => async dispatch => {
     }
 }
 
-export const load_user = () => async dispatch => {
+export const socialAuthenticate = (state, code, provider) => async dispatch => {
+    if(state && code && !localStorage.getItem("access")) {
+        const config = {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        };
+
+        const details = {
+            "state": state,
+            "code": code
+        };
+
+        const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
+
+        try {
+            const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/o/${provider}/?${body}`, config);
+
+            dispatch({
+                type: SOCIAL_AUTH_SUCCESS,
+                payload: res.data
+            });
+
+            dispatch(loadUser());
+        } catch(err) {
+            dispatch({
+                type: SOCIAL_AUTH_FAIL
+            });
+        }
+    } else {
+        dispatch({
+            type: SOCIAL_AUTH_FAIL
+        });
+    }
+}
+
+export const loadUser = () => async dispatch => {
     if(localStorage.getItem("access")) {
         const config = {
             headers: {
@@ -98,7 +143,7 @@ export const login = (email, password) => async dispatch => {
             payload: res.data
         });
 
-        dispatch(load_user());
+        dispatch(loadUser());
     } catch (err) {
         dispatch({
             type: LOGIN_FAIL
@@ -110,16 +155,22 @@ export const logout = () => async dispatch => {
     dispatch({
         type: LOGOUT
     });
+
+    if(window.location.pathname === "/home") {
+        window.location.reload();
+    } else {
+        redirect("/home");
+    }
 }
 
-export const register = (email, username, password, re_password) => async dispatch => {
+export const register = (first_name, last_name, username, email, password, re_password) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
         }
     };
 
-    const body = JSON.stringify({ email, username, password, re_password });
+    const body = JSON.stringify({ email, first_name, last_name, username, password, re_password });
 
     try {
         const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/`, body, config);
@@ -130,7 +181,8 @@ export const register = (email, username, password, re_password) => async dispat
         });
     } catch (err) {
         dispatch({
-            type: REGISTER_FAIL
+            type: REGISTER_FAIL,
+            payload: err.response.data
         });
     }
 }
@@ -151,14 +203,13 @@ export const verify = (uid, token) => async dispatch => {
             type: ACTIVATION_SUCCESS
         });
     } catch (err) {
-        console.log(body);
         dispatch({
             type: ACTIVATION_FAIL
         });
     }
 }
 
-export const reset_password = (email) => async dispatch => {
+export const resetPassword = (email) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -180,7 +231,7 @@ export const reset_password = (email) => async dispatch => {
     }
 }
 
-export const reset_password_confirm = (uid, token, new_password, re_new_password) => async dispatch => {
+export const resetPasswordConfirm = (uid, token, new_password, re_new_password) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -199,5 +250,64 @@ export const reset_password_confirm = (uid, token, new_password, re_new_password
         dispatch({
             type: PASSWORD_RESET_CONFIRM_FAIL
         });
+    }
+}
+
+// Reset login attempt back to false
+export const loginAttempt = () => dispatch => {
+    try {
+        dispatch({
+            type: LOGIN_ATTEMPT
+        });
+    }
+    catch(err) {
+
+    }
+}
+
+export const registerAttempt = () => dispatch => {
+    try {
+        dispatch({
+            type: REGISTER_ATTEMPT
+        });
+    } catch(err) {
+
+    }
+}
+
+export const resendActivation = (email) => async dispatch => {
+    const config = {
+        headers: {
+            "Content-Type": "application/json"
+        }
+    };
+
+    const body = JSON.stringify({ email });
+
+    try {
+        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/resend_activation/`, body, config);
+
+        dispatch({
+            type: ACTIVATION_RESENT_SUCCESS
+        });
+    } catch(err) {
+        dispatch({
+            type: ACTIVATION_RESENT_FAIL
+        });
+    }
+}
+
+export async function setUsername(username) {
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `JWT ${localStorage.getItem("access")}`        }
+    };
+
+    const body = JSON.stringify({ username });
+
+    try {
+        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/me/`, body, config);
+    } catch (err) {
     }
 }
