@@ -16,7 +16,6 @@ export default function ViewPost() {
     const [query, setQuery] = useState("");
     const [post, setPost] = useState("");
     const [parent, setParent] = useState("");
-    const [error, setError] = useState(false);
 
     useEffect(() => {
         getPostById(pid).then((response) => {
@@ -29,61 +28,36 @@ export default function ViewPost() {
                 })
             }
         }).catch(e => {
-            setError(true);
         });
     }, [pid]);
 
     return (
         <>
-            <div className="navbar-container">
-                <TitleBar setQuery={(value) => setQuery(value)} />
-            </div>
-            <div className="content-container center-content">
-                <div className="aside-container left-aside" id="sticky-element">
-                    <div id="sticky-anchor"></div>
-                    <div className="content-left">
-                        <div className="navigation-links">
-                            <Link to="/">For You</Link>
-                            <Link to="/">Trending</Link>
-                            <Link to="/">Monsters</Link>
-                            <Link to="/">Regions</Link>
-                        </div>
-                    </div>
-                </div>
-                <div id="posts" className="content-center">
-                    { post ? 
-                        <div>
-                            { post.parent_deleted ?
-                                    <div className="parent-container">
-                                        <DeletedCard />
-                                    </div>
-                                :  
-                                    parent ? 
-                                    <div className="parent-container">
-                                        <PostCard post={parent} />
-                                    </div>
-                                    : ""
-                            }
-                            <PostCard post={post} />
-                            <div className="reply-container">
-                                <ReplyBar parent={post.id} />
+            { post ? 
+                <div>
+                    { post.parent_deleted ?
+                            <div className="parent-container">
+                                <DeletedCard />
                             </div>
-                            <div className="comments-container">
-                                <PostArticle query={query} parent={post.id} />
+                        :  
+                            parent ? 
+                            <div className="parent-container">
+                                <PostCard post={parent} />
                             </div>
-                        </div>
-
-                         : 
-                        "Error!!!"
+                            : ""
                     }
-                </div>
-                <div className="aside-container right-aside" id="sticky-element">
-                    <div id="sticky-anchor"></div>
-                    <div className="content-right">
-                        Right
+                    <PostCard post={post} />
+                    <div className="reply-container">
+                        <ReplyBar parent={post.id} />
+                    </div>
+                    <div className="comments-container">
+                        <PostArticle query={query} parent={post.id} />
                     </div>
                 </div>
-            </div>
+
+                    : 
+                "Error!!!"
+            }
         </>
     )
 }

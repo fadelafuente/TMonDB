@@ -18,22 +18,24 @@ import Layout from './hocs/Layout';
 import ViewPost from './components/ViewPost';
 import SetUsername from './pages/SetUsername';
 import { SetUsernameConfirmation } from './pages/SetUsernameConfirmation';
+import UserProfile from './pages/UserProfile';
 
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path="/" element={ <Root /> } >
       <Route path="register" element={ <Register /> } />
       <Route path="login" element={ <Login /> } />
-      <Route path="home" element={ <HomePage /> } />
+      <Route path="home" element={ <HomePage accessedContent="home" /> } />
       <Route path="verify" element={ <VerifyEmail/> } />
       <Route path="activate/:uid/:token" element={ <Activate /> } />
       <Route path="reset_password" element={ <ResetPassword /> } />
       <Route path="password/reset/confirm/:uid/:token" element={ <ResetPasswordConfirm /> } />
       <Route path="google-oauth" element={ <GoogleOauth /> } />
       <Route path="facebook-oauth" element={ <FacebookOauth /> } />
-      <Route path=":creator/:pid" element={ <ViewPost /> } />
+      <Route path=":creator/:pid" element={ <HomePage accessedContent="post" /> } />
       <Route path="set_username" element={ <SetUsername /> } />
       <Route path="username/reset/confirm" element={ <SetUsernameConfirmation /> } />
+      <Route path=":creator" element={<HomePage accessedContent="user" />} />
     </Route>
   ))
 

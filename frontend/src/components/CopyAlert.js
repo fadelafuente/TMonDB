@@ -13,6 +13,7 @@ export function CopyAlert({showAlert, setShowAlert}) {
         return () => {
             clearTimeout(timeId);
         }
+        // eslint-disable-next-line
     }, [showAlert])
 
     return (

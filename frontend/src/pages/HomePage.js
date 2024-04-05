@@ -4,9 +4,21 @@ import PostArticle from "../components/PostArticle";
 import { useState } from "react";
 
 import "../assets/styling/content.css";
+import UserProfile from "./UserProfile";
+import ViewPost from "../components/ViewPost";
 
-export default function HomePage() {
+export default function HomePage({ accessedContent }) {
     const [query, setQuery] = useState("");
+
+    function handlePath() {
+        if(accessedContent === "home") {
+            return <PostArticle query={query} />;
+        } else if(accessedContent === "user") {
+            return <UserProfile />;
+        } else if(accessedContent === "post") {
+            return <ViewPost />;
+        }
+    }
 
     return (
         <>
@@ -26,7 +38,7 @@ export default function HomePage() {
                     </div>
                 </div>
                 <div id="posts" className="content-center">
-                    <PostArticle query={query} />
+                    { handlePath() }
                 </div>
                 <div className="aside-container right-aside" id="sticky-element">
                     <div id="sticky-anchor"></div>

@@ -1,0 +1,145 @@
+:root {
+    --bs-nav-tabs-border-radius: 0 !important;
+}
+
+div.banner-container {
+    display: block;
+    box-sizing: border-box;
+    overflow: hidden;
+    width: 100%;
+    height: 30vh;
+    min-height: 125px;
+    max-height: 300px;
+    max-width: 650px;
+    background-color: blue;
+}
+
+div.profile-info-container {
+    padding: 0 20px;
+}
+
+div.about-user-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    top: -50px;
+}
+
+div.user-row {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 12px;
+}
+
+div.pfp-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: green;
+}
+
+div.pfp-outer-container {
+    width: 106px;
+    height: 106px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    border: 6px solid var(--background-color);
+}
+
+div.username-container {
+    font-size: 24px; 
+    padding-left: 12px;
+    display: flex;
+    align-self: flex-end;
+    padding-bottom: 10px;
+}
+
+div.bio-container {
+    width: 100%;
+    min-width: 300px;
+}
+
+div.interact-row {
+    position: relative;
+    top: -25px;
+}
+
+button.follow-btn {
+    background-color: var(--accent-color);
+    color: var(--background-color);
+    margin-right: 12px;
+    box-sizing: border-box;
+    border: 1px solid var(--accent-color);
+}
+
+button.follow-btn:hover {
+    border: 1px solid var(--accent-color);
+}
+
+button.follow-btn:active {
+    border: 1px solid var(--accent-secondary-color) !important;
+}
+
+div.more-user-interactions-btn:hover {
+    background-color: var(--button-hover-color);
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+}
+
+div.more-user-interactions-btn:active {
+    background-color: var(--button-hover-color);
+    border: 1px solid var(--accent-secondary-color);
+    color: var(--accent-secondary-color);
+}
+
+div.more-user-interactions-btn {
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--placeholder-text-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.more-dropdown {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border-radius: 50%;
+}
+
+a.dropdown-toggle {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.nav-link, button.nav-link:active {
+    color: var(--text-color);
+    border-radius: 0;
+}
+
+button.nav-link:hover {
+    background-color: var(--background-content-color);
+    border-color: var(--background-content-color) !important;
+    border-radius: 0;
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color) !important;
+}
+
+.nav-tabs, .nav-link {
+    border-radius: 0 !important;
+}
+
+button.nav-link.active {
+    color: var(--background-color) !important;
+    background-color: var(--accent-color) !important;
+    border-color: var(--accent-color) !important;
+}
