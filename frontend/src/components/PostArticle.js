@@ -6,8 +6,6 @@ import "../assets/styling/content.css";
 export default function PostArticle({query, kwargs={}}) {
     const [posts, lastPost] = usePaginatedPosts(query, kwargs);
 
-    console.log(posts);
-
     return (
         <>
             { posts && posts.length !== 0 ? 
