@@ -5,25 +5,18 @@ import { handleValidation, handleDuplicatesInArray } from "../functions/handlers
 import { updatePostById } from "../actions/posts";
 import { createPost } from "../actions/posts";
 
-export default function useGetPosts(query, pageNumber, parent=null) {
+export default function useGetPosts(query, pageNumber, kwargs={}) {
     const [loading, setLoading] = useState(true);
     const [posts, setPosts] = useState([]);
     const [hasMore, setHasMore] = useState(false);
 
     useEffect(() => {
         setPosts([]);
-    }, [query])
+    }, [query]);
     
     useEffect(() => {
         setLoading(true);
-        let query_details = {"page": pageNumber}
-        if(query) {
-            query_details["search"] = query;
-        }
-        if(parent) {
-            query_details["parent"] = parent;
-        }
-
+        let query_details = {"page": pageNumber, ...kwargs}
 
         getAllPosts(query_details).then((response) => {
             if(response) {
@@ -41,7 +34,9 @@ export default function useGetPosts(query, pageNumber, parent=null) {
             setHasMore(false);
             setLoading(false);
         });
-    }, [query, pageNumber, parent])
+
+        // eslint-disable-next-line
+    }, [query, pageNumber])
 
     return { loading, posts, hasMore };
 }
@@ -285,9 +280,9 @@ export function useDiscardModal(formData, setShow) {
     return [showDiscard, handleDiscard];
 }
 
-export function usePaginatedPosts(query, parent=null) {
+export function usePaginatedPosts(query, kwargs) {
     const [pageNumber, setPageNumber] = useState(1);
-    const { loading, posts, hasMore } = useGetPosts(query, pageNumber, parent);
+    const { loading, posts, hasMore } = useGetPosts(query, pageNumber, kwargs);
     const observer = useRef();
 
     useEffect(() => {

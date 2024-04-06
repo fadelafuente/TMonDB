@@ -51,7 +51,12 @@ export default function CreatePost({show, setShow, is_reply=false, parent=null})
                         >
                             Close
                         </Button>
-                        <Button className="rounded-btn" onClick={e => setFormData(e, content, is_reply, parent)}>Post</Button>
+                        <Button className="rounded-btn" onClick={e => {
+                                setFormData(e, content, is_reply, parent);
+                                setShow(false);
+                            }}>
+                            Post
+                        </Button>
                 </Modal.Footer>
             </Modal>
             <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} resetFormData={resetFormData} />

@@ -1,7 +1,3 @@
-:root {
-    --bs-nav-tabs-border-radius: 0 !important;
-}
-
 div.banner-container {
     display: block;
     box-sizing: border-box;
@@ -142,4 +138,8 @@ button.nav-link.active {
     color: var(--background-color) !important;
     background-color: var(--accent-color) !important;
     border-color: var(--accent-color) !important;
+}
+
+ul.nav-tabs {
+    margin-bottom: 12px;
 }

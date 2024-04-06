@@ -1,8 +1,6 @@
 import PostCard from "../components/PostCard";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import TitleBar from "../components/TitleBar";
-import { Link } from "react-router-dom";
 import { getPostById } from "../actions/posts";
 import PostArticle from "./PostArticle";
 import ReplyBar from "./ReplyBar";
@@ -51,7 +49,7 @@ export default function ViewPost() {
                         <ReplyBar parent={post.id} />
                     </div>
                     <div className="comments-container">
-                        <PostArticle query={query} parent={post.id} />
+                        <PostArticle query={query} kwargs={{parent: post.id}} />
                     </div>
                 </div>
 

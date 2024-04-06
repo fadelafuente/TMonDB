@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import { Button, Col, Row, Tab, Tabs, NavDropdown } from 'react-bootstrap';
 import { useMiddleViewPort } from '../hooks/hooks';
 import { BsThreeDots } from 'react-icons/bs';
-
+import PostArticle from './PostArticle';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";
 
-function PostCard({ isAuthenticated }) {
+function ProfileInfo({ isAuthenticated }) {
     const { creator } = useParams();
     const [aboveMid, setAboveMid] = useMiddleViewPort();
 
@@ -52,10 +52,10 @@ function PostCard({ isAuthenticated }) {
                 <div className="user-content">
                     <Tabs fill>
                         <Tab eventKey="posts" title="Posts" id="is-active">
-                            all of user's posts
+                            <PostArticle kwargs={{username: creator}} />
                         </Tab>
                         <Tab eventKey="replies" title="Replies">
-                            all of user's replies
+                            <PostArticle kwargs={{username: creator, is_reply: true}} />
                         </Tab>
                         <Tab eventKey="monsters" title="Monsters">
                             all of user's monsters
@@ -75,4 +75,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, null)(PostCard);
+export default connect(mapStateToProps, null)(ProfileInfo);
