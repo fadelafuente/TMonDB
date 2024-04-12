@@ -30,9 +30,14 @@ UserModel = get_user_model()
 class UserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = UserModel
-        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'password')
+        fields = "__all__"
 
 class UserSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = UserModel
-        fields = ('id', 'username')
+        fields = ('id', 'username', 'bio')
+
+class FollowingSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        model = UserModel
+        fields = ('id',)

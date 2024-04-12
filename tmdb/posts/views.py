@@ -143,7 +143,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 if user_liked and change == 1:
                     return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User already liked this post"})
             elif not post.who_liked.exists() and change == -1:
-                return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User user can only unlike a liked post"})
+                return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User can only unlike a liked post"})
         except:
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
 
@@ -172,7 +172,7 @@ class PostViewSet(viewsets.ModelViewSet):
                 if user_reposted and change == 1:
                     return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User already reposted this post"})
             elif not post.who_reposted.exists() and change == -1:
-                return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User user has not reposted yet"})
+                return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User has not reposted yet"})
         except:
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
 

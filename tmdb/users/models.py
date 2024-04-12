@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-# from django.utils import timezone
+from django.utils import timezone
 
 # Create your models here.
 class AppUserManager(BaseUserManager):
@@ -38,17 +38,18 @@ class AppUserManager(BaseUserManager):
 class AppUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     username =  models.CharField(max_length=50, unique=True, blank=True)
+    bio = models.TextField(default="This is where my bio would go, if I wrote one!", blank=True)
+    following = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
+    date_joined = models.DateTimeField(default=timezone.now, blank=True)
 
     # Considering removing:
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
 
     # considering adding:
-    # bio = models.TextField(default="Oh no! I have nothing to say about myself!")
+    # banner = models.ImageField(upload_to="", default="", null=True)
     # profile_picture = models.ImageField(upload_to="", default="", null=True)
-    # friends = models.ManyToManyField("self")
     # people_you_may_know = models.ManyToManyField("self")
-    # date_joined = models.DateTimeField(default=timezone.now)
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

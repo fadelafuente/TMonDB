@@ -16,6 +16,8 @@ class TestPosts(APITestCase):
     def setUpTestData(cls):
         cls.user = AppUser.objects.create_user(email="testemail@domain.com", password="testpassword", username="testuser", first_name="test", last_name="user")
 
+        cls.user2 = AppUser.objects.create_user(email="testemail2@domain.com", password="testpassword", username="testuser2", first_name="test2", last_name="user2")
+
     # Not necessary to test, here for me to see how updating usernames would work
     def test_update_username(self):
         self.client.force_authenticate(user=self.user)
@@ -25,3 +27,10 @@ class TestPosts(APITestCase):
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["username"], "updatedUser")
+
+    def test_follow_user(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.patch("/auth/users/add_follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+
+        self.assertEqual(response.status_code, 200)
