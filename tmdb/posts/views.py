@@ -133,59 +133,57 @@ class PostViewSet(viewsets.ModelViewSet):
         return super().partial_update(request, *args, **kwargs)
     
     @action(detail=True, methods=['patch'])
-    def set_like(self, request, pk=None, change=1):
+    def like(self, request, pk=None):
         if(pk == None):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
+        
+        response = super().partial_update(request)
+        if response.status_code != 200:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         try:
             post = Post.objects.get(id=pk)
             if post.who_liked.exists():
                 user_liked = post.who_liked.filter(id=request.user.id)
-                if user_liked and change == 1:
-                    return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User already liked this post"})
-            elif not post.who_liked.exists() and change == -1:
-                return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User can only unlike a liked post"})
+                if user_liked:
+                    post.who_liked.remove(request.user)
+                    response.data["user_liked"] = False
+                else:
+                    post.who_liked.add(request.user)
+                    response.data["user_liked"] = True
+            elif not post.who_liked.exists():
+                post.who_liked.add(request.user)
+                response.data["user_liked"] = True
         except:
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
 
-        response = super().partial_update(request)
-        if(response.status_code == 200):
-            if change == 1:
-                post.who_liked.add(request.user)
-                response.data["user_liked"] = True
-            else:
-                post.who_liked.remove(request.user)
-                response.data["user_liked"] = False
+        post.save()
+
         return response
     
     @action(detail=True, methods=['patch'])
-    def unset_like(self, request, pk=None):
-        return self.set_like(request, pk, -1)
-    
-    @action(detail=True, methods=['patch'])
-    def set_repost(self, request, pk=None, change=1):
+    def repost(self, request, pk=None):
         if(pk == None):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
+        
+        response = super().partial_update(request)
+        if response.status_code != 200:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
         try:
             post = Post.objects.get(id=pk)
             if post.who_reposted.exists():
                 user_reposted = post.who_reposted.filter(id=request.user.id)
-                if user_reposted and change == 1:
-                    return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User already reposted this post"})
-            elif not post.who_reposted.exists() and change == -1:
-                return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User has not reposted yet"})
+                if user_reposted:
+                    post.who_reposted.remove(request.user)
+                    response.data["user_reposted"] = False
+                else: 
+                    post.who_reposted.add(request.user)
+                    response.data["user_reposted"] = True
+            elif not post.who_reposted.exists():
+                    post.who_reposted.add(request.user)
+                    response.data["user_reposted"] = True
         except:
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
-
-        response = super().partial_update(request)
-        if(response.status_code == 200):
-            if change == 1:
-                post.who_reposted.add(request.user)
-                response.data["user_reposted"] = True
-            else:
-                post.who_reposted.remove(request.user)
-                response.data["user_reposted"] = False
+        
+        post.save()
+            
         return response
-    
-    @action(detail=True, methods=['patch'])
-    def unset_repost(self, request, pk=None):
-        return self.set_repost(request, pk, -1)

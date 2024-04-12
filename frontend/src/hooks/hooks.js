@@ -308,8 +308,7 @@ export function useInteractions(initial_interaction, user_interacted) {
     const [interacted, setInteracted] = useState(user_interacted);
 
     function handleUpdateInteractions(e, pid) {
-        const changed_interaction = !interacted ? e.currentTarget.name : "un" + e.currentTarget.name;
-        updatePostById(pid, changed_interaction).then((response) => {
+        updatePostById(pid, e.currentTarget.name).then((response) => {
             if(response && response.status === 200) {
                 let change = interacted ? -1 : 1;
                 setInteraction(interaction + change);

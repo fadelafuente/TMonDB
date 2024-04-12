@@ -6,8 +6,8 @@ from djoser.views import UserViewSet
 from rest_framework.decorators import action
 from rest_framework import status
 from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated
-from .serializers import FollowingSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from .serializers import FollowSerializer, FollowingSerializer
 
 AppUser = get_user_model()
 
@@ -56,16 +56,24 @@ class CustomProviderAuthView(social_views.ProviderAuthView):
     
 class TMonDBUserViewset(UserViewSet):
     def get_permissions(self):
-        if self.action in ["add_follow", "remove_follow"]:
+        if self.action == "follow":
             return (IsAuthenticated(),)
+        if self.action == "following":
+            return (AllowAny(),)
         return super().get_permissions()
     
     def get_serializer_class(self):
-        if self.action in ["add_follow", "remove_follow"]:
+        if self.action == "follow":
+            return FollowSerializer
+        if self.action == "following":
             return FollowingSerializer
         return super().get_serializer_class()
 
-    def _handle_follow(self, request, addFollowing=True):
+    @action(detail=False, methods=['patch'])
+    def follow(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
         uid = request.data["id"]
         if(uid == None):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A user id was not given"})
@@ -77,28 +85,18 @@ class TMonDBUserViewset(UserViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "User could not be found"})
         
         following = follower.following.filter(id=followee.id)
-        if following and addFollowing:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User already following"})
-        elif not following.exists() and not addFollowing:
-            return Response(status=status.HTTP_403_FORBIDDEN, data={"message": "User has not followed yet"})
-        
-        if addFollowing:
-            follower.following.add(followee)
-        else:
+        if following:
             follower.following.remove(followee)
+        else:
+            follower.following.add(followee)
+
+        follower.save()
 
         return Response(status=status.HTTP_200_OK)
     
-    @action(detail=False, methods=['patch'])
-    def add_follow(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        return self._handle_follow(request=request)
-
-    @action(detail=False, methods=['patch'])
-    def remove_follow(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        return self._handle_follow(request=request, addFollowing=False)
+    # Retrieve ONLY the users the current user is following
+    # This way, future components can retrieve just the following list
+    # and not the entire user profile again.
+    @action(detail=True, methods=['get'])
+    def following(self, request, id=None):
+        return self.retrieve(request, id=id)

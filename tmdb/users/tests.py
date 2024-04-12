@@ -31,6 +31,15 @@ class TestPosts(APITestCase):
     def test_follow_user(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.patch("/auth/users/add_follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+        response = self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
 
         self.assertEqual(response.status_code, 200)
+
+    def test_get_followers(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+        response = self.client.get(f"/auth/users/{self.user.id}/following/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user2.id in response.data["following"])

@@ -37,11 +37,8 @@ class TestPosts(APITestCase):
         
         self.assertEqual(response.status_code, 401)
 
-    def test_increment_likes_count_anonymous(self):
-        response = self.client.get(f"/api/posts/{self.post_id}/")
-        data = {"likes_count": response.data["likes_count"] + 1}
-        response = self.client.patch(f"/api/posts/{self.post_id}/", data=json.dumps(data), content_type="application/json")
-        
+    def test_likes_anonymous(self):
+        response = self.client.patch(f"/api/posts/{self.post_id}/like/", data=json.dumps({}), content_type="application/json")        
         self.assertEqual(response.status_code, 401)
     
     '''
@@ -128,23 +125,16 @@ class TestPosts(APITestCase):
         with self.assertRaises(Post.DoesNotExist):
             Post.objects.get(id=self.post_id)
 
-    def test_unlike_post_fail(self):
-        self.client.force_authenticate(user=self.user)
-
-        response = self.client.patch(f"/api/posts/{self.post_id}/unset_like/", data=json.dumps({}), content_type="application/json")
-        
-        self.assertEqual(response.status_code, 403)
-
     def test_like_post(self):
         self.client.force_authenticate(user=self.user)
 
         response1 = self.client.get(f"/api/posts/{self.post_id}/")
-        response2 = self.client.patch(f"/api/posts/{self.post_id}/set_like/", data=json.dumps({}), content_type="application/json")
+        response2 = self.client.patch(f"/api/posts/{self.post_id}/like/", data=json.dumps({}), content_type="application/json")
         response3 = self.client.get(f"/api/posts/{self.post_id}/")
         
         self.assertEqual(response2.status_code, 200)
         self.assertEqual(response1.data["likes_count"], response3.data["likes_count"] - 1)
-        self.assertFalse(response2.data["is_edited"])
+        self.assertTrue(self.user.id in response3.data["who_liked"])
 
     def test_post_content_is_edited(self):
         self.client.force_authenticate(user=self.user)
@@ -179,7 +169,6 @@ class TestPosts(APITestCase):
         self.assertEqual(comment_response.data["parent"], None)
         self.assertTrue(comment_response.data["parent_deleted"])
         
-
     def test_post_comment_twice(self):
         self.client.force_authenticate(user=self.user)
         data = {"content": "TESTING!!!", "is_reply": True, "parent": self.post_id}
@@ -192,8 +181,11 @@ class TestPosts(APITestCase):
     def test_user_double_liked(self):
         self.client.force_authenticate(user=self.user)
 
-        response1 = self.client.patch(f"/api/posts/{self.post_id}/set_like/", data=json.dumps({}), content_type="application/json")
-        response2 = self.client.patch(f"/api/posts/{self.post_id}/set_like/", data=json.dumps({}), content_type="application/json")
+        self.client.patch(f"/api/posts/{self.post_id}/like/", data=json.dumps({}), content_type="application/json")
+        response1 = self.client.get(f"/api/posts/{self.post_id}/")
+        self.client.patch(f"/api/posts/{self.post_id}/like/", data=json.dumps({}), content_type="application/json")
+        response2 = self.client.get(f"/api/posts/{self.post_id}/")
 
-        self.assertEqual(response1.status_code, 200)
-        self.assertEqual(response2.status_code, 403)
+        self.assertTrue(response1.data["user_liked"] != response2.data["user_liked"])
+        self.assertTrue(self.user.id in response1.data["who_liked"])
+        self.assertTrue(self.user.id not in response2.data["who_liked"])

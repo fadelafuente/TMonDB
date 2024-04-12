@@ -114,7 +114,7 @@ function PostCard({ post, isAuthenticated }) {
                                 </button>
                             </Col>
                             <Col className='interaction-btn'>
-                                <button className="svg-btn" name="set_repost" onClick={ 
+                                <button className="svg-btn" name="repost" onClick={ 
                                     isAuthenticated ? e => setRepost(e, post.id, isAuthenticated) : () => navigate("/login")
                                 }>
                                     <Row className="inner-btn-div">
@@ -130,7 +130,7 @@ function PostCard({ post, isAuthenticated }) {
                                 </button>
                             </Col>
                             <Col className='interaction-btn'>
-                                <button className="svg-btn" name="set_like" onClick={
+                                <button className="svg-btn" name="like" onClick={
                                     isAuthenticated? e => setLike(e, post.id, isAuthenticated) : () => navigate("/login")
                                 }>
                                     <Row className="inner-btn-div">
