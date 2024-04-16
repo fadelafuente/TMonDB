@@ -7,7 +7,8 @@ from rest_framework.decorators import action
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import FollowSerializer, FollowingSerializer
+from .serializers import FollowSerializer, FollowingSerializer, ProfileSerializer
+from django.db.models import Count
 
 AppUser = get_user_model()
 
@@ -55,19 +56,35 @@ class CustomProviderAuthView(social_views.ProviderAuthView):
         return _post(response)
     
 class TMonDBUserViewset(UserViewSet):
+    queryset = AppUser.objects.all().annotate(following_count=Count("following", distinct=True),
+                                            followers_count=Count("followers", distinct=True))
     def get_permissions(self):
         if self.action == "follow":
             return (IsAuthenticated(),)
-        if self.action == "following":
+        elif self.action in ["following", "record"]:
             return (AllowAny(),)
         return super().get_permissions()
     
     def get_serializer_class(self):
         if self.action == "follow":
             return FollowSerializer
-        if self.action == "following":
+        elif self.action == "following":
             return FollowingSerializer
+        elif self.action == "record":
+            return ProfileSerializer
         return super().get_serializer_class()
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        username = self.request.query_params.get("username")
+
+        if username is not None:
+            try:
+                queryset = queryset.filter(username=username)
+            except:
+                queryset = AppUser.objects.none()
+
+        return queryset
 
     @action(detail=False, methods=['patch'])
     def follow(self, request):
@@ -100,3 +117,17 @@ class TMonDBUserViewset(UserViewSet):
     @action(detail=True, methods=['get'])
     def following(self, request, id=None):
         return self.retrieve(request, id=id)
+    
+    @action(detail=False, methods=['get'])
+    def record(self, request):
+        username = self.request.query_params.get("username")
+        response = self.list(request, username=username)
+
+        if response.status_code == 200:
+            try:
+                response.data = response.data["results"][0]
+            except:
+                response.data = {}
+            response.data["current_user"] = request.user.id == response.data["id"]
+
+        return response

@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { deletePostById, getAllPosts } from "../actions/posts";
+import { deletePostById, getAllPosts, getUserProfile } from "../actions/posts";
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
 import { updatePostById } from "../actions/posts";
 import { createPost } from "../actions/posts";
@@ -357,4 +357,21 @@ export function useDeletePost(initial) {
     }
 
     return [isDeleted, handleDelete];
+}
+
+export function useGetProfile(username) {
+    const [profile, setProfile] = useState(null);
+
+    useEffect(() => {
+        getUserProfile(username).then((response) => {
+            if(response) {
+                setProfile(response.data);
+                console.log(response.data)
+            }
+        }).catch(() => {
+            setProfile(null);
+        });
+    }, [username]);
+
+    return [profile];
 }

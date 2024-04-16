@@ -1,20 +1,24 @@
 import TitleBar from "../components/TitleBar";
 import { Link } from "react-router-dom";
-import PostArticle from "../components/PostArticle";
 import { useState } from "react";
+import PostArticle from "../components/PostArticle";
+import ProfileInfo from "../components/ProfileInfo";
+import ViewPost from "../components/ViewPost";
 
 import "../assets/styling/content.css";
-import UserProfile from "./UserProfile";
-import ViewPost from "../components/ViewPost";
 
 export default function HomePage({ accessedContent }) {
     const [query, setQuery] = useState("");
 
     function handlePath() {
         if(accessedContent === "home") {
-            return <PostArticle query={query} />;
+            return (
+                <div className="article-container">
+                        <PostArticle query={query} />
+                </div>
+            );
         } else if(accessedContent === "user") {
-            return <UserProfile />;
+            return <ProfileInfo />;
         } else if(accessedContent === "post") {
             return <ViewPost />;
         }

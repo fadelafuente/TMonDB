@@ -143,3 +143,24 @@ button.nav-link.active {
 ul.nav-tabs {
     margin-bottom: 12px;
 }
+
+div.followers-row {
+    display: flex;
+    flex-direction: row;
+}
+
+div.following {
+    padding-right: 12px;
+}
+
+div.follow > a {
+    color: var(--text-color);
+}
+
+div.follow > a:hover {
+    color: var(--accent-color);
+}
+
+div.follow > a:active {
+    color: var(--accent-secondary-color);
+}

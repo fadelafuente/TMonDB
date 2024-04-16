@@ -38,8 +38,47 @@ class TestPosts(APITestCase):
     def test_get_followers(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+        self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
         response = self.client.get(f"/auth/users/{self.user.id}/following/")
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(self.user2.id in response.data["following"])
+
+    def test_delete_followers(self):
+        self.client.force_authenticate(user=self.user)
+
+        # first call adds if not following
+        self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+        # second call deletes if already following
+        self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+        response = self.client.get(f"/auth/users/{self.user.id}/following/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user2.id not in response.data["following"])
+
+    def get_following_anonymous(self):
+        response = self.client.get(f"/auth/users/{self.user.id}/following/")
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_user_profile(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.get(f"/auth/users/record/?username={self.user2.username}")
+
+        self.assertTrue(response.status_code == 200)
+        self.assertTrue(key in ["bio", "following_count", "followers_count"] for key in response.data.keys())
+        self.assertFalse(response.data["current_user"])
+
+    def test_get_current_user_profile(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.get(f"/auth/users/record/?username={self.user.username}")
+    
+        self.assertTrue(response.status_code == 200)
+        self.assertTrue(response.data["current_user"])
+
+    def test_get_user_anonymous(self):
+        response = self.client.get(f"/auth/users/record/?username={self.user.username}")
+    
+        self.assertTrue(response.status_code == 200)

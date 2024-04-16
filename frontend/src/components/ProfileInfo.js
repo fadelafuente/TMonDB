@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Button, Col, Row, Tab, Tabs, NavDropdown } from 'react-bootstrap';
-import { useMiddleViewPort } from '../hooks/hooks';
+import { useGetProfile, useMiddleViewPort } from '../hooks/hooks';
 import { BsThreeDots } from 'react-icons/bs';
 import PostArticle from './PostArticle';
 
@@ -11,6 +11,7 @@ import "../assets/styling/UserProfile.css";
 function ProfileInfo({ isAuthenticated }) {
     const { creator } = useParams();
     const [aboveMid, setAboveMid] = useMiddleViewPort();
+    const [profile] = useGetProfile(creator);
 
     return (
         <>
@@ -27,8 +28,21 @@ function ProfileInfo({ isAuthenticated }) {
                             @{creator}
                         </div>
                     </div>
+                    <div className="followers-row">
+                        <div className="following follow">
+                            <a href="#">
+                                0 Following
+                            </a>
+                        </div>
+                        <div className="followers follow">
+                            <a href="#">
+                                0 Followers
+                            </a>
+                        </div>
+
+                    </div>
                     <div className="bio-container">
-                        This is a bio about the user!
+                        { profile ? profile.bio : "this failed huh" }
                     </div>
                 </div>
                 <div className="interact-row">

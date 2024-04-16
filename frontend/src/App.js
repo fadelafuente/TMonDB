@@ -15,10 +15,8 @@ import { Provider } from 'react-redux';
 import store from './store';
 
 import Layout from './hocs/Layout';
-import ViewPost from './components/ViewPost';
 import SetUsername from './pages/SetUsername';
 import { SetUsernameConfirmation } from './pages/SetUsernameConfirmation';
-import UserProfile from './pages/UserProfile';
 
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(

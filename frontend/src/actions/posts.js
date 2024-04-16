@@ -94,3 +94,19 @@ export async function updatePostById(pid, interaction_type, data={}) {
     } catch(err) {
     }
 }
+
+export async function getUserProfile(username) {
+    const access = localStorage.getItem("access");
+
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `JWT ${access}`
+        }
+    };
+
+    try {
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/profile/?username=${username}`, config);
+    } catch(err) {
+    }
+}

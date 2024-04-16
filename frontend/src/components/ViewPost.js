@@ -34,21 +34,23 @@ export default function ViewPost() {
             { post ? 
                 <div>
                     { post.parent_deleted ?
-                            <div className="parent-container">
+                            <div className="parent-container article-container">
                                 <DeletedCard />
                             </div>
                         :  
                             parent ? 
-                            <div className="parent-container">
+                            <div className="parent-container article-container">
                                 <PostCard post={parent} />
                             </div>
                             : ""
                     }
-                    <PostCard post={post} />
+                    <div className="article-container">
+                        <PostCard post={post} />
+                    </div>
                     <div className="reply-container">
                         <ReplyBar parent={post.id} />
                     </div>
-                    <div className="comments-container">
+                    <div className="comments-container article-container">
                         <PostArticle query={query} kwargs={{parent: post.id}} />
                     </div>
                 </div>

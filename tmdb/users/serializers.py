@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
-from djoser.serializers import UserCreateSerializer, UserSerializer
+from djoser.serializers import UserCreateSerializer, UserSerializer as BaseSerializer
 
 UserModel = get_user_model()
 
@@ -32,8 +32,8 @@ class UserCreateSerializer(UserCreateSerializer):
         model = UserModel
         fields = "__all__"
 
-class UserSerializer(UserSerializer):
-    class Meta(UserSerializer.Meta):
+class UserSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
         model = UserModel
         fields = ('id', 'username', 'bio')
 
@@ -42,7 +42,15 @@ class FollowSerializer(UserSerializer):
         model = UserModel
         fields = ('id',)
 
-class FollowingSerializer(UserSerializer):
-    class Meta(UserSerializer.Meta):
+class FollowingSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
         model = UserModel
         fields = ('id', 'following')
+
+class ProfileSerializer(UserSerializer):
+    following_count = serializers.IntegerField()
+    followers_count = serializers.IntegerField()
+
+    class Meta(UserSerializer.Meta):
+        model = UserModel
+        fields = ('id', 'username', 'bio', 'following_count', 'followers_count', 'following', 'followers')

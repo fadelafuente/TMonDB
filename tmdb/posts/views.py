@@ -39,13 +39,20 @@ class PostViewSet(viewsets.ModelViewSet):
             self.permission_classes = (AllowAny,)
         return super().get_permissions()
     
+    def str2bool(self, str):
+        return str.lower() in ['true']
+    
     def get_queryset(self):
         queryset = super().get_queryset()
         username = self.request.query_params.get("username")
         parent = self.request.query_params.get("parent")
+        is_reply = self.request.query_params.get("is_reply")
 
         if parent is not None: 
             queryset = queryset.filter(parent=parent)
+
+        if is_reply is not None: 
+            queryset = queryset.filter(is_reply=self.str2bool(is_reply))
 
         if username is not None:
             try:
