@@ -57,23 +57,29 @@ function PostCard({ post, isAuthenticated }) {
                     >
                         <Card.Body>
                             <Card.Title>
-                                <Row>
+                                <Row className="center-row-items">
                                     <Col>
-                                        { post ? post.creator_username : <Placeholder xs={8} /> }
+                                        <div className="creator-container">
+                                            <a href={ post ? `/${post.creator_username}` : "/home" }>
+                                                { post ? post.creator_username : <Placeholder xs={8} /> }
+                                            </a>
+                                        </div>
                                     </Col>
                                     <Col className="time-col" id="time-col">
-                                        <Row>
+                                        <Row className="center-row-items">
                                             <Col>
                                                 { post ? handleTimeDifference(post.posted_date) : <Placeholder xs={4} /> }
                                             </Col>
-                                            <Col className="more-btn">
-                                                <NavDropdown title={<BsThreeDots/>} 
-                                                    drop={ aboveMid ? "up-centered" : "down-centered" }
-                                                    onClick={e => setAboveMid(e)}
-                                                    disabled={ !isAuthenticated }
-                                                >
-                                                    { handleMoreClick() }
-                                                </NavDropdown>
+                                            <Col className="more-col">
+                                                <div className="more-btn">
+                                                    <NavDropdown title={<BsThreeDots/>} 
+                                                        drop={ aboveMid ? "up-centered" : "down-centered" }
+                                                        onClick={e => setAboveMid(e)}
+                                                        disabled={ !isAuthenticated }
+                                                    >
+                                                        { handleMoreClick() }
+                                                    </NavDropdown>
+                                                </div>
                                             </Col>
                                         </Row>
                                     </Col>

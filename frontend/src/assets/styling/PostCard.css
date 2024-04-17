@@ -4,6 +4,10 @@ div.card {
     color: var(--text-color);
 }
 
+div.card-body {
+    padding-top: 8px;
+}
+
 div.article-container {
     margin-left: 20px;
     margin-right: 20px;
@@ -28,16 +32,42 @@ div.article-container {
     max-width: 594px;
 }
 
+div.center-row-items {
+    display: flex;
+    align-items: center;
+}
+
 div.col {
     display: flex;
+}
+
+div.creator-container > a {
+    all: unset;
+}
+
+div.creator-container > a:hover {
+    text-decoration: underline;
 }
 
 div.time-col {
     justify-content: right;
 }
 
-div.more-btn {
+div.more-col {
     padding-left: 0px;
+}
+
+div.more-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+div.more-btn:hover {
+    color: var(--accent-color);
+    background-color: var(--background-color);
 }
 
 /* interaction row */
