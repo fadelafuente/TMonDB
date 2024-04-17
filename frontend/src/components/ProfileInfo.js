@@ -25,32 +25,39 @@ function ProfileInfo({ isAuthenticated }) {
                             </div>
                         </div>
                         <div className="username-container">
-                            @{creator}
+                            @{ profile ? profile.username : creator }
                         </div>
                     </div>
                     <div className="followers-row">
                         <div className="following follow">
                             <a href="#">
-                                0 Following
+                            { profile ? profile.following_count : 0 } Following
                             </a>
                         </div>
                         <div className="followers follow">
                             <a href="#">
-                                0 Followers
+                                { profile ? profile.followers_count : 0 } Followers
                             </a>
                         </div>
 
                     </div>
                     <div className="bio-container">
-                        { profile ? profile.bio : "this failed huh" }
+                        { profile ? profile.bio : "This is where my bio would go, if I wrote one!" }
                     </div>
                 </div>
                 <div className="interact-row">
                     <Row>
                         <Col>
-                            <Button className="rounded-btn follow-btn">
-                                Follow
-                            </Button>
+                            {
+                                profile && profile.current_user ? 
+                                    <Button className="rounded-btn profile-btn edit-btn">
+                                        Edit Profile
+                                    </Button>
+                                :
+                                <Button className="rounded-btn profile-btn">
+                                    Follow
+                                </Button>
+                            }
                             <div className="more-user-interactions-btn">
                                 <NavDropdown title={<BsThreeDots/>} 
                                     className="more-dropdown"

@@ -65,7 +65,7 @@ div.interact-row {
     top: -25px;
 }
 
-button.follow-btn {
+button.profile-btn {
     background-color: var(--accent-color);
     color: var(--background-color);
     margin-right: 12px;
@@ -73,11 +73,15 @@ button.follow-btn {
     border: 1px solid var(--accent-color);
 }
 
-button.follow-btn:hover {
+button.edit-btn {
+    max-width: 120px;
+}
+
+button.profile-btn:hover {
     border: 1px solid var(--accent-color);
 }
 
-button.follow-btn:active {
+button.profile-btn:active {
     border: 1px solid var(--accent-secondary-color) !important;
 }
 

@@ -106,7 +106,7 @@ export async function getUserProfile(username) {
     };
 
     try {
-        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/profile/?username=${username}`, config);
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/record/?username=${username}`, config);
     } catch(err) {
     }
 }

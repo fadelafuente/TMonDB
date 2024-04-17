@@ -107,8 +107,6 @@ export const loadUser = () => async dispatch => {
             }
         };
 
-        console.log(localStorage.getItem("access"));
-
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
     

@@ -364,9 +364,8 @@ export function useGetProfile(username) {
 
     useEffect(() => {
         getUserProfile(username).then((response) => {
-            if(response) {
+            if(response && response.status === 200) {
                 setProfile(response.data);
-                console.log(response.data)
             }
         }).catch(() => {
             setProfile(null);
