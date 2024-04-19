@@ -6,6 +6,7 @@ import ProfileInfo from "../components/ProfileInfo";
 import ViewPost from "../components/ViewPost";
 
 import "../assets/styling/content.css";
+import Account from "./Account";
 
 export default function HomePage({ accessedContent }) {
     const [query, setQuery] = useState("");
@@ -19,6 +20,8 @@ export default function HomePage({ accessedContent }) {
             );
         } else if(accessedContent === "user") {
             return <ProfileInfo />;
+        } else if(accessedContent === "account") {
+            return <Account />
         } else if(accessedContent === "post") {
             return <ViewPost />;
         }

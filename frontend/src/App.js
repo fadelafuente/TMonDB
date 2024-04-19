@@ -17,6 +17,7 @@ import store from './store';
 import Layout from './hocs/Layout';
 import SetUsername from './pages/SetUsername';
 import { SetUsernameConfirmation } from './pages/SetUsernameConfirmation';
+import Account from './pages/Account';
 
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(
@@ -34,6 +35,7 @@ export default function App() {
       <Route path="set_username" element={ <SetUsername /> } />
       <Route path="username/reset/confirm" element={ <SetUsernameConfirmation /> } />
       <Route path=":creator" element={<HomePage accessedContent="user" />} />
+      <Route path="settings/account" element={<HomePage accessedContent="account" />} />
     </Route>
   ))
 

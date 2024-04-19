@@ -1,7 +1,7 @@
 @echo off
 
 cd tmdb
-start pipenv run py manage.py runserver 192.168.86.30:8000
+start pipenv run py manage.py runserver
 
 cd ..
 cd frontend
