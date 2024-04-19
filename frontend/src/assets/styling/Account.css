@@ -1,0 +1,26 @@
+div.section-container {
+    border-top: 1px solid var(--placeholder-text-color);
+    padding: 20px 0;
+}
+
+div.edit-col {
+    justify-content: right;
+}
+
+button.delete-btn {
+    background-color: #FF4539;
+    border-radius: 0;
+    border: none;
+}
+
+button.delete-btn:hover {
+    background-color: #FF1405;
+    border-radius: 0;
+    border: none;
+}
+
+button.delete-btn:active {
+    background-color: #D00D00 !important;
+    border-radius: 0;
+    border: none;
+}

@@ -68,7 +68,7 @@ function TitleBar({setQuery, logout, isAuthenticated }) {
                     <NavDropdown.Item href="#action/3.3">
                         My Monsters
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
+                    <NavDropdown.Item href="settings/account">
                         Settings
                     </NavDropdown.Item>
                     <NavDropdown.Item href="#!" onClick={ logout }>
