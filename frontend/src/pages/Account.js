@@ -1,16 +1,23 @@
-import { React } from "react";
+import { React, useState } from "react";
 
 import '../assets/styling/forms.css';
 import '../assets/styling/Account.css';
 import { Button, Col, Row } from "react-bootstrap";
 import { useCurrentUserDetails } from "../hooks/hooks";
 import { connect } from "react-redux";
+import ResetModal from "../components/ResetModal";
+
+import "../assets/styling/PostCard.css";
+import "../assets/styling/Modal.css";
 
 function Account({isAuthenticated}) {
     const [user] = useCurrentUserDetails(isAuthenticated);
+    const [show, setShow] = useState(false);
+    const [resetItem, setResetItem] = useState("");
 
     return (
         <>
+            <ResetModal resetItem={resetItem} show={show} setShow={setShow} email={user ? user.email : ""} />
             <div className="profile-info-container">
                 <h3>My Account</h3>
                 <div className="section-container">
@@ -22,7 +29,9 @@ function Account({isAuthenticated}) {
                             : "" }
                         </Col>
                         <Col className="edit-col">
-                            edit
+                            <button className="svg-btn bg-btn" onClick={() => { setResetItem("email"); setShow(true); } }>
+                                edit
+                            </button>
                         </Col>
                     </Row>
                 </div>
@@ -33,7 +42,9 @@ function Account({isAuthenticated}) {
                             { user ? user.username : "" }
                         </Col>
                         <Col className="edit-col">
-                            edit
+                            <button className="svg-btn">
+                                edit
+                            </button>
                         </Col>
                     </Row>
                 </div>
@@ -44,7 +55,9 @@ function Account({isAuthenticated}) {
                             ************
                         </Col>
                         <Col className="edit-col">
-                            edit
+                            <button className="svg-btn bg-btn" onClick={() => { setResetItem("password"); setShow(true); } }>
+                                edit
+                            </button>
                         </Col>
                     </Row>
                 </div>

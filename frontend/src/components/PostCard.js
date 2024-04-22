@@ -9,9 +9,9 @@ import CreatePost from './CreatePost';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { CopyAlert } from './CopyAlert';
+import { DeletedCard } from './DeletedCard';
 
 import "../assets/styling/PostCard.css";
-import { DeletedCard } from './DeletedCard';
 
 function PostCard({ post, isAuthenticated }) {
     const [liked, likes, setLike] = useInteractions(post.likes_count, post.user_liked);

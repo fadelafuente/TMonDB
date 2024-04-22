@@ -86,7 +86,6 @@ button.svg-btn {
     color: var(--placeholder-text-color);
 }
 
-
 button.svg-btn:hover {
     all: unset;
     color: var(--accent-color);

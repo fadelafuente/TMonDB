@@ -17,7 +17,6 @@ import store from './store';
 import Layout from './hocs/Layout';
 import SetUsername from './pages/SetUsername';
 import { SetUsernameConfirmation } from './pages/SetUsernameConfirmation';
-import Account from './pages/Account';
 
 export default function App() {
   const router = createBrowserRouter(createRoutesFromElements(
