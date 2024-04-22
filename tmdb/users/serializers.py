@@ -37,6 +37,11 @@ class UserSerializer(BaseSerializer):
         model = UserModel
         fields = ('id', 'username', 'bio')
 
+class CurrentUserSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
+        model = UserModel
+        fields = ('id', 'username', 'email')
+
 class FollowSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = UserModel

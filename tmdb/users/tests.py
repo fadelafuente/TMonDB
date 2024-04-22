@@ -82,3 +82,11 @@ class TestPosts(APITestCase):
         response = self.client.get(f"/auth/users/record/?username={self.user.username}")
     
         self.assertTrue(response.status_code == 200)
+
+    def test_get_current_user(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.get(f"/auth/users/me/")
+
+        self.assertTrue(response.status_code == 200)
+        self.assertTrue(key in ["username", "id", "email"] for key in response.data.keys())

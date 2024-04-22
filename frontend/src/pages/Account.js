@@ -3,8 +3,12 @@ import { React } from "react";
 import '../assets/styling/forms.css';
 import '../assets/styling/Account.css';
 import { Button, Col, Row } from "react-bootstrap";
+import { useCurrentUserDetails } from "../hooks/hooks";
+import { connect } from "react-redux";
 
-export default function Account() {
+function Account({isAuthenticated}) {
+    const [user] = useCurrentUserDetails(isAuthenticated);
+
     return (
         <>
             <div className="profile-info-container">
@@ -13,7 +17,9 @@ export default function Account() {
                     <h5>Email</h5>
                     <Row>
                         <Col>
-                            placeholder@placeholder.com
+                            { user ? 
+                                user.email.length > 50 ? `${user.email.slice(0, 20)}...` : user.email
+                            : "" }
                         </Col>
                         <Col className="edit-col">
                             edit
@@ -24,7 +30,7 @@ export default function Account() {
                     <h5>Username</h5>
                     <Row>
                         <Col>
-                            placeholderUser
+                            { user ? user.username : "" }
                         </Col>
                         <Col className="edit-col">
                             edit
@@ -56,3 +62,9 @@ export default function Account() {
         </>
     )
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, null)(Account);

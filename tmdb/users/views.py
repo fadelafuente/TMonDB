@@ -7,7 +7,7 @@ from rest_framework.decorators import action
 from rest_framework import status
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .serializers import FollowSerializer, FollowingSerializer, ProfileSerializer
+from .serializers import *
 from django.db.models import Count
 
 AppUser = get_user_model()
@@ -72,6 +72,8 @@ class TMonDBUserViewset(UserViewSet):
             return FollowingSerializer
         elif self.action == "record":
             return ProfileSerializer
+        elif self.action == "me" and self.request.method == "GET":
+            return CurrentUserSerializer
         return super().get_serializer_class()
     
     def get_queryset(self):

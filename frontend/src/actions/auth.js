@@ -311,3 +311,37 @@ export async function setUsername(username) {
     } catch (err) {
     }
 }
+
+export async function getUserProfile(username) {
+    const access = localStorage.getItem("access");
+
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `JWT ${access}`
+        }
+    };
+
+    try {
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/record/?username=${username}`, config);
+    } catch(err) {
+        return null;
+    }
+}
+
+export async function getCurrentUserDetails() {
+    const access = localStorage.getItem("access");
+
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `JWT ${access}`
+        }
+    };
+
+    try {
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
+    } catch(err) {
+        return null;
+    }
+}

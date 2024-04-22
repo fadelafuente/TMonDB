@@ -1,9 +1,8 @@
 import { useEffect, useCallback, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { deletePostById, getAllPosts, getUserProfile } from "../actions/posts";
+import { deletePostById, getAllPosts, createPost, updatePostById } from "../actions/posts";
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
-import { updatePostById } from "../actions/posts";
-import { createPost } from "../actions/posts";
+import { getCurrentUserDetails, getUserProfile } from "../actions/auth";
 
 export default function useGetPosts(query, pageNumber, kwargs={}) {
     const [loading, setLoading] = useState(true);
@@ -373,4 +372,18 @@ export function useGetProfile(username) {
     }, [username]);
 
     return [profile];
+}
+
+export function useCurrentUserDetails(isAuthenticated) {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        getCurrentUserDetails().then((response) => {
+            if(response && response.status === 200) {
+                setUser(response.data);
+            }
+        });
+    }, [isAuthenticated]);
+
+    return [user];
 }

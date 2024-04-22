@@ -109,9 +109,9 @@ function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
     )
 }
 
-    const mapStateToProps = state => ({
-        isAuthenticated: state.auth.isAuthenticated,
-        loginFailed: state.auth.loginFailed
-    });
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated,
+    loginFailed: state.auth.loginFailed
+});
 
 export default connect(mapStateToProps, { login, loginAttempt })(Login);
