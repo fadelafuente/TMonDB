@@ -81,7 +81,7 @@ export function useRequestSent(requestSent) {
 
     useEffect(() => {
         if(requestSent) {
-            return navigate("/home");
+            return navigate("/login");
         }
         // eslint-disable-next-line
     }, [requestSent]);

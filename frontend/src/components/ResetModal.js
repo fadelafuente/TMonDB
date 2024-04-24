@@ -1,17 +1,15 @@
 import { Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
-import { resetPassword } from "../actions/auth";
+import { setLoginByEmail } from "../actions/auth";
 import { connect } from "react-redux";
 
 import '../assets/styling/Modal.css';
 
-function ResetModal({resetPassword, resetItem, show, setShow, email}) {
+function ResetModal({setLoginByEmail, resetItem, show, setShow, email}) {
     function handleClick(e) {
         e.preventDefault();
 
-        if(resetItem === "password") {
-            resetPassword(email);
-        }
+        setLoginByEmail(email, resetItem);
         
         setShow(false);
     }
@@ -39,4 +37,4 @@ function ResetModal({resetPassword, resetItem, show, setShow, email}) {
     </>
 }
 
-export default connect(null, { resetPassword })(ResetModal);
+export default connect(null, { setLoginByEmail })(ResetModal);

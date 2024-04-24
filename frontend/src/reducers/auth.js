@@ -10,8 +10,8 @@ import {
     AUTHENTICATED_SUCCESS,
     AUTHENTICATED_FAIL,
     LOGOUT,
-    PASSWORD_RESET_SUCCESS,
-    PASSWORD_RESET_FAIL,
+    RESET_SUCCESS,
+    RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
     SOCIAL_AUTH_SUCCESS,
@@ -113,8 +113,8 @@ export default function auth(state = initialState, action) {
                 isAuthenticated: false,
                 user: null
             }
-        case PASSWORD_RESET_SUCCESS:
-        case PASSWORD_RESET_FAIL:
+        case RESET_SUCCESS:
+        case RESET_FAIL:
         case PASSWORD_RESET_CONFIRM_SUCCESS:
         case PASSWORD_RESET_CONFIRM_FAIL:
         case ACTIVATION_SUCCESS:

@@ -1,4 +1,4 @@
-import { resetPasswordConfirm } from "../actions/auth";
+import { resetLoginConfirm } from "../actions/auth";
 import React, { useState } from "react";
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useFormData, usePassword, useRequestSent } from "../hooks/hooks";
 
-function ResetPasswordConfirm({ resetPasswordConfirm }) {
+function ResetPasswordConfirm({ resetLoginConfirm }) {
     const { uid, token } = useParams();
     const [requestSent, setRequestSent] = useState(false);
     const [showPass, setShowPass] = usePassword(false);
@@ -24,7 +24,7 @@ function ResetPasswordConfirm({ resetPasswordConfirm }) {
     function onSubmit(e) {
         e.preventDefault();
 
-        resetPasswordConfirm(uid, token, new_password, re_new_password);
+        resetLoginConfirm(uid, token, formData);
         setRequestSent(true);
     }
 
@@ -82,4 +82,4 @@ function ResetPasswordConfirm({ resetPasswordConfirm }) {
     )
 }
 
-export default connect(null, { resetPasswordConfirm })(ResetPasswordConfirm);
+export default connect(null, { resetLoginConfirm })(ResetPasswordConfirm);

@@ -1,11 +1,11 @@
-import { resetPassword } from "../actions/auth";
+import { setLoginByEmail } from "../actions/auth";
 import React, { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
 import { useFormData, useRequestSent } from "../hooks/hooks";
 
-function ResetPassword({ resetPassword }) {
+function LoginChange({ setLoginByEmail, reset_type="password" }) {
     const [requestSent, setRequestSent] = useState(false);
     const [formData, setFormData] = useFormData({
         email: ''
@@ -17,13 +17,13 @@ function ResetPassword({ resetPassword }) {
     function onSubmit(e) {
         e.preventDefault();
 
-        resetPassword(email);
+        setLoginByEmail(email, reset_type);
         setRequestSent(true);
     }
 
     return (
         <div className="form-container">
-            <h2 className="form-title">Request Password Reset</h2>
+            <h2 className="form-title">Request {reset_type} change</h2>
             <Form className="form" onSubmit={ e=> onSubmit(e) }>
                 <Form.Group controlId="formEmail" className="form-group">
                     <Form.Control
@@ -36,11 +36,11 @@ function ResetPassword({ resetPassword }) {
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit">
-                    Request Reset
+                    Request change
                 </Button>
             </Form>
         </div>
     )
 }
 
-export default connect(null, { resetPassword })(ResetPassword);
+export default connect(null, { setLoginByEmail })(LoginChange);

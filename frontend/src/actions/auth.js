@@ -11,8 +11,8 @@ import {
     AUTHENTICATED_SUCCESS,
     AUTHENTICATED_FAIL,
     LOGOUT,
-    PASSWORD_RESET_SUCCESS,
-    PASSWORD_RESET_FAIL,
+    RESET_SUCCESS,
+    RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
     SOCIAL_AUTH_SUCCESS,
@@ -209,7 +209,7 @@ export const verify = (uid, token) => async dispatch => {
     }
 }
 
-export const resetPassword = (email) => async dispatch => {
+export const setLoginByEmail = (email, reset_type) => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
@@ -219,29 +219,29 @@ export const resetPassword = (email) => async dispatch => {
     const body = JSON.stringify({ email });
 
     try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password/`, body, config);
+        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_${reset_type}/`, body, config);
 
         dispatch({
-            type: PASSWORD_RESET_SUCCESS
+            type: RESET_SUCCESS
         });
     } catch(err) {
         dispatch({
-            type: PASSWORD_RESET_FAIL
+            type: RESET_FAIL
         });
     }
 }
 
-export const resetPasswordConfirm = (uid, token, new_password, re_new_password) => async dispatch => {
+export const resetLoginConfirm = (uid, token, kwargs={}, reset_type="password") => async dispatch => {
     const config = {
         headers: {
             "Content-Type": "application/json"
         }
     };
 
-    const body = JSON.stringify({ uid, token, new_password, re_new_password });
+    const body = JSON.stringify({ uid, token, ...kwargs });
 
     try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_password_confirm/`, body, config);
+        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_${reset_type}_confirm/`, body, config);
 
         dispatch({
             type: PASSWORD_RESET_CONFIRM_SUCCESS
