@@ -4,12 +4,15 @@ import { useState } from "react";
 import PostArticle from "../components/PostArticle";
 import ProfileInfo from "../components/ProfileInfo";
 import ViewPost from "../components/ViewPost";
+import { useCurrentUserDetails } from "../hooks/hooks";
+import { connect } from "react-redux";
 
 import "../assets/styling/content.css";
-import Account from "./Account";
+import Account from "../components/Account";
 
-export default function HomePage({ accessedContent }) {
+function HomePage({ accessedContent, isAuthenticated }) {
     const [query, setQuery] = useState("");
+    const [user] = useCurrentUserDetails(isAuthenticated);
 
     function handlePath() {
         if(accessedContent === "home") {
@@ -21,7 +24,7 @@ export default function HomePage({ accessedContent }) {
         } else if(accessedContent === "user") {
             return <ProfileInfo />;
         } else if(accessedContent === "account") {
-            return <Account />
+            return <Account user={user} />
         } else if(accessedContent === "post") {
             return <ViewPost />;
         }
@@ -30,7 +33,7 @@ export default function HomePage({ accessedContent }) {
     return (
         <>
             <div className="navbar-container">
-                <TitleBar setQuery={(value) => setQuery(value)} />
+                <TitleBar setQuery={(value) => setQuery(value)} user={user} />
             </div>
             <div className="content-container center-content">
                 <div className="aside-container left-aside" id="sticky-element">
@@ -41,6 +44,7 @@ export default function HomePage({ accessedContent }) {
                             <Link to="/">Trending</Link>
                             <Link to="/">Monsters</Link>
                             <Link to="/">Regions</Link>
+                            { user ? <Link to={ `/${user.username}` }>Account</Link> : "" }
                         </div>
                     </div>
                 </div>
@@ -57,3 +61,9 @@ export default function HomePage({ accessedContent }) {
         </>
     )
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, null)(HomePage);

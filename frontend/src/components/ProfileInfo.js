@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Button, Col, Row, Tab, Tabs, NavDropdown } from 'react-bootstrap';
-import { useGetProfile, useMiddleViewPort } from '../hooks/hooks';
+import { useFollow, useGetProfile, useMiddleViewPort } from '../hooks/hooks';
 import { BsThreeDots } from 'react-icons/bs';
 import PostArticle from './PostArticle';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";
 
-function ProfileInfo({ isAuthenticated }) {
+export default function ProfileInfo() {
     const { creator } = useParams();
     const [aboveMid, setAboveMid] = useMiddleViewPort();
-    const [profile] = useGetProfile(creator);
+    const [profile, followed, follows, setFollow] = useGetProfile(creator);
 
     return (
         <>
@@ -31,12 +31,12 @@ function ProfileInfo({ isAuthenticated }) {
                     <div className="followers-row">
                         <div className="following follow">
                             <a href="#">
-                            { profile ? profile.following_count : 0 } Following
+                                { profile ? profile.following_count : 0 } Following
                             </a>
                         </div>
                         <div className="followers follow">
                             <a href="#">
-                                { profile ? profile.followers_count : 0 } Followers
+                                { follows ? follows : 0 } Followers
                             </a>
                         </div>
 
@@ -49,14 +49,19 @@ function ProfileInfo({ isAuthenticated }) {
                     <Row>
                         <Col>
                             {
-                                profile && profile.current_user ? 
-                                    <Button className="rounded-btn profile-btn edit-btn">
-                                        Edit Profile
-                                    </Button>
+                                profile ? 
+                                    profile.current_user ?
+                                        <Button className="rounded-btn profile-btn edit-btn">
+                                            Edit Profile
+                                        </Button>
+                                        :
+                                        <Button className="rounded-btn profile-btn" onClick={() => setFollow(profile.id)}>
+                                            { followed ? "Unfollow" : "Follow" } 
+                                        </Button>
                                 :
-                                <Button className="rounded-btn profile-btn">
-                                    Follow
-                                </Button>
+                                    <Button className="rounded-btn profile-btn">
+                                        Follow
+                                    </Button>
                             }
                             <div className="more-user-interactions-btn">
                                 <NavDropdown title={<BsThreeDots/>} 
@@ -91,9 +96,3 @@ function ProfileInfo({ isAuthenticated }) {
     )
  
 }
-
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(ProfileInfo);

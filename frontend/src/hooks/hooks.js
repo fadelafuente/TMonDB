@@ -2,7 +2,7 @@ import { useEffect, useCallback, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { deletePostById, getAllPosts, createPost, updatePostById } from "../actions/posts";
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
-import { getCurrentUserDetails, getUserProfile } from "../actions/auth";
+import { followUser, getCurrentUserDetails, getUserProfile } from "../actions/auth";
 
 export default function useGetPosts(query, pageNumber, kwargs={}) {
     const [loading, setLoading] = useState(true);
@@ -360,18 +360,20 @@ export function useDeletePost(initial) {
 
 export function useGetProfile(username) {
     const [profile, setProfile] = useState(null);
+    const [followed, follows, setFollow] = useFollow(0, false);
 
     useEffect(() => {
         getUserProfile(username).then((response) => {
             if(response && response.status === 200) {
                 setProfile(response.data);
+                setFollow(response.data["followers_count"], response.data["user_follows"]);
             }
         }).catch(() => {
             setProfile(null);
         });
     }, [username]);
 
-    return [profile];
+    return [profile, followed, follows, setFollow];
 }
 
 export function useCurrentUserDetails(isAuthenticated) {
@@ -386,4 +388,30 @@ export function useCurrentUserDetails(isAuthenticated) {
     }, [isAuthenticated]);
 
     return [user];
+}
+
+export function useFollow(initial_interaction, user_interacted) {
+    const [interaction, setInteraction] = useState(initial_interaction);
+    const [interacted, setInteracted] = useState(user_interacted);
+
+    function handleFollowUser(pid) {
+        followUser(pid).then((response) => {
+            if(response && response.status === 200) {
+                let change = interacted ? -1 : 1;
+                setInteraction(interaction + change);
+                setInteracted((prev) => !prev);
+            }
+        });
+    }
+
+    function handleFollowHelper(value, interacted=null) {
+        if(typeof interacted === "boolean") {
+            setInteraction(value);
+            setInteracted(interacted);   
+        } else {
+            handleFollowUser(value);
+        }
+    }
+
+    return [interacted, interaction, handleFollowHelper];
 }

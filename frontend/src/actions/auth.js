@@ -345,3 +345,22 @@ export async function getCurrentUserDetails() {
         return null;
     }
 }
+
+export async function followUser(id) {
+    const access = localStorage.getItem("access");
+    
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `JWT ${access}`
+        }
+    };
+
+    const body = JSON.stringify({ id });
+
+    try {
+        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/follow/`, body, config);
+    } catch(err) {
+        return null;
+    }
+}

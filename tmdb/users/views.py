@@ -87,6 +87,38 @@ class TMonDBUserViewset(UserViewSet):
                 queryset = AppUser.objects.none()
 
         return queryset
+    
+    def get_extra_information(self, request, user):
+        # initialize booleans
+        try:
+            user["user_follows"] = False
+
+            current_user = request.user
+            if current_user.is_authenticated:
+                user["user_follows"] = current_user.id in user["followers"]
+        except:
+            try:
+                user.user_follows = False
+
+                current_user = request.user
+                if current_user.is_authenticated:
+                    user.user_follows = current_user.id in user.followers
+            except:
+                pass
+
+    def retrieve(self, request, *args, **kwargs):
+        response = super().retrieve(request, *args, **kwargs)
+
+        self.get_extra_information(request, response.data)
+        return response
+    
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+
+        for user in response.data["results"]:
+            self.get_extra_information(request, user)
+        
+        return response
 
     @action(detail=False, methods=['patch'])
     def follow(self, request):

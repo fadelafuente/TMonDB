@@ -66,6 +66,7 @@ div.interact-row {
 }
 
 button.profile-btn {
+    max-width: 100px;
     background-color: var(--accent-color);
     color: var(--background-color);
     margin-right: 12px;

@@ -3,15 +3,12 @@ import { React, useState } from "react";
 import '../assets/styling/forms.css';
 import '../assets/styling/Account.css';
 import { Button, Col, Row } from "react-bootstrap";
-import { useCurrentUserDetails } from "../hooks/hooks";
-import { connect } from "react-redux";
-import ResetModal from "../components/ResetModal";
+import ResetModal from "./ResetModal";
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/Modal.css";
 
-function Account({isAuthenticated}) {
-    const [user] = useCurrentUserDetails(isAuthenticated);
+export default function Account({user}) {
     const [show, setShow] = useState(false);
     const [resetItem, setResetItem] = useState("");
 
@@ -75,9 +72,3 @@ function Account({isAuthenticated}) {
         </>
     )
 }
-
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(Account);

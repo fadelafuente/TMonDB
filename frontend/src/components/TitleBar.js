@@ -12,7 +12,7 @@ import CreatePost from './CreatePost';
 import "../assets/styling/forms.css";
 import "../assets/styling/App.css";
 
-function TitleBar({setQuery, logout, isAuthenticated }) {
+function TitleBar({setQuery, logout, isAuthenticated, user }) {
     const [show, setShow] = useState(false);
     const [formData, setFormData] = useState("");
 
@@ -59,7 +59,7 @@ function TitleBar({setQuery, logout, isAuthenticated }) {
                     </NavDropdown.Item>
                 </NavDropdown> 
                 <NavDropdown title={ <BsPersonCircle /> } id="nav-dropdown" className="rounded-circle" drop="down" align="end">
-                    <NavDropdown.Item href="#action/3.1">
+                    <NavDropdown.Item href={ user ? `/${user.username}` : "/home" }>
                         Account
                     </NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.2">
@@ -94,13 +94,13 @@ function TitleBar({setQuery, logout, isAuthenticated }) {
                         The Monster Database
                         </Offcanvas.Title>
                     </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <Nav className="me-auto">
-                        <Nav.Link href="#home">Trending</Nav.Link>
-                        <Nav.Link href="#link">Monsters</Nav.Link>
-                        <Nav.Link href="#link">Regions</Nav.Link>
-                    </Nav>
-                </Offcanvas.Body>
+                    <Offcanvas.Body>
+                        <Nav className="me-auto">
+                            <Nav.Link href="#home">Trending</Nav.Link>
+                            <Nav.Link href="#link">Monsters</Nav.Link>
+                            <Nav.Link href="#link">Regions</Nav.Link>
+                        </Nav>
+                    </Offcanvas.Body>
                 </Navbar.Offcanvas>
                 <Form className="form search" onSubmit={e => onSubmit(e) }>
                     <InputGroup>
