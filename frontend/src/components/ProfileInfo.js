@@ -1,9 +1,10 @@
-import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Button, Col, Row, Tab, Tabs, NavDropdown } from 'react-bootstrap';
-import { useFollow, useGetProfile, useMiddleViewPort } from '../hooks/hooks';
+import { useGetProfile, useMiddleViewPort } from '../hooks/hooks';
 import { BsThreeDots } from 'react-icons/bs';
 import PostArticle from './PostArticle';
+import EditModal from './EditModal';
+import { useState } from 'react';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";
@@ -12,9 +13,11 @@ export default function ProfileInfo() {
     const { creator } = useParams();
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [profile, followed, follows, setFollow] = useGetProfile(creator);
+    const [show, setShow] = useState(false);
 
     return (
         <>
+            <EditModal show={show} setShow={() => setShow() } />
             <div className="banner-container">
             </div>
             <div className="profile-info-container">
@@ -51,7 +54,7 @@ export default function ProfileInfo() {
                             {
                                 profile ? 
                                     profile.current_user ?
-                                        <Button className="rounded-btn profile-btn edit-btn">
+                                        <Button className="rounded-btn profile-btn edit-btn" onClick={() => setShow(true)}>
                                             Edit Profile
                                         </Button>
                                         :

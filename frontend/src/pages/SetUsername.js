@@ -1,4 +1,4 @@
-import { setUsername } from "../actions/auth";
+import { updateDetails } from "../actions/auth";
 import React, { useState } from "react";
 import { Alert, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
@@ -24,7 +24,7 @@ function SetUsername({ isAuthenticated }) {
             setMessage("The username needs to be atleast 5 characters.");
             setShow(true);
         } else {
-            setUsername(username).then((response) => {
+            updateDetails({username}).then((response) => {
                 let message = "";
                 if(response && response.status === 200) {
                     message = "Username successfully updated";

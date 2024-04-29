@@ -17,3 +17,7 @@ button.modal-btn {
 button.bg-btn:active {
     background-color: var(--background-color) !important;
 }
+
+h5.modal-title {
+    margin-bottom: 0;
+}

@@ -2,7 +2,7 @@ import { useEffect, useCallback, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { deletePostById, getAllPosts, createPost, updatePostById } from "../actions/posts";
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
-import { followUser, getCurrentUserDetails, getUserProfile } from "../actions/auth";
+import { followUser, getCurrentUserDetails, getUserProfile, updateDetails } from "../actions/auth";
 
 export default function useGetPosts(query, pageNumber, kwargs={}) {
     const [loading, setLoading] = useState(true);
@@ -414,4 +414,30 @@ export function useFollow(initial_interaction, user_interacted) {
     }
 
     return [interacted, interaction, handleFollowHelper];
+}
+
+export function useUpdateProfile(initialForm) {
+    const [formData, setFormData] = useFormData(initialForm);
+
+    function handleFormData(e, resetPost=false) {
+        if(e.target.id === "auto-resizing") {
+            const textarea = document.getElementById("auto-resizing");
+            textarea.addEventListener('input', autoResize, false);
+            function autoResize() {
+                this.style.height = "auto";
+                this.style.height = this.scrollHeight + "px";
+            }
+        }
+        setFormData(e, resetPost);
+    }
+
+    function handleUpdateProfile(e, bio) {
+        e.preventDefault();
+
+        if(bio) {
+            updateDetails({bio});
+        }
+    }
+
+    return [formData, handleFormData, handleUpdateProfile];
 }
