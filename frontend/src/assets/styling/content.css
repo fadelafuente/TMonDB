@@ -74,3 +74,7 @@
     width: 100%;
     max-width: 320px;
 }
+
+div.loading-container {
+    margin: 40px auto;
+}
