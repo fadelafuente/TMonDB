@@ -16,3 +16,4 @@ class Post(models.Model):
     who_reposted = models.ManyToManyField(UserModel, related_name="reposts", blank=True)
     parent = models.ForeignKey("self", related_name="comments", on_delete=models.SET_NULL, blank=True, null=True)
     parent_deleted = models.BooleanField(default=False)
+    # is_deleted = models.BooleanField(default=False)

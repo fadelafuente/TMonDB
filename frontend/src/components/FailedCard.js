@@ -10,7 +10,7 @@ export function FailedCard() {
                 <BsXCircle/>
             </Card.Body>
             <Card.Footer className='deleted-text'>
-                Posts failed to load
+                Post(s) failed to load.
             </Card.Footer>
         </Card>
     )

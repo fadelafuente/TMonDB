@@ -8,6 +8,7 @@ import ReplyBar from "./ReplyBar";
 import "../assets/styling/content.css";
 import "../assets/styling/ViewPost.css"
 import { DeletedCard } from "./DeletedCard";
+import { FailedCard } from "./FailedCard";
 
 export default function ViewPost() {
     const { pid } = useParams();
@@ -56,7 +57,7 @@ export default function ViewPost() {
                 </div>
 
                     : 
-                "Error!!!"
+                <FailedCard />
             }
         </>
     )
