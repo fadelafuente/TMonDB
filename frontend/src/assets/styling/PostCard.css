@@ -1,0 +1,251 @@
+div.card {
+    margin-bottom: 12px;
+    background-color: var(--background-content-color);
+    color: var(--text-color);
+}
+
+div.card-body {
+    padding-top: 8px;
+}
+
+div.article-container {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.post-link {
+    all: unset;
+    cursor: pointer;
+}
+
+.image-gallery > img {
+    width: 100%;
+    height: 100%;
+    max-height: 750px;
+    max-width: 594px;
+}
+
+.carousel-item > img {
+    width: 100%;
+    height: 100%;
+    max-height: 750px;
+    max-width: 594px;
+}
+
+div.center-row-items {
+    display: flex;
+    align-items: center;
+}
+
+div.col {
+    display: flex;
+}
+
+div.creator-container > a {
+    all: unset;
+}
+
+div.creator-container > a:hover {
+    text-decoration: underline;
+}
+
+div.time-col {
+    justify-content: right;
+}
+
+div.more-col {
+    padding-left: 0px;
+}
+
+div.more-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+}
+
+div.more-btn:hover {
+    color: var(--accent-color);
+    background-color: var(--background-color);
+}
+
+/* interaction row */
+div.interactions-row {
+    margin: 0;
+}
+
+div.interaction-btn {
+    margin: 0;
+    padding: 0 4px;
+    width: 100%;
+}
+
+button.svg-btn {
+    all: unset;
+    color: var(--placeholder-text-color);
+}
+
+button.svg-btn:hover {
+    all: unset;
+    color: var(--accent-color);
+    cursor: pointer;
+}
+
+button.svg-btn:active {
+    background-color: var(--background-content-color) !important;
+    color: var(--accent-secondary-color) !important;
+}
+
+div.inner-btn-div {
+    margin: 0;
+}
+
+div.interaction-nums {
+    padding: 0;
+    font-size: 15px;
+}
+
+div.interaction-icon {
+    padding: 0 6px  0 0;
+    display: grid;
+    align-items: center;
+}
+
+div.interacted {
+    color: var(--accent-color);
+}
+
+div.share-btn {
+    max-width: 20px;
+    width: 100%;
+    padding: 0;
+}
+
+/* create post */
+.create-post {
+    padding-top: 65px;
+}
+
+div.modal-content {
+    background-color: var(--background-color);
+}
+
+.input-content {
+    word-break: break-all;
+    border: none;
+    color: var(--text-color);
+    display: block;
+    width: 100%;
+}
+
+textarea.input-textarea, textarea.input-textarea:focus {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    resize: none;
+    overflow: hidden;
+    border: none;
+    box-shadow: none;
+    padding: 6px 0px;
+}
+
+textarea.input-textarea::placeholder {
+    color: var(--placeholder-text-color);
+  }
+
+[contenteditable=true]:empty:before {
+    content: attr(placeholder);
+    pointer-events: none;
+    color: var(--placeholder-text-color);
+}
+
+.input-content:focus-visible {
+    outline: none;
+}
+
+.no-select {
+    user-select: none;
+}
+
+/* media-btn */
+button.media-btn, button.media-btn:hover {
+    height: 24px;
+    width: 24px;
+    display: flex;   
+    font-size: 24px;
+}
+
+/* post and close buttons */
+button.rounded-btn {
+    border-radius: 20px;
+    width: 100%;
+    max-width: 80px;
+    min-width: 60px;
+    background-color: var(--background-color);
+    color: var(--placeholder-text-color);
+    border: none;
+    font-weight: bold;
+}
+
+button.rounded-btn:hover {
+    background-color: var(--button-hover-color);
+    color: var(--accent-color);
+}
+
+button.rounded-btn:active {
+    background-color: var(--background-content-color) !important;
+    color: var(--accent-secondary-color) !important;
+    opacity: 80%;
+}
+
+button.close-btn {
+    margin-right: 20px;
+}
+
+/* Create Post Modal Styling */
+div.discard-post {
+    text-align: center;
+}
+
+div.modal-header {
+    border-bottom: 2px solid var(--background-content-color);
+}
+
+div.modal-footer {
+    border-top: 2px solid var(--background-content-color);
+}
+
+div.modal-backdrop {
+    z-index: 1055;
+}
+
+div.modal-footer {
+    padding: 4px 12px;
+}
+
+div.copy-alert {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 80vh;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1055;
+    background-color: var(--accent-color);
+    border: none;
+    color: var(--background-color);
+    font-weight: bold;
+    height: 60px;
+    max-width: 30vw;
+    min-width: 250px; 
+}
+
+div.deleted-icon {
+    text-align: center;
+    font-size: 10vh;
+}
+
+div.deleted-text {
+    text-align: center;
+}

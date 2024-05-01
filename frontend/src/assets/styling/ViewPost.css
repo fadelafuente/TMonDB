@@ -1,0 +1,30 @@
+
+div.parent-container {
+    border-bottom: 2px solid var(--input-box-color);
+    margin-bottom: 12px;
+}
+
+div.reply-container {
+    border-top: 2px solid var(--input-box-color);
+    border-bottom: 2px solid var(--input-box-color);
+    padding: 12px 20px;
+    width: 100%;
+    margin: 12px 0;
+}
+
+span.submit-reply:hover {
+    cursor: pointer;
+    background-color: var(--accent-color);
+    color: var(--background-color);
+}
+
+span.submit-reply:active {
+    cursor: pointer;
+    background-color: var(--accent-secondary-color);
+    color: var(--background-color);
+}
+
+button.reply-btn, button.reply-btn:hover, button.reply-btn:active {
+    all: unset !important;
+    cursor: pointer;
+}

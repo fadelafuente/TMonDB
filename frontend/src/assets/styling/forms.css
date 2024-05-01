@@ -27,13 +27,13 @@
     border: 1px solid var(--input-box-color);
     height: 40px;
     width: 100%;
-    text-indent: 10px;
     font-family: "Inter", sans-serif;
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
     font-weight: 400;
     background-color: var(--input-box-color);
     color: var(--text-color);
     border-radius: 6px;
+    caret-color: var(--text-color);
   }
 
   input.form-control::placeholder {
@@ -63,8 +63,20 @@
     box-shadow: none;
     transition: background-color 5000s ease-in-out 0s;
   }
+
+  input.form-control::-ms-reveal,
+  input.form-control::-ms-clear,
+  input.form-control::after {
+    display: none; 
+  }
+
+  div.form-group {
+    margin: 10px auto;
+    width: 100%;
+  }
   
   form > button.btn {
+    margin: 10px auto;
     background-color: var(--accent-secondary-color);
     border: none;
     border-radius: 6px;
@@ -81,12 +93,37 @@
 
   form > button.btn:active {
     outline: none;
-    background-color: var(--accent-secondary-color);
+    background-color: var(--accent-color) !important;
+    border: none;
   }
 
   small.form-text {
     color: var(--placeholder-text-color);
     text-align: left;
+  }
+
+  /* Add a green text color and a checkmark when the requirements are right */
+  small.valid {
+    padding-left: 10px;
+  }
+
+  .valid:before {
+    color: green;
+    position: relative;
+    left: -10px;
+    content: "\2713";
+  }
+
+  /* Add a red text color and an "x" icon when the requirements are wrong */
+  small.invalid {
+    padding-left: 10px;
+  }
+
+  small.invalid:before {
+    color: red;
+    position: relative;
+    left: -10px;
+    content: "\2715";
   }
 
   form.form {
@@ -99,6 +136,67 @@
 
   span.input-group-text {
     background-color: var(--input-box-color);
-    border: none;
     color: var(--text-color); 
+    border: none;
+    height: 40px;
   }
+
+small.or-social-auth {
+  margin: 0 auto;
+  text-align: center;
+}
+
+hr.break-line {
+  color: var(--placeholder-text-color);
+}
+
+button.social-button {
+  margin: 10px auto;
+  border: none;
+  border-radius: 6px;
+  height: 40px;
+  width: 100%;
+  color: var(--text-color);
+  font-family: "Inter", sans-serif;
+}
+
+button.social-button:hover {
+  outline: none;
+}
+
+button.social-button:active {
+  outline: none;
+  border: none;
+}
+
+button.google-button {
+  background-color: #DB4437;
+}
+
+button.google-button:hover {
+  background-color: #E57368;
+}
+
+button.google-button:active {
+  background-color: #E57368 !important;
+}
+
+button.facebook-button {
+  background-color: #0a65ff;
+}
+
+button.facebook-button:hover {
+  background-color: #7cb6ff;
+}
+
+button.facebook-button:active {
+  background-color: #7cb6ff !important;
+}
+
+#centered-text {
+  text-align: center;
+}
+
+div.verify-container {
+  min-width: 500px;
+}

@@ -1,9 +1,10 @@
-import { React, useState } from "react";
-import { Navigate, useParams } from "react-router-dom";
 import { verify } from '../actions/auth';
-import { connect } from 'react-redux';
+import { React, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { connect } from 'react-redux';
+import { useParams } from "react-router-dom";
+import { useNavigateOnVerify } from '../hooks/hooks';
 
 import '../assets/styling/forms.css';
 
@@ -14,16 +15,13 @@ export async function action() {
 function Activate({ verify }) {
     const { uid, token } = useParams();
     const [verified, setVerified] = useState(false);
+    useNavigateOnVerify(verified);
 
     function verify_account(e) {
         e.preventDefault();
 
         verify(uid, token);
         setVerified(true);
-    }
-
-    if(verified) {
-        return <Navigate replace to="/trending" />
     }
 
     return (
