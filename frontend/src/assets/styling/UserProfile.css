@@ -149,7 +149,7 @@ ul.nav-tabs {
     margin-bottom: 12px;
 }
 
-div.followers-row {
+div.align-row {
     display: flex;
     flex-direction: row;
 }

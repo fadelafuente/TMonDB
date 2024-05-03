@@ -371,6 +371,8 @@ export function useGetProfile(username) {
         }).catch(() => {
             setProfile(null);
         });
+        
+        // eslint-disable-next-line
     }, [username]);
 
     return [profile, followed, follows, setFollow];

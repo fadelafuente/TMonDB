@@ -31,7 +31,7 @@ export default function ProfileInfo() {
                             @{ profile ? profile.username : creator }
                         </div>
                     </div>
-                    <div className="followers-row">
+                    <div className="align-row">
                         <div className="following follow">
                             <a href="#">
                                 { profile ? profile.following_count : 0 } Following

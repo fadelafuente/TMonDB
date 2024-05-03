@@ -1,9 +1,9 @@
 import { usePaginatedPosts } from "../hooks/hooks";
 import PostCard from "./PostCard";
 import Spinner from 'react-bootstrap/Spinner';
+import { FailedCard } from "./FailedCard";
 
 import "../assets/styling/content.css";
-import { FailedCard } from "./FailedCard";
 
 export default function PostArticle({query, kwargs={}}) {
     const [posts, lastPost] = usePaginatedPosts(query, kwargs);

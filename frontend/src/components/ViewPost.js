@@ -12,7 +12,6 @@ import { FailedCard } from "./FailedCard";
 
 export default function ViewPost() {
     const { pid } = useParams();
-    const [query, setQuery] = useState("");
     const [post, setPost] = useState("");
     const [parent, setParent] = useState("");
 
@@ -52,12 +51,14 @@ export default function ViewPost() {
                         <ReplyBar parent={post.id} />
                     </div>
                     <div className="comments-container article-container">
-                        <PostArticle query={query} kwargs={{parent: post.id}} />
+                        <PostArticle query={ null } kwargs={ {parent: post.id} } />
                     </div>
                 </div>
 
                     : 
-                <FailedCard />
+                    <div className="parent-container article-container">
+                        <FailedCard />
+                    </div>
             }
         </>
     )
