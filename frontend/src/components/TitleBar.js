@@ -71,7 +71,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                     <NavDropdown.Item href="settings/account">
                         Settings
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#!" onClick={ logout }>
+                    <NavDropdown.Item href="/home" onClick={ () => logout() }>
                         Logout
                     </NavDropdown.Item>
                 </NavDropdown>

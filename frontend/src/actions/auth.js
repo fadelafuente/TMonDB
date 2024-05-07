@@ -155,12 +155,6 @@ export const logout = () => async dispatch => {
     dispatch({
         type: LOGOUT
     });
-
-    if(window.location.pathname === "/home") {
-        window.location.reload();
-    } else {
-        redirect("/home");
-    }
 }
 
 export const register = (first_name, last_name, username, email, password, re_password) => async dispatch => {
@@ -301,7 +295,8 @@ export async function updateDetails(kwargs) {
     const config = {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `JWT ${localStorage.getItem("access")}`        }
+            "Authorization": `JWT ${localStorage.getItem("access")}`
+        }
     };
 
     const body = JSON.stringify({ ...kwargs });
@@ -361,6 +356,24 @@ export async function followUser(id) {
     try {
         return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/follow/`, body, config);
     } catch(err) {
+        return null;
+    }
+}
+
+export async function deleteUser(current_password) {    
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `JWT ${localStorage.getItem("access")}`
+        },
+        "data": JSON.stringify({ current_password })
+    };
+
+    try {
+        return await axios.delete(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
+    } catch(err) {
+        if(err.response && err.response.data)
+            return err.response;
         return null;
     }
 }

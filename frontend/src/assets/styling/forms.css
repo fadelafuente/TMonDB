@@ -228,3 +228,8 @@ button.pop-on-hover-btn:active {
 button.cancel-btn {
   margin-right: 12px;
 }
+
+div.button-row {
+  display: flex;
+  margin-top: 12px;
+}

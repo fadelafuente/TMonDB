@@ -19,7 +19,7 @@ export default function EditModal({show, setShow}) {
     function handleClick(e) {
         e.preventDefault();
 
-        setFormData(e, bio)  
+        setFormData(e, bio);
         setShow(false);
 
         window.location.reload();

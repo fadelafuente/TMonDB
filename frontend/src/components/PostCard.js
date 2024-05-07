@@ -1,14 +1,13 @@
-import { Col, Placeholder, Row, NavDropdown } from 'react-bootstrap';
+import { Col, Placeholder, Row, NavDropdown, Alert } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDotsFill, BsThreeDots } from 'react-icons/bs';
 import { handleTimeDifference } from '../functions/handlers';
 import ImageGallery from './ImageGallery';
-import { useDeletePost, useInteractions, useMiddleViewPort } from '../hooks/hooks';
+import { useDeletePost, useInteractions, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
 import { Fragment, useState } from 'react';
 import CreatePost from './CreatePost';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { CopyAlert } from './CopyAlert';
 import { DeletedCard } from './DeletedCard';
 
 import "../assets/styling/PostCard.css";
@@ -19,7 +18,7 @@ function PostCard({ post, isAuthenticated }) {
     const [commented, comments] = useInteractions(post.comments_count, post.user_commented);
     const [show, setShow] = useState(false);
     const [aboveMid, setAboveMid] = useMiddleViewPort();
-    const [showAlert, setShowAlert] = useState(false);
+    const [showAlert, setShowAlert] = useTimedAlert(false);
     const [isDeleted, setIsDeleted] = useDeletePost(false);
     const navigate = useNavigate();
 
@@ -50,9 +49,16 @@ function PostCard({ post, isAuthenticated }) {
         return (
             <>
                 <CreatePost show={show} setShow={() => setShow()} is_reply={true} parent={post.id} />
-                { showAlert ? <CopyAlert showAlert={showAlert} setShowAlert={() => setShowAlert()} /> : "" }
+                <Alert variant="success" className="copy-alert" show={showAlert}>
+                    <Alert.Heading>Copied to clipboard.</Alert.Heading>
+                </Alert>
                 <Card>
-                    <a href={ post ? `/${post.creator_username}/${post.id}` : "/home" } 
+                    <a href={ 
+                        post ? 
+                            post.creator_username ? `/${post.creator_username}/${post.id}` : `/deleted/${post.id}`
+                    : 
+                        "/home" 
+                    } 
                         className="post-link"
                     >
                         <Card.Body>
@@ -60,9 +66,14 @@ function PostCard({ post, isAuthenticated }) {
                                 <Row className="center-row-items">
                                     <Col>
                                         <div className="creator-container">
-                                            <a href={ post ? `/${post.creator_username}` : "/home" }>
-                                                { post ? post.creator_username : <Placeholder xs={8} /> }
-                                            </a>
+                                            {
+                                                post && post.creator_username ? 
+                                                    <a href={ `/${post.creator_username}` }>
+                                                        { post.creator_username }
+                                                    </a>
+                                                :
+                                                "[Deleted]"
+                                            }
                                         </div>
                                     </Col>
                                     <Col className="time-col" id="time-col">
@@ -156,7 +167,7 @@ function PostCard({ post, isAuthenticated }) {
                                     drop={ aboveMid ? "up-centered" : "down-centered" }
                                     onClick={e => setAboveMid(e)}
                                 >
-                                    <NavDropdown.Item onClick={() => handleCopyLink(`${post.creator_username}/${post.id}`)}>
+                                    <NavDropdown.Item onClick={() => handleCopyLink(post.creator_username ? `${post.creator_username}/${post.id}` : `deleted/${post.id}`)}>
                                         Copy link
                                     </NavDropdown.Item>
                                     { isAuthenticated ? handleMoreClick : "" }

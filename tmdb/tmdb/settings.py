@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework.authtoken',
     'social_django',
     'monsters',
     'moves',

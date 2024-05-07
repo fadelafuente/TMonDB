@@ -69,7 +69,7 @@ class PostViewSet(viewsets.ModelViewSet):
             user = AppUser.objects.get(id=creator_id)
             post["creator_username"] = user.get_username()
         except:
-            post["creator_username"] = "anonymous"
+            post["creator_username"] = None
 
         # initialize booleans
         post["user_liked"] = False

@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
 import { useFormData, useNavigateNotAuth } from "../hooks/hooks";
 
+import "../assets/styling/Modal.css";
 import "../assets/styling/forms.css";
 
 function SetUsername({ isAuthenticated, handleEditUsername, handleUsername }) {
@@ -65,10 +66,10 @@ function SetUsername({ isAuthenticated, handleEditUsername, handleUsername }) {
                         </InputGroup>
                     </Form.Group>
                     <div className="align-row align-right">
-                        <Button className="pop-on-hover-btn cancel-btn" onClick={ () => { handleEditUsername(false) } }>
+                        <Button className="rounded-btn close-btn modal-btn" onClick={ () => { handleEditUsername(false) } }>
                             Cancel
                         </Button>
-                        <Button className="pop-on-hover-btn" variant="primary" type="submit">
+                        <Button className="rounded-btn modal-btn" variant="primary" type="submit">
                             Submit
                         </Button>
                     </div>

@@ -90,3 +90,10 @@ class TestPosts(APITestCase):
 
         self.assertTrue(response.status_code == 200)
         self.assertTrue(key in ["username", "id", "email"] for key in response.data.keys())
+
+    def test_delete_current_user(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.delete(f"/auth/users/me/", data=json.dumps({"current_password": "testpassword"}), content_type="application/json")
+
+        self.assertTrue(response.status_code == 204)
