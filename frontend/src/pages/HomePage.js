@@ -1,32 +1,41 @@
 import TitleBar from "../components/TitleBar";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import PostArticle from "../components/PostArticle";
 import ProfileInfo from "../components/ProfileInfo";
 import ViewPost from "../components/ViewPost";
 import { useCurrentUserDetails } from "../hooks/hooks";
 import { connect } from "react-redux";
+import Account from "../components/Account";
+import FollowContent from "../components/FollowContent";
 
 import "../assets/styling/content.css";
-import Account from "../components/Account";
 
-function HomePage({ accessedContent, isAuthenticated }) {
+function HomePage({ isAuthenticated }) {
     const [query, setQuery] = useState("");
     const [user] = useCurrentUserDetails(isAuthenticated);
+    const params = useParams();
+    const location = useLocation();
 
     function handlePath() {
-        if(accessedContent === "home") {
+        if(location.pathname === "/home") {
             return (
                 <div className="article-container">
                         <PostArticle query={query} />
                 </div>
             );
-        } else if(accessedContent === "user") {
-            return <ProfileInfo />;
-        } else if(accessedContent === "account") {
-            return <Account user={user} />
-        } else if(accessedContent === "post") {
+        }
+        else if("creator" in params && "pid" in params) {
+            if(params["pid"] === "follow") {
+                return <FollowContent user={ user } query={ query } />;
+            }
             return <ViewPost />;
+        } else if("creator" in params) {
+            return <ProfileInfo />;
+        } else if(location.pathname === "/settings/account") {
+            return <Account user={ user } />;
+        } else {
+            return <ProfileInfo />;
         }
     }
 

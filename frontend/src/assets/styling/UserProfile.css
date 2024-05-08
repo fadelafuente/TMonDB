@@ -154,6 +154,11 @@ div.align-row {
     flex-direction: row;
 }
 
+div.align-col {
+    display: flex;
+    flex-direction: column;
+}
+
 div.following {
     padding-right: 12px;
 }

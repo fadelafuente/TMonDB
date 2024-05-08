@@ -377,3 +377,20 @@ export async function deleteUser(current_password) {
         return null;
     }
 }
+
+export async function getFollowById(uid, follow_type, kwargs={"page": 1}) {    
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `JWT ${localStorage.getItem("access")}`
+        }
+    };
+
+    const query = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');
+
+    try {
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/${uid}/${follow_type}/?${query}`, config);
+    } catch(err) {
+        return null;
+    }
+}

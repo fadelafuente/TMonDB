@@ -2,7 +2,7 @@ import { useEffect, useCallback, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { deletePostById, getAllPosts, createPost, updatePostById } from "../actions/posts";
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
-import { followUser, getCurrentUserDetails, getUserProfile, updateDetails } from "../actions/auth";
+import { followUser, getCurrentUserDetails, getFollowById, getUserProfile, updateDetails } from "../actions/auth";
 
 export default function useGetPosts(query, pageNumber, kwargs={}) {
     const [loading, setLoading] = useState(true);
@@ -15,7 +15,8 @@ export default function useGetPosts(query, pageNumber, kwargs={}) {
     
     useEffect(() => {
         setLoading(true);
-        let query_details = {"page": pageNumber, ...kwargs}
+        let query_details = {"page": pageNumber, ...kwargs};
+        if(query) query_details["search"] = query;
 
         getAllPosts(query_details).then((response) => {
             if(response) {
@@ -460,4 +461,66 @@ export function useTimedAlert(initial_state) {
     }, [showAlert])
 
     return [showAlert, setShowAlert];
+}
+
+export function useUserFollow(uid, query, pageNumber, follow_type) {
+    const [loading, setLoading] = useState(true);
+    const [follow, setFollow] = useState([]);
+    const [hasMore, setHasMore] = useState(false);
+
+    useEffect(() => {
+        setFollow([]);
+    }, [query]);
+    
+    useEffect(() => {
+        setLoading(true);
+        let query_details = { "page": pageNumber }
+
+        if (uid) {
+            getFollowById(uid, follow_type, query_details).then((response) => {
+                if(response) {
+                    console.log(response);
+                    setFollow(prevUsers => {
+                        let result = [];
+                        result = handleDuplicatesInArray(prevUsers, result);
+                        result = handleDuplicatesInArray(response.data.results, result);
+                        return result;
+                    })
+                    setHasMore(response.data.results.length > 0);
+                    setLoading(false);
+                }
+            }).catch(() => {
+                setFollow([]);
+                setHasMore(false);
+                setLoading(false);
+            });
+        }
+
+        // eslint-disable-next-line
+    }, [query, pageNumber, uid])
+
+    return { loading, follow, hasMore };
+}
+
+export function usePaginatedUserFollow(uid, query, follow_type) {
+    const [pageNumber, setPageNumber] = useState(1);
+    const { loading, users, hasMore } = useUserFollow(uid, query, pageNumber, follow_type);
+    const observer = useRef();
+
+    useEffect(() => {
+        setPageNumber(1);
+    }, [query])
+
+    const lastUser = useCallback(node => {
+        if(loading) return;
+        if(observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+            if(entries[0].isIntersecting && hasMore) {
+                setPageNumber(prevPageNumber => prevPageNumber + 1);
+            }
+        })
+        if(node) observer.current.observe(node);
+    }, [loading, hasMore]);
+
+    return [users, loading, lastUser];
 }
