@@ -17,8 +17,6 @@ export default function FollowContent({ user, query }) {
             setUid(user.id);
     }, [user, uid]);
 
-    console.log(users);
-
     return (
         <>
             <div className="profile-info-container">

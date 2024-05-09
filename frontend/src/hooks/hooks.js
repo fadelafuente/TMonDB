@@ -479,7 +479,6 @@ export function useUserFollow(uid, query, pageNumber, follow_type) {
         if (uid) {
             getFollowById(uid, follow_type, query_details).then((response) => {
                 if(response) {
-                    console.log(response);
                     setFollow(prevUsers => {
                         let result = [];
                         result = handleDuplicatesInArray(prevUsers, result);

@@ -8,7 +8,7 @@ from rest_framework import status
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import *
-from django.db.models import Count
+from django.db.models import Count, Case, When, Q
 
 AppUser = get_user_model()
 
@@ -150,7 +150,15 @@ class TMonDBUserViewset(UserViewSet):
     # and not the entire user profile again.
     @action(detail=True, methods=['get'])
     def following(self, request, id=None):
-        return self.retrieve(request, id=id)
+        try:
+            response = self.retrieve(request, id=id)
+            u_following = list(AppUser.objects.all()
+                               .filter(id__in=response.data["following"])
+                               .annotate(user_follows=Case(When(Q(followers__id__in=[request.user.id]), then=True), default=False))
+                               .values("username", "bio", "user_follows"))
+            return Response(data=u_following, status=status.HTTP_200_OK)
+        except:
+            return Response(data={}, status=status.HTTP_404_NOT_FOUND)
     
     @action(detail=False, methods=['get'])
     def record(self, request):
