@@ -174,3 +174,11 @@ div.follow > a:hover {
 div.follow > a:active {
     color: var(--accent-secondary-color);
 }
+
+div.follow-card {
+    margin-bottom: 12px;
+}
+
+div.follow-username {
+    align-items: center;
+}

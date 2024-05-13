@@ -4,7 +4,7 @@ from rest_framework_simplejwt import views
 from djoser.social import views as social_views
 from djoser.views import UserViewSet
 from rest_framework.decorators import action
-from rest_framework import status
+from rest_framework import status, filters
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import *
@@ -58,6 +58,11 @@ class CustomProviderAuthView(social_views.ProviderAuthView):
 class TMonDBUserViewset(UserViewSet):
     queryset = AppUser.objects.all().annotate(following_count=Count("following", distinct=True),
                                             followers_count=Count("followers", distinct=True))
+    filter_backends = (filters.OrderingFilter, filters.SearchFilter)
+    ordering_fields = ("id", "username")
+    ordering = ("username")
+    search_fields = ["username", "bio"]
+
     def get_permissions(self):
         if self.action == "follow":
             return (IsAuthenticated(),)
@@ -155,7 +160,8 @@ class TMonDBUserViewset(UserViewSet):
             u_following = list(AppUser.objects.all()
                                .filter(id__in=response.data["following"])
                                .annotate(user_follows=Case(When(Q(followers__id__in=[request.user.id]), then=True), default=False))
-                               .values("username", "bio", "user_follows"))
+                               .annotate(current_user=Q(id=request.user.id))
+                               .values("id", "username", "bio", "user_follows", "current_user"))
             return Response(data=u_following, status=status.HTTP_200_OK)
         except:
             return Response(data={}, status=status.HTTP_404_NOT_FOUND)

@@ -25,7 +25,7 @@ export default function useGetPosts(query, pageNumber, kwargs={}) {
                     result = handleDuplicatesInArray(prevPosts, result);
                     result = handleDuplicatesInArray(response.data.results, result);
                     return result;
-                })
+                });
                 setHasMore(response.data.results.length > 0);
                 setLoading(false);
             }
@@ -463,7 +463,7 @@ export function useTimedAlert(initial_state) {
     return [showAlert, setShowAlert];
 }
 
-export function useUserFollow(uid, query, pageNumber, follow_type) {
+export function useUserFollow(uid, pageNumber, follow_type, query) {
     const [loading, setLoading] = useState(true);
     const [follow, setFollow] = useState([]);
     const [hasMore, setHasMore] = useState(false);
@@ -475,6 +475,7 @@ export function useUserFollow(uid, query, pageNumber, follow_type) {
     useEffect(() => {
         setLoading(true);
         let query_details = { "page": pageNumber }
+        if(query) query_details["search"] = query
 
         if (uid) {
             getFollowById(uid, follow_type, query_details).then((response) => {
@@ -482,10 +483,10 @@ export function useUserFollow(uid, query, pageNumber, follow_type) {
                     setFollow(prevUsers => {
                         let result = [];
                         result = handleDuplicatesInArray(prevUsers, result);
-                        result = handleDuplicatesInArray(response.data.results, result);
+                        result = handleDuplicatesInArray(response.data, result);
                         return result;
-                    })
-                    setHasMore(response.data.results.length > 0);
+                    });
+                    setHasMore(response.data.length > 0);
                     setLoading(false);
                 }
             }).catch(() => {
@@ -496,14 +497,14 @@ export function useUserFollow(uid, query, pageNumber, follow_type) {
         }
 
         // eslint-disable-next-line
-    }, [query, pageNumber, uid])
+    }, [query, pageNumber, follow_type, uid])
 
-    return { loading, follow, hasMore };
+    return [ loading, follow, hasMore ];
 }
 
-export function usePaginatedUserFollow(uid, query, follow_type) {
+export function usePaginatedUserFollow(uid, follow_type, query) {
     const [pageNumber, setPageNumber] = useState(1);
-    const { loading, users, hasMore } = useUserFollow(uid, query, pageNumber, follow_type);
+    const [ loading, users, hasMore ] = useUserFollow(uid, pageNumber, follow_type, query);
     const observer = useRef();
 
     useEffect(() => {
@@ -521,5 +522,5 @@ export function usePaginatedUserFollow(uid, query, follow_type) {
         if(node) observer.current.observe(node);
     }, [loading, hasMore]);
 
-    return [users, loading, lastUser];
+    return [users, lastUser];
 }

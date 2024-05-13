@@ -27,7 +27,7 @@ function HomePage({ isAuthenticated }) {
         }
         else if("creator" in params && "pid" in params) {
             if(params["pid"] === "follow") {
-                return <FollowContent user={ user } query={ query } />;
+                return <FollowContent query={ query } />;
             }
             return <ViewPost />;
         } else if("creator" in params) {

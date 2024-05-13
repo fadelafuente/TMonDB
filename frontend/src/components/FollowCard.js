@@ -1,33 +1,39 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button, Col } from 'react-bootstrap';
 import { useGetProfile } from '../hooks/hooks';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";
 
-export default function FollowCard({ uid }) {
-    const { creator } = useParams();
-    const [profile, followed, follows, setFollow] = useGetProfile(creator);
+export default function FollowCard({ user }) {
+    const [ , followed, , setFollow] = useGetProfile(user.username);
+    const navigate = useNavigate();
 
     return (
         <>
-            <div className="align-row">
+            <div className="align-row follow-card">
                 <div className="pfp-image">
                     pfp
                 </div>
                 <div className="f-user-details">
                     <div className="align-row f-user-row">
-                        <Col>
-                            @username
+                        <Col className="follow-username">
+                            @{user ? user.username : "Anonymous" }
                         </Col>
                         <Col className="align-right">
-                            <Button className="rounded-btn profile-btn" onClick={() => setFollow(profile.id)}>
-                                { followed ? "Unfollow" : "Follow" } 
-                            </Button>
+                            { user.current_user ? 
+                                <Button className="rounded-btn profile-btn" onClick={ () => navigate(`/${user.username}`) }>
+                                    Profile
+                                </Button>
+                                :
+                                <Button className="rounded-btn profile-btn" onClick={ () => setFollow(user.id) }>
+                                    { followed ? "Unfollow" : "Follow" } 
+                                </Button>
+                            }
                         </Col>
                     </div>
                     <div>
-                        bio
+                        {user ? user.bio : "This is a fantastic bio! A little empty though, no?" }
                     </div>
                 </div>
             </div>

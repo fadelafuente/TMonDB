@@ -1,21 +1,16 @@
 import { useParams } from 'react-router-dom';
-import { Button, Col, Row, Tab, Tabs } from 'react-bootstrap';
-import useGetPosts, { useGetProfile, usePaginatedPosts, usePaginatedUserFollow } from '../hooks/hooks';
+import { Tab, Tabs } from 'react-bootstrap';
+import { useGetProfile } from '../hooks/hooks';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";
-import FollowCard from './FollowCard';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import FollowList from './FollowList';
 
-export default function FollowContent({ user, query }) {
+export default function FollowContent({ query }) {
+    const { creator } = useParams();
     const [followType, setFollowType] = useState("following");
-    const [uid, setUid] = useState(user ? user.id : null);
-    const [users, loading, lastUser] = usePaginatedUserFollow(uid, query, followType);
-
-    useEffect(() => {
-        if(user && uid === null)
-            setUid(user.id);
-    }, [user, uid]);
+    const [profile, , , ] = useGetProfile(creator);
 
     return (
         <>
@@ -23,7 +18,7 @@ export default function FollowContent({ user, query }) {
                 <div className="user-content">
                     <Tabs fill>
                         <Tab eventKey="Following" title="Following" onClick={ () => setFollowType("following") }>
-                            <FollowCard />
+                            <FollowList uid={profile ? profile.id : null} follow_type={followType} query={query} />
                         </Tab>
                         <Tab eventKey="Followers" title="Followers" onClick={ () => setFollowType("followers") }>
                             following
