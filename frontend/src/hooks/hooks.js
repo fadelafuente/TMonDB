@@ -509,9 +509,11 @@ export function usePaginatedUserFollow(uid, follow_type, query) {
     const [ loading, users, hasMore ] = useUserFollow(uid, pageNumber, follow_type, query);
     const observer = useRef();
 
+    console.log(pageNumber);
+
     useEffect(() => {
         setPageNumber(1);
-    }, [query])
+    }, [query, follow_type])
 
     const lastUser = useCallback(node => {
         if(loading) return;

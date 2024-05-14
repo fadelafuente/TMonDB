@@ -182,3 +182,13 @@ div.follow-card {
 div.follow-username {
     align-items: center;
 }
+
+button.text-link:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+button.text-link:active {
+    color: var(--accent-secondary-color);
+    text-decoration: underline;
+}

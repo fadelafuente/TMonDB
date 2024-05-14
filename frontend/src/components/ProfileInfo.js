@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Col, Row, Tab, Tabs, NavDropdown } from 'react-bootstrap';
 import { useGetProfile, useMiddleViewPort } from '../hooks/hooks';
 import { BsThreeDots } from 'react-icons/bs';
@@ -14,6 +14,7 @@ export default function ProfileInfo() {
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [profile, followed, follows, setFollow] = useGetProfile(creator);
     const [show, setShow] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <>
@@ -33,14 +34,14 @@ export default function ProfileInfo() {
                     </div>
                     <div className="align-row">
                         <div className="following follow">
-                            <a href={ `${creator}/follow` }>
+                            <button className="post-link text-link" onClick={() => navigate(`follow`, {state: {initial_type: "following"}})}>
                                 { profile ? profile.following_count : 0 } Following
-                            </a>
+                            </button>
                         </div>
                         <div className="followers follow">
-                            <a href="#">
+                            <button className="post-link text-link" onClick={() => navigate(`follow`, {state: {initial_type: "followers"}})}>
                                 { follows ? follows : 0 } Followers
-                            </a>
+                            </button>
                         </div>
 
                     </div>
