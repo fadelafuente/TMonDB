@@ -466,34 +466,36 @@ export function useTimedAlert(initial_state) {
 export function useUserFollow(uid, pageNumber, follow_type, query) {
     const [loading, setLoading] = useState(true);
     const [follow, setFollow] = useState([]);
-    const [hasMore, setHasMore] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
         setFollow([]);
     }, [query]);
     
     useEffect(() => {
-        setLoading(true);
-        let query_details = { "page": pageNumber }
-        if(query) query_details["search"] = query
+        if(hasMore) {
+            setLoading(true);
+            let query_details = { "page": pageNumber }
+            if(query) query_details["search"] = query
 
-        if (uid) {
-            getFollowById(uid, follow_type, query_details).then((response) => {
-                if(response) {
-                    setFollow(prevUsers => {
-                        let result = [];
-                        result = handleDuplicatesInArray(prevUsers, result);
-                        result = handleDuplicatesInArray(response.data, result);
-                        return result;
-                    });
-                    setHasMore(response.data.length > 0);
+            if (uid) {
+                getFollowById(uid, follow_type, query_details).then((response) => {
+                    if(response) {
+                        setFollow(prevUsers => {
+                            let result = [];
+                            result = handleDuplicatesInArray(prevUsers, result);
+                            result = handleDuplicatesInArray(response.data.results, result);
+                            return result;
+                        });
+                        setHasMore(response.data.results.length > 0);
+                        setLoading(false);
+                    }
+                }).catch(() => {
+                    setFollow([]);
+                    setHasMore(false);
                     setLoading(false);
-                }
-            }).catch(() => {
-                setFollow([]);
-                setHasMore(false);
-                setLoading(false);
-            });
+                });
+            }
         }
 
         // eslint-disable-next-line

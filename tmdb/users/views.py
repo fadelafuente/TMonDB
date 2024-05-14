@@ -66,14 +66,14 @@ class TMonDBUserViewset(UserViewSet):
     def get_permissions(self):
         if self.action == "follow":
             return (IsAuthenticated(),)
-        elif self.action in ["following", "record"]:
+        elif self.action in ["following", "record", "followers"]:
             return (AllowAny(),)
         return super().get_permissions()
     
     def get_serializer_class(self):
         if self.action == "follow":
             return FollowSerializer
-        elif self.action == "following":
+        elif self.action in ["following", "followers"]:
             return FollowingSerializer
         elif self.action == "record":
             return ProfileSerializer
@@ -110,6 +110,17 @@ class TMonDBUserViewset(UserViewSet):
                     user.user_follows = current_user.id in user.followers
             except:
                 pass
+
+    def get_follow_queryset(self, request, follow_list):
+        queryset = AppUser.objects.all().filter(id__in=follow_list).annotate(user_follows=Case(When(Q(followers__id__in=[request.user.id]), then=True), default=False)).annotate(current_user=Q(id=request.user.id))
+            
+        page = self.paginate_queryset(queryset)    
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        
+        serializer = self.get_serializer(queryset)
+        return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
         response = super().retrieve(request, *args, **kwargs)
@@ -158,15 +169,16 @@ class TMonDBUserViewset(UserViewSet):
         try:
             following = [user["id"] for user in AppUser.objects.all().get(id=id).following.all().values("id")]
     
-            queryset = AppUser.objects.all().filter(id__in=following).annotate(user_follows=Case(When(Q(followers__id__in=[request.user.id]), then=True), default=False)).annotate(current_user=Q(id=request.user.id))
-            
-            page = self.paginate_queryset(queryset)    
-            if page is not None:
-                serializer = self.get_serializer(page, many=True)
-                return self.get_paginated_response(serializer.data)
-            
-            serializer = self.get_serializer(queryset)
-            return Response(serializer.data)
+            return self.get_follow_queryset(request=request, follow_list=following)
+        except:
+            return Response(data={}, status=status.HTTP_404_NOT_FOUND)
+        
+    @action(detail=True, methods=['get'])
+    def followers(self, request, id=None):
+        try:
+            followers = [user["id"] for user in AppUser.objects.all().get(id=id).followers.all().values("id")]
+    
+            return self.get_follow_queryset(request=request, follow_list=followers)
         except:
             return Response(data={}, status=status.HTTP_404_NOT_FOUND)
     

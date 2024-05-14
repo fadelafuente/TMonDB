@@ -58,6 +58,19 @@ class TestPosts(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.data["results"]) == 0)
 
+    def test_get_followers(self):
+        self.client.force_authenticate(user=self.user)
+
+        # first call adds if not following
+        self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+
+        self.client.force_authenticate(user=self.user2)
+        response = self.client.get(f"/auth/users/{self.user2.id}/followers/")
+
+        self.assertEqual(response.status_code, 200)
+        print(response.data)
+        self.assertTrue(len(response.data["results"]) == 1)
+
     def get_following_anonymous(self):
         response = self.client.get(f"/auth/users/{self.user.id}/following/")
 
