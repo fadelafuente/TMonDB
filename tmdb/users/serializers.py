@@ -48,9 +48,12 @@ class FollowSerializer(UserSerializer):
         fields = ('id',)
 
 class FollowingSerializer(BaseSerializer):
+    user_follows = serializers.IntegerField()
+    current_user = serializers.IntegerField()
+
     class Meta(BaseSerializer.Meta):
         model = UserModel
-        fields = ('id', 'following')
+        fields = ('id', 'user_follows', 'current_user', 'bio', 'username')
 
 class ProfileSerializer(UserSerializer):
     following_count = serializers.IntegerField()

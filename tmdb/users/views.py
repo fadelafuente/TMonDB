@@ -156,13 +156,17 @@ class TMonDBUserViewset(UserViewSet):
     @action(detail=True, methods=['get'])
     def following(self, request, id=None):
         try:
-            response = self.retrieve(request, id=id)
-            u_following = list(AppUser.objects.all()
-                               .filter(id__in=response.data["following"])
-                               .annotate(user_follows=Case(When(Q(followers__id__in=[request.user.id]), then=True), default=False))
-                               .annotate(current_user=Q(id=request.user.id))
-                               .values("id", "username", "bio", "user_follows", "current_user"))
-            return Response(data=u_following, status=status.HTTP_200_OK)
+            following = [user["id"] for user in AppUser.objects.all().get(id=id).following.all().values("id")]
+    
+            queryset = AppUser.objects.all().filter(id__in=following).annotate(user_follows=Case(When(Q(followers__id__in=[request.user.id]), then=True), default=False)).annotate(current_user=Q(id=request.user.id))
+            
+            page = self.paginate_queryset(queryset)    
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+            
+            serializer = self.get_serializer(queryset)
+            return Response(serializer.data)
         except:
             return Response(data={}, status=status.HTTP_404_NOT_FOUND)
     
