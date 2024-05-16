@@ -308,14 +308,16 @@ export async function updateDetails(kwargs) {
 }
 
 export async function getUserProfile(username) {
-    const access = localStorage.getItem("access");
-
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${access}`
-        }
-    };
+    const access = localStorage.getItem("access");  
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
+    }
 
     try {
         return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/record/?username=${username}`, config);
@@ -325,19 +327,20 @@ export async function getUserProfile(username) {
 }
 
 export async function getCurrentUserDetails() {
-    const access = localStorage.getItem("access");
+    const access = localStorage.getItem("access");  
+    if(access) {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
 
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${access}`
+        try {
+            return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
+        } catch(err) {
+            return null;
         }
-    };
-
-    try {
-        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
-    } catch(err) {
-        return null;
     }
 }
 
@@ -379,12 +382,16 @@ export async function deleteUser(current_password) {
 }
 
 export async function getFollowById(uid, follow_type, kwargs={"page": 1}) {    
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${localStorage.getItem("access")}`
-        }
-    };
+    const access = localStorage.getItem("access");  
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
+    }
 
     const query = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');
 

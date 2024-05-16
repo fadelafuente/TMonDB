@@ -8,8 +8,9 @@ import { useState } from 'react';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";
+import { connect } from 'react-redux';
 
-export default function ProfileInfo() {
+function ProfileInfo({isAuthenticated}) {
     const { creator } = useParams();
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [profile, followed, follows, setFollow] = useGetProfile(creator);
@@ -53,17 +54,22 @@ export default function ProfileInfo() {
                     <Row>
                         <Col>
                             {
-                                profile ? 
-                                    profile.current_user ?
-                                        <Button className="rounded-btn profile-btn edit-btn" onClick={() => setShow(true)}>
-                                            Edit Profile
-                                        </Button>
-                                        :
-                                        <Button className="rounded-btn profile-btn" onClick={() => setFollow(profile.id)}>
-                                            { followed ? "Unfollow" : "Follow" } 
+                                isAuthenticated ?
+                                    profile ? 
+                                        profile.current_user ?
+                                            <Button className="rounded-btn profile-btn edit-btn" onClick={ () => setShow(true) }>
+                                                Edit Profile
+                                            </Button>
+                                            :
+                                            <Button className="rounded-btn profile-btn" onClick={ () => setFollow(profile.id) }>
+                                                { followed ? "Unfollow" : "Follow" } 
+                                            </Button>
+                                    :
+                                        <Button className="rounded-btn profile-btn">
+                                            Follow
                                         </Button>
                                 :
-                                    <Button className="rounded-btn profile-btn">
+                                    <Button className="rounded-btn profile-btn" onClick={ () => navigate("/login") }>
                                         Follow
                                     </Button>
                             }
@@ -98,5 +104,9 @@ export default function ProfileInfo() {
             </div>
         </>
     )
- 
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated});
+
+export default connect(mapStateToProps, null)(ProfileInfo);

@@ -4,8 +4,9 @@ import { useGetProfile } from '../hooks/hooks';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";
+import { connect } from 'react-redux';
 
-export default function FollowCard({ user }) {
+function FollowCard({ user, isAuthenticated }) {
     const [ , followed, , setFollow] = useGetProfile(user.username);
     const navigate = useNavigate();
 
@@ -26,7 +27,7 @@ export default function FollowCard({ user }) {
                                     Profile
                                 </Button>
                                 :
-                                <Button className="rounded-btn profile-btn" onClick={ () => setFollow(user.id) }>
+                                <Button className="rounded-btn profile-btn" onClick={ () => { isAuthenticated ? setFollow(user.id) : navigate("/login") } }>
                                     { followed ? "Unfollow" : "Follow" } 
                                 </Button>
                             }
@@ -39,5 +40,9 @@ export default function FollowCard({ user }) {
             </div>
         </>
     )
- 
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated});
+
+export default connect(mapStateToProps, null)(FollowCard);
