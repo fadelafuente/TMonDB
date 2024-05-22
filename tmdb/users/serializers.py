@@ -42,7 +42,7 @@ class CurrentUserSerializer(BaseSerializer):
         model = UserModel
         fields = ('id', 'username', 'email')
 
-class FollowSerializer(UserSerializer):
+class PatchSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = UserModel
         fields = ('id',)
@@ -62,3 +62,8 @@ class ProfileSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = UserModel
         fields = ('id', 'username', 'bio', 'following_count', 'followers_count', 'following', 'followers')
+
+class BlockingSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        model=UserModel
+        fields = ('id', 'username')

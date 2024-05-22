@@ -64,7 +64,7 @@ class TMonDBUserViewset(UserViewSet):
     search_fields = ["username", "bio"]
 
     def get_permissions(self):
-        if self.action == "follow":
+        if self.action in ["follow", "block"]:
             return (IsAuthenticated(),)
         elif self.action in ["following", "record", "followers"]:
             return (AllowAny(),)
@@ -72,7 +72,11 @@ class TMonDBUserViewset(UserViewSet):
     
     def get_serializer_class(self):
         if self.action == "follow":
-            return FollowSerializer
+            return PatchSerializer
+        elif self.action == "block":
+            if self.request.method == "GET":
+                return BlockingSerializer
+            return PatchSerializer
         elif self.action in ["following", "followers"]:
             return FollowingSerializer
         elif self.action == "record":
@@ -83,6 +87,11 @@ class TMonDBUserViewset(UserViewSet):
     
     def get_queryset(self):
         queryset = super().get_queryset()
+        if self.request.user.is_authenticated:
+            blocked = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values("id")]
+            if blocked:
+                queryset = queryset.exclude(id__in=[blocked])
+
         username = self.request.query_params.get("username")
 
         if username is not None:
@@ -195,3 +204,50 @@ class TMonDBUserViewset(UserViewSet):
             response.data["current_user"] = request.user.id == response.data["id"]
 
         return response
+    
+    @action(detail=False, methods=['patch', 'get'])
+    def block(self, request):
+        if self.request.method == 'PATCH':
+            return self.patch_blocking_list(request=request)
+        elif self.request.method == 'GET':
+            return self.get_blocking_list(request=request)
+        
+    def patch_blocking_list(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        uid = request.data["id"]
+        if(uid == None):
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A user id was not given"})
+        
+        current_user = self.request.user
+        try:
+            blockee = AppUser.objects.get(id=uid)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "User could not be found"})
+        
+        blocking = current_user.blocking.filter(id=blockee.id)
+        if blocking:
+            current_user.blocking.remove(blockee)
+        else:
+            current_user.blocking.add(blockee)
+
+        current_user.save()
+
+        return Response(status=status.HTTP_200_OK)
+    
+    def get_blocking_list(self, request):
+        try:
+            blocking = [user["id"] for user in AppUser.objects.all().get(id=request.user.id).blocking.all().values("id")]
+
+            queryset = AppUser.objects.all().filter(id__in=blocking)
+            
+            page = self.paginate_queryset(queryset)    
+            if page is not None:
+                serializer = self.get_serializer(page, many=True)
+                return self.get_paginated_response(serializer.data)
+            
+            serializer = self.get_serializer(queryset)
+            return Response(serializer.data)
+        except:
+            return Response(data={}, status=status.HTTP_404_NOT_FOUND)

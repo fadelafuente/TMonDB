@@ -68,7 +68,6 @@ class TestPosts(APITestCase):
         response = self.client.get(f"/auth/users/{self.user2.id}/followers/")
 
         self.assertEqual(response.status_code, 200)
-        print(response.data)
         self.assertTrue(len(response.data["results"]) == 1)
 
     def get_following_anonymous(self):
@@ -112,3 +111,13 @@ class TestPosts(APITestCase):
         response = self.client.delete(f"/auth/users/me/", data=json.dumps({"current_password": "testpassword"}), content_type="application/json")
 
         self.assertTrue(response.status_code == 204)
+
+    def test_block_user(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+        response = self.client.get(f"/auth/users/block/")
+
+        self.assertTrue(response.status_code==200)
+        self.assertTrue(self.user2.id == response.data["results"][0]["id"])
+    

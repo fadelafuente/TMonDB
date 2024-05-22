@@ -48,6 +48,11 @@ class PostViewSet(viewsets.ModelViewSet):
         parent = self.request.query_params.get("parent")
         is_reply = self.request.query_params.get("is_reply")
 
+        if self.request.user.is_authenticated:
+            blocked = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values("id")]
+            if blocked:
+                queryset = queryset.exclude(creator__in=[blocked])
+
         if parent is not None: 
             queryset = queryset.filter(parent=parent)
 
