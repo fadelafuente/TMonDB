@@ -90,7 +90,7 @@ class TMonDBUserViewset(UserViewSet):
         if self.request.user.is_authenticated:
             blocked = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values("id")]
             if blocked:
-                queryset = queryset.exclude(id__in=[blocked])
+                queryset = queryset.exclude(id__in=blocked)
 
         username = self.request.query_params.get("username")
 
@@ -194,14 +194,21 @@ class TMonDBUserViewset(UserViewSet):
     @action(detail=False, methods=['get'])
     def record(self, request):
         username = self.request.query_params.get("username")
+
+        if self.request.user.is_authenticated:
+            blocked = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values("id")]
+            if blocked:
+                data = {"username": username, "blocked_current_user": True}
+                return Response(status=status.HTTP_200_OK, data=data)
+
         response = self.list(request, username=username)
 
         if response.status_code == 200:
             try:
                 response.data = response.data["results"][0]
+                response.data["current_user"] = request.user.id == response.data["id"]
             except:
                 response.data = {}
-            response.data["current_user"] = request.user.id == response.data["id"]
 
         return response
     
@@ -232,7 +239,12 @@ class TMonDBUserViewset(UserViewSet):
         else:
             current_user.blocking.add(blockee)
 
+            # unfollow each other when blocking a user
+            blockee.following.remove(current_user.id)
+            current_user.following.remove(blockee.id)
+
         current_user.save()
+        blockee.save()
 
         return Response(status=status.HTTP_200_OK)
     

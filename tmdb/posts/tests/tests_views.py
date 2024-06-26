@@ -18,6 +18,8 @@ class TestPosts(APITestCase):
 
         user = AppUser.objects.create_user(email="testemail2@domain.com", password="testpassword", username="testuser2", first_name="test2", last_name="user2")
 
+        cls.user2 = user
+
         for index in range(1, 3):
             Post.objects.create(content=f"test post {index}", posted_date=timezone.now(), creator=user)
         
@@ -189,3 +191,11 @@ class TestPosts(APITestCase):
         self.assertTrue(response1.data["user_liked"] != response2.data["user_liked"])
         self.assertTrue(self.user.id in response1.data["who_liked"])
         self.assertTrue(self.user.id not in response2.data["who_liked"])
+
+    def test_user_blocked_list(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+
+        response = self.client.get("/api/posts/?page=1")
+        self.assertTrue(self.user2.id not in user for user in response.data["results"])

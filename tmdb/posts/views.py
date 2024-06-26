@@ -49,9 +49,15 @@ class PostViewSet(viewsets.ModelViewSet):
         is_reply = self.request.query_params.get("is_reply")
 
         if self.request.user.is_authenticated:
+            # Exclude posts the user is blocked from
             blocked = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values("id")]
             if blocked:
-                queryset = queryset.exclude(creator__in=[blocked])
+                queryset = queryset.exclude(creator__in=blocked)
+
+            # Exclude posts created by users the current user is blocking
+            blocking = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocking.all().values("id")]
+            if blocking:
+                queryset = queryset.exclude(creator__in=blocking)
 
         if parent is not None: 
             queryset = queryset.filter(parent=parent)

@@ -111,6 +111,13 @@ class TestPosts(APITestCase):
         response = self.client.delete(f"/auth/users/me/", data=json.dumps({"current_password": "testpassword"}), content_type="application/json")
 
         self.assertTrue(response.status_code == 204)
+    
+    def test_get_user_profile_does_not_exist(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.get(f"/auth/users/record/?username=lkfsdjfldskjfldskjfs")
+
+        self.assertTrue(response.data == {})
 
     def test_block_user(self):
         self.client.force_authenticate(user=self.user)
@@ -120,4 +127,67 @@ class TestPosts(APITestCase):
 
         self.assertTrue(response.status_code==200)
         self.assertTrue(self.user2.id == response.data["results"][0]["id"])
-    
+
+    def test_get_blocked_user_profile(self):
+        self.client.force_authenticate(user=self.user2)
+
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.get(f"/auth/users/record/?username={self.user2.username}")
+
+        self.assertTrue(response.data["blocked_current_user"])
+
+    def test_get_following_list_after_blocking(self):
+        self.client.force_authenticate(user=self.user)
+
+        self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+        self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user3.id}), content_type="application/json")
+
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+
+        response = self.client.get(f"/auth/users/{self.user.id}/following/")
+
+        for user in response.data["results"]:
+            if self.user2.id == user["id"]:
+                self.assertFalse(self.user2.id == user["id"], msg=f"blocking user {self.user2.username} did not remove from following list")
+            if self.user3.id == user["id"]:
+                self.assertTrue(self.user3.id == user["id"])
+
+    def test_get_following_list_after_being_blocked(self):
+        self.client.force_authenticate(user=self.user)
+        self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+
+        self.client.force_authenticate(user=self.user2)
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(f"/auth/users/{self.user.id}/following/")
+        
+        self.assertTrue(response.data["results"] == [])
+
+    def test_get_followers_list_after_blocking(self):
+        self.client.force_authenticate(user=self.user)
+        self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+
+        self.client.force_authenticate(user=self.user2)
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+        response = self.client.get(f"/auth/users/{self.user2.id}/followers/")
+        self.assertTrue(response.data["results"] == [])
+
+        # Unblocking does not refollow
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+        response = self.client.get(f"/auth/users/{self.user2.id}/followers/")
+        self.assertTrue(response.data["results"] == [])
+
+    def test_get_followers_list_after_being_blocked(self):
+        self.client.force_authenticate(user=self.user)
+        self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+
+        self.client.force_authenticate(user=self.user2)
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(f"/auth/users/{self.user.id}/followers/")
+        self.assertTrue(response.data["results"] == [])
