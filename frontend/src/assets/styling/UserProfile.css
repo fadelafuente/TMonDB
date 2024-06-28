@@ -86,6 +86,10 @@ button.profile-btn:active {
     border: 1px solid var(--accent-secondary-color) !important;
 }
 
+button.no-margin-btn {
+    margin: 0;
+}
+
 div.more-user-interactions-btn:hover {
     background-color: var(--button-hover-color);
     border: 1px solid var(--accent-color);

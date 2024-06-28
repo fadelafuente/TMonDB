@@ -401,3 +401,45 @@ export async function getFollowById(uid, follow_type, kwargs={"page": 1}) {
         return null;
     }
 }
+
+export async function getCurrentUsersBlockedList() {    
+    const access = localStorage.getItem("access");  
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
+    }
+
+    try {
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/block/`, config);
+    } catch(err) {
+        return null;
+    }
+}
+
+export async function patchCurrentUsersBlockedList(id, kwargs={"page": 1}) {    
+    const access = localStorage.getItem("access");  
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
+    }
+
+    const query = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');
+
+    const body = JSON.stringify({ id });
+
+    try {
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/block/?${query}`, body, config);
+    } catch(err) {
+        return null;
+    }
+}
