@@ -122,8 +122,8 @@ class TestPosts(APITestCase):
     def test_block_user(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
-        response = self.client.get(f"/auth/users/block/")
+        response = self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user2.username}), content_type="application/json")
+        response = self.client.get(f"/auth/users/block/?page=1")
 
         self.assertTrue(response.status_code==200)
         self.assertTrue(self.user2.id == response.data["results"][0]["id"])
@@ -131,7 +131,7 @@ class TestPosts(APITestCase):
     def test_get_blocked_user_profile(self):
         self.client.force_authenticate(user=self.user2)
 
-        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user.username}), content_type="application/json")
 
         self.client.force_authenticate(user=self.user)
 
@@ -145,7 +145,7 @@ class TestPosts(APITestCase):
         self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
         self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user3.id}), content_type="application/json")
 
-        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user2.username}), content_type="application/json")
 
         response = self.client.get(f"/auth/users/{self.user.id}/following/")
 
@@ -160,7 +160,7 @@ class TestPosts(APITestCase):
         self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
 
         self.client.force_authenticate(user=self.user2)
-        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user.username}), content_type="application/json")
 
         self.client.force_authenticate(user=self.user)
         response = self.client.get(f"/auth/users/{self.user.id}/following/")
@@ -172,12 +172,12 @@ class TestPosts(APITestCase):
         self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
 
         self.client.force_authenticate(user=self.user2)
-        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user.username}), content_type="application/json")
         response = self.client.get(f"/auth/users/{self.user2.id}/followers/")
         self.assertTrue(response.data["results"] == [])
 
         # Unblocking does not refollow
-        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user.username}), content_type="application/json")
         response = self.client.get(f"/auth/users/{self.user2.id}/followers/")
         self.assertTrue(response.data["results"] == [])
 
@@ -186,8 +186,15 @@ class TestPosts(APITestCase):
         self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
 
         self.client.force_authenticate(user=self.user2)
-        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user.id}), content_type="application/json")
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user.username}), content_type="application/json")
 
         self.client.force_authenticate(user=self.user)
         response = self.client.get(f"/auth/users/{self.user.id}/followers/")
         self.assertTrue(response.data["results"] == [])
+
+    def test_user_blocks_themselves(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user.username}), content_type="application/json")
+
+        self.assertEqual(response.status_code, 400)

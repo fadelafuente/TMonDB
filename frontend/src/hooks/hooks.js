@@ -4,43 +4,6 @@ import { deletePostById, getAllPosts, createPost, updatePostById } from "../acti
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
 import { followUser, getCurrentUserDetails, getFollowById, getUserProfile, updateDetails } from "../actions/auth";
 
-export default function useGetPosts(query, pageNumber, kwargs={}) {
-    const [loading, setLoading] = useState(true);
-    const [posts, setPosts] = useState([]);
-    const [hasMore, setHasMore] = useState(false);
-
-    useEffect(() => {
-        setPosts([]);
-    }, [query]);
-    
-    useEffect(() => {
-        setLoading(true);
-        let query_details = {"page": pageNumber, ...kwargs};
-        if(query) query_details["search"] = query;
-
-        getAllPosts(query_details).then((response) => {
-            if(response) {
-                setPosts(prevPosts => {
-                    let result = [];
-                    result = handleDuplicatesInArray(prevPosts, result);
-                    result = handleDuplicatesInArray(response.data.results, result);
-                    return result;
-                });
-                setHasMore(response.data.results.length > 0);
-                setLoading(false);
-            }
-        }).catch(() => {
-            setPosts([]);
-            setHasMore(false);
-            setLoading(false);
-        });
-
-        // eslint-disable-next-line
-    }, [query, pageNumber])
-
-    return { loading, posts, hasMore };
-}
-
 export function useSocialAuth(provider, socialAuthenticate) {
     const location = useLocation();
 
@@ -280,29 +243,6 @@ export function useDiscardModal(formData, setShow) {
     return [showDiscard, handleDiscard];
 }
 
-export function usePaginatedPosts(query, kwargs) {
-    const [pageNumber, setPageNumber] = useState(1);
-    const { loading, posts, hasMore } = useGetPosts(query, pageNumber, kwargs);
-    const observer = useRef();
-
-    useEffect(() => {
-        setPageNumber(1);
-    }, [query])
-
-    const lastPost = useCallback(node => {
-        if(loading) return;
-        if(observer.current) observer.current.disconnect();
-        observer.current = new IntersectionObserver(entries => {
-            if(entries[0].isIntersecting && hasMore) {
-                setPageNumber(prevPageNumber => prevPageNumber + 1);
-            }
-        })
-        if(node) observer.current.observe(node);
-    }, [loading, hasMore]);
-
-    return [posts, lastPost];
-}
-
 export function useInteractions(initial_interaction, user_interacted) {
     const [interaction, setInteraction] = useState(initial_interaction);
     const [interacted, setInteracted] = useState(user_interacted);
@@ -525,4 +465,64 @@ export function usePaginatedUserFollow(uid, follow_type, query) {
     }, [loading, hasMore]);
 
     return [users, lastUser];
+}
+
+export function useGetInformation(pageNumber, query, getFunc, kwargs={}) {
+    const [loading, setLoading] = useState(true);
+    const [items, setItems] = useState([]);
+    const [hasMore, setHasMore] = useState(false);
+
+    useEffect(() => {
+        setItems([]);
+    }, [query]);
+    
+    useEffect(() => {
+        setLoading(true);
+        let query_details = {"page": pageNumber, ...kwargs};
+        if(query) query_details["search"] = query;
+
+        getFunc(query_details).then((response) => {
+            if(response) {
+                setItems(prevPosts => {
+                    let result = [];
+                    result = handleDuplicatesInArray(prevPosts, result);
+                    result = handleDuplicatesInArray(response.data.results, result);
+                    return result;
+                });
+                setHasMore(response.data.results.length > 0);
+                setLoading(false);
+            }
+        }).catch(() => {
+            setItems([]);
+            setHasMore(false);
+            setLoading(false);
+        });
+
+        // eslint-disable-next-line
+    }, [query, pageNumber])
+
+    return { loading, items, hasMore };
+}
+
+export function usePagination(query, getFunc, kwargs) {
+    const [pageNumber, setPageNumber] = useState(1);
+    const { loading, items, hasMore } = useGetInformation(pageNumber, query, getFunc, kwargs);
+    const observer = useRef();
+
+    useEffect(() => {
+        setPageNumber(1);
+    }, [query])
+
+    const lastItem = useCallback(node => {
+        if(loading) return;
+        if(observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+            if(entries[0].isIntersecting && hasMore) {
+                setPageNumber(prevPageNumber => prevPageNumber + 1);
+            }
+        })
+        if(node) observer.current.observe(node);
+    }, [loading, hasMore]);
+
+    return [items, lastItem];
 }

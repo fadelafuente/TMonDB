@@ -22,7 +22,6 @@ import {
     ACTIVATION_RESENT_SUCCESS,
     ACTIVATION_RESENT_FAIL
 } from './types';
-import { redirect } from 'react-router-dom';
 
 axios.defaults.withCredentials = true;
 
@@ -402,7 +401,7 @@ export async function getFollowById(uid, follow_type, kwargs={"page": 1}) {
     }
 }
 
-export async function getCurrentUsersBlockedList() {    
+export async function getCurrentUsersBlockedList(details={"page": 1}) {    
     const access = localStorage.getItem("access");  
     let config = undefined;
     if(access) {
@@ -414,14 +413,16 @@ export async function getCurrentUsersBlockedList() {
         };
     }
 
+    const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
+
     try {
-        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/block/`, config);
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/block/?${body}`, config);
     } catch(err) {
         return null;
     }
 }
 
-export async function patchCurrentUsersBlockedList(id, kwargs={"page": 1}) {    
+export async function patchCurrentUsersBlockedList(username, kwargs={"page": 1}) {    
     const access = localStorage.getItem("access");  
     let config = undefined;
     if(access) {
@@ -435,10 +436,10 @@ export async function patchCurrentUsersBlockedList(id, kwargs={"page": 1}) {
 
     const query = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');
 
-    const body = JSON.stringify({ id });
+    const body = JSON.stringify({ username });
 
     try {
-        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/block/?${query}`, body, config);
+        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/block/?${query}`, body, config);
     } catch(err) {
         return null;
     }

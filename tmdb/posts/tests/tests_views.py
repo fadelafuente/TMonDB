@@ -199,3 +199,12 @@ class TestPosts(APITestCase):
 
         response = self.client.get("/api/posts/?page=1")
         self.assertTrue(self.user2.id not in user for user in response.data["results"])
+
+    def test_blocked_users_posts_do_not_return(self):
+        self.client.force_authenticate(user=self.user)
+
+        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+
+        response = self.client.get("/api/posts/?page=1")
+
+        self.assertTrue(post["creator"] != self.user2.id for post in response.data["results"])

@@ -150,7 +150,10 @@ class TMonDBUserViewset(UserViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        uid = request.data["id"]
+        uid = None
+        if "id" in request.data:
+            uid = request.data["id"]
+
         if(uid == None):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A user id was not given"})
         
@@ -159,6 +162,9 @@ class TMonDBUserViewset(UserViewSet):
             followee = AppUser.objects.get(id=uid)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "User could not be found"})
+        
+        if(followee.id == follower.id):
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "User cannot follow themselves"})
         
         following = follower.following.filter(id=followee.id)
         if following:
@@ -223,15 +229,21 @@ class TMonDBUserViewset(UserViewSet):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        uid = request.data["id"]
-        if(uid == None):
+        username = None
+        if "username" in request.data:
+            username = request.data["username"]             
+
+        if(username == None):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A user id was not given"})
         
         current_user = self.request.user
         try:
-            blockee = AppUser.objects.get(id=uid)
+            blockee = AppUser.objects.get(username=username)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "User could not be found"})
+        
+        if(blockee.id == current_user.id):
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "User cannot block themselves"})
         
         blocking = current_user.blocking.filter(id=blockee.id)
         if blocking:

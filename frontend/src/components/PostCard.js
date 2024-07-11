@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { DeletedCard } from './DeletedCard';
 
 import "../assets/styling/PostCard.css";
+import { patchCurrentUsersBlockedList } from '../actions/auth';
 
 function PostCard({ post, isAuthenticated }) {
     const [liked, likes, setLike] = useInteractions(post.likes_count, post.user_liked);
@@ -30,7 +31,7 @@ function PostCard({ post, isAuthenticated }) {
                         Delete Post
                     </NavDropdown.Item>
                 : 
-                    <NavDropdown.Item onClick={() => {}}>
+                    <NavDropdown.Item onClick={() => { patchCurrentUsersBlockedList(post.creator_username) }}>
                         Block user
                     </NavDropdown.Item>
                 }

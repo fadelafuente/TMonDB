@@ -8,9 +8,10 @@ import { useCurrentUserDetails } from "../hooks/hooks";
 import { connect } from "react-redux";
 import Account from "../components/Account";
 import FollowContent from "../components/FollowContent";
+import BlockingArticles from "../components/BlockingArticles";
+
 
 import "../assets/styling/content.css";
-import { BlockingCard } from "../components/BlockingCard";
 
 function HomePage({ isAuthenticated }) {
     const [query, setQuery] = useState("");
@@ -29,7 +30,7 @@ function HomePage({ isAuthenticated }) {
         } else if(location.pathname === "/settings/account") {
             return <Account user={ user } />;
         } else if(location.pathname === "/settings/blocked") {
-            return <BlockingCard />;
+            return <BlockingArticles query={ query } />;
         } else if("creator" in params && "pid" in params) {
             if(params["pid"] === "follow") {
                 return <FollowContent query={ query } />;
