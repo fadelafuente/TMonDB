@@ -11,7 +11,6 @@ export default function BlockingArticles({query, kwargs={}}) {
     const [loading, setLoading] = useState(true);
     const [blocks, lastBlock] = usePagination(query, getCurrentUsersBlockedList, kwargs);
 
-    console.log(blocks);
     useEffect(() => {
        setLoading(true);
        if(blocks) setLoading(false); 

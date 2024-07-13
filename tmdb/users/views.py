@@ -158,13 +158,13 @@ class TMonDBUserViewset(UserViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A user id was not given"})
         
         follower = self.request.user
+        if(uid == follower.id):
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "User cannot follow themselves"})
+        
         try:
             followee = AppUser.objects.get(id=uid)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "User could not be found"})
-        
-        if(followee.id == follower.id):
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "User cannot follow themselves"})
         
         following = follower.following.filter(id=followee.id)
         if following:

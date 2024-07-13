@@ -4,24 +4,33 @@ import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDo
 import { handleTimeDifference } from '../functions/handlers';
 import ImageGallery from './ImageGallery';
 import { useDeletePost, useInteractions, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import CreatePost from './CreatePost';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DeletedCard } from './DeletedCard';
+import BlockModal from './BlockModal';
+import { patchCurrentUsersBlockedList } from '../actions/auth';
 
 import "../assets/styling/PostCard.css";
-import { patchCurrentUsersBlockedList } from '../actions/auth';
 
 function PostCard({ post, isAuthenticated }) {
     const [liked, likes, setLike] = useInteractions(post.likes_count, post.user_liked);
     const [reposted, reposts, setRepost] = useInteractions(post.reposts_count, post.user_reposted);
     const [commented, comments] = useInteractions(post.comments_count, post.user_commented);
     const [show, setShow] = useState(false);
+    const [showBlock, setShowBlock] = useState(false);
+    const [blocked, setBlocked] = useState(false);
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [showAlert, setShowAlert] = useTimedAlert(false);
     const [isDeleted, setIsDeleted] = useDeletePost(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(blocked) {
+            window.location.reload();
+        }
+    }, [blocked])
 
     function handleMoreClick() {
         return (
@@ -31,7 +40,7 @@ function PostCard({ post, isAuthenticated }) {
                         Delete Post
                     </NavDropdown.Item>
                 : 
-                    <NavDropdown.Item onClick={() => { patchCurrentUsersBlockedList(post.creator_username) }}>
+                    <NavDropdown.Item onClick={() => setShowBlock(true) }>
                         Block user
                     </NavDropdown.Item>
                 }
@@ -49,6 +58,7 @@ function PostCard({ post, isAuthenticated }) {
     } else {
         return (
             <>
+                <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={setBlocked} username={ post ? post.creator_username : null } />
                 <CreatePost show={show} setShow={() => setShow()} is_reply={true} parent={post.id} />
                 <Alert variant="success" className="copy-alert" show={showAlert}>
                     <Alert.Heading>Copied to clipboard.</Alert.Heading>
