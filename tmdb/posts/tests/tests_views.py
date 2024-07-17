@@ -195,7 +195,7 @@ class TestPosts(APITestCase):
     def test_user_blocked_list(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
+        self.user.blocking.set([self.user2.id])
 
         response = self.client.get("/api/posts/?page=1")
         self.assertTrue(self.user2.id not in user for user in response.data["results"])
@@ -203,8 +203,15 @@ class TestPosts(APITestCase):
     def test_blocked_users_posts_do_not_return(self):
         self.client.force_authenticate(user=self.user)
 
-        self.client.patch(f"/auth/users/block/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
-
+        self.user.blocking.set([self.user2.id])
         response = self.client.get("/api/posts/?page=1")
 
         self.assertTrue(post["creator"] != self.user2.id for post in response.data["results"])
+
+    def test_blocked_users_post_returns_error(self):
+        self.user.blocking.set([self.user2.id])
+
+        self.client.force_authenticate(user=self.user2)
+        response = self.client.get(f"/api/posts/{self.post_id}/")
+
+        self.assertTrue(response.status_code == 403)

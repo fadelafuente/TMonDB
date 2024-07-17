@@ -91,7 +91,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                 >
                     <Offcanvas.Header closeButton closeVariant="white">
                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg">
-                        The Monster Database
+                            The Monster Database
                         </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>

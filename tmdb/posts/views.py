@@ -136,7 +136,15 @@ class PostViewSet(viewsets.ModelViewSet):
         return response
     
     def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
+        try:
+            response = super().retrieve(request, *args, **kwargs)
+        except:
+            pid = request.path.split("/")[-2]
+            post = Post.objects.filter(id=pid)
+            if post.exists():
+                return Response(status=status.HTTP_403_FORBIDDEN, data={"isBlocked": True, "creator": post.first().creator.username})
+            else: 
+                return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post was deleted or does not exist"})
 
         try:
             self.get_extra_information(request, response.data)

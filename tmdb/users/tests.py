@@ -145,8 +145,7 @@ class TestPosts(APITestCase):
         self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user2.id}), content_type="application/json")
         self.client.patch("/auth/users/follow/", data=json.dumps({"id": self.user3.id}), content_type="application/json")
 
-        self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user2.username}), content_type="application/json")
-
+        response = self.client.patch(f"/auth/users/block/", data=json.dumps({"username": self.user2.username}), content_type="application/json")
         response = self.client.get(f"/auth/users/{self.user.id}/following/")
 
         for user in response.data["results"]:
