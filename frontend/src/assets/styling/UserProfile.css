@@ -65,7 +65,7 @@ div.interact-row {
     top: -25px;
 }
 
-button.profile-btn {
+button.profile-btn, button.profile-btn:disabled {
     max-width: 100px;
     background-color: var(--accent-color);
     color: var(--background-color);
@@ -85,7 +85,6 @@ button.profile-btn:hover {
 button.profile-btn:active {
     border: 1px solid var(--accent-secondary-color) !important;
 }
-
 
 button.right-most-btn {
     margin-right: 0px;

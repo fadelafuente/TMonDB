@@ -201,13 +201,15 @@ class TMonDBUserViewset(UserViewSet):
     def record(self, request):
         username = self.request.query_params.get("username")
 
-        if self.request.user.is_authenticated:
-            blocked = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values("id")]
-            if blocked:
-                data = {"username": username, "blocked_current_user": True}
-                return Response(status=status.HTTP_200_OK, data=data)
-
         response = self.list(request, username=username)
+
+        if response.status_code == 200 and self.request.user.is_authenticated:
+            blocked = AppUser.objects.all().get(id=request.user.id).blocking.all().filter(username=username).annotate(following_count=Count("following", distinct=True),
+                                                followers_count=Count("followers", distinct=True)).values("bio", "followers_count", "following_count").first()
+            if blocked:
+                response.data["results"][0]["blocked_current_user"] = True
+                response.data["results"][0]["followers"] = []
+                response.data["results"][0]["following"] = []
 
         if response.status_code == 200:
             try:

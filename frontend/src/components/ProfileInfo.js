@@ -5,10 +5,11 @@ import { BsThreeDots } from 'react-icons/bs';
 import PostArticle from './PostArticle';
 import EditModal from './EditModal';
 import { useState } from 'react';
+import { connect } from 'react-redux';
+import { BlockedCard } from './BlockedCard';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";
-import { connect } from 'react-redux';
 
 function ProfileInfo({isAuthenticated}) {
     const { creator } = useParams();
@@ -41,7 +42,7 @@ function ProfileInfo({isAuthenticated}) {
                         </div>
                         <div className="followers follow">
                             <button className="post-link text-link" onClick={() => navigate(`follow`, {state: {initial_type: "followers"}})}>
-                                { follows ? follows : 0 } Followers
+                                { profile && profile.blocked_current_user ? profile.followers_count : follows ? follows : 0 } Followers
                             </button>
                         </div>
 
@@ -56,14 +57,19 @@ function ProfileInfo({isAuthenticated}) {
                             {
                                 isAuthenticated ?
                                     profile ? 
-                                        profile.current_user ?
-                                            <Button className="rounded-btn profile-btn edit-btn" onClick={ () => setShow(true) }>
-                                                Edit Profile
+                                        profile.blocked_current_user ?
+                                            <Button disabled className="rounded-btn profile-btn">
+                                                Follow
                                             </Button>
+                                        :
+                                            profile.current_user ?
+                                                <Button className="rounded-btn profile-btn edit-btn" onClick={ () => setShow(true) }>
+                                                    Edit Profile
+                                                </Button>
                                             :
-                                            <Button className="rounded-btn profile-btn" onClick={ () => setFollow(profile.id) }>
-                                                { followed ? "Unfollow" : "Follow" } 
-                                            </Button>
+                                                <Button className="rounded-btn profile-btn" onClick={ () => setFollow(profile.id) }>
+                                                    { followed ? "Unfollow" : "Follow" } 
+                                        </Button>
                                     :
                                         <Button className="rounded-btn profile-btn">
                                             Follow
@@ -88,16 +94,32 @@ function ProfileInfo({isAuthenticated}) {
                 <div className="user-content">
                     <Tabs fill>
                         <Tab eventKey="posts" title="Posts" id="is-active">
-                            <PostArticle kwargs={{username: creator}} />
+                            { profile && profile.blocked_current_user ?
+                                <BlockedCard creator={profile.username} />
+                            :
+                                <PostArticle kwargs={{username: creator}} />
+                            }
                         </Tab>
                         <Tab eventKey="replies" title="Replies">
-                            <PostArticle kwargs={{username: creator, is_reply: true}} />
+                            { profile && profile.blocked_current_user ?
+                                <BlockedCard creator={profile.username} />
+                            :
+                                <PostArticle kwargs={{username: creator, is_reply: true}} />
+                            }
                         </Tab>
                         <Tab eventKey="monsters" title="Monsters">
-                            all of user's monsters
+                            { profile && profile.blocked_current_user ?
+                                <BlockedCard creator={profile.username} />
+                            :
+                                "all of user's monsters"
+                            }
                         </Tab>
                         <Tab eventKey="regions" title="Regions">
-                            all of user's regions
+                            { profile && profile.blocked_current_user ?
+                                <BlockedCard creator={profile.username} />
+                            :
+                                "all of user's regions"
+                            }
                         </Tab>
                     </Tabs>
                 </div>

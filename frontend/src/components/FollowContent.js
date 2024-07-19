@@ -1,11 +1,12 @@
 import { useLocation, useParams } from 'react-router-dom';
 import { Tab, Tabs } from 'react-bootstrap';
 import { useGetProfile } from '../hooks/hooks';
+import { useState } from 'react';
+import FollowList from './FollowList';
+import { BlockedCard } from './BlockedCard';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";
-import { useState } from 'react';
-import FollowList from './FollowList';
 
 export default function FollowContent({ query }) {
     const { state } = useLocation();
@@ -20,10 +21,18 @@ export default function FollowContent({ query }) {
                 <div className="user-content">
                     <Tabs defaultActiveKey={initial_type} activeKey={followType} onSelect={(k) => setFollowType(k)} fill>
                         <Tab eventKey="following" title="Following" onClick={(k) => setFollowType(k)}>
-                            <FollowList uid={profile ? profile.id : null} follow_type="following" query={query} />
+                            { profile && profile.blocked_current_user ?
+                                <BlockedCard creator={creator} />
+                            :
+                                <FollowList uid={profile ? profile.id : null} follow_type="following" query={query} />
+                            }
                         </Tab>
                         <Tab eventKey="followers" title="Followers" onClick={(k) => setFollowType(k)}>
-                            <FollowList uid={profile ? profile.id : null} follow_type="followers" query={query} />
+                            { profile && profile.blocked_current_user ?
+                                <BlockedCard creator={creator} />
+                            :
+                                <FollowList uid={profile ? profile.id : null} follow_type="followers" query={query} />
+                            }
                         </Tab>
                     </Tabs>
                 </div>
