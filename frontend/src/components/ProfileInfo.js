@@ -69,7 +69,7 @@ function ProfileInfo({isAuthenticated}) {
                                             :
                                                 <Button className="rounded-btn profile-btn" onClick={ () => setFollow(profile.id) }>
                                                     { followed ? "Unfollow" : "Follow" } 
-                                        </Button>
+                                                </Button>
                                     :
                                         <Button className="rounded-btn profile-btn">
                                             Follow
