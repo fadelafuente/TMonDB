@@ -1,5 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import { BsSlashCircle, BsXCircle } from 'react-icons/bs';
+import { BsSlashCircle } from 'react-icons/bs';
 
 import "../assets/styling/PostCard.css";
 
