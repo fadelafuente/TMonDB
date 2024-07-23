@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
-import { deletePostById, createPost, updatePostById } from "../actions/posts";
+import { deletePostById, getAllPosts, createPost, updatePostById } from "../actions/posts";
 import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
 import { followUser, getCurrentUserDetails, getFollowById, getUserProfile, updateDetails } from "../actions/auth";
 
