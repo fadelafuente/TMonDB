@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./tmdb   
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./tmdb:/tmdb
+    env_file:
+      - .env.development.local
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+    env_file:
+      - .env.development.local

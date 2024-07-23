@@ -173,10 +173,18 @@ export const register = (first_name, last_name, username, email, password, re_pa
             payload: res.data
         });
     } catch (err) {
-        dispatch({
-            type: REGISTER_FAIL,
-            payload: err.response.data
-        });
+        if(err.response && err.response.data) {
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: err.response.data
+            });
+        } else {
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: {}
+            });
+        }
+        
     }
 }
 
