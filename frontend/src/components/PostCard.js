@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DeletedCard } from './DeletedCard';
 import BlockModal from './BlockModal';
-import { patchCurrentUsersBlockedList } from '../actions/auth';
 
 import "../assets/styling/PostCard.css";
 

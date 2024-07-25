@@ -1,5 +1,6 @@
 services:
-  backend:
+  # Local Development
+  backenddevlocal:
     build: ./tmdb   
     ports:
       - "8000:8000"
@@ -8,6 +9,7 @@ services:
     env_file:
       - .env.development.local
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    profiles: [backend, devlocal]
 
   frontend:
     build: ./frontend
@@ -15,5 +17,40 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/frontend
+      - node_modules:/frontend/node_modules
     env_file:
-      - .env.development.local
+      - .env
+    environment:
+      - WATCHPACK_POLLING=true
+    profiles: [frontend, devlocal, dev]
+
+  # Local Development with dockerized postgreSQL DB
+  db: 
+    image: postgres:16.0
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    profiles: [dev]
+
+  backenddev:
+    build: ./tmdb   
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./tmdb:/tmdb
+    depends_on:
+      - db
+    env_file:
+      - .env.development
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver  0.0.0.0:8000"
+    profiles: [dev]
+
+volumes:
+  postgres_data:
+  node_modules:
+    driver: local
