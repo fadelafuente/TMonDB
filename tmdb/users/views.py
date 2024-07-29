@@ -204,7 +204,7 @@ class TMonDBUserViewset(UserViewSet):
         response = self.list(request, username=username)
 
         if response.status_code == 200 and self.request.user.is_authenticated:
-            blocked = AppUser.objects.all().get(id=request.user.id).blocking.all().filter(username=username).annotate(following_count=Count("following", distinct=True),
+            blocked = request.user.blocked.all().filter(username=username).annotate(following_count=Count("following", distinct=True),
                                                 followers_count=Count("followers", distinct=True)).values("bio", "followers_count", "following_count").first()
             if blocked:
                 response.data["results"][0]["blocked_current_user"] = True
@@ -212,6 +212,12 @@ class TMonDBUserViewset(UserViewSet):
                 response.data["results"][0]["following"] = []
 
         if response.status_code == 200:
+            blocking = request.user.blocking.all().filter(username=username)
+            if blocking:
+                response.data["results"][0]["is_blocking"] = True
+            else:
+                response.data["results"][0]["is_blocking"] = False
+
             try:
                 response.data = response.data["results"][0]
                 response.data["current_user"] = request.user.id == response.data["id"]

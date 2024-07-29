@@ -2,8 +2,9 @@ import { Button, Col } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
+import BlockModal, { UnBlockModal } from './BlockModal';
+
 import "../assets/styling/PostCard.css";
-import BlockModal from './BlockModal';
 
 function BlockingCard({ user, isAuthenticated }) {
     const [blocked, setBlocked] = useState(true);
@@ -12,7 +13,12 @@ function BlockingCard({ user, isAuthenticated }) {
 
     return (
         <>
-            <BlockModal show={show} setShow={setShow} setBlocked={setBlocked} username={user.username} />
+            {
+                blocked ? 
+                    <UnBlockModal show={show} setShow={setShow} setBlocked={setBlocked} username={user.username} />
+                :
+                    <BlockModal show={show} setShow={setShow} setBlocked={setBlocked} username={user.username} />
+            }
             <div className="article-container item-card">
                 <div className="align-row f-user-row">
                     <Col className="follow-username">

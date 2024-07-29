@@ -179,7 +179,7 @@ button.media-btn, button.media-btn:hover {
 button.rounded-btn {
     border-radius: 20px;
     width: 100%;
-    max-width: 80px;
+    max-width: 100px;
     min-width: 60px;
     background-color: var(--background-color);
     color: var(--placeholder-text-color);
@@ -207,16 +207,17 @@ div.modal-header {
     border-bottom: 2px solid var(--background-content-color);
 }
 
+div.modal-header-no-border {
+    border-bottom: 0px;
+}
+
 div.modal-footer {
     border-top: 2px solid var(--background-content-color);
+    padding: 4px 12px;
 }
 
 div.modal-backdrop {
     z-index: 1055;
-}
-
-div.modal-footer {
-    padding: 4px 12px;
 }
 
 div.copy-alert {
