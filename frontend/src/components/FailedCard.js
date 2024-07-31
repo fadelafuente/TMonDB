@@ -3,14 +3,14 @@ import { BsXCircle } from 'react-icons/bs';
 
 import "../assets/styling/PostCard.css";
 
-export function FailedCard() {
+export function FailedCard({type="Post"}) {
     return (
         <Card>
             <Card.Body className='deleted-icon'>
                 <BsXCircle/>
             </Card.Body>
             <Card.Footer className='deleted-text'>
-                Post(s) failed to load.
+                {type}(s) failed to load.
             </Card.Footer>
         </Card>
     )

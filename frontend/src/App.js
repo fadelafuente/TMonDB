@@ -23,7 +23,7 @@ export default function App() {
     <Route path="/" element={ <Root /> } >
       <Route path="register" element={ <Register /> } />
       <Route path="login" element={ <Login /> } />
-      <Route path="home" element={ <HomePage accessedContent="home" /> } />
+      <Route path="home" element={ <HomePage /> } />
       <Route path="verify" element={ <VerifyEmail/> } />
       <Route path="activate/:uid/:token" element={ <Activate /> } />
       <Route path="reset_password" element={ <LoginChange /> } />
@@ -32,11 +32,11 @@ export default function App() {
       <Route path="email/reset/confirm/:uid/:token" element={ <SetEmailConfirm /> } />
       <Route path="google-oauth" element={ <GoogleOauth /> } />
       <Route path="facebook-oauth" element={ <FacebookOauth /> } />
-      <Route path=":creator/:pid" element={ <HomePage accessedContent="post" /> } />
+      <Route path=":creator/:pid" element={ <HomePage /> } />
       <Route path="set_username" element={ <SetUsername /> } />
       <Route path="username/reset/confirm" element={ <SetUsernameConfirmation /> } />
-      <Route path=":creator" element={ <HomePage accessedContent="user" /> } />
-      <Route path="settings/account" element={ <HomePage accessedContent="account" /> } />
+      <Route path=":creator" element={ <HomePage /> } />
+      <Route path="settings/account" element={ <HomePage /> } />
     </Route>
   ))
 

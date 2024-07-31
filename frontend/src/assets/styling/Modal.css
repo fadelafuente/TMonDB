@@ -21,3 +21,9 @@ button.bg-btn:active {
 h5.modal-title {
     margin-bottom: 0;
 }
+
+div.error-icon > svg {
+    stroke-width: .025em;
+    height: 18px;
+    width: 18px;
+}

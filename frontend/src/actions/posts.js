@@ -39,6 +39,9 @@ export async function getPostById(pid) {
     try {
         return await axios.get(`${process.env.REACT_APP_API_URL}/api/posts/${pid}/`, config);
     } catch(err) {
+        if(err.response.status === 403) {
+            return err.response
+        }
         return null;
     }
 }

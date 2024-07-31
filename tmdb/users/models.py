@@ -40,6 +40,7 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     username =  models.CharField(max_length=50, unique=True, blank=True)
     bio = models.TextField(default="This is where my bio would go, if I wrote one!", blank=True)
     following = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
+    blocking = models.ManyToManyField("self", symmetrical=False, related_name="blocked", blank=True)
     date_joined = models.DateTimeField(default=timezone.now, blank=True)
 
     # Considering removing:

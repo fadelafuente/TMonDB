@@ -48,6 +48,17 @@ class PostViewSet(viewsets.ModelViewSet):
         parent = self.request.query_params.get("parent")
         is_reply = self.request.query_params.get("is_reply")
 
+        if self.request.user.is_authenticated:
+            # Exclude posts the user is blocked from
+            blocked = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values("id")]
+            if blocked:
+                queryset = queryset.exclude(creator__in=blocked)
+
+            # Exclude posts created by users the current user is blocking
+            blocking = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocking.all().values("id")]
+            if blocking:
+                queryset = queryset.exclude(creator__in=blocking)
+
         if parent is not None: 
             queryset = queryset.filter(parent=parent)
 
@@ -69,7 +80,7 @@ class PostViewSet(viewsets.ModelViewSet):
             user = AppUser.objects.get(id=creator_id)
             post["creator_username"] = user.get_username()
         except:
-            post["creator_username"] = "anonymous"
+            post["creator_username"] = None
 
         # initialize booleans
         post["user_liked"] = False
@@ -125,7 +136,15 @@ class PostViewSet(viewsets.ModelViewSet):
         return response
     
     def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
+        try:
+            response = super().retrieve(request, *args, **kwargs)
+        except:
+            pid = request.path.split("/")[-2]
+            post = Post.objects.filter(id=pid)
+            if post.exists():
+                return Response(status=status.HTTP_403_FORBIDDEN, data={"isBlocked": True, "creator": post.first().creator.username})
+            else: 
+                return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post was deleted or does not exist"})
 
         try:
             self.get_extra_information(request, response.data)

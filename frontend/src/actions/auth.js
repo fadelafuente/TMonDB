@@ -22,7 +22,6 @@ import {
     ACTIVATION_RESENT_SUCCESS,
     ACTIVATION_RESENT_FAIL
 } from './types';
-import { redirect } from 'react-router-dom';
 
 axios.defaults.withCredentials = true;
 
@@ -155,12 +154,6 @@ export const logout = () => async dispatch => {
     dispatch({
         type: LOGOUT
     });
-
-    if(window.location.pathname === "/home") {
-        window.location.reload();
-    } else {
-        redirect("/home");
-    }
 }
 
 export const register = (first_name, last_name, username, email, password, re_password) => async dispatch => {
@@ -180,10 +173,18 @@ export const register = (first_name, last_name, username, email, password, re_pa
             payload: res.data
         });
     } catch (err) {
-        dispatch({
-            type: REGISTER_FAIL,
-            payload: err.response.data
-        });
+        if(err.response && err.response.data) {
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: err.response.data
+            });
+        } else {
+            dispatch({
+                type: REGISTER_FAIL,
+                payload: {}
+            });
+        }
+        
     }
 }
 
@@ -301,7 +302,8 @@ export async function updateDetails(kwargs) {
     const config = {
         headers: {
             "Content-Type": "application/json",
-            "Authorization": `JWT ${localStorage.getItem("access")}`        }
+            "Authorization": `JWT ${localStorage.getItem("access")}`
+        }
     };
 
     const body = JSON.stringify({ ...kwargs });
@@ -313,14 +315,16 @@ export async function updateDetails(kwargs) {
 }
 
 export async function getUserProfile(username) {
-    const access = localStorage.getItem("access");
-
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${access}`
-        }
-    };
+    const access = localStorage.getItem("access");  
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
+    }
 
     try {
         return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/record/?username=${username}`, config);
@@ -330,19 +334,20 @@ export async function getUserProfile(username) {
 }
 
 export async function getCurrentUserDetails() {
-    const access = localStorage.getItem("access");
+    const access = localStorage.getItem("access");  
+    if(access) {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
 
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${access}`
+        try {
+            return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
+        } catch(err) {
+            return null;
         }
-    };
-
-    try {
-        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
-    } catch(err) {
-        return null;
     }
 }
 
@@ -360,6 +365,89 @@ export async function followUser(id) {
 
     try {
         return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/follow/`, body, config);
+    } catch(err) {
+        return null;
+    }
+}
+
+export async function deleteUser(current_password) {    
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `JWT ${localStorage.getItem("access")}`
+        },
+        "data": JSON.stringify({ current_password })
+    };
+
+    try {
+        return await axios.delete(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
+    } catch(err) {
+        if(err.response && err.response.data)
+            return err.response;
+        return null;
+    }
+}
+
+export async function getFollowById(uid, follow_type, kwargs={"page": 1}) {    
+    const access = localStorage.getItem("access");  
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
+    }
+
+    const query = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');
+
+    try {
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/${uid}/${follow_type}/?${query}`, config);
+    } catch(err) {
+        return null;
+    }
+}
+
+export async function getCurrentUsersBlockedList(details={"page": 1}) {    
+    const access = localStorage.getItem("access");  
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
+    }
+
+    const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
+
+    try {
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/block/?${body}`, config);
+    } catch(err) {
+        return null;
+    }
+}
+
+export async function patchCurrentUsersBlockedList(username, kwargs={"page": 1}) {    
+    const access = localStorage.getItem("access");  
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `JWT ${access}`
+            }
+        };
+    }
+
+    const query = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');
+
+    const body = JSON.stringify({ username });
+
+    try {
+        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/block/?${query}`, body, config);
     } catch(err) {
         return null;
     }

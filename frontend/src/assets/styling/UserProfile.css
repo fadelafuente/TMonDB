@@ -65,7 +65,7 @@ div.interact-row {
     top: -25px;
 }
 
-button.profile-btn {
+button.profile-btn, button.profile-btn:disabled {
     max-width: 100px;
     background-color: var(--accent-color);
     color: var(--background-color);
@@ -84,6 +84,14 @@ button.profile-btn:hover {
 
 button.profile-btn:active {
     border: 1px solid var(--accent-secondary-color) !important;
+}
+
+button.right-most-btn {
+    margin-right: 0px;
+}
+
+button.no-margin-btn {
+    margin: 0;
 }
 
 div.more-user-interactions-btn:hover {
@@ -149,9 +157,14 @@ ul.nav-tabs {
     margin-bottom: 12px;
 }
 
-div.followers-row {
+div.align-row {
     display: flex;
     flex-direction: row;
+}
+
+div.align-col {
+    display: flex;
+    flex-direction: column;
 }
 
 div.following {
@@ -168,4 +181,22 @@ div.follow > a:hover {
 
 div.follow > a:active {
     color: var(--accent-secondary-color);
+}
+
+div.item-card {
+    margin-bottom: 12px;
+}
+
+div.follow-username {
+    align-items: center;
+}
+
+button.text-link:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+button.text-link:active {
+    color: var(--accent-secondary-color);
+    text-decoration: underline;
 }

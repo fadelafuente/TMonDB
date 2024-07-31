@@ -200,3 +200,36 @@ button.facebook-button:active {
 div.verify-container {
   min-width: 500px;
 }
+
+div.align-right {
+  justify-content: right;
+}
+
+button.pop-on-hover-btn {
+  font-weight: bold;
+  border-radius: 20px;
+  max-width: 100px;
+  background-color: var(--background-color);
+  color: var(--accent-color);
+  box-sizing: border-box;
+  border: 1px solid var(--accent-color) !important;
+}
+
+button.pop-on-hover-btn:hover {
+  color: var(--background-color);
+  background-color: var(--accent-color);
+}
+
+button.pop-on-hover-btn:active {
+  color: var(--background-color) !important;
+  background-color: var(--accent-secondary-color) !important;
+}
+
+button.cancel-btn {
+  margin-right: 12px;
+}
+
+div.button-row {
+  display: flex;
+  margin-top: 12px;
+}

@@ -1,18 +1,32 @@
-import { usePaginatedPosts } from "../hooks/hooks";
+import { usePagination } from "../hooks/hooks";
 import PostCard from "./PostCard";
 import Spinner from 'react-bootstrap/Spinner';
+import { FailedCard } from "./FailedCard";
+import { useEffect, useState } from "react";
+import { getAllPosts } from "../actions/posts";
 
 import "../assets/styling/content.css";
-import { FailedCard } from "./FailedCard";
 
 export default function PostArticle({query, kwargs={}}) {
-    const [posts, lastPost] = usePaginatedPosts(query, kwargs);
+    const [loading, setLoading] = useState(true);
+    const [posts, lastPost] = usePagination(query, getAllPosts, kwargs);
+
+    useEffect(() => {
+       setLoading(true);
+       if(posts) setLoading(false); 
+    }, [posts]);
 
     return (
         <>
-            {   
-                posts ? 
-                    posts.length !== 0 ? 
+            {
+                loading ? 
+                    <div className="loading-container center-content">
+                        <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </Spinner>
+                    </div>
+                :
+                    posts ? 
                         posts.map((post, index) => {
                             if(posts.length === index + 1) {
                                 return <div key={post.id} ref={lastPost}><PostCard post={post} /></div>
@@ -21,13 +35,7 @@ export default function PostArticle({query, kwargs={}}) {
                             }
                         }) : kwargs["parent"] ? "" 
                     :
-                        <div className="loading-container center-content">
-                            <Spinner animation="border" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                            </Spinner>
-                        </div>
-                :
-                    <FailedCard />
+                        <FailedCard />
             }
         </>
     )

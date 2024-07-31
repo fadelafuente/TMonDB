@@ -68,10 +68,10 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                     <NavDropdown.Item href="#action/3.3">
                         My Monsters
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="settings/account">
+                    <NavDropdown.Item href="/settings/account">
                         Settings
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#!" onClick={ logout }>
+                    <NavDropdown.Item href="/home" onClick={ () => logout() }>
                         Logout
                     </NavDropdown.Item>
                 </NavDropdown>
@@ -91,7 +91,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                 >
                     <Offcanvas.Header closeButton closeVariant="white">
                         <Offcanvas.Title id="offcanvasNavbarLabel-expand-lg">
-                        The Monster Database
+                            The Monster Database
                         </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>

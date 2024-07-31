@@ -22,7 +22,7 @@ export default function CreatePost({show, setShow, is_reply=false, parent=null})
                 show={show}
             >
                 <Modal.Header>
-                    placeholderUserName
+                    Create post
                 </Modal.Header>
                 <Modal.Body>
                     <Form>

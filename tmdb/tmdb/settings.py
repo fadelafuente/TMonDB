@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(",")
 
 # Application definition
 
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'djoser',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework.authtoken',
     'social_django',
     'monsters',
     'moves',
@@ -128,10 +129,10 @@ WSGI_APPLICATION = 'tmdb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("POSTGRESQL_DB_NAME"),
-        'USER': os.getenv("POSTGRESQL_DB_USER"),
-        'PASSWORD': os.getenv("POSTGRESQL_DB_PASSWORD"),
-        'HOST': os.getenv("POSTGRESQL_DB_HOST"),
+        'NAME': os.getenv("POSTGRES_DB"),
+        'USER': os.getenv("POSTGRES_USER"),
+        'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
+        'HOST': os.getenv("POSTGRES_HOST"),
     },
 }
 

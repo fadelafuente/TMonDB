@@ -254,3 +254,7 @@ div.modal-content {
   background-color: var(--background-content-color);
   color: var(--text-color);
 }
+
+button.close-btn {
+  margin-right: 20px !important;
+}

@@ -179,7 +179,7 @@ button.media-btn, button.media-btn:hover {
 button.rounded-btn {
     border-radius: 20px;
     width: 100%;
-    max-width: 80px;
+    max-width: 100px;
     min-width: 60px;
     background-color: var(--background-color);
     color: var(--placeholder-text-color);
@@ -198,10 +198,6 @@ button.rounded-btn:active {
     opacity: 80%;
 }
 
-button.close-btn {
-    margin-right: 20px;
-}
-
 /* Create Post Modal Styling */
 div.discard-post {
     text-align: center;
@@ -211,16 +207,17 @@ div.modal-header {
     border-bottom: 2px solid var(--background-content-color);
 }
 
+div.modal-header-no-border {
+    border-bottom: 0px;
+}
+
 div.modal-footer {
     border-top: 2px solid var(--background-content-color);
+    padding: 4px 12px;
 }
 
 div.modal-backdrop {
     z-index: 1055;
-}
-
-div.modal-footer {
-    padding: 4px 12px;
 }
 
 div.copy-alert {
@@ -241,11 +238,35 @@ div.copy-alert {
     min-width: 250px; 
 }
 
+div.delete-alert {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 88px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1055;
+    background-color: var(--accent-color);
+    color: var(--background-color);
+    border: none;
+    font-weight: bold;
+    height: 60px;
+    max-width: 30vw;
+    min-width: 250px; 
+}
+
 div.deleted-icon {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
     font-size: 10vh;
 }
 
-div.deleted-text {
+h4.deleted-text {
+    text-align: center;
+}
+
+p.deleted-text {
     text-align: center;
 }

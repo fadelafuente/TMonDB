@@ -42,15 +42,18 @@ class CurrentUserSerializer(BaseSerializer):
         model = UserModel
         fields = ('id', 'username', 'email')
 
-class FollowSerializer(UserSerializer):
+class PatchSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = UserModel
         fields = ('id',)
 
 class FollowingSerializer(BaseSerializer):
+    user_follows = serializers.IntegerField()
+    current_user = serializers.IntegerField()
+
     class Meta(BaseSerializer.Meta):
         model = UserModel
-        fields = ('id', 'following')
+        fields = ('id', 'user_follows', 'current_user', 'bio', 'username')
 
 class ProfileSerializer(UserSerializer):
     following_count = serializers.IntegerField()
@@ -59,3 +62,8 @@ class ProfileSerializer(UserSerializer):
     class Meta(UserSerializer.Meta):
         model = UserModel
         fields = ('id', 'username', 'bio', 'following_count', 'followers_count', 'following', 'followers')
+
+class BlockingSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        model=UserModel
+        fields = ('id', 'username')

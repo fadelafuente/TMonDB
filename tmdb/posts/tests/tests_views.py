@@ -18,6 +18,8 @@ class TestPosts(APITestCase):
 
         user = AppUser.objects.create_user(email="testemail2@domain.com", password="testpassword", username="testuser2", first_name="test2", last_name="user2")
 
+        cls.user2 = user
+
         for index in range(1, 3):
             Post.objects.create(content=f"test post {index}", posted_date=timezone.now(), creator=user)
         
@@ -189,3 +191,27 @@ class TestPosts(APITestCase):
         self.assertTrue(response1.data["user_liked"] != response2.data["user_liked"])
         self.assertTrue(self.user.id in response1.data["who_liked"])
         self.assertTrue(self.user.id not in response2.data["who_liked"])
+
+    def test_user_blocked_list(self):
+        self.client.force_authenticate(user=self.user)
+
+        self.user.blocking.set([self.user2.id])
+
+        response = self.client.get("/api/posts/?page=1")
+        self.assertTrue(self.user2.id not in user for user in response.data["results"])
+
+    def test_blocked_users_posts_do_not_return(self):
+        self.client.force_authenticate(user=self.user)
+
+        self.user.blocking.set([self.user2.id])
+        response = self.client.get("/api/posts/?page=1")
+
+        self.assertTrue(post["creator"] != self.user2.id for post in response.data["results"])
+
+    def test_blocked_users_post_returns_error(self):
+        self.user.blocking.set([self.user2.id])
+
+        self.client.force_authenticate(user=self.user2)
+        response = self.client.get(f"/api/posts/{self.post_id}/")
+
+        self.assertTrue(response.status_code == 403)
