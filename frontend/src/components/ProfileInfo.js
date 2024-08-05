@@ -47,7 +47,7 @@ function ProfileInfo({isAuthenticated}) {
                         </div>
                     </div>
                     <div className="align-row">
-                        <div className="following follow">
+                        <div className="right-padding follow">
                             <button className="post-link text-link" onClick={() => navigate(`follow`, {state: {initial_type: "following"}})}>
                                 { profile ? profile.following_count : 0 } Following
                             </button>

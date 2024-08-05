@@ -10,6 +10,7 @@ import "../assets/styling/ViewPost.css"
 import { DeletedCard } from "./DeletedCard";
 import { FailedCard } from "./FailedCard";
 import { BlockedCard } from "./BlockedCard";
+import MonCard from "./MonCard";
 
 export default function ViewPost() {
     const { pid } = useParams();
@@ -22,11 +23,13 @@ export default function ViewPost() {
                 setPost(response.data);
             } else if(response && response.status === 200) {
                 setPost(response.data);
-                getPostById(response.data["parent"]).then((parent_response) => {
-                    if(parent_response && parent_response.status === 200) {
-                        setParent(parent_response.data);
-                    }
-                })
+                if(response.data["parent"]){
+                   getPostById(response.data["parent"]).then((parent_response) => {
+                        if(parent_response && parent_response.status === 200) {
+                            setParent(parent_response.data);
+                        }
+                    }) 
+                }   
             }
         }).catch(e => {
         });
@@ -34,6 +37,7 @@ export default function ViewPost() {
 
     return (
         <>
+            <MonCard />
             { post ? 
                 post.isBlocked ?
                     <div className="article-container">

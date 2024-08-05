@@ -1,0 +1,245 @@
+.card-background {
+    margin: 0 auto;
+    width: 100%;
+    min-width: 300px;
+    max-width: 650px;
+    height: 100%;
+    min-height: 420px;
+    max-height: 910px;
+    border-radius: 2%;
+    background-color: var(--accent-secondary-color-transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-background-aspect {
+    margin: 0 auto;
+    width: 100%;
+    min-width: 300px;
+    max-width: 500px;
+    min-height: 420px;
+    max-height: 700px;
+    padding-top: max(420px, min(140%, 700px));
+    position: relative; /* If you want text inside of it */
+    border-radius: 2%;
+    background-color: var(--accent-secondary-color-transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div.aspect-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 1em;
+    border: none;
+}
+
+div.aspect-inner {
+    width: 100%;
+    height: 100%;
+}
+
+.card-inner {
+    height: 520px;
+    width: 360px;
+    background-color: var(--accent-color);
+    position: relative;
+    color: white;
+    border-radius: 1%;
+}
+
+div.name-and-time {
+    margin: 0;
+}
+
+div.col {
+    padding: 0;
+}
+
+div.right-col {
+    display: flex;
+    justify-content: right;
+}
+
+div.row {
+    margin: 0;
+}
+
+div.col > h3 {
+    margin: 0;
+    padding: 3% 0%;
+    font-size: 14px;
+}
+
+div.image-container {
+    width: 100%;
+    height: 170px;
+    padding: 0 4%;
+    margin: 0;
+}
+
+div.image-container > img {
+    padding: 0;
+}
+
+div.content-text {
+    margin: 0;
+    height: 168px;
+}
+
+hr.content-separator {
+    margin: var(--bs-gutter-y) 0;
+}
+
+div.content-text > p {
+    max-height: 100px;
+    max-width: 100%;
+    padding: 0;
+    display: -webkit-box;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;  /* Number of lines displayed before it truncate */
+    overflow: hidden;
+    line-height: 1.2;
+    font-size: 14px;
+    margin: 0;
+}
+
+div.content-text > h3 {
+    font-size: 14px;
+    padding: 4px 0;
+    margin: 0;
+    line-height: 1;
+}
+
+div.mon-species {
+    font-size: small;
+    padding: 0;
+}
+
+div.typing {
+    padding: 0;
+}
+
+a.type1 {
+    background-color: green;
+    border-color: green;
+}
+
+a.type2 {
+    background-color: purple;
+    border-color: purple;
+}
+
+div.ability {
+    padding: 0;
+}
+
+a.links {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: small;
+    padding: 2px 4px;
+    border-radius: 4px;
+    margin: 4px auto;
+    height: 25px;
+    width: 125px;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+div.ability-col {
+    display: flex;
+    margin: auto;
+    justify-content: center;
+    background-color: var(--accent-secondary-color);
+}
+
+div.description {
+    max-height: 100px;
+    max-width: 100%;
+    padding: 0;
+    display: -webkit-box;
+    line-clamp: 5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;  /* Number of lines displayed before it truncate */
+    overflow: hidden;
+    line-height: 1.2;
+    font-size: 14px;
+    margin: 0;
+}
+
+div.interaction-btn {
+    height: 24px;
+}
+
+div.interaction-btn > button {
+    all: unset;
+    width: 100%;
+    cursor: pointer;
+}
+
+div.interaction-btn > button:focus {
+    outline: revert;
+}
+
+span.content-interactions {
+    padding: 0px 11px;
+    height: 24px;
+    display: flex;
+}
+
+div.inner-div {
+    display: flex;
+    text-align: center;
+}
+
+div.interaction-nums {
+    height: 24px;
+    line-height: 24px;
+    padding-left: 4px;
+}
+
+div.interaction-btn {
+    max-width: 58px;
+}
+
+div.interaction-nums > span {
+    font-size: small;
+    display: block;
+}
+
+div.interaction-icon {
+    height: 24px;
+}
+
+div.interaction-icon > svg {
+    margin-bottom: 4px;
+}
+
+div.interaction-btn {
+    width: 100%;
+}
+
+div.share-btn {
+    max-width: 20px;
+}
+
+div.left-btn {
+    padding-right: 1%;
+}
+
+div.inner-btn {
+    padding: 0 1%;
+}
+div.right-btn {
+    padding-left: 1%;
+}

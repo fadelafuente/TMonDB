@@ -88,7 +88,7 @@ function PostCard({ post, isAuthenticated }) {
                                     </Col>
                                     <Col className="time-col" id="time-col">
                                         <Row className="center-row-items">
-                                            <Col>
+                                            <Col className="right-padding">
                                                 { post ? handleTimeDifference(post.posted_date) : <Placeholder xs={4} /> }
                                             </Col>
                                             <Col className="more-col">
