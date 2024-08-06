@@ -55,7 +55,7 @@
 /* center content */
 .content-center {
     max-width: 700px;
-    min-width: 300px;
+    min-width: 340px;
     width: 100%;
     padding-top: 76px;
     border: 1px solid var(--input-box-color);

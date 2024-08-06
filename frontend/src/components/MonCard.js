@@ -1,13 +1,14 @@
 import { Fragment, React, useState } from 'react';
-import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsChatRightDotsFill, BsHeartFill } from 'react-icons/bs';
-
-import '../assets/styling/MonCard.css';
-import { Alert, Button, Card, Col, NavDropdown, Row } from 'react-bootstrap';
+import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsChatRightDotsFill, BsHeartFill, BsThreeDots } from 'react-icons/bs';
+import { Alert, Button, Card, Col, NavDropdown, Placeholder, Row } from 'react-bootstrap';
 import BlockModal from './BlockModal';
 import CreatePost from './CreatePost';
 import { connect } from 'react-redux';
 import { useDeletePost, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
+import { handleTimeDifference } from '../functions/handlers';
+
+import '../assets/styling/MonCard.css';
 
 function MonCard({post=null, isAuthenticated}) {
     // const [liked, likes, setLike] = useInteractions(post.likes_count, post.user_liked);
@@ -60,37 +61,60 @@ function MonCard({post=null, isAuthenticated}) {
                 <div className='card-background-aspect'>
                     <div className="aspect-border">
                         <Card className='aspect-inner'>
-                            <Card.Header>
-                                <Row className='name-and-time'>
-                                    <Col className='left-col'>
-                                        <h3>@Johnathie</h3>
+                            <Card.Header className="mon-card-header">
+                                <Row className="center-row-items">
+                                    <Col>
+                                        <div className="creator-container">
+                                            {
+                                                post && post.creator_username ? 
+                                                    <a href={ `/${post.creator_username}` }>
+                                                        { post.creator_username }
+                                                    </a>
+                                                :
+                                                "[Deleted]"
+                                            }
+                                        </div>
                                     </Col>
-                                    <Col className='right-col'>
-                                        <h3> 22hrs ago</h3>
+                                    <Col className="time-col" id="time-col">
+                                        <Row className="center-row-items">
+                                            <Col className="right-padding">
+                                                { post ? handleTimeDifference(post.posted_date) : "0s" }
+                                            </Col>
+                                            <Col className="more-col">
+                                                <div className="more-btn">
+                                                    <NavDropdown title={<BsThreeDots />} 
+                                                        drop={ aboveMid ? "up-centered" : "down-centered" }
+                                                        onClick={e => setAboveMid(e)}
+                                                        disabled={ !isAuthenticated }
+                                                    >
+                                                        { handleMoreClick() }
+                                                    </NavDropdown>
+                                                </div>
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Card.Header>
                             <Card.Body>
-                                <Row className='image-container'>
-                            
-                                </Row>
+                                <div className="image-aspect-container">
+                                    <Row className='image-container'>
+                                            
+                                    </Row>
+                                </div>
                                 <Row className='content-text'>
                                     <h3>Bulbasaur</h3>
                                     <div className='mon-species'>
                                         The Bulb Pokemon
                                     </div>
-                                    <hr className='content-separator' />
                                     <div className='typing'>
                                         <Button href='/trending' className='links type1'>grass</Button>
                                         &emsp;
                                         <Button href='/trending' className='links type2'>poison</Button>
                                     </div>
                                     
-                                    <hr className='content-separator' />
                                     <div className='description'>
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                                     </div>
-                                    <hr className='content-separator' />
                                 </Row>
                             </Card.Body>
                             <Card.Footer>
@@ -149,6 +173,7 @@ function MonCard({post=null, isAuthenticated}) {
                                     <NavDropdown title={<BsShare/>} 
                                         drop={ aboveMid ? "up-centered" : "down-centered" }
                                         onClick={e => setAboveMid(e)}
+                                        className="svg-dropdown"
                                     >
                                         <NavDropdown.Item onClick={() => handleCopyLink("")}>
                                             Copy link

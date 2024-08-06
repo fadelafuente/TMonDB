@@ -176,6 +176,7 @@ function PostCard({ post, isAuthenticated }) {
                                 <NavDropdown title={<BsShare/>} 
                                     drop={ aboveMid ? "up-centered" : "down-centered" }
                                     onClick={e => setAboveMid(e)}
+                                    className="svg-dropdown"
                                 >
                                     <NavDropdown.Item onClick={() => handleCopyLink(post.creator_username ? `${post.creator_username}/${post.id}` : `deleted/${post.id}`)}>
                                         Copy link

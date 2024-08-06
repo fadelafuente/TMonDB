@@ -18,8 +18,6 @@
     width: 100%;
     min-width: 300px;
     max-width: 500px;
-    min-height: 420px;
-    max-height: 700px;
     padding-top: max(420px, min(140%, 700px));
     position: relative; /* If you want text inside of it */
     border-radius: 2%;
@@ -56,8 +54,25 @@ div.aspect-inner {
     border-radius: 1%;
 }
 
+div.mon-card-header {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 div.name-and-time {
     margin: 0;
+}
+
+.image-aspect-container {
+    margin: 0 auto;
+    width: 100%;
+    padding-top: max(164px, 70%);
+    position: relative; /* If you want text inside of it */
+    border-radius: 2%;
+    background-color: var(--accent-secondary-color-transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 div.col {
@@ -76,14 +91,20 @@ div.row {
 div.col > h3 {
     margin: 0;
     padding: 3% 0%;
-    font-size: 14px;
+    font-size: 1em;
 }
 
 div.image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     width: 100%;
-    height: 170px;
-    padding: 0 4%;
+    height: 100%;
+    padding: 0;
     margin: 0;
+    background-color: blue;
 }
 
 div.image-container > img {
@@ -109,19 +130,19 @@ div.content-text > p {
     -webkit-line-clamp: 6;  /* Number of lines displayed before it truncate */
     overflow: hidden;
     line-height: 1.2;
-    font-size: 14px;
+    font-size: 1em;
     margin: 0;
 }
 
 div.content-text > h3 {
-    font-size: 14px;
+    font-size: 1.2em;
     padding: 4px 0;
     margin: 0;
     line-height: 1;
 }
 
 div.mon-species {
-    font-size: small;
+    font-size: smaller;
     padding: 0;
 }
 
@@ -144,14 +165,15 @@ div.ability {
 }
 
 a.links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: var(--text-color);
     text-decoration: none;
-    font-size: small;
-    padding: 2px 4px;
-    border-radius: 4px;
-    margin: 4px auto;
-    height: 25px;
-    width: 125px;
+    font-size: 1em;
+    border-radius: 8px;
+    height: 1.5em;
+    width: 100%;
     overflow: hidden;
     pointer-events: none;
 }
@@ -177,20 +199,6 @@ div.description {
     margin: 0;
 }
 
-div.interaction-btn {
-    height: 24px;
-}
-
-div.interaction-btn > button {
-    all: unset;
-    width: 100%;
-    cursor: pointer;
-}
-
-div.interaction-btn > button:focus {
-    outline: revert;
-}
-
 span.content-interactions {
     padding: 0px 11px;
     height: 24px;
@@ -208,25 +216,9 @@ div.interaction-nums {
     padding-left: 4px;
 }
 
-div.interaction-btn {
-    max-width: 58px;
-}
-
 div.interaction-nums > span {
     font-size: small;
     display: block;
-}
-
-div.interaction-icon {
-    height: 24px;
-}
-
-div.interaction-icon > svg {
-    margin-bottom: 4px;
-}
-
-div.interaction-btn {
-    width: 100%;
 }
 
 div.share-btn {

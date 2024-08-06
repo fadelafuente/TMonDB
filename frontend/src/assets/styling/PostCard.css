@@ -35,6 +35,7 @@ div.article-container {
 div.center-row-items {
     display: flex;
     align-items: center;
+    font-size: 1em;
 }
 
 div.col {
@@ -81,18 +82,18 @@ div.interaction-btn {
     width: 100%;
 }
 
-button.svg-btn {
+button.svg-btn, div.svg-dropdown {
     all: unset;
     color: var(--placeholder-text-color);
 }
 
-button.svg-btn:hover {
+button.svg-btn:hover, div.svg-dropdown:hover {
     all: unset;
     color: var(--accent-color);
     cursor: pointer;
 }
 
-button.svg-btn:active {
+button.svg-btn:active, div.svg-dropdown:active {
     background-color: var(--background-content-color) !important;
     color: var(--accent-secondary-color) !important;
 }
