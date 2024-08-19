@@ -14,5 +14,3 @@ class Monster(models.Model):
     types = models.ManyToManyField(Type, related_name="regions")
     creator = models.ForeignKey(UserModel, blank=True, null=True, on_delete=models.CASCADE, related_name="monsters")
     date_joined = models.DateTimeField(default=timezone.now, blank=True)
-
-

@@ -17,8 +17,8 @@
     margin: 0 auto;
     width: 100%;
     min-width: 300px;
-    max-width: 500px;
-    padding-top: max(420px, min(140%, 700px));
+    max-width: 75%;
+    padding-top: max(420px, 105%);
     position: relative; /* If you want text inside of it */
     border-radius: 2%;
     background-color: var(--accent-secondary-color-transparent);
@@ -36,13 +36,17 @@ div.aspect-border {
     width: 100%;
     height: 100%;
     margin: 0 auto;
-    padding: 1em;
+    padding: 3.2%;
     border: none;
 }
 
 div.aspect-inner {
     width: 100%;
     height: 100%;
+}
+
+div.mon-card-body {
+    height: calc(87.955% - 40.8px);
 }
 
 .card-inner {
@@ -88,10 +92,10 @@ div.row {
     margin: 0;
 }
 
-div.col > h3 {
+div.mon-name > h3 {
     margin: 0;
     padding: 3% 0%;
-    font-size: 1em;
+    font-size: 1.25em;
 }
 
 div.image-container {
@@ -113,7 +117,10 @@ div.image-container > img {
 
 div.content-text {
     margin: 0;
-    height: 168px;
+    height: 48.7%;
+    padding: 0;  
+    gap: 2%;
+    align-content: start;
 }
 
 hr.content-separator {
@@ -138,7 +145,14 @@ div.content-text > h3 {
     font-size: 1.2em;
     padding: 4px 0;
     margin: 0;
-    line-height: 1;
+}
+
+div.mon-info {
+    padding: 0;
+}
+
+div.mon-name {
+    flex-direction: column;
 }
 
 div.mon-species {
@@ -148,6 +162,10 @@ div.mon-species {
 
 div.typing {
     padding: 0;
+    display: flex;
+    gap: 1em;
+    justify-content: right;
+    align-items: center;
 }
 
 a.type1 {
@@ -171,11 +189,15 @@ a.links {
     color: var(--text-color);
     text-decoration: none;
     font-size: 1em;
-    border-radius: 8px;
-    height: 1.5em;
-    width: 100%;
+    border-radius: 50%;
+    height: 2.5em;
+    width: 2.5em;
     overflow: hidden;
     pointer-events: none;
+}
+
+a.links:hover {
+    cursor: pointer;
 }
 
 div.ability-col {
@@ -186,17 +208,22 @@ div.ability-col {
 }
 
 div.description {
-    max-height: 100px;
     max-width: 100%;
+    height: calc(90% - 41.2px);
     padding: 0;
-    display: -webkit-box;
-    line-clamp: 5;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;  /* Number of lines displayed before it truncate */
+}
+
+div.description > span {
+    font-size: 1em;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
     overflow: hidden;
-    line-height: 1.2;
-    font-size: 14px;
-    margin: 0;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
 }
 
 span.content-interactions {

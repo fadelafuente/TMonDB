@@ -1,4 +1,4 @@
-import { Fragment, React, useState } from 'react';
+import { Fragment, React, useEffect, useRef, useState } from 'react';
 import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsChatRightDotsFill, BsHeartFill, BsThreeDots } from 'react-icons/bs';
 import { Alert, Button, Card, Col, NavDropdown, Placeholder, Row } from 'react-bootstrap';
 import BlockModal from './BlockModal';
@@ -28,6 +28,23 @@ function MonCard({post=null, isAuthenticated}) {
     const [blocked, setBlocked] = useState(false);
     const [isDeleted, setIsDeleted] = useDeletePost(false);
     const navigate = useNavigate();
+    const desc = useRef();
+
+    useEffect(() => {
+        if(!desc?.current) return;
+
+        const resizeObserver = new ResizeObserver(() => {
+            const description = document.getElementById("desc-span");
+            const computedSize = window.getComputedStyle(description).fontSize;
+            const numLines = Math.floor(desc.current.clientHeight / (parseInt(computedSize.substring(0,2)) * 1.4)) - 1;
+            description.style.webkitLineClamp = numLines;
+            description.style.lineClamp = numLines;
+        });
+
+        resizeObserver.observe(desc.current);
+        
+        return () => resizeObserver.disconnect();
+    }, []);
 
     function handleCopyLink(path) {
         navigator.clipboard.writeText(`${process.env.REACT_APP_WEB_URL}/${path}`);
@@ -95,25 +112,29 @@ function MonCard({post=null, isAuthenticated}) {
                                     </Col>
                                 </Row>
                             </Card.Header>
-                            <Card.Body>
+                            <Card.Body className="mon-card-body">
                                 <div className="image-aspect-container">
                                     <Row className='image-container'>
                                             
                                     </Row>
                                 </div>
                                 <Row className='content-text'>
-                                    <h3>Bulbasaur</h3>
-                                    <div className='mon-species'>
-                                        The Bulb Pokemon
-                                    </div>
-                                    <div className='typing'>
-                                        <Button href='/trending' className='links type1'>grass</Button>
-                                        &emsp;
-                                        <Button href='/trending' className='links type2'>poison</Button>
-                                    </div>
-                                    
-                                    <div className='description'>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                    <Row className="mon-info">
+                                        <Col className="mon-name">
+                                            <h3>Bulbasaur</h3>
+                                            <div className='mon-species'>
+                                                The Bulb Pokemon
+                                            </div>
+                                        </Col>
+                                        <Col className='typing'>
+                                            <Button href='/trending' className='links type1'>GRA</Button>
+                                            <Button href='/trending' className='links type2'>POI</Button>
+                                        </Col>
+                                    </Row>
+                                    <div className='description' id='description' ref={desc}>
+                                            <span id='desc-span'>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                            </span>
                                     </div>
                                 </Row>
                             </Card.Body>

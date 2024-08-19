@@ -1,5 +1,5 @@
 div.card {
-    margin-bottom: 12px;
+    margin-bottom: 1em;
     background-color: var(--background-content-color);
     color: var(--text-color);
 }
@@ -9,8 +9,8 @@ div.card-body {
 }
 
 div.article-container {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 1em;
+    margin-right: 1em;
 }
 
 .post-link {
@@ -104,7 +104,7 @@ div.inner-btn-div {
 
 div.interaction-nums {
     padding: 0;
-    font-size: 15px;
+    font-size: 0.9375em;
 }
 
 div.interaction-icon {
@@ -173,7 +173,7 @@ button.media-btn, button.media-btn:hover {
     height: 24px;
     width: 24px;
     display: flex;   
-    font-size: 24px;
+    font-size: 1.5em;
 }
 
 /* post and close buttons */
