@@ -2,9 +2,9 @@ import { Button, Col } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
-import BlockModal, { UnBlockModal } from './BlockModal';
+import BlockModal, { UnBlockModal } from '../Modals/BlockModal';
 
-import "../assets/styling/PostCard.css";
+import "../../assets/styling/PostCard.css";
 
 function BlockingCard({ user, isAuthenticated }) {
     const [blocked, setBlocked] = useState(true);

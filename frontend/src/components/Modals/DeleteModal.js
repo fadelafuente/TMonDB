@@ -2,12 +2,12 @@ import { Modal, InputGroup, Alert } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsExclamationCircle, BsEyeFill, BsEyeSlash } from "react-icons/bs";
-import { useFormData, usePassword, useTimedAlert } from "../hooks/hooks";
-import { deleteUser, logout } from "../actions/auth";
+import { useFormData, usePassword, useTimedAlert } from "../../hooks/hooks";
+import { deleteUser, logout } from "../../actions/auth";
 import { connect } from "react-redux";
 import { useState } from "react";
 
-import "../assets/styling/Modal.css";
+import "../../assets/styling/Modal.css";
 
 function DeleteModal({show, setShow}) {
     const initialForm = {

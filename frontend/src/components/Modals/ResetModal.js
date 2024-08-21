@@ -1,9 +1,9 @@
 import { Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
-import { setLoginByEmail } from "../actions/auth";
+import { setLoginByEmail } from "../../actions/auth";
 import { connect } from "react-redux";
 
-import '../assets/styling/Modal.css';
+import '../../assets/styling/Modal.css';
 
 function ResetModal({setLoginByEmail, resetItem, show, setShow, email}) {
     function handleClick(e) {

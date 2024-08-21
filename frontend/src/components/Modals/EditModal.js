@@ -2,9 +2,9 @@ import { Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { DiscardModal } from "./DiscardModal";
-import { useDiscardModal, useUpdateProfile } from "../hooks/hooks";
+import { useDiscardModal, useUpdateProfile } from "../../hooks/hooks";
 
-import "../assets/styling/Modal.css";
+import "../../assets/styling/Modal.css";
 
 export default function EditModal({show, setShow}) {
     const initialForm = {

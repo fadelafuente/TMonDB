@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import { BsXCircle } from 'react-icons/bs';
 
-import "../assets/styling/PostCard.css";
+import "../../assets/styling/PostCard.css";
 
 export function FailedCard({type="Post"}) {
     return (

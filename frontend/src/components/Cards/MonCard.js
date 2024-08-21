@@ -1,14 +1,14 @@
 import { Fragment, React, useEffect, useRef, useState } from 'react';
 import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsChatRightDotsFill, BsHeartFill, BsThreeDots } from 'react-icons/bs';
-import { Alert, Button, Card, Col, NavDropdown, Placeholder, Row } from 'react-bootstrap';
-import BlockModal from './BlockModal';
-import CreatePost from './CreatePost';
+import { Alert, Button, Card, Col, NavDropdown, Row } from 'react-bootstrap';
+import BlockModal from '../Modals/BlockModal';
+import CreatePost from '../CreatePost';
 import { connect } from 'react-redux';
-import { useDeletePost, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
+import { useDeletePost, useMiddleViewPort, useTimedAlert } from '../../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
-import { handleTimeDifference } from '../functions/handlers';
+import { handleTimeDifference } from '../../functions/handlers';
 
-import '../assets/styling/MonCard.css';
+import '../../assets/styling/MonCard.css';
 
 function MonCard({post=null, isAuthenticated}) {
     // const [liked, likes, setLike] = useInteractions(post.likes_count, post.user_liked);

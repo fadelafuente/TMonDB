@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import { Button, Col } from 'react-bootstrap';
-import { useGetProfile } from '../hooks/hooks';
+import { useGetProfile } from '../../hooks/hooks';
 
-import "../assets/styling/PostCard.css";
-import "../assets/styling/UserProfile.css";
+import "../../assets/styling/PostCard.css";
+import "../../assets/styling/UserProfile.css";
 import { connect } from 'react-redux';
 
 function FollowCard({ user, isAuthenticated }) {

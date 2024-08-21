@@ -3,11 +3,11 @@ import { Button, Col, Row, Tab, Tabs, NavDropdown, Alert } from 'react-bootstrap
 import { useGetProfile, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
 import { BsThreeDots } from 'react-icons/bs';
 import PostArticle from './PostArticle';
-import EditModal from './EditModal';
+import EditModal from './Modals/EditModal';
 import { useState } from 'react';
 import { connect } from 'react-redux';
-import { BlockedCard } from './BlockedCard';
-import BlockModal from './BlockModal';
+import { BlockedCard } from './Cards/BlockedCard';
+import BlockModal from './Modals/BlockModal';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";

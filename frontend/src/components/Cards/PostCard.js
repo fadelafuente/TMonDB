@@ -1,17 +1,17 @@
 import { Col, Placeholder, Row, NavDropdown, Alert } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDotsFill, BsThreeDots } from 'react-icons/bs';
-import { handleTimeDifference } from '../functions/handlers';
-import ImageGallery from './ImageGallery';
-import { useDeletePost, useInteractions, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
+import { handleTimeDifference } from '../../functions/handlers';
+import ImageGallery from '../ImageGallery';
+import { useDeletePost, useInteractions, useMiddleViewPort, useTimedAlert } from '../../hooks/hooks';
 import { Fragment, useState, useEffect } from 'react';
-import CreatePost from './CreatePost';
+import CreatePost from '../CreatePost';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { DeletedCard } from './DeletedCard';
-import BlockModal from './BlockModal';
+import BlockModal from '../Modals/BlockModal';
 
-import "../assets/styling/PostCard.css";
+import "../../assets/styling/PostCard.css";
 
 function PostCard({ post, isAuthenticated }) {
     const [liked, likes, setLike] = useInteractions(post.likes_count, post.user_liked);

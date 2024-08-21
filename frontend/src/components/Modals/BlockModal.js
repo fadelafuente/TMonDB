@@ -1,6 +1,6 @@
 import { Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
-import { patchCurrentUsersBlockedList } from "../actions/auth";
+import { patchCurrentUsersBlockedList } from "../../actions/auth";
 
 export default function BlockModal({show, setShow, setBlocked, username}) {
     return <>

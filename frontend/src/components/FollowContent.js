@@ -3,7 +3,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import { useGetProfile } from '../hooks/hooks';
 import { useState } from 'react';
 import FollowList from './FollowList';
-import { BlockedCard } from './BlockedCard';
+import { BlockedCard } from './Cards/BlockedCard';
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/UserProfile.css";

@@ -1,7 +1,7 @@
 import { usePagination } from "../hooks/hooks";
-import BlockingCard from "./BlockingCard";
+import BlockingCard from "./Cards/BlockingCard";
 import Spinner from 'react-bootstrap/Spinner';
-import { FailedCard } from "./FailedCard";
+import { FailedCard } from "./Cards/FailedCard";
 import { useEffect, useState } from "react";
 import { getCurrentUsersBlockedList } from "../actions/auth";
 

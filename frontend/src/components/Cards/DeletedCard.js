@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import { BsTrash3 } from 'react-icons/bs';
 
-import "../assets/styling/PostCard.css";
+import "../../assets/styling/PostCard.css";
 
 export function DeletedCard() {
     return (

@@ -3,14 +3,14 @@ import { React, useEffect, useState } from "react";
 import '../assets/styling/forms.css';
 import '../assets/styling/Account.css';
 import { Button, Col, Row } from "react-bootstrap";
-import ResetModal from "./ResetModal";
+import ResetModal from "./Modals/ResetModal";
 import SetUsernameNoRedirect from "./SetUsernameNoRedirect";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./Modals/DeleteModal";
 import { useNavigateNotAuth } from "../hooks/hooks";
+import { connect } from "react-redux";
 
 import "../assets/styling/PostCard.css";
 import "../assets/styling/Modal.css";
-import { connect } from "react-redux";
 
 function Account({isAuthenticated, user}) {
     const [show, setShow] = useState(false);

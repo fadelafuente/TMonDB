@@ -1,4 +1,4 @@
-import PostCard from "../components/PostCard";
+import PostCard from "./Cards/PostCard";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPostById } from "../actions/posts";
@@ -7,10 +7,10 @@ import ReplyBar from "./ReplyBar";
 
 import "../assets/styling/content.css";
 import "../assets/styling/ViewPost.css"
-import { DeletedCard } from "./DeletedCard";
-import { FailedCard } from "./FailedCard";
-import { BlockedCard } from "./BlockedCard";
-import MonCard from "./MonCard";
+import { DeletedCard } from "./Cards/DeletedCard";
+import { FailedCard } from "./Cards/FailedCard";
+import { BlockedCard } from "./Cards/BlockedCard";
+import MonCard from "./Cards/MonCard";
 
 export default function ViewPost() {
     const { pid } = useParams();

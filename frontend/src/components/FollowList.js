@@ -1,8 +1,8 @@
 import { usePaginatedUserFollow } from "../hooks/hooks";
-import { FailedCard } from "./FailedCard";
+import { FailedCard } from "./Cards/FailedCard";
+import FollowCard from "./Cards/FollowCard";
 
 import "../assets/styling/content.css";
-import FollowCard from "./FollowCard";
 
 export default function FollowList({uid, follow_type, query}) {
     const [users, lastUser] = usePaginatedUserFollow(uid, follow_type, query);
