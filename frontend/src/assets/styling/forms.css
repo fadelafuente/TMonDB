@@ -233,3 +233,40 @@ div.button-row {
   display: flex;
   margin-top: 12px;
 }
+
+button.close-btn > svg {
+  stroke-width: 0.1em;
+}
+
+button.close-btn {
+  border-radius: 0.375rem;
+  width: fit-content;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px !important;
+  padding: 6px;
+  margin: 0 !important;
+  
+}
+
+#search-group > span.input-group-text {
+  border-radius: 0.375rem;
+}
+
+div.search-container {
+  justify-content: right;
+}
+
+input.search-input, button.close-btn {
+  display: none;
+}
+
+#search-group.open > span.input-group-text {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+div.search-container.open > input.search-input, 
+div.search-container.open > button.close-btn {
+  display: flex;
+}
