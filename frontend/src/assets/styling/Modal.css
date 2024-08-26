@@ -27,3 +27,7 @@ div.error-icon > svg {
     height: 18px;
     width: 18px;
 }
+
+div.search-modal {
+    z-index: 9999;
+}

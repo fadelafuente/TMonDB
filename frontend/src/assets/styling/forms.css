@@ -257,7 +257,7 @@ div.search-container {
   justify-content: right;
 }
 
-input.search-input, button.close-btn {
+input.search-input {
   display: none;
 }
 
@@ -266,7 +266,6 @@ input.search-input, button.close-btn {
   border-bottom-right-radius: 0;
 }
 
-div.search-container.open > input.search-input, 
-div.search-container.open > button.close-btn {
-  display: flex;
+div.search-container.open > input.search-input {
+  display: block;
 }

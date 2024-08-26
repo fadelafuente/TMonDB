@@ -11,17 +11,10 @@ import CreatePost from './CreatePost';
 
 import "../assets/styling/forms.css";
 import "../assets/styling/App.css";
+import SearchBar from './SearchBar';
 
 function TitleBar({setQuery, logout, isAuthenticated, user }) {
     const [show, setShow] = useState(false);
-    const [formData, setFormData] = useState("");
-
-    const search = formData;
-
-    function onSubmit(e) {
-        e.preventDefault();
-        setQuery(search);
-    }
 
     function guestLinks() {
         return (
@@ -102,21 +95,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
-                <Form className="form search" onSubmit={e => onSubmit(e) }>
-                    <InputGroup>
-                        <InputGroup.Text>
-                            <BsSearch />
-                    </InputGroup.Text>
-                    <Form.Control 
-                        type="search" 
-                        className="me-2 search" 
-                        placeholder="Search" 
-                        name="search"
-                        value={ search }
-                        onChange={ e => setFormData(e.target.value) }
-                    />
-                    </InputGroup>   
-                </Form>
+                <SearchBar setQuery={ setQuery } />
                 { isAuthenticated ? authLinks() : guestLinks() }
             </Container>
             <CreatePost show={show} setShow={() => setShow()} />

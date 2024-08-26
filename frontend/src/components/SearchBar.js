@@ -1,12 +1,15 @@
-import { React, useState } from 'react';
-import { Button, Form, InputGroup } from 'react-bootstrap';
-import { BsSearch, BsXLg } from 'react-icons/bs';
+import { React, useEffect, useState } from 'react';
+import { Form, InputGroup } from 'react-bootstrap';
+import { BsSearch } from 'react-icons/bs';
+import SearchModal from './Modals/SearchModal';
 
 import "../assets/styling/forms.css";
 import "../assets/styling/App.css";
 
-export default function SearchBar({setQuery}) {
+export default function SearchBar({ setQuery }) {
     const [formData, setFormData] = useState("");
+    const [show, setShow] = useState(false);
+    const [width, setWidth] = useState(window.innerWidth <= 700);
 
     const search = formData;
 
@@ -15,37 +18,39 @@ export default function SearchBar({setQuery}) {
         setQuery(search);
     }
 
-    function onClickOpenSearch() {
-        const searchGroup = document.getElementById("search-group");
-        searchGroup.classList.add("open");
-        
-    }
+    useEffect(() => {
+        function handleResize() {
+            setWidth(window.innerWidth <= 700);
+        }
 
-    function onClickCloseSearch() {
-        const searchGroup = document.getElementById("search-group");
-        searchGroup.classList.remove("open");
-        
-    }
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <>
+            <SearchModal setQuery={ setQuery } show={ show } setShow={ () => setShow() } />
             <Form className="form search" onSubmit={ e => onSubmit(e) }>
-                    <InputGroup className="search-container" id="search-group">
-                        <InputGroup.Text onClick={ () => onClickOpenSearch() }>
-                            <BsSearch />
-                        </InputGroup.Text>
-                        <Form.Control 
-                            type="search" 
-                            className="me-2 search search-input" 
-                            id="search-input"
-                            placeholder="Search" 
-                            name="search"
-                            value={ search }
-                            onChange={ e => setFormData(e.target.value) }
-                        />
-                        <Button className=" rounded-btn profile-btn close-btn" onClick={ () => onClickCloseSearch() }><BsXLg /></Button>
-                    </InputGroup>   
-                </Form>
+                <InputGroup 
+                    className={ width ? "search-container" : "search-container open" } 
+                    id="search-group"
+                    onClick={ width ? () => setShow(true) : () => {} }
+                >
+                    <InputGroup.Text>
+                        <BsSearch />
+                    </InputGroup.Text>
+                    <Form.Control 
+                        type="search" 
+                        className="me-2 search search-input" 
+                        id="search-input"
+                        placeholder="Search" 
+                        name="search"
+                        value={ search }
+                        onChange={ e => setFormData(e.target.value) }
+                    />
+                </InputGroup>   
+            </Form>
         </>
     );
 
