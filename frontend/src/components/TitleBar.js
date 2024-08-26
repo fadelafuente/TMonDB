@@ -1,4 +1,4 @@
-import { React, Fragment, useState } from 'react';
+import { React, Fragment, useState, useEffect } from 'react';
 import { Container, Form, InputGroup } from 'react-bootstrap';
 import { BsPlusCircle, BsPersonCircle, BsSearch } from 'react-icons/bs';
 import Nav from 'react-bootstrap/Nav';
@@ -8,13 +8,24 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { connect } from 'react-redux';
 import { logout } from '../actions/auth';
 import CreatePost from './CreatePost';
+import SearchBar from './SearchBar';
 
 import "../assets/styling/forms.css";
 import "../assets/styling/App.css";
-import SearchBar from './SearchBar';
 
 function TitleBar({setQuery, logout, isAuthenticated, user }) {
     const [show, setShow] = useState(false);
+    const [width, setWidth] = useState(window.innerWidth <= 700);
+
+    useEffect(() => {
+        function handleResize() {
+            setWidth(window.innerWidth <= 700);
+        }
+
+        window.addEventListener('resize', handleResize);
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     function guestLinks() {
         return (
@@ -75,8 +86,11 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
     return (
         <Navbar expand="bg-body-tertiary mb-3" id="navbar">
             <Container>
-                <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" id="navbar-toggler" className="navbar-dark" />
-                <Navbar.Brand href="/home">The Monster Database</Navbar.Brand>
+                { width ? 
+                    <Navbar.Toggle aria-controls="offcanvasNavbar-expand-lg" id="navbar-toggler" className="navbar-dark" />
+                :
+                    <Navbar.Brand href="/home">The Monster Database</Navbar.Brand>
+                }
                 <Navbar.Offcanvas
                     id="offcanvasNavbar-expand-lg"
                     aria-labelledby="offcanvasNavbarLabel-expand-lg"
@@ -89,13 +103,20 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="me-auto">
+                            <Nav.Link href="/home">Home</Nav.Link>
+                            <Nav.Link href="#for-you">For You</Nav.Link>
                             <Nav.Link href="#home">Trending</Nav.Link>
                             <Nav.Link href="#link">Monsters</Nav.Link>
                             <Nav.Link href="#link">Regions</Nav.Link>
+                            { isAuthenticated && user ?
+                                <Nav.Link href={ `/${user.username}` }>Account</Nav.Link>
+                                :
+                                ""
+                            }
                         </Nav>
                     </Offcanvas.Body>
                 </Navbar.Offcanvas>
-                <SearchBar setQuery={ setQuery } />
+                <SearchBar setQuery={ setQuery } width={ width } />
                 { isAuthenticated ? authLinks() : guestLinks() }
             </Container>
             <CreatePost show={show} setShow={() => setShow()} />

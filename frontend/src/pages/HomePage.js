@@ -1,6 +1,6 @@
 import TitleBar from "../components/TitleBar";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PostArticle from "../components/PostArticle";
 import ProfileInfo from "../components/ProfileInfo";
 import ViewPost from "../components/ViewPost";
@@ -23,7 +23,7 @@ function HomePage({ isAuthenticated }) {
         if(location.pathname === "/home") {
             return (
                 <div className="article-container">
-                        <PostArticle query={query} />
+                    <PostArticle query={query} />
                 </div>
             );
 
@@ -49,7 +49,7 @@ function HomePage({ isAuthenticated }) {
                 <TitleBar setQuery={(value) => setQuery(value)} user={user} />
             </div>
             <div className="content-container center-content">
-                <div className="aside-container left-aside" id="sticky-element">
+                <div className="aside-container left-aside" id="left-container">
                     <div id="sticky-anchor"></div>
                     <div className="content-left">
                         <div className="navigation-links">
@@ -64,16 +64,18 @@ function HomePage({ isAuthenticated }) {
                 <div id="content-center" className="content-center">
                     { handlePath() }
                 </div>
-                <div className="aside-container right-aside" id="sticky-element">
-                    <div id="sticky-anchor"></div>
-                    <div className="content-right">
-                        {location.pathname.includes("/settings/") ? 
-                            <div className="align-col">
-                                <button className="svg-btn right-content-btn" onClick={() => {window.history.replaceState(null, "", "/settings/account"); window.location.reload();} }>Account</button> 
-                                <button className="svg-btn right-content-btn" onClick={() => {window.history.replaceState(null, "", "/settings/blocked"); window.location.reload();} }>Blocked List</button> 
-                            </div>
-                            : "Right" 
-                        }
+                <div className="aside-container right-aside" id="right-container">
+                    <div className="right-container">
+                        <div id="sticky-anchor"></div>
+                        <div className="content-right">
+                            {location.pathname.includes("/settings/") ? 
+                                <div className="align-col">
+                                    <button className="svg-btn right-content-btn" onClick={() => {window.history.replaceState(null, "", "/settings/account"); window.location.reload();} }>Account</button> 
+                                    <button className="svg-btn right-content-btn" onClick={() => {window.history.replaceState(null, "", "/settings/blocked"); window.location.reload();} }>Blocked List</button> 
+                                </div>
+                                : "Right" 
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

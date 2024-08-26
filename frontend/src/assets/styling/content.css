@@ -45,6 +45,7 @@
 .left-aside {
     width: 100%;
     max-width: 280px;
+    border-right: 1px solid var(--input-box-color);
 }
 
 /* center content */
@@ -53,7 +54,6 @@
     min-width: 340px;
     width: 100%;
     padding-top: 76px;
-    border: 1px solid var(--input-box-color);
 }
 
 /* right content */
@@ -68,6 +68,7 @@
 .right-aside {
     width: 100%;
     max-width: 320px;
+    border-left: 1px solid var(--input-box-color);
 }
 
 div.loading-container {
@@ -98,3 +99,26 @@ button.right-content-btn:hover {
     padding: 8px 16px;
     background-color: var(--input-box-color);
 }
+
+/* Media Queries */
+@media (width <= 500px) {
+    .left-aside {
+        display: none;
+    }
+}
+
+@media (width <= 700px) {
+    .left-aside {
+        width: fit-content;
+    }
+
+    .right-aside {
+        display: none;
+    }
+}
+
+@media (width <= 1000) {
+    .right-container {
+        display: none;
+    }
+} 
