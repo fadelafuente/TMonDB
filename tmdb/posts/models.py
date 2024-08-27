@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from monsters.models import Monster
 
 UserModel = get_user_model()
 
@@ -16,4 +17,5 @@ class Post(models.Model):
     who_reposted = models.ManyToManyField(UserModel, related_name="reposts", blank=True)
     parent = models.ForeignKey("self", related_name="comments", on_delete=models.SET_NULL, blank=True, null=True)
     parent_deleted = models.BooleanField(default=False)
+    monster = models.OneToOneField(Monster, on_delete=models.CASCADE, null=True, blank=True)
     # is_deleted = models.BooleanField(default=False)

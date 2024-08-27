@@ -1,6 +1,6 @@
 import TitleBar from "../components/TitleBar";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PostArticle from "../components/PostArticle";
 import ProfileInfo from "../components/ProfileInfo";
 import ViewPost from "../components/ViewPost";
