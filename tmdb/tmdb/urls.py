@@ -20,11 +20,15 @@ from django.urls import path, include, re_path, include
 from django.views.generic import TemplateView
 from users.views import *
 from posts.views import *
+from monsters.views import *
+from typings.views import *
 
 from rest_framework.routers import DefaultRouter
 
-post_router = DefaultRouter()
-post_router.register(r"posts", PostViewSet)
+api_router = DefaultRouter()
+api_router.register(r"posts", PostViewSet)
+api_router.register(r"monsters", TMonDBMonsterViewset)
+api_router.register(r"types", TMonDBTypeViewset)
 
 auth_router = DefaultRouter()
 auth_router.register(r"users", TMonDBUserViewset)
@@ -36,7 +40,7 @@ urlpatterns = [
     path("auth/jwt/verify/", CustomTokenVerifyView.as_view(), name="jwt-verify"),
     path("auth/o/<slug:provider>/", CustomProviderAuthView.as_view(), name="provider-auth"),
     path("auth/", include(auth_router.urls)),
-    path("api/", include(post_router.urls)),
+    path("api/", include(api_router.urls))
 ]
 
 urlpatterns += [re_path(r"^.*", TemplateView.as_view(template_name="index.html"))]

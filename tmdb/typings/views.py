@@ -1,8 +1,13 @@
-from django.shortcuts import render
 from .models import *
 from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.request import Request
+from rest_framework_simplejwt import views
+from djoser.views import UserViewSet
+from rest_framework.decorators import action
+from rest_framework import status, filters
+from rest_framework.permissions import IsAuthenticated, AllowAny
 
 class TypeView(APIView):
     def get(self, request):
@@ -30,3 +35,18 @@ class TypeAdvantageView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
+
+class TMonDBTypeViewset(UserViewSet):
+    queryset = Type.objects.all()
+    # .annotate(following_count=Count("following", distinct=True), followers_count=Count("followers", distinct=True))
+    filter_backends = (filters.OrderingFilter, filters.SearchFilter)
+    ordering_fields = ("id", "name")
+    ordering = ("id")
+    search_fields = ["name"]
+
+    def get_permissions(self):
+        return (AllowAny(),)
+    
+    # def get_serializer_class(self):
+    #     if self.action == "follow":
+    #         return 

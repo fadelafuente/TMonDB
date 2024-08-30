@@ -203,26 +203,25 @@ class TMonDBUserViewset(UserViewSet):
 
         response = self.list(request, username=username)
 
-        if response.status_code == 200 and self.request.user.is_authenticated:
-            blocked = request.user.blocked.all().filter(username=username).annotate(following_count=Count("following", distinct=True),
-                                                followers_count=Count("followers", distinct=True)).values("bio", "followers_count", "following_count").first()
-            if blocked:
-                response.data["results"][0]["blocked_current_user"] = True
-                response.data["results"][0]["followers"] = []
-                response.data["results"][0]["following"] = []
+        if response.data["results"]:
+            response.data = response.data["results"][0]
+        else:
+            response.data = {}
 
-        if response.status_code == 200:
-            blocking = request.user.blocking.all().filter(username=username)
-            if blocking:
-                response.data["results"][0]["is_blocking"] = True
-            else:
-                response.data["results"][0]["is_blocking"] = False
+        try:
+            if response.status_code == 200 and self.request.user.is_authenticated:
+                blocked = request.user.blocked.all().filter(username=username)
+                if blocked:
+                    response.data["blocked_current_user"] = True
 
-            try:
-                response.data = response.data["results"][0]
-                response.data["current_user"] = request.user.id == response.data["id"]
-            except:
-                response.data = {}
+                blocking = request.user.blocking.all().filter(username=username)
+                if blocking:
+                    response.data["is_blocking"] = True
+
+                if "id" in response.data:
+                    response.data["current_user"] = request.user.id == response.data["id"]
+        except:
+            response.data = {}
 
         return response
     

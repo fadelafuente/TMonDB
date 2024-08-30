@@ -43,18 +43,18 @@ function ProfileInfo({isAuthenticated}) {
                             </div>
                         </div>
                         <div className="username-container">
-                            @{ profile ? profile.username : creator }
+                            @{ profile && profile.username ? profile.username : creator }
                         </div>
                     </div>
                     <div className="align-row">
                         <div className="right-padding follow">
                             <button className="post-link text-link" onClick={() => navigate(`follow`, {state: {initial_type: "following"}})}>
-                                { profile ? profile.following_count : 0 } Following
+                                { profile && profile.following_count ? profile.following_count : 0 } Following
                             </button>
                         </div>
                         <div className="followers follow">
                             <button className="post-link text-link" onClick={() => navigate(`follow`, {state: {initial_type: "followers"}})}>
-                                { profile && profile.blocked_current_user ? profile.followers_count : follows ? follows : 0 } Followers
+                                { profile && profile.followers_count ? profile.followers_count : follows ? follows : 0 } Followers
                             </button>
                         </div>
 
