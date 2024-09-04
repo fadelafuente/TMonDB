@@ -24,7 +24,7 @@ class TestTypes(APITestCase):
                                                first_name="test2", 
                                                last_name="user2")
         
-        Type.objects.create(name=f"grass", creator=cls.user2)
+        Type.objects.create(name=f"ice", creator=cls.user2)
         
         cls.type_id = Type.objects.all()[0].id
 
@@ -96,3 +96,11 @@ class TestTypes(APITestCase):
         response = self.client.patch(f"/api/types/{self.type_id}/", data=json.dumps(data), content_type="application/json")
 
         self.assertEqual(response.status_code, 200)
+
+    def test_create_multiple_types_success(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = [{"name": "fire"}, {"name": "water"}, {"name": "grass"}]
+        response = self.client.post("/api/types/", data=json.dumps(data), content_type="application/json")
+
+        self.assertEqual(response.status_code, 201)
