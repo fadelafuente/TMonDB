@@ -15,10 +15,16 @@ class TestTypes(APITestCase):
                                                first_name="test", 
                                                last_name="user")
 
-    def test_create_type(self):
+    def test_create_type_success(self):
         self.client.force_authenticate(user=self.user)
 
-        data = {"name": "fire", "locked": False}
+        data = {"name": "fire"}
         response = self.client.post("/api/types/", data=json.dumps(data), content_type="application/json")
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_type_anonymous_fail(self):
+        data = {"name": "water"}
+        response = self.client.post("/api/types/", data=json.dumps(data), content_type="application/json")
+
+        self.assertEqual(response.status_code, 401)

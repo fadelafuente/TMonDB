@@ -1,7 +1,6 @@
 from rest_framework import status, viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from dotenv import load_dotenv
 from django.utils import timezone
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import get_user_model
@@ -9,8 +8,6 @@ from .serializers import PostSerializer, PostScrollSerializer
 from .models import Post
 from rest_framework.settings import api_settings
 from django.db.models import Count
-
-load_dotenv()
 
 AppUser = get_user_model()
 
