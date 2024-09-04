@@ -49,7 +49,7 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
     search_fields = ["name"]
 
     def get_permissions(self):
-        if self.action == "create":
+        if self.action in ["create", "destroy"]:
             self.permission_classes = (IsAuthenticated,)
         else:
             self.permission_classes = (AllowAny,)
@@ -62,5 +62,4 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
         if request.user.is_authenticated:
             request.data["creator"] = request.user.id
         response = super().create(request, *args, **kwargs)
-        print(response)
         return response

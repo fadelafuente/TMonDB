@@ -11,7 +11,6 @@ from django.db.models import Count
 
 AppUser = get_user_model()
 
-# Create your views here.
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().annotate(likes_count=Count("who_liked", distinct=True),
                                             reposts_count=Count("who_reposted", distinct=True),
