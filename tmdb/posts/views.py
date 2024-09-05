@@ -110,16 +110,17 @@ class PostViewSet(viewsets.ModelViewSet):
         response.data["creator_username"] = creator.username
         return response
     
-    def perform_create(self, serializer):
-        serializer.save()
-        return super().perform_create(serializer)
-    
     def destroy(self, request, *args, **kwargs):
         pid = request.path.split("/")[-2]
 
         try: 
             Post.objects.filter(parent=pid).update(parent_deleted=True)
-            return super().destroy(request, args, kwargs)
+            instance = self.get_object()
+            if instance.creator != request.user:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+            
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "Failed to delete post."})
     
@@ -150,16 +151,24 @@ class PostViewSet(viewsets.ModelViewSet):
         return response
     
     def partial_update(self, request, *args, **kwargs):
-        if("content" in request.data):
-            request.data["is_edited"] = True
-        return super().partial_update(request, *args, **kwargs)
+        request.data["is_edited"] = True
+
+        instance = self.get_object()
+        if instance.creator != request.user:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        
+        return self.perform_partial_update(request, args, kwargs)
+                
+    def perform_partial_update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return self.update(request, *args, **kwargs)
     
     @action(detail=True, methods=['patch'])
     def like(self, request, pk=None):
         if(pk == None):
             return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
         
-        response = super().partial_update(request)
+        response = self.perform_partial_update(request)
         if response.status_code != 200:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         try:

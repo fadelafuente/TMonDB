@@ -42,6 +42,12 @@ class TestPosts(APITestCase):
     def test_likes_anonymous(self):
         response = self.client.patch(f"/api/posts/{self.post_id}/like/", data=json.dumps({}), content_type="application/json")        
         self.assertEqual(response.status_code, 401)
+
+    def test_post_content_is_edited_anonymous(self):
+        data = {"content": "This is an updated test"}
+        response = self.client.patch(f"/api/posts/{self.post_id}/", data=json.dumps(data), content_type="application/json")
+        
+        self.assertEqual(response.status_code, 401)
     
     '''
         Request should pass with or without Authentication
@@ -54,6 +60,21 @@ class TestPosts(APITestCase):
         response = self.client.get(f"/api/posts/?username={username}")
         
         self.assertFalse(response.data["results"])
+
+    def test_delete_post_user_unauthenticated(self):
+        self.client.force_authenticate(user=self.user2)
+
+        response = self.client.delete(f"/api/posts/{self.post_id}/")
+        
+        self.assertEqual(response.status_code, 401)
+
+    def test_post_content_is_edited_unauthenticated(self):
+        self.client.force_authenticate(user=self.user2)
+
+        data = {"content": "This is an updated test"}
+        response = self.client.patch(f"/api/posts/{self.post_id}/", data=json.dumps(data), content_type="application/json")
+        
+        self.assertEqual(response.status_code, 401)
 
     '''
         Request should pass without Authentication
