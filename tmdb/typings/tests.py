@@ -52,7 +52,7 @@ class TestTypes(APITestCase):
         self.assertEqual(response.status_code, 401)
 
     def test_update_type_unauthorized_user_fail(self):
-        self.client.force_authenticate(user=self.user2)
+        self.client.force_authenticate(user=self.user)
 
         data = {"name": "nature"}
         response = self.client.patch(f"/api/types/{self.type_id}/", data=json.dumps(data), content_type="application/json")
@@ -60,8 +60,6 @@ class TestTypes(APITestCase):
         self.assertEqual(response.status_code, 401)
 
     def test_update_type_anonymous_fail(self):
-        self.client.force_authenticate(user=self.user2)
-
         data = {"name": "nature"}
         response = self.client.patch(f"/api/types/{self.type_id}/", data=json.dumps(data), content_type="application/json")
 
