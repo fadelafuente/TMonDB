@@ -100,17 +100,34 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
     
     def list(self, request, *args, **kwargs):
         response = super().list(request, *args, **kwargs)
-        if response.status_code == 200:
-            response.data = response.data["results"]
-            for type in response.data:
-                type["defensive_resistances"] = self.get_resistances(type["id"])
+        if response.status_code == 200 and response.data["results"]:
+            tid_list = [type["id"] for type in response.data["results"]]
+            response.data["modifier_table"] = self.get_resistances(tid_list)
 
         return response
     
     def get_resistances(self, tid):
+        if isinstance(tid, list):
+            return self.get_resistances_list(tid)
+        return self.get_resistances_helper(tid)
+    
+    def get_resistances_helper(self, tid):
         type_modifiers = TypeModifier.objects.filter(defending_type=tid).values("attacking_type__name", "multiplier")
 
-        modifier_dict = [{"attacking_type": modifier["attacking_type__name"], "multiplier": str(modifier["multiplier"])} for modifier in type_modifiers]
+        modifier_dict = [{"attacking_type": modifier["attacking_type__name"],
+                          "multiplier": str(modifier["multiplier"])} for modifier in type_modifiers]
+
+        return modifier_dict
+    
+    def get_resistances_list(self, tid_list):
+        type_modifiers = TypeModifier.objects.filter(defending_type__in=tid_list).values("attacking_type__name", "defending_type__name", "multiplier")
+
+        modifier_dict = {}
+        for modifier in type_modifiers:
+            if modifier["attacking_type__name"] not in modifier_dict:
+                modifier_dict[modifier["attacking_type__name"]] = {modifier["defending_type__name"]: str(modifier["multiplier"])}
+            else:
+                modifier_dict[modifier["attacking_type__name"]][modifier["defending_type__name"]] = str(modifier["multiplier"])
 
         return modifier_dict
     

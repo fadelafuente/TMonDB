@@ -148,7 +148,7 @@ class TestTypes(APITestCase):
         response = self.client.get(f"/api/types/")
 
         self.assertEqual(200, response.status_code)
-        self.assertTrue("defensive_resistances" in response.data[0])
+        self.assertTrue("modifier_table" in response.data)
 
     '''
         Expected Tests:
