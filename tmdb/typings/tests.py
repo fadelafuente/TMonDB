@@ -106,6 +106,49 @@ class TestTypes(APITestCase):
         response = self.client.post("/api/types/", data=json.dumps(data), content_type="application/json")
 
         self.assertEqual(response.status_code, 201)
+    
+    def test_get_type_with_modifiers_success(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = [
+            {"attacking_type": self.ice_id, "defending_type": self.dragon_id, "multiplier": 2.0},
+            {"attacking_type": self.ice_id, "defending_type": self.ice_id, "multiplier": 0.5},
+            {"attacking_type": self.ice_id, "defending_type": self.fairy_id, "multiplier": 1.0},
+            {"attacking_type": self.dragon_id, "defending_type": self.ice_id, "multiplier": 1.0},
+            {"attacking_type": self.dragon_id, "defending_type": self.dragon_id, "multiplier": 2.0},
+            {"attacking_type": self.dragon_id, "defending_type": self.fairy_id, "multiplier": 0.0},
+            {"attacking_type": self.fairy_id, "defending_type": self.ice_id, "multiplier": 1.0},
+            {"attacking_type": self.fairy_id, "defending_type": self.dragon_id, "multiplier": 2.0},
+            {"attacking_type": self.fairy_id, "defending_type": self.fairy_id, "multiplier": 1.0},
+        ]
+        response = self.client.post("/api/advantages/", data=json.dumps(data), content_type="application/json")
+
+        response = self.client.get(f"/api/types/{self.ice_id}/")
+
+        self.assertEqual(200, response.status_code)
+        self.assertTrue("defensive_resistances" in response.data)
+        self.assertTrue(3, len(response.data["defensive_resistances"]))
+
+    def test_list_types_with_modifiers_success(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = [
+            {"attacking_type": self.ice_id, "defending_type": self.dragon_id, "multiplier": 2.0},
+            {"attacking_type": self.ice_id, "defending_type": self.ice_id, "multiplier": 0.5},
+            {"attacking_type": self.ice_id, "defending_type": self.fairy_id, "multiplier": 1.0},
+            {"attacking_type": self.dragon_id, "defending_type": self.ice_id, "multiplier": 1.0},
+            {"attacking_type": self.dragon_id, "defending_type": self.dragon_id, "multiplier": 2.0},
+            {"attacking_type": self.dragon_id, "defending_type": self.fairy_id, "multiplier": 0.0},
+            {"attacking_type": self.fairy_id, "defending_type": self.ice_id, "multiplier": 1.0},
+            {"attacking_type": self.fairy_id, "defending_type": self.dragon_id, "multiplier": 2.0},
+            {"attacking_type": self.fairy_id, "defending_type": self.fairy_id, "multiplier": 1.0},
+        ]
+        response = self.client.post("/api/advantages/", data=json.dumps(data), content_type="application/json")
+
+        response = self.client.get(f"/api/types/")
+
+        self.assertEqual(200, response.status_code)
+        self.assertTrue("defensive_resistances" in response.data[0])
 
     '''
         Expected Tests:
@@ -129,25 +172,3 @@ class TestTypes(APITestCase):
         response = self.client.post("/api/advantages/", data=json.dumps(data), content_type="application/json")
 
         self.assertEqual(response.status_code, 201)
-
-    def test_get_type_with_modifiers(self):
-        self.client.force_authenticate(user=self.user)
-
-        data = [
-            {"attacking_type": self.ice_id, "defending_type": self.dragon_id, "multiplier": 2.0},
-            {"attacking_type": self.ice_id, "defending_type": self.ice_id, "multiplier": 0.5},
-            {"attacking_type": self.ice_id, "defending_type": self.fairy_id, "multiplier": 1.0},
-            {"attacking_type": self.dragon_id, "defending_type": self.ice_id, "multiplier": 1.0},
-            {"attacking_type": self.dragon_id, "defending_type": self.dragon_id, "multiplier": 2.0},
-            {"attacking_type": self.dragon_id, "defending_type": self.fairy_id, "multiplier": 0.0},
-            {"attacking_type": self.fairy_id, "defending_type": self.ice_id, "multiplier": 1.0},
-            {"attacking_type": self.fairy_id, "defending_type": self.dragon_id, "multiplier": 2.0},
-            {"attacking_type": self.fairy_id, "defending_type": self.fairy_id, "multiplier": 1.0},
-        ]
-        response = self.client.post("/api/advantages/", data=json.dumps(data), content_type="application/json")
-
-        response = self.client.get(f"/api/types/{self.ice_id}/")
-
-        self.assertEqual(200, response.status_code)
-        self.assertTrue("defensive_resistances" in response.data)
-        self.assertTrue(3, len(response.data["defensive_resistances"]))

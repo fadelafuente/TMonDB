@@ -92,15 +92,18 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
         return Response(serializer.data)
     
     def retrieve(self, request, *args, **kwargs):
-        # Trying to figure out how to obtain info about types
-        types = Type.objects.filter(id=1).prefetch_related("attack_modifiers")
-        dict_types = {}
-        for t in types:
-            dict_types[t.name] = [{m.defending_type.name: float(m.multiplier)} for m in t.attack_modifiers.all()]
-
         response = super().retrieve(request, *args, **kwargs)
         if response.status_code == 200:
             response.data["defensive_resistances"] = self.get_resistances(response.data["id"])
+
+        return response
+    
+    def list(self, request, *args, **kwargs):
+        response = super().list(request, *args, **kwargs)
+        if response.status_code == 200:
+            response.data = response.data["results"]
+            for type in response.data:
+                type["defensive_resistances"] = self.get_resistances(type["id"])
 
         return response
     
