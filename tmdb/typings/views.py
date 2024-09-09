@@ -108,11 +108,9 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
         return response
     
     def get_resistances(self, tid):
-        type_modifiers = TypeModifier.objects.filter(defending_type=tid)
-        modifier_dict = {}
+        type_modifiers = TypeModifier.objects.filter(defending_type=tid).values("attacking_type__name", "multiplier")
 
-        for mod in type_modifiers:
-            modifier_dict[mod.attacking_type.name] = float(mod.multiplier)
+        modifier_dict = [{"attacking_type": modifier["attacking_type__name"], "multiplier": str(modifier["multiplier"])} for modifier in type_modifiers]
 
         return modifier_dict
     
