@@ -28,11 +28,11 @@ class TypeAdvantageView(APIView):
         output = [{"attacking_type": output.attacking_type,
                    "defending_type": output.defending_type,
                    "multiplier": output.multiplier}
-                   for output in TypeAdvantage.objects.all()]
+                   for output in TypeModifier.objects.all()]
         return Response(output)
 
     def post(self, request):
-        serializer = TypeAdvantageSerializer(data=request.data)
+        serializer = TypeModifierSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
@@ -68,7 +68,7 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
     
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
-        if instance.creator != request.user:
+        if instance.creator and instance.creator != request.user:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         self.perform_destroy(instance)
@@ -77,7 +77,7 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        if instance.creator != request.user:
+        if instance.creator and instance.creator != request.user:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -90,3 +90,39 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
+    
+    def retrieve(self, request, *args, **kwargs):
+        # Trying to figure out how to obtain info about types
+        types = Type.objects.filter(id=1).prefetch_related("attack_modifiers")
+        dict_types = {}
+        for t in types:
+            dict_types[t.name] = [{m.defending_type.name: float(m.multiplier)} for m in t.attack_modifiers.all()]
+
+        response = super().retrieve(request, *args, **kwargs)
+        if response.status_code == 200:
+            response.data["defensive_resistances"] = self.get_resistances(response.data["id"])
+
+        return response
+    
+    def get_resistances(self, tid):
+        type_modifiers = TypeModifier.objects.filter(defending_type=tid)
+        modifier_dict = {}
+
+        for mod in type_modifiers:
+            modifier_dict[mod.attacking_type.name] = float(mod.multiplier)
+
+        return modifier_dict
+    
+class TMondDBTypeModifierViewSet(TMonDBTypeViewset):
+    queryset = TypeModifier.objects.all()
+    # .annotate(following_count=Count("following", distinct=True), followers_count=Count("followers", distinct=True))
+    serializer_class = TypeModifierSerializer
+    permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
+    authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
+    filter_backends = (filters.OrderingFilter, filters.SearchFilter)
+    ordering_fields = ("id")
+    ordering = ("id")
+    search_fields = []
+
+    def get_serializer_class(self):
+        return self.serializer_class

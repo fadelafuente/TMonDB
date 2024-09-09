@@ -6,7 +6,7 @@ class TypeSerializer(serializers.ModelSerializer):
         model = Type
         fields = "__all__"
 
-class TypeAdvantageSerializer(serializers.ModelSerializer):
+class TypeModifierSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Type
+        model = TypeModifier
         fields = "__all__"
