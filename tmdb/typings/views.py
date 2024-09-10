@@ -60,6 +60,11 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         many = isinstance(request.data, list)
+        if many:
+            for t in request.data:
+                t["creator"] = request.user.id
+        else:
+            request.data["creator"] = request.user.id
         serializer = self.get_serializer(data=request.data, many=many)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -122,6 +127,7 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
     def get_resistances_list(self, tid_list):
         type_modifiers = TypeModifier.objects.filter(defending_type__in=tid_list).values("attacking_type__name", "defending_type__name", "multiplier")
 
+        # restructure data for frontend
         modifier_dict = {}
         for modifier in type_modifiers:
             if modifier["attacking_type__name"] not in modifier_dict:
@@ -144,3 +150,11 @@ class TMondDBTypeModifierViewSet(TMonDBTypeViewset):
 
     def get_serializer_class(self):
         return self.serializer_class
+
+    def create(self, request, *args, **kwargs):
+        many = isinstance(request.data, list)
+        serializer = self.get_serializer(data=request.data, many=many)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
