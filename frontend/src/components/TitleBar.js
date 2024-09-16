@@ -52,7 +52,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                     <NavDropdown.Item href="#action/3.2">
                         Create Monster
                     </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">
+                    <NavDropdown.Item href="/types">
                         Create Type
                     </NavDropdown.Item>
                     <NavDropdown.Item href="#action/3.2">

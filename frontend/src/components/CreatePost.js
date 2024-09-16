@@ -44,19 +44,19 @@ export default function CreatePost({show, setShow, is_reply=false, parent=null})
                             <Col><Button className="svg-btn media-btn center-content"><BsImages/></Button></Col>
                         </Row>
                     </Col>
-                        <Button 
-                            className="rounded-btn close-btn" 
-                            id="discard-post-btn"
-                            onClick={ e => setShowDiscard(e) }
-                        >
-                            Close
-                        </Button>
-                        <Button className="rounded-btn" onClick={e => {
-                                setFormData(e, content, is_reply, parent);
-                                setShow(false);
-                            }}>
-                            Post
-                        </Button>
+                    <Button 
+                        className="rounded-btn close-btn" 
+                        id="discard-post-btn"
+                        onClick={ e => setShowDiscard(e) }
+                    >
+                        Close
+                    </Button>
+                    <Button className="rounded-btn" onClick={e => {
+                            setFormData(e, content, is_reply, parent);
+                            setShow(false);
+                        }}>
+                        Post
+                    </Button>
                 </Modal.Footer>
             </Modal>
             <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} resetFormData={resetFormData} />

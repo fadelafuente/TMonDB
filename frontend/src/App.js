@@ -14,6 +14,7 @@ import Layout from './hocs/Layout';
 import SetUsername from './pages/SetUsername';
 import { SetUsernameConfirmation } from './pages/SetUsernameConfirmation';
 import SetEmailConfirm from './pages/SetEmailConfirm';
+import CreateType from './pages/CreateType';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -37,6 +38,7 @@ export default function App() {
       <Route path="username/reset/confirm" element={ <SetUsernameConfirmation /> } />
       <Route path=":creator" element={ <HomePage /> } />
       <Route path="settings/account" element={ <HomePage /> } />
+      <Route path="types" element= { <CreateType /> } />
     </Route>
   ))
 
