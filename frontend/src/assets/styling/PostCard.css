@@ -84,11 +84,17 @@ div.interaction-btn {
 
 button.svg-btn, div.svg-dropdown {
     all: unset;
+    display: flex;
+    align-items: center;
+    text-align: center;
     color: var(--placeholder-text-color);
 }
 
 button.svg-btn:hover, div.svg-dropdown:hover {
     all: unset;
+    display: flex;
+    align-items: center;
+    text-align: center;
     color: var(--accent-color);
     cursor: pointer;
 }

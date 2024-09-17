@@ -8,6 +8,8 @@
   --accent-color: #FDB750;
   --accent-secondary-color: #e19742;
   --accent-secondary-color-transparent: #FDB75050;
+  --delete-secondary-color: #D12E30;
+  --delete-color: #d64646;
 }
 
 body {
