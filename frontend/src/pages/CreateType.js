@@ -1,10 +1,11 @@
 import TitleBar from "../components/TitleBar";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useCurrentUserDetails, useNavigateNotAuth } from "../hooks/hooks";
 import { connect } from "react-redux";
 import { Button, Card } from "react-bootstrap";
-import { BsArrowLeft, BsDashCircle, BsPlus, BsPlusCircle } from "react-icons/bs";
+import { BsArrowLeft, BsDashCircle, BsPlusCircle } from "react-icons/bs";
+import TypesTable from "../components/TypesTable";
 
 import "../assets/styling/content.css";
 import "../assets/styling/types.css";
@@ -18,7 +19,7 @@ function CreateType({ isAuthenticated }) {
     useNavigateNotAuth(isAuthenticated);
 
     function addType(t) {
-        if(types.length >= 20)
+        if(types.length >= 20 || !t)
             return;
         if(!types.includes(t))
             setTypes([...types, t]);
@@ -69,6 +70,7 @@ function CreateType({ isAuthenticated }) {
                                 </Button>
                             </div>
                         </div>
+                        <TypesTable types={ types } />
                     </Card.Body>
                     <Card.Footer className="types-footer">
                         <Button 

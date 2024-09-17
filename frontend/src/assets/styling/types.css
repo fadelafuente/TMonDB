@@ -75,6 +75,41 @@ button.types-btn > svg {
     height: 100%;
 }
 
+/* Types Table */
+.types-table {
+    margin-top: 1em;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.types-table-key {
+    font-size: 0.5em;
+    color: var(--placeholder-text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+}
+
+.type-key-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: right;
+    padding-right: 0.5em;
+}
+
+.attacking-type {
+    padding-right: 0.5em;
+    display: flex;
+    justify-content: center;
+}
+
+.multiplier-input {
+    width: 2em;
+    border-radius: 0;
+}
+
+/* Media Queries */
 @media (min-width: 700px) {
     div.type-row {
         width: 50%;
