@@ -13,7 +13,7 @@ function CreateType({ isAuthenticated }) {
     const [query, setQuery] = useState("");
     const [user] = useCurrentUserDetails(isAuthenticated);
     const navigate = useNavigate();
-    const [types, setTypes] = useState(['fire', 'water', 'grass']);
+    const [types, setTypes] = useState([]);
     const [newType, setNewType] = useState("");
     useNavigateNotAuth(isAuthenticated);
 
