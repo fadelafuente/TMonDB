@@ -36,6 +36,7 @@ div.center-row-items {
     display: flex;
     align-items: center;
     font-size: 1em;
+    gap: 0.375em;
 }
 
 div.col {

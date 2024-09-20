@@ -39,6 +39,7 @@ export default function App() {
       <Route path=":creator" element={ <HomePage /> } />
       <Route path="settings/account" element={ <HomePage /> } />
       <Route path="types" element= { <CreateType /> } />
+      <Route path="monsters" element={ <HomePage /> } />
     </Route>
   ))
 

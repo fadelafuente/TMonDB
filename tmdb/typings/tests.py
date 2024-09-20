@@ -172,3 +172,24 @@ class TestTypes(APITestCase):
         response = self.client.post("/api/advantages/", data=json.dumps(data), content_type="application/json")
 
         self.assertEqual(response.status_code, 201)
+
+    '''
+        UPDATE: All types in region?
+            brainstorming:
+                bulk update
+                delete old types that are no longer part of region?
+            example data:
+                [
+                    {id: 1, name: fire, region: kanto},
+                    {id: 2, name: water, region: kanto},
+                    {id: 3, name: grass, region: kanto}
+                ]
+                =>
+                [
+                    {id: 1, name: pyro, region: kanto},
+                    {id: 2, name: hydro, region: kanto},
+                    {name: electro, region: kanto}
+                ]
+                deletes grass type?
+
+    '''

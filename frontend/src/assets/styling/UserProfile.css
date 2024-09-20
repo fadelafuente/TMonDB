@@ -167,10 +167,6 @@ div.align-col {
     flex-direction: column;
 }
 
-div.right-padding {
-    padding-right: 6px !important;
-}
-
 div.follow > a {
     color: var(--text-color);
 }
