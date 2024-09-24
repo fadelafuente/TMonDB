@@ -1,0 +1,91 @@
+div.mon-info-chart {
+    width: 100%;
+    height: 100%;
+    /* background-color: green; */
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.75em;
+}
+
+div.mon-creator {
+    position: relative;
+    bottom: 0.75em;
+}
+
+div.mon-name {
+    font-size: 1.5em;
+}
+
+div.mon-image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 4%;
+    background-color: blue;
+}
+
+div.mon-image-aspect-container {
+    width: 85%;
+    padding-top: max(100px, 42.5%);
+    position: relative; /* If you want text inside of it */
+    border-radius: 4%;
+    background-color: var(--accent-secondary-color-transparent);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.mon-info-details {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 1em;
+}
+
+.mon-detail {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.mon-detail-tag {
+    text-wrap: nowrap;
+}
+
+div.mon-detail-data {
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+div.mon-abilities {
+    display: flex;
+    flex-direction: column;
+}
+
+div.mon-abilities > a {
+    text-align: right;
+}
+
+@media(width <= 900px) {
+    div.mon-image-aspect-container {
+        width: 100%;
+        margin-bottom: 1em;
+        padding-top: max(100px, 75%);
+
+    }
+
+    div.mon-info-chart {
+        flex-direction: column;
+    }
+
+    .mon-info-details {
+        padding-left: 0;
+    }
+}

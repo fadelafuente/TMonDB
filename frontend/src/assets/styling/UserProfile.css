@@ -160,6 +160,7 @@ ul.nav-tabs {
 div.align-row {
     display: flex;
     flex-direction: row;
+    gap: 0.75em;
 }
 
 div.align-col {
@@ -187,12 +188,16 @@ div.follow-username {
     align-items: center;
 }
 
-button.text-link:hover {
+.text-link {
+    color: var(--text-color)
+}
+
+.text-link:hover {
     color: var(--accent-color);
     text-decoration: underline;
 }
 
-button.text-link:active {
+.text-link:active {
     color: var(--accent-secondary-color);
     text-decoration: underline;
 }

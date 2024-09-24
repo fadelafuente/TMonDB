@@ -80,7 +80,7 @@ function DeleteModal({show, setShow}) {
                                 </InputGroup.Text>
                             </InputGroup>
                         </Form.Group>
-                        <div className="button-row align-right">
+                        <div className="button-row align-row align-right">
                             <Button className="rounded-btn modal-btn close-btn" onClick={ e => {setShow(false); setFormData(e, true); } }>Nevermind</Button>
                             <Button 
                                 className="delete-btn" 

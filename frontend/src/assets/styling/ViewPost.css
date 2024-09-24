@@ -7,7 +7,7 @@ div.parent-container {
 div.reply-container {
     border-top: 2px solid var(--input-box-color);
     border-bottom: 2px solid var(--input-box-color);
-    padding: 12px 20px;
+    padding: 0.75em 1em;
     width: 100%;
     margin: 12px 0;
 }

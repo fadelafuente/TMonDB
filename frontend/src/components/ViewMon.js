@@ -8,7 +8,7 @@ import SocialInteractions from "./SocialInteractions";
 import { Col, NavDropdown, Row } from "react-bootstrap";
 
 import "../assets/styling/content.css";
-import "../assets/styling/ViewPost.css"
+import "../assets/styling/ViewMon.css";
 
 function ViewMon({ isAuthenticated }) {
     const { mid } = useParams();
@@ -55,7 +55,10 @@ function ViewMon({ isAuthenticated }) {
         <>
             <div>
                 <div className="article-container">
-                    <Row className="center-row-items">
+                    <Row className="mon-name">
+                        lizardmon
+                    </Row>
+                    <Row className="center-row-items mon-creator">
                         <Col>
                             <div className="creator-container">
                                 @username
@@ -79,14 +82,87 @@ function ViewMon({ isAuthenticated }) {
                                 </Col>
                             </Row>
                         </Col>
-                        <div className="mon-info">
-
+                    </Row>
+                    <div>
+                        <div className="mon-info-chart">
+                            <div className="mon-image-aspect-container">
+                                <div className='mon-image-container'>
+                                        
+                                </div>
+                            </div>
+                            <div className="mon-info-details">
+                                <div className="mon-detail national-id">
+                                    <div className="mon-detail-tag">
+                                        National id
+                                    </div>
+                                    <div className="mon-detail-data">
+                                        1234
+                                    </div>
+                                </div>
+                                <div className="mon-detail mon-detail-types">
+                                    <div className="mon-detail-tag">
+                                        Type(s)
+                                    </div>
+                                    <div className="mon-detail-data">
+                                        gra gro
+                                    </div>
+                                </div>
+                                <div className="mon-detail mon-detail-species">
+                                    <div className="mon-detail-tag">
+                                        Species
+                                    </div>
+                                    <div className="mon-detail-data">
+                                        Quintus Lizardus
+                                    </div>
+                                </div>
+                                <div className="mon-detail mon-detail-region">
+                                    <div className="mon-detail-tag">
+                                        Region
+                                    </div>
+                                    <div className="mon-detail-data">
+                                        Firstilionius
+                                    </div>
+                                </div>
+                                <div className="mon-detail mon-detail-types">
+                                    <div className="mon-detail-tag">
+                                        Abilities
+                                    </div>
+                                    <div className="mon-detail-data">
+                                        <div className="mon-abilities">
+                                            <a href="#" className="text-link">D0T_M4ST3R</a>
+                                            <a href="#" className="text-link">Synergy Master</a>
+                                        </div>
+                                    </div>
+                                </div><div className="mon-detail mon-detail-types">
+                                    <div className="mon-detail-tag">
+                                        H. Ability
+                                    </div>
+                                    <div className="mon-detail-data mon-abilities">
+                                        <a href="#" className="text-link">Intimidate</a>
+                                    </div>
+                                </div>
+                                <div className="mon-detail mon-detail-region">
+                                    <div className="mon-detail-tag">
+                                        Avg Ht
+                                    </div>
+                                    <div className="mon-detail-data">
+                                        3'07"
+                                    </div>
+                                </div>
+                                <div className="mon-detail mon-detail-region">
+                                    <div className="mon-detail-tag">
+                                        Avg Wt
+                                    </div>
+                                    <div className="mon-detail-data">
+                                        100 lbs
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div className="mon-interactions">
-                        <SocialInteractions />
+                            <SocialInteractions />
                         </div>
-                    </Row>
-
+                    </div>
                 </div>
                 <div className="reply-container">
                     <ReplyBar />
