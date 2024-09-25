@@ -120,6 +120,18 @@ div.weakness-chart > table {
     background-color: var(--no-effect-color);
 }
 
+.stat-header {
+    padding-right: 1em;
+}
+
+.stat-number {
+    padding-right: 0.5em;
+}
+
+.stat-bar-container {
+    width: 100%;
+}
+
 @media(width <= 900px) {
     div.mon-image-aspect-container {
         width: 100%;

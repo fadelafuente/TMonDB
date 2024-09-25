@@ -6,11 +6,12 @@ import { useDeletePost, useMiddleViewPort } from "../hooks/hooks";
 import { connect } from "react-redux";
 import SocialInteractions from "./SocialInteractions";
 import { Col, NavDropdown, Row, Tab, Tabs } from "react-bootstrap";
+import WeaknessChart from "./WeaknessChart";
+import StatChart from "./StatChart";
 
 import "../assets/styling/content.css";
 import "../assets/styling/UserProfile.css";
 import "../assets/styling/ViewMon.css";
-import WeaknessChart from "./WeaknessChart";
 
 function ViewMon({ isAuthenticated }) {
     const { mid } = useParams();
@@ -139,8 +140,10 @@ function ViewMon({ isAuthenticated }) {
                                 <div className="mon-detail-tag">
                                     H. Ability
                                 </div>
-                                <div className="mon-detail-data mon-abilities">
-                                    <a href="#" className="text-link">Intimidate</a>
+                                <div className="mon-detail-data">
+                                    <div className="mon-abilities">
+                                        <a href="#" className="text-link">Intimidate</a>
+                                    </div>
                                 </div>
                             </div>
                             <div className="mon-detail mon-detail-region">
@@ -172,7 +175,7 @@ function ViewMon({ isAuthenticated }) {
                     </div>
                     <Tabs defaultActiveKey={ tab } activeKey={ tab } onSelect={(k) => setTab(k)} fill>
                         <Tab title="Stats" eventKey="stats">
-
+                            <StatChart />
                         </Tab>
                         <Tab title="Weaknesses" eventKey="Weaknesses">
                             <WeaknessChart />
