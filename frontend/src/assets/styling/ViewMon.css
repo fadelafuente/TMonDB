@@ -1,10 +1,9 @@
-div.mon-info-chart {
+div.mon-info-details {
     width: 100%;
     height: 100%;
     /* background-color: green; */
     display: flex;
     flex-direction: row;
-    margin-bottom: 0.75em;
 }
 
 div.mon-creator {
@@ -41,7 +40,7 @@ div.mon-image-aspect-container {
     align-items: center;
 }
 
-.mon-info-details {
+.mon-info-chart {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -73,6 +72,54 @@ div.mon-abilities > a {
     text-align: right;
 }
 
+div.mon-desc-tag {
+    font-size: 1.25em;
+}
+
+.bottom-barrier {
+    margin-bottom: 0.75em;
+}
+
+div.weakness-chart {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+div.weakness-chart > table {
+    width: 100%;
+}
+
+.weakness-chart-cell-spacing {
+    padding: 0 0.25em;
+    text-align: center;
+    border: 0.0625em solid var(--placeholder-text-color);
+    background-color: var(--background-content-color);
+}
+
+.weakness-ultra {
+    background-color: var(--ultraeffective-color);
+}
+
+.weakness-super {
+    background-color: var(--supereffective-color);
+}
+
+.weakness-effective {
+    background-color: var(--effective-color);
+}
+
+.weakness-sub {
+    background-color: var(--subeffective-color);
+}
+
+.weakness-nominally {
+    background-color: var(--nominallyeffective-color);
+}
+
+.weakness-noeffect {
+    background-color: var(--no-effect-color);
+}
+
 @media(width <= 900px) {
     div.mon-image-aspect-container {
         width: 100%;
@@ -81,11 +128,11 @@ div.mon-abilities > a {
 
     }
 
-    div.mon-info-chart {
+    div.mon-info-details {
         flex-direction: column;
     }
 
-    .mon-info-details {
+    .mon-info-chart {
         padding-left: 0;
     }
 }

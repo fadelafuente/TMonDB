@@ -19,7 +19,7 @@ export default function FollowContent({ query }) {
         <>
             <div className="profile-info-container">
                 <div className="user-content">
-                    <Tabs defaultActiveKey={initial_type} activeKey={followType} onSelect={(k) => setFollowType(k)}>
+                    <Tabs defaultActiveKey={ initial_type } activeKey={ followType } onSelect={ (k) => setFollowType(k) } fill>
                         <Tab eventKey="following" title="Following">
                             { profile && profile.blocked_current_user ?
                                 <BlockedCard creator={creator} />
