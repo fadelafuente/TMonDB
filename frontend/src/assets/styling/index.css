@@ -16,6 +16,11 @@
   --subeffective-color: #e91741;
   --nominallyeffective-color: #850a08;
   --no-effect-color: #212121;
+  --range-bottom-color: #fa4545;
+  --range-below-color: #fab545;
+  --range-mid-color: #e5fa45;
+  --range-above-color : #45fa6c;
+  --range-top-color: #26bfd0;
 }
 
 body {
