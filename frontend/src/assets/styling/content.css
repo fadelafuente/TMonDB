@@ -90,15 +90,6 @@ div.f-user-row {
     width: 100%;
 }
 
-button.right-content-btn {
-    padding: 8px 16px;
-}
-
-button.right-content-btn:hover {
-    padding: 8px 16px;
-    background-color: var(--input-box-color);
-}
-
 ul.nav-tabs {
     display: flex;
     flex-direction: row;

@@ -155,18 +155,6 @@ div.weakness-chart > table {
     text-align: center;
 }
 
-.view-explore-btns {
-    display: flex;
-    flex-direction: row;
-    overflow: scroll;
-    gap: 0.5em;
-}
-
-button.explore-btn:hover {
-    border-radius: 20px !important;
-    border: 1px solid var(--accent-color) !important;
-}
-
 @media(width <= 900px) {
     div.mon-image-aspect-container {
         width: 100%;

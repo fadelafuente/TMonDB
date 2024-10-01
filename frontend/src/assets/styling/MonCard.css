@@ -247,18 +247,3 @@ div.interaction-nums > span {
     font-size: small;
     display: block;
 }
-
-div.share-btn {
-    max-width: 20px;
-}
-
-div.left-btn {
-    padding-right: 1%;
-}
-
-div.inner-btn {
-    padding: 0 1%;
-}
-div.right-btn {
-    padding-left: 1%;
-}

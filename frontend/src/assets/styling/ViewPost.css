@@ -23,8 +23,3 @@ span.submit-reply:active {
     background-color: var(--accent-secondary-color);
     color: var(--background-color);
 }
-
-button.reply-btn, button.reply-btn:hover, button.reply-btn:active {
-    all: unset !important;
-    cursor: pointer;
-}

@@ -6,23 +6,3 @@ div.section-container {
 div.edit-col {
     justify-content: right;
 }
-
-button.delete-btn {
-    background-color: #FF4539;
-    border-radius: 0;
-    border: none;
-    margin: 0;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 100px;
-}
-
-button.delete-btn:hover {
-    background-color: #FF1405;
-    border: none;
-}
-
-button.delete-btn:active {
-    background-color: #D00D00 !important;
-    border: none;
-}

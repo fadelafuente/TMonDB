@@ -91,14 +91,14 @@ function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
             </Form>
             <div className="social-oauth-container">
                 <Button 
-                    className="google-button social-button"
+                    className="google-button social-btn"
                     type="submit"
                     onClick={ e => handleSocialAuth(e, "google-oauth2", `${process.env.REACT_APP_WEB_URL}/google-oauth`) }
                 >
                     Login with Google
                 </Button>
                 <Button 
-                    className="facebook-button social-button"
+                    className="facebook-button social-btn"
                     type="submit"
                     onClick={ e => handleSocialAuth(e, "facebook", `${process.env.REACT_APP_WEB_URL}/facebook-oauth`) }
                 >

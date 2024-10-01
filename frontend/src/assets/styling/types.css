@@ -38,14 +38,6 @@ div.type-row {
     margin-bottom: 0.75em;
 }
 
-button.remove-btn:hover {
-    color: var(--delete-color);
-}
-
-button.remove-btn:active {
-    color: var(--delete-secondary-color) !important;
-}
-
 .type-add {
     display: flex;
     flex-direction: row;
@@ -63,16 +55,6 @@ button.remove-btn:active {
 
 .type-input:active, :focus-visible {
     border: 1px solid var(--accent-color);
-}
-
-button.types-btn, button.types-btn:hover, button.types-btn:active {
-    width: 1.3125em;
-    height: 1.3125em;
-}
-
-button.types-btn > svg {
-    width: 100%;
-    height: 100%;
 }
 
 /* Types Table */

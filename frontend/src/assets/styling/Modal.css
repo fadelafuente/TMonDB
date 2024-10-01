@@ -6,18 +6,6 @@ div.reset-body {
     max-width: 600px !important;
 }
 
-button.modal-btn {
-    min-width: 80px;
-    max-width: 150px;
-    padding-left: 0;
-    padding-right: 0;
-    margin: 0;
-}
-
-button.bg-btn:active {
-    background-color: var(--background-color) !important;
-}
-
 h5.modal-title {
     margin-bottom: 0;
 }

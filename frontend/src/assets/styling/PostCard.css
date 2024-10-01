@@ -59,53 +59,8 @@ div.more-col {
     padding-left: 0px;
 }
 
-div.more-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-}
-
-div.more-btn:hover {
-    color: var(--accent-color);
-    background-color: var(--background-color);
-}
-
 /* interaction row */
 div.interactions-row {
-    margin: 0;
-}
-
-div.interaction-btn {
-    margin: 0;
-    padding: 0 4px;
-    width: 100%;
-}
-
-button.svg-btn, div.svg-dropdown {
-    all: unset;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: var(--placeholder-text-color);
-}
-
-button.svg-btn:hover, div.svg-dropdown:hover {
-    all: unset;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    color: var(--accent-color);
-    cursor: pointer;
-}
-
-button.svg-btn:active, div.svg-dropdown:active {
-    background-color: var(--background-content-color) !important;
-    color: var(--accent-secondary-color) !important;
-}
-
-div.inner-btn-div {
     margin: 0;
 }
 
@@ -122,12 +77,6 @@ div.interaction-icon {
 
 div.interacted {
     color: var(--accent-color);
-}
-
-div.share-btn {
-    max-width: 20px;
-    width: 100%;
-    padding: 0;
 }
 
 /* create post */
@@ -173,48 +122,6 @@ textarea.input-textarea::placeholder {
 
 .no-select {
     user-select: none;
-}
-
-/* media-btn */
-button.media-btn, button.media-btn:hover {
-    height: 24px;
-    width: 24px;
-    display: flex;   
-    font-size: 1.5em;
-}
-
-/* post and close buttons */
-button.rounded-btn {
-    border-radius: 20px !important;
-    width: fit-content;
-    padding: 0.375em 0.75em;
-    background-color: var(--background-color);
-    color: var(--placeholder-text-color);
-    border: 1px solid var(--placeholder-text-color) !important;
-    font-weight: bold;
-}
-
-button.rounded-btn:disabled,
-button.rounded-btn[disabled], 
-button.rounded-btn:disabled:hover,
-button.rounded-btn[disabled]:hover {
-    background-color: var(--accent-color);
-    border: 1px solid var(--accent-color) !important;
-    color: var(--background-color);
-}
-
-button.rounded-btn:hover,
-button.rounded-btn.explore-btn:hover {
-    background-color: var(--button-hover-color);
-    border: 1px solid var(--accent-color) !important;
-    color: var(--accent-color);
-}
-
-button.rounded-btn:active {
-    background-color: var(--background-content-color) !important;
-    border: 1px solid var(--accent-secondary-color) !important;
-    color: var(--accent-secondary-color) !important;
-    opacity: 80%;
 }
 
 /* Create Post Modal Styling */

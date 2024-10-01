@@ -28,18 +28,6 @@
   padding-right: 10px;
 }
 
-.dropdown-button {
-  color: #232323 !important;
-  border-radius: 50% !important;
-  padding: 10px !important;
-  border: none !important;
-  background-color: var(--accent-color) !important;
-}
-
-.dropdown-button:hover {
-  color: #000000 !important;
-}
-
 .dropdown-content {
   background-color: #232323 !important;
   min-width: 160px;
@@ -251,12 +239,7 @@ div.input-group {
 }
 
 /*  Modal Styling */
-
 div.modal-content {
   background-color: var(--background-content-color);
   color: var(--text-color);
-}
-
-button.close-btn {
-  margin-right: 20px !important;
 }
