@@ -13,6 +13,8 @@ import ViewMon from "../components/ViewMon";
 import ViewRegion from "../components/ViewRegion";
 
 import "../assets/styling/content.css";
+import "../assets/styling/buttons.css";
+import "../assets/styling/container.css";
 
 function HomePage({ isAuthenticated }) {
     const [query, setQuery] = useState("");
@@ -75,8 +77,8 @@ function HomePage({ isAuthenticated }) {
                         <div className="content-right">
                             {location.pathname.includes("/settings/") ? 
                                 <div className="align-col">
-                                    <button className="svg-btn right-content-btn" onClick={() => {window.history.replaceState(null, "", "/settings/account"); window.location.reload();} }>Account</button> 
-                                    <button className="svg-btn right-content-btn" onClick={() => {window.history.replaceState(null, "", "/settings/blocked"); window.location.reload();} }>Blocked List</button> 
+                                    <button className="svg-btn square-no-border-btn" onClick={() => {window.history.replaceState(null, "", "/settings/account"); window.location.reload();} }>Account</button> 
+                                    <button className="svg-btn square-no-border-btn" onClick={() => {window.history.replaceState(null, "", "/settings/blocked"); window.location.reload();} }>Blocked List</button> 
                                 </div>
                                 : "Right" 
                             }

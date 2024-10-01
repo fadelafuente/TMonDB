@@ -170,16 +170,12 @@ div.typing {
 
 a.type1 {
     background-color: green;
-    border-color: green;
+    border: none;
 }
 
 a.type2 {
     background-color: purple;
-    border-color: purple;
-}
-
-div.ability {
-    padding: 0;
+    border: none;
 }
 
 a.links {
@@ -198,13 +194,6 @@ a.links {
 
 a.links:hover {
     cursor: pointer;
-}
-
-div.ability-col {
-    display: flex;
-    margin: auto;
-    justify-content: center;
-    background-color: var(--accent-secondary-color);
 }
 
 div.description {
@@ -226,21 +215,10 @@ div.description > span {
     -webkit-line-clamp: 3;
 }
 
-span.content-interactions {
-    padding: 0px 11px;
-    height: 24px;
-    display: flex;
-}
-
-div.inner-div {
-    display: flex;
-    text-align: center;
-}
-
 div.interaction-nums {
-    height: 24px;
-    line-height: 24px;
-    padding-left: 4px;
+    height: 100%;
+    padding-left: 0.375em;
+    text-align: center;
 }
 
 div.interaction-nums > span {

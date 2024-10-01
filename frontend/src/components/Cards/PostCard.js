@@ -77,8 +77,8 @@ function PostCard({ post, isAuthenticated }) {
                                                 { post ? handleTimeDifference(post.posted_date) : <Placeholder xs={4} /> }
                                             </Col>
                                             <Col className="more-col">
-                                                <div className="more-btn">
-                                                    <NavDropdown title={<BsThreeDots/>} 
+                                                <div className="base-btn rounded-btn">
+                                                    <NavDropdown title={<BsThreeDots />} 
                                                         drop={ aboveMid ? "up-centered" : "down-centered" }
                                                         onClick={e => setAboveMid(e)}
                                                         disabled={ !isAuthenticated }

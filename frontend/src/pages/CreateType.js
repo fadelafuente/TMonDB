@@ -11,7 +11,6 @@ import "../assets/styling/content.css";
 import "../assets/styling/types.css";
 
 function CreateType({ isAuthenticated }) {
-    const [query, setQuery] = useState("");
     const [user] = useCurrentUserDetails(isAuthenticated);
     const navigate = useNavigate();
     const [types, setTypes] = useState([]);
@@ -34,14 +33,14 @@ function CreateType({ isAuthenticated }) {
     return (
         <>
             <div className="navbar-container">
-                <TitleBar setQuery={(value) => setQuery(value)} user={user} />
+                <TitleBar setQuery={() => {}} user={user} />
             </div>
             <div className="content-container center-content">
                 <div id="content-center" className="content-center">
                 <Card>
                     <Card.Header>
-                        <div className="types-header">
-                            <Button className="svg-btn media-btn center-content" onClick={ () => navigate(-1) }>
+                        <div className="row-gap-container">
+                            <Button className="svg-btn svg-resize-btn center-content" onClick={ () => navigate(-1) }>
                                 <BsArrowLeft/>
                             </Button>
                             <h4 className="types-h4">
@@ -57,30 +56,30 @@ function CreateType({ isAuthenticated }) {
                                         <div className="type-name">
                                             {type}
                                         </div>
-                                        <Button className="svg-btn types-btn remove-btn" onClick={ () => deleteType(type) }>
+                                        <Button className="svg-btn svg-resize-btn remove-btn" onClick={ () => deleteType(type) }>
                                             <BsDashCircle />
                                         </Button>
                                     </div>
                                 ))
                             }
-                            <div className="type-add">
+                            <div className="row-gap-container">
                                 <input className="type-input" onChange={ e => setNewType(e.target.value) } value={ newType } />
-                                <Button className="svg-btn types-btn" onClick={ () => addType(newType) }>
+                                <Button className="svg-btn svg-resize-btn" onClick={ () => addType(newType) }>
                                     <BsPlusCircle/>
                                 </Button>
                             </div>
                         </div>
                         <TypesTable types={ types } />
                     </Card.Body>
-                    <Card.Footer className="types-footer">
+                    <Card.Footer className="align-right row-gap-container">
                         <Button 
-                            className="rounded-btn close-btn" 
+                            className="base-btn" 
                             id="discard-post-btn"
                             onClick={ () => navigate(-1) }
                         >
                             Cancel
                         </Button>
-                        <Button className="rounded-btn" onClick={e => {}}>
+                        <Button className="base-btn" onClick={e => {}}>
                             Create
                         </Button>
                     </Card.Footer>

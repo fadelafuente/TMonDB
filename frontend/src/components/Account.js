@@ -40,7 +40,7 @@ function Account({isAuthenticated, user}) {
                             : "" }
                         </Col>
                         <Col className="edit-col">
-                            <button className="svg-btn bg-btn" onClick={() => { setResetItem("email"); setShow(true); } }>
+                            <button className="svg-btn" onClick={() => { setResetItem("email"); setShow(true); } }>
                                 edit
                             </button>
                         </Col>
@@ -75,7 +75,7 @@ function Account({isAuthenticated, user}) {
                             ************
                         </Col>
                         <Col className="edit-col">
-                            <button className="svg-btn bg-btn" onClick={() => { setResetItem("password"); setShow(true); } }>
+                            <button className="svg-btn" onClick={() => { setResetItem("password"); setShow(true); } }>
                                 edit
                             </button>
                         </Col>
@@ -87,7 +87,7 @@ function Account({isAuthenticated, user}) {
                             <h5>Delete Account</h5>
                         </Col>
                         <Col className="edit-col">
-                            <Button className="delete-btn" onClick={ () => setShowDelete(true) }>Delete</Button>
+                            <Button className="base-btn delete-btn" onClick={ () => setShowDelete(true) }>Delete</Button>
                         </Col>
                     </Row>
                 </div>

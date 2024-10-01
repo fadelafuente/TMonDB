@@ -10,10 +10,10 @@ export function DiscardModal({showDiscard, setShowDiscard, resetFormData, discar
                             Discard this {discard_type}?
                         </h4>
                     </Row>
-                    <Row className="center-content">
-                        <Button className="rounded-btn close-btn" onClick={ e => setShowDiscard(e, false) }>Cancel</Button>
+                    <Row className="row-gap-container center-content">
+                        <Button className="base-btn" onClick={ e => setShowDiscard(e, false) }>Cancel</Button>
                         <Button 
-                            className="rounded-btn" 
+                            className="base-btn" 
                             onClick={ e => setShowDiscard(e, resetFormData) }
                         >
                             Discard

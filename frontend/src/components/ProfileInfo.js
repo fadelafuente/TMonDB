@@ -46,8 +46,8 @@ function ProfileInfo({isAuthenticated}) {
                             @{ profile && profile.username ? profile.username : creator }
                         </div>
                     </div>
-                    <div className="align-row">
-                        <div className="right-padding follow">
+                    <div className="row-gap-container">
+                        <div className="follow">
                             <button className="post-link text-link" onClick={() => navigate(`follow`, {state: {initial_type: "following"}})}>
                                 { profile && profile.following_count ? profile.following_count : 0 } Following
                             </button>
@@ -65,33 +65,33 @@ function ProfileInfo({isAuthenticated}) {
                 </div>
                 <div className="interact-row">
                     <Row>
-                        <Col>
+                        <Col className="row-gap-container">
                             {
                                 isAuthenticated ?
                                     profile ? 
                                         profile.blocked_current_user ?
-                                            <Button disabled className="rounded-btn profile-btn">
+                                            <Button disabled className="base-btn reverse-base-btn">
                                                 Follow
                                             </Button>
                                         :
                                             profile.current_user ?
-                                                <Button className="rounded-btn profile-btn edit-btn" onClick={ () => setShow(true) }>
+                                                <Button className="base-btn reverse-base-btn edit-btn" onClick={ () => setShow(true) }>
                                                     Edit Profile
                                                 </Button>
                                             :
-                                                <Button className="rounded-btn profile-btn" onClick={ () => setFollow(profile.id) }>
+                                                <Button className="base-btn reverse-base-btn" onClick={ () => setFollow(profile.id) }>
                                                     { followed ? "Unfollow" : "Follow" } 
                                                 </Button>
                                     :
-                                        <Button className="rounded-btn profile-btn">
+                                        <Button className="base-btn reverse-base-btn">
                                             Follow
                                         </Button>
                                 :
-                                    <Button className="rounded-btn profile-btn" onClick={ () => navigate("/login") }>
+                                    <Button className="base-btn reverse-base-btn" onClick={ () => navigate("/login") }>
                                         Follow
                                     </Button>
                             }
-                            <div className="more-user-interactions-btn">
+                            <div className="base-btn rounded-btn bigger-rounded-btn">
                                 <NavDropdown title={<BsThreeDots/>} 
                                     className="more-dropdown"
                                     drop={ aboveMid ? "up-centered" : "down-centered" }

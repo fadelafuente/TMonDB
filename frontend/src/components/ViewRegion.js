@@ -13,6 +13,7 @@ import TriviaTab from "./Content/TriviaTab";
 import "../assets/styling/content.css";
 import "../assets/styling/UserProfile.css";
 import "../assets/styling/ViewMon.css";
+import "../assets/styling/buttons.css";
 
 function ViewRegion({ isAuthenticated }) {
     const [post, setPost] = useState("");
@@ -74,7 +75,7 @@ function ViewRegion({ isAuthenticated }) {
                                     12h
                                 </Col>
                                 <Col className="more-col">
-                                    <div className="more-btn">
+                                    <div className="base-btn rounded-btn">
                                         <NavDropdown title={<BsThreeDots />} 
                                             drop={ aboveMid ? "up-centered" : "down-centered" }
                                             onClick={e => setAboveMid(e)}
@@ -89,7 +90,7 @@ function ViewRegion({ isAuthenticated }) {
                     </Row>
                     <div className="bottom-barrier view-info-details">
                         <div className="view-img-container bottom-barrier">
-                            <img src={ require("../assets/images/missing-img.png") } alt="Image is missing" className="view-image" />
+                            <img src={ require("../assets/images/missing-img.png") } className="view-image" />
                         </div>
                         <div view-desc>
                             <p>

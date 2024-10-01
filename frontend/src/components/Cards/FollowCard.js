@@ -12,22 +12,22 @@ function FollowCard({ user, isAuthenticated }) {
 
     return (
         <>
-            <div className="align-row item-card">
+            <div className="row-gap-container item-card">
                 <div className="pfp-image">
                     pfp
                 </div>
                 <div className="f-user-details">
-                    <div className="align-row f-user-row">
+                    <div className="row-gap-container">
                         <Col className="follow-username">
                             @{user ? user.username : "Anonymous" }
                         </Col>
                         <Col className="align-right">
                             { user.current_user ? 
-                                <Button className="rounded-btn profile-btn right-most-btn" onClick={ () => navigate(`/${user.username}`) }>
+                                <Button className="base-btn reverse-base-btn" onClick={ () => navigate(`/${user.username}`) }>
                                     Profile
                                 </Button>
                                 :
-                                <Button className="rounded-btn profile-btn right-most-btn" onClick={ () => { isAuthenticated ? setFollow(user.id) : navigate("/login") } }>
+                                <Button className="base-btn reverse-base-btn" onClick={ () => { isAuthenticated ? setFollow(user.id) : navigate("/login") } }>
                                     { followed ? "Unfollow" : "Follow" } 
                                 </Button>
                             }

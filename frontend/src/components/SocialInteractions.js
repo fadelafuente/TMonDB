@@ -29,7 +29,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                 <Alert.Heading>Copied to clipboard.</Alert.Heading>
             </Alert>
             <Row className="interactions-row">
-                <Col className='interaction-btn left-btn'>
+                <Col>
                     <button className="svg-btn" onClick={
                         isAuthenticated ? 
                             post ?
@@ -38,7 +38,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                                 () => {}
                         : () => navigate("/login") 
                     }>
-                        <Row className="inner-btn-div">
+                        <Row>
                             <Col className={commented ? 'interaction-icon interacted' : 'interaction-icon'}>
                                 { commented ? <BsChatRightDotsFill /> : <BsChatRightDots /> }
                             </Col>
@@ -50,7 +50,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                         </Row>
                     </button>
                 </Col>
-                <Col className='interaction-btn'>
+                <Col>
                     <button className="svg-btn" name="repost" onClick={ 
                         isAuthenticated ? 
                             post ?
@@ -60,7 +60,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                         : 
                             () => navigate("/login")
                     }>
-                        <Row className="inner-btn-div">
+                        <Row>
                             <Col className={reposted ? 'interaction-icon interacted' : 'interaction-icon'}>
                                 <BsRepeat />
                             </Col>
@@ -72,7 +72,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                         </Row>
                     </button>
                 </Col>
-                <Col className='interaction-btn'>
+                <Col>
                     <button className="svg-btn" name="like" onClick={
                         isAuthenticated ? 
                             post ?
@@ -82,7 +82,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                         : 
                             () => navigate("/login")
                     }>
-                        <Row className="inner-btn-div">
+                        <Row>
                             <Col className={liked ? 'interaction-icon interacted' : 'interaction-icon'}>
                                 { liked ? <BsHeartFill /> : <BsHeart /> }
                             </Col>
@@ -94,7 +94,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                         </Row>
                     </button>
                 </Col>
-                <Col className='interaction-btn share-btn'>
+                <Col className='share-btn'>
                     <NavDropdown title={<BsShare/>} 
                         drop={ aboveMid ? "up-centered" : "down-centered" }
                         onClick={e => setAboveMid(e)}

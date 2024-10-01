@@ -41,22 +41,24 @@ export default function CreatePost({show, setShow, is_reply=false, parent=null})
                 <Modal.Footer>
                     <Col>
                         <Row className="no-select">
-                            <Col><Button className="svg-btn media-btn center-content"><BsImages/></Button></Col>
+                            <Col><Button className="svg-btn svg-resize-btn center-content"><BsImages/></Button></Col>
                         </Row>
                     </Col>
-                    <Button 
-                        className="rounded-btn close-btn" 
-                        id="discard-post-btn"
-                        onClick={ e => setShowDiscard(e) }
-                    >
-                        Close
-                    </Button>
-                    <Button className="rounded-btn" onClick={e => {
-                            setFormData(e, content, is_reply, parent);
-                            setShow(false);
-                        }}>
-                        Post
-                    </Button>
+                    <div className="row-gap-container">
+                        <Button 
+                            className="base-btn" 
+                            id="discard-post-btn"
+                            onClick={ e => setShowDiscard(e) }
+                        >
+                            Close
+                        </Button>
+                        <Button className="base-btn" onClick={e => {
+                                setFormData(e, content, is_reply, parent);
+                                setShow(false);
+                            }}>
+                            Post
+                        </Button>
+                    </div>
                 </Modal.Footer>
             </Modal>
             <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} resetFormData={resetFormData} />

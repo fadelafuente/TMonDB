@@ -9,10 +9,10 @@ export default function BlockModal({show, setShow, setBlocked, username}) {
             <Modal.Body>
                     The user will not be able to follow you, or view your posts.
             </Modal.Body>
-            <Modal.Footer>
-                <Button className="rounded-btn close-btn" onClick={ () => setShow(false) }>Cancel</Button>
+            <Modal.Footer className="row-gap-container">
+                <Button className="base-btn" onClick={ () => setShow(false) }>Cancel</Button>
                 <Button 
-                    className="rounded-btn" 
+                    className="base-btn" 
                     onClick={ username ? 
                         () => { patchCurrentUsersBlockedList(username); setBlocked((prev) => !prev); setShow(false); } 
                     : 
@@ -30,10 +30,10 @@ export function UnBlockModal({show, setShow, setBlocked, username}) {
     return <>
         <Modal className="discard-post" backdrop="static" backdropClassName="modal-backdrop" show={show} size="sm" centered>
             <Modal.Header className="modal-header-no-border">Unblock @{username}?</Modal.Header>
-            <Modal.Footer>
-                <Button className="rounded-btn close-btn" onClick={ () => setShow(false) }>Cancel</Button>
+            <Modal.Footer className="row-gap-container">
+                <Button className="base-btn" onClick={ () => setShow(false) }>Cancel</Button>
                 <Button 
-                    className="rounded-btn" 
+                    className="base-btn" 
                     onClick={ username ? 
                         () => { patchCurrentUsersBlockedList(username); setBlocked((prev) => !prev); setShow(false); } 
                     : 

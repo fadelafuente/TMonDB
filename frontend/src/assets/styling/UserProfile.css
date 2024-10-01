@@ -106,12 +106,6 @@ ul.nav-tabs {
     margin-bottom: 12px;
 }
 
-div.align-row {
-    display: flex;
-    flex-direction: row;
-    gap: 0.75em;
-}
-
 div.align-col {
     display: flex;
     flex-direction: column;

@@ -43,10 +43,10 @@ export default function EditModal({show, setShow}) {
                         />
                         </Form.Group>
                     </Form>
-                    <Modal.Footer>
-                        <Button className="rounded-btn close-btn modal-btn" onClick={ e => setShowDiscard(e) }>Cancel</Button>
+                    <Modal.Footer className="row-gap-container">
+                        <Button className="base-btn" onClick={ e => setShowDiscard(e) }>Cancel</Button>
                         <Button 
-                            className="rounded-btn modal-btn" 
+                            className="base-btn" 
                             onClick={ e => handleClick(e) }
                         >
                             Save

@@ -1,0 +1,218 @@
+/* Base button styling */
+button.base-btn, div.base-btn {
+    all: unset;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.375em 1em;
+    border-radius: 1.25em !important;
+    color: var(--placeholder-text-color);
+    background-color: transparent;
+    border: 1px solid var(--placeholder-text-color);
+}
+
+button.base-btn:disabled,
+button.base-btn[disabled], 
+button.base-btn:disabled:hover,
+button.base-btn[disabled]:hover,
+button.base-btn.explore-btn:disabled,
+button.base-btn.explore-btn[disable]:hover {
+    background-color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+    color: var(--background-color);
+    opacity: 80%;
+}
+
+button.base-btn:hover,
+div.base-btn:hover,
+button.base-btn.explore-btn:hover {
+    background-color: transparent;
+    border: 1px solid var(--accent-color) !important;
+    color: var(--accent-color);
+}
+
+button.base-btn:active,
+div.base-btn:active,
+button.base-btn.explore-btn:active {
+    background-color: transparent;
+    border: 1px solid var(--accent-secondary-color);
+    color: var(--accent-secondary-color);
+    opacity: 80%;
+}
+
+/* Square no border button styling */
+button.square-no-border-btn {
+    border-radius: 0 !important;
+    border: none;
+    justify-content: left !important;
+}
+
+button.square-no-border-btn:hover,
+button.square-no-border-btn:focus {
+    border-radius: 0 !important;
+    border: none !important;
+}
+
+/* SVG button and dropdown styling */
+button.svg-btn, div.svg-dropdown {
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--placeholder-text-color);
+}
+
+button.svg-btn:hover, div.svg-dropdown:hover {
+    all: unset;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: var(--accent-color);
+    cursor: pointer;
+}
+
+button.svg-btn:active {
+    background-color: transparent;
+    color: var(--accent-secondary-color);
+}
+
+div.svg-dropdown:active {
+    background-color: var(--background-content-color) !important;
+    color: var(--accent-secondary-color) !important;
+}
+
+/* Social button styling */
+button.social-btn {
+    margin: 10px auto;
+    border: none;
+    width: 100%;
+    color: var(--text-color);
+}
+
+button.social-btn:hover,
+button.social-btn:focus {
+    border: none !important;
+    color: var(--text-color) !important;
+    outline: none;
+}
+
+button.google-button {
+    background-color: #DB4437;
+}
+
+button.google-button:hover,
+button.google-button:focus {
+    background-color: #c13c30;
+}
+
+button.google-button:active {
+    background-color: #b2382d !important;
+}
+
+button.facebook-button {
+    background-color: #0a65ff;
+}
+
+button.facebook-button:hover,
+button.facebook-button:focus {
+    background-color: #0855db;
+}
+
+button.facebook-button:active {
+    background-color: #074bc2 !important;
+}
+
+.dropdown-button {
+    color: #232323 !important;
+    border-radius: 50% !important;
+    padding: 10px !important;
+    border: none !important;
+    background-color: var(--accent-color) !important;
+}
+
+.dropdown-button:hover {
+    color: #000000 !important;
+}
+
+/* SVG resize button styling */
+button.svg-resize-btn, button.svg-resize-btn:hover {
+    font-size: 1.5em;
+    justify-content: center;
+}
+
+/* Remove button styling */
+button.remove-btn:hover {
+    color: var(--delete-color);
+}
+
+button.remove-btn:active {
+    color: var(--delete-secondary-color) !important;
+}
+
+/* Delete button styling */
+button.delete-btn {
+    background-color: var(--delete-color);
+    color: var(--text-color);
+    border: none;
+}
+
+button.delete-btn:hover {
+    background-color: var(--delete-color);
+    color: var(--text-color);
+    border: none !important;
+}
+
+button.delete-btn:active {
+    background-color: var(--delete-secondary-color) !important;
+    color: var(--text-color);
+    border: none;
+}
+
+/* Reverse base button styling */
+button.reverse-base-btn, button.reverse-base-btn:disabled {
+    background-color: var(--accent-color);
+    color: var(--background-color);
+    border: 1px solid var(--accent-color);
+}
+
+button.reverse-base-btn:hover {
+    border: 1px solid var(--accent-color);
+}
+
+button.base-btn.reverse-base-btn:active {
+    border: 1px solid var(--accent-secondary-color);
+    background-color: transparent;
+    color: var(--accent-secondary-color)
+}
+
+/* Rounded button styling */
+div.rounded-btn {
+    width: 1.25em;
+    height: 1.25em;
+    padding: 0;
+    border-radius: 50% !important;
+    border: 1px solid transparent;
+    color: var(--text-color);
+}
+
+div.bigger-rounded-btn {
+    width: 2em;
+    height: 2em;
+}
+
+/* Share button styling */
+div.share-btn {
+    max-width: 1.5em;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+/* Reply button styling */
+button.reply-btn, button.reply-btn:hover, button.reply-btn:active {
+    all: unset !important;
+    cursor: pointer;
+}

@@ -23,10 +23,10 @@ function ResetModal({setLoginByEmail, resetItem, show, setShow, email}) {
                 <div  className="reset-body">
                     To change your {resetItem}, a {resetItem} reset link will be sent to your email first.
                 </div>
-                <Modal.Footer>
-                    <Button className="rounded-btn close-btn modal-btn" onClick={ e => setShow(false) }>Nevermind</Button>
+                <Modal.Footer className="row-gap-container">
+                    <Button className="base-btn" onClick={ e => setShow(false) }>Nevermind</Button>
                     <Button 
-                        className="rounded-btn modal-btn" 
+                        className="base-btn" 
                         onClick={ e => handleClick(e) }
                     >
                         Send link

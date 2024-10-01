@@ -15,12 +15,12 @@ export default function ExploreButtons({ parentBtn, setParentBtn, btns=[] }) {
     console.log(parentBtn);
 
     return (
-        <div className="view-explore-btns bottom-barrier">
+        <div className="bottom-barrier">
             {
                 btns.map((currentBtn) => {
                     return (
                         <button 
-                            className="rounded-btn" 
+                            className="base-btn" 
                             disabled={ activeBtn === currentBtn } 
                             name={ currentBtn } 
                             onClick={ e => { handleChangeSubSection(e) } }

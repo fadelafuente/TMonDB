@@ -46,7 +46,7 @@ function DeleteModal({show, setShow}) {
                 onClose={ () => { setShowAlert(false); setMessage(""); }}
                 className="delete-alert"
             >
-                <div className="align-row">
+                <div className="row-gap-container">
                     <div className="interaction-icon error-icon">
                         <BsExclamationCircle />
                     </div>
@@ -80,10 +80,10 @@ function DeleteModal({show, setShow}) {
                                 </InputGroup.Text>
                             </InputGroup>
                         </Form.Group>
-                        <div className="button-row align-row align-right">
-                            <Button className="rounded-btn close-btn modal-btn" onClick={ e => {setShow(false); setFormData(e, true); } }>Nevermind</Button>
+                        <div className="top-barrier align-right row-gap-container">
+                            <Button className="base-btn" onClick={ e => {setShow(false); setFormData(e, true); } }>Nevermind</Button>
                             <Button 
-                                className="delete-btn" 
+                                className="base-btn delete-btn" 
                                 variant="primary" type="submit"
                             >
                                 Delete

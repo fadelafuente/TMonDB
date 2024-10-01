@@ -3,7 +3,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import { Button, Card, Col, NavDropdown, Row } from 'react-bootstrap';
 import BlockModal from '../Modals/BlockModal';
 import { connect } from 'react-redux';
-import { useDeletePost, useMiddleViewPort, useTimedAlert } from '../../hooks/hooks';
+import { useDeletePost, useMiddleViewPort } from '../../hooks/hooks';
 import { handleTimeDifference } from '../../functions/handlers';
 
 import '../../assets/styling/MonCard.css';
@@ -79,7 +79,7 @@ function MonCard({post=null, isAuthenticated}) {
                                                     { post ? handleTimeDifference(post.posted_date) : "0s" }
                                                 </Col>
                                                 <Col className="more-col">
-                                                    <div className="more-btn">
+                                                    <div className="base-btn rounded-btn">
                                                         <NavDropdown title={<BsThreeDots />} 
                                                             drop={ aboveMid ? "up-centered" : "down-centered" }
                                                             onClick={e => setAboveMid(e)}

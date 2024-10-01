@@ -47,7 +47,7 @@ function SetUsername({ isAuthenticated, handleEditUsername, handleUsername }) {
             <Alert show={ show } variant="warning" dismissible onClose={ () => setShow(false) }>
                 { message ? message : "The username is not valid." }
             </Alert>
-            <div className="">
+            <div>
                 <Form className="form set-username-no-redirect" onSubmit={ e=> { onSubmit(e) } }>
                     <Form.Group controlId="username-input" className="form-group">
                         <Form.Text>Your username can contain uppercase letters, 
@@ -65,11 +65,11 @@ function SetUsername({ isAuthenticated, handleEditUsername, handleUsername }) {
                             />
                         </InputGroup>
                     </Form.Group>
-                    <div className="align-row align-right">
-                        <Button className="rounded-btn close-btn modal-btn" onClick={ () => { handleEditUsername(false) } }>
+                    <div className="row-gap-container align-right">
+                        <Button className="base-btn" onClick={ () => { handleEditUsername(false) } }>
                             Cancel
                         </Button>
-                        <Button className="rounded-btn modal-btn" variant="primary" type="submit">
+                        <Button className="base-btn" variant="primary" type="submit">
                             Submit
                         </Button>
                     </div>

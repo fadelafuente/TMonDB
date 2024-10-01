@@ -20,7 +20,7 @@ function BlockingCard({ user, isAuthenticated }) {
                     <BlockModal show={show} setShow={setShow} setBlocked={setBlocked} username={user.username} />
             }
             <div className="article-container item-card">
-                <div className="align-row f-user-row">
+                <div className="row-gap-container">
                     <Col className="follow-username">
                         <button 
                             className="svg-btn" 
@@ -31,7 +31,7 @@ function BlockingCard({ user, isAuthenticated }) {
                     </Col>
                     <Col className="align-right">
                         <Button 
-                            className="rounded-btn profile-btn right-most-btn" 
+                            className="base-btn reverse-base-btn right-most-btn" 
                             onClick={ isAuthenticated && user ? () => setShow(true) : () => navigate("/login") }
                         >
                             { blocked ? "unblock" : "block" } 
