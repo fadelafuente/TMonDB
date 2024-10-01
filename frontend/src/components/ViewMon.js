@@ -59,10 +59,10 @@ function ViewMon({ isAuthenticated }) {
         <>
             <div>
                 <div className="article-container">
-                    <Row className="mon-name">
+                    <Row className="view-name">
                         lizardmon
                     </Row>
-                    <Row className="center-row-items mon-creator">
+                    <Row className="center-row-items view-creator">
                         <Col>
                             <div className="creator-container">
                                 @username

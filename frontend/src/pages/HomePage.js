@@ -10,6 +10,7 @@ import Account from "../components/Account";
 import FollowContent from "../components/FollowContent";
 import BlockingArticles from "../components/BlockingArticles";
 import ViewMon from "../components/ViewMon";
+import ViewRegion from "../components/ViewRegion";
 
 import "../assets/styling/content.css";
 
@@ -33,6 +34,8 @@ function HomePage({ isAuthenticated }) {
             return <BlockingArticles query={ query } />;
         } else if(location.pathname === "/monsters") {
             return <ViewMon query={ query } />;
+        } else if(location.pathname === "/regions") {
+            return <ViewRegion query={ query } />;
         } else if("creator" in params && "pid" in params) {
             if(params["pid"] === "follow") {
                 return <FollowContent query={ query } />;

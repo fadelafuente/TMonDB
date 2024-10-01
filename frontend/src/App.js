@@ -40,6 +40,7 @@ export default function App() {
       <Route path="settings/account" element={ <HomePage /> } />
       <Route path="types" element= { <CreateType /> } />
       <Route path="monsters" element={ <HomePage /> } />
+      <Route path="regions" element={ <HomePage /> } />
     </Route>
   ))
 

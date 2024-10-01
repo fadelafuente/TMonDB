@@ -101,7 +101,7 @@ function MonCard({post=null, isAuthenticated}) {
                                     </div>
                                     <Row className='content-text'>
                                         <Row className="mon-info">
-                                            <Col className="mon-name">
+                                            <Col className="view-name">
                                                 <h3>Bulbasaur</h3>
                                                 <div className='mon-species'>
                                                     The Bulb Pokemon

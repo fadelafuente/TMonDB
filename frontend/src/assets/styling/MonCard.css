@@ -92,7 +92,7 @@ div.row {
     margin: 0;
 }
 
-div.mon-name > h3 {
+div.view-name > h3 {
     margin: 0;
     padding: 3% 0%;
     font-size: 1.25em;
@@ -151,7 +151,7 @@ div.mon-info {
     padding: 0;
 }
 
-div.mon-name {
+div.view-name {
     flex-direction: column;
 }
 

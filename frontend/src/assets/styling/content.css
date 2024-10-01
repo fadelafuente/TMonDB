@@ -99,6 +99,20 @@ button.right-content-btn:hover {
     background-color: var(--input-box-color);
 }
 
+ul.nav-tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow: scroll;
+}
+
+ul.explore-tabs {
+    gap: 0.75em;
+    border: none;
+    padding-bottom: 0.25em;
+}
+
 /* Media Queries */
 @media (width <= 500px) {
     .left-aside {
