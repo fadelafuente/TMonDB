@@ -1,13 +1,13 @@
 import { React, Fragment, useState, useEffect } from 'react';
-import { Container, Form, InputGroup } from 'react-bootstrap';
-import { BsPlusCircle, BsPersonCircle, BsSearch } from 'react-icons/bs';
+import { Container } from 'react-bootstrap';
+import { BsPlusCircle, BsPersonCircle } from 'react-icons/bs';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { connect } from 'react-redux';
 import { logout } from '../actions/auth';
-import CreatePost from './CreatePost';
+import CreatePost from './Creates/CreatePost';
 import SearchBar from './SearchBar';
 
 import "../assets/styling/forms.css";

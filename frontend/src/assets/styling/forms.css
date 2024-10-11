@@ -70,6 +70,16 @@
     display: none; 
   }
 
+  div.form-floating > .form-control:focus ~ label,
+  div.form-floating > .form-control:not(:placeholder-shown) ~ label {
+    color: var(--placeholder-text-color);
+  }
+
+  div.form-floating > .form-control:focus ~ label::after,
+  div.form-floating > .form-control:not(:placeholder-shown) ~ label::after {
+    background-color: transparent;
+  }
+
   div.form-group {
     margin: 10px auto;
     width: 100%;
@@ -134,6 +144,16 @@
     margin: 0 auto; 
   }
 
+  label.col-label {
+    text-wrap: nowrap;
+    margin: 0.375em;
+  }
+
+  div.text-align-top {
+    display: inline;
+    vertical-align: top;
+  }
+
   span.input-group-text {
     background-color: var(--input-box-color);
     color: var(--text-color); 
@@ -181,4 +201,10 @@ input.search-input {
 
 div.search-container.open > input.search-input {
   display: block;
+}
+
+@media (max-width: 825px) {
+  div.text-align-top {
+    height: 6em;
+  }
 }

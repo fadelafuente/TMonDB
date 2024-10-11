@@ -2,8 +2,8 @@ import { Modal, Row, Col } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsImages } from "react-icons/bs";
-import { DiscardModal } from "./Modals/DiscardModal";
-import { useCreatePost, useDiscardModal } from "../hooks/hooks";
+import { DiscardModal } from "../Modals/DiscardModal";
+import { useCreatePost, useDiscardModal } from "../../hooks/hooks";
 
 export default function CreatePost({show, setShow, is_reply=false, parent=null}) {
     const initialForm = {

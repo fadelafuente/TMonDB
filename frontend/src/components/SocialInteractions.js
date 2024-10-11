@@ -3,7 +3,7 @@ import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDo
 import { useInteractions, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import CreatePost from './CreatePost';
+import CreatePost from './Creates/CreatePost';
 import { useState } from 'react';
 
 import "../assets/styling/PostCard.css";

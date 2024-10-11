@@ -15,6 +15,7 @@ import ViewRegion from "../components/ViewRegion";
 import "../assets/styling/content.css";
 import "../assets/styling/buttons.css";
 import "../assets/styling/container.css";
+import CreateMon from "../components/Creates/CreateMon";
 
 function HomePage({ isAuthenticated }) {
     const [query, setQuery] = useState("");
@@ -36,6 +37,8 @@ function HomePage({ isAuthenticated }) {
             return <BlockingArticles query={ query } />;
         } else if(location.pathname === "/monsters") {
             return <ViewMon query={ query } />;
+        } else if(location.pathname === "/monsters/create") {
+            return <CreateMon />;
         } else if(location.pathname === "/regions") {
             return <ViewRegion query={ query } />;
         } else if("creator" in params && "pid" in params) {

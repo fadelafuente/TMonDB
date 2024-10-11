@@ -1,6 +1,19 @@
-.row-gap-container {
+.row-gap-container, 
+.col-gap-container,
+.row-to-col-container {
     display: flex;
     flex-direction: row;
     gap: 1em;
     align-items: center;
+    width: 100%;
+}
+
+.col-gap-container {
+    flex-direction: column;
+}
+
+@media (max-width: 825px) {
+    div.row-to-col-container {
+        flex-direction: column;
+    }
 }

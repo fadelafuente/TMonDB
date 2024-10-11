@@ -68,7 +68,8 @@ div.mon-abilities {
     flex-direction: column;
 }
 
-div.mon-abilities > a {
+div.mon-abilities > a,
+.text-align-right {
     text-align: right;
 }
 
@@ -77,7 +78,7 @@ div.mon-desc-tag {
 }
 
 .bottom-barrier {
-    margin-bottom: 0.75em;
+    margin-bottom: 1em;
 }
 
 div.weakness-chart {
