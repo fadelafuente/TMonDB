@@ -1,7 +1,16 @@
+import React, { useState } from "react";
 import { Form, FormControl, InputGroup } from "react-bootstrap";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Select from 'react-select';
 
 export default function CreateMon() {
+    const types = ["fire", "water", "grass", "ice", "dragon", "ground", "rock", "electric", "bug", "normal", "fighting", "psychic", "steel", "poison", "flying", "fairy", "dark", "ghost"];
+    const [chosenTypes, setChosenTypes] = useState([]);
+
+    function MakeOption(t) {
+        return {value: t, label: t};
+    }
+
     return (
         <div className="article-container">
             <Form>
@@ -61,6 +70,13 @@ export default function CreateMon() {
                         </div>
                     </div>
                 </div>
+                <Select 
+                    isMulti 
+                    isClearable
+                    closeMenuOnSelect={false}
+                    options={ types.map(type => MakeOption(type)) } 
+                    onChange={ e => setChosenTypes(e.map((dict, _) => { return dict["value"] })) }
+                />
             </Form>
         </div>
     );
