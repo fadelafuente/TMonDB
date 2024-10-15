@@ -203,6 +203,65 @@ div.search-container.open > input.search-input {
   display: block;
 }
 
+/* Form Multiselect Styling */
+div.multiselect__control {
+  background-color: var(--background-content-color);
+  color: var(--placeholder-text-color);
+  border-radius: 0.375em;
+  border: 0.125em solid var(--placeholder-text-color);
+}
+
+div.multiselect__control--menu-is-open,
+div.css-t3ipsp-control {
+  box-shadow: none;
+}
+
+div.multiselect__control--menu-is-open:hover,
+div.css-t3ipsp-control:hover {
+  border-color: var(--accent-color);
+}
+
+div.multiselect__multi-value {
+  background-color: var(--background-color);
+}
+
+div.multiselect__multi-value__label,
+div.multiselect__multi-value__remove {
+  color: var(--text-color);
+}
+
+div.multiselect__multi-value__remove:hover {
+  color: var(--background-color);
+  background-color: var(--accent-color);
+  opacity: 80%;
+}
+
+div.multiselect__option:hover,
+div.multiselect__option--is-focused {
+  background-color: var(--accent-color);
+  color: var(--background-content-color);
+}
+
+div.multiselect__input-container,
+div.multiselect__indicator,
+div.multiselect__option--is-disabled {
+  color: var(--placeholder-text-color);
+}
+
+div.multiselect__menu,
+div.multiselect__option--is-disabled {
+  background-color: var(--background-content-color);
+}
+
+div.multiselect__indicator:hover {
+  color: var(--accent-color);
+}
+
+div.multiselect__group-heading {
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
 @media (max-width: 825px) {
   div.text-align-top {
     height: 6em;

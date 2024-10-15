@@ -96,7 +96,9 @@ export default function CreateMon() {
                         </div>
                     </div>
                 </div>
-                <Select 
+                <Select
+                    className="multiselect-container"
+                    classNamePrefix="multiselect"
                     isMulti 
                     isClearable
                     closeMenuOnSelect={false}
