@@ -1,46 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, FormControl, InputGroup } from "react-bootstrap";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Select from 'react-select';
+import SearchMultiSelect from "../UserInteractions/SearchMultiSelect";
+import ImagesUpload from "../UserInteractions/ImagesUpload";
 
 export default function CreateMon() {
     /* PLACEHOLDERS!!! Eventually will be replaced with data from backend! */
     const types = {Pokemon: ["fire", "water", "grass", "ice", "dragon", "ground", "rock", "electric", "bug", "normal", "fighting", "psychic", "steel", "poison", "flying", "dark", "ghost", "fairy"], 
         Temtem: ["neutral", "wind", "earth", "water", "fire", "nature", "electric", "mental", "digital", "melee", "crystal", "toxic"]};
-    
-    const [groupedTypes, setGroupedTypes] = useState(
-        Object.keys(types).map((key, _) => {
-            const currentGroup = types[key].map(type => MakeOption(type, key));
-            return {label: key, options: currentGroup};
-        })
-    ); 
+    const abilities = {Pokemon: ["Adaptability", "Aerilate", "Cursed Body", "Drought", "Pure Power"], 
+        Temtem: ["Aggressor", "Arcane Wrap", "Benefactor", "Channeler", "Coward's Rest", "Synergy Master"]};
+
+    const [group, setGroup] = useState("");
     const [chosenTypes, setChosenTypes] = useState([]);
+    const [chosenAbilities, setChosenAbilities] = useState([]);
+    const [chosenHiddenAbility, setchosenHiddenAbility] = useState([]);
 
-    function MakeOption(t, g) {
-        return {value: t, label: t, groupName: g};
-    }
-
-    function onTypesChange(e) {
-        if(e.length > 0) { 
-            const groupName = e[0]["groupName"]; 
-            const groupOptions = types[groupName].map(type => MakeOption(type, groupName));
-            setGroupedTypes([{label: groupName, options: groupOptions}]);
-        } else {
-            setGroupedTypes(
-                Object.keys(types).map((key, _) => {
-                    const currentGroup = types[key].map(type => MakeOption(type, key));
-                    return {label: key, options: currentGroup};
-                })
-            );
+    function handleSetGroup(groupName) {
+        if(groupName !== "") {
+            setGroup(groupName);
         }
-
-        setChosenTypes(e.map((dict, _) => { return dict["value"] }));
     }
+
+    useEffect(() => {
+        if(chosenAbilities.length === 0 && chosenHiddenAbility.length === 0 && chosenTypes.length === 0) {
+            setGroup("");
+        } 
+    }, [chosenAbilities, chosenHiddenAbility, chosenTypes]);
 
     return (
         <div className="article-container">
             <Form>
                 <div className="bottom-barrier"><h3>Create New Monster</h3></div>
+                <ImagesUpload />
                 <FloatingLabel controlId="floatingInput" label="Name" className="mb-3">
                     <FormControl type="text" placeholder="Name" />
                 </FloatingLabel>
@@ -96,16 +88,51 @@ export default function CreateMon() {
                         </div>
                     </div>
                 </div>
-                <Select
-                    className="multiselect-container"
-                    classNamePrefix="multiselect"
-                    isMulti 
-                    isClearable
-                    closeMenuOnSelect={false}
-                    options={ groupedTypes } 
-                    onChange={ e => onTypesChange(e) }
-                    isOptionDisabled={ () => chosenTypes.length >= 2 }
-                />
+                <div className="bottom-barrier">
+                    <div className="row-gap-container">
+                        <div>
+                            <label className="col-label">Type(s)</label>
+                        </div>
+                        <SearchMultiSelect 
+                            initialGroupedItems={ types } 
+                            group={ group } 
+                            setGroup={ handleSetGroup } 
+                            chosenItems={ chosenTypes } 
+                            setChosenItems={ (t) => setChosenTypes(t) } 
+                            limit = { 2 }
+                        />
+                    </div>
+                </div>
+                <div className="bottom-barrier">
+                    <div className="row-gap-container">
+                        <div>
+                            <label className="col-label">Abilities</label>
+                        </div>
+                        <SearchMultiSelect 
+                            initialGroupedItems={ abilities } 
+                            group={ group } 
+                            setGroup={ handleSetGroup } 
+                            chosenItems={ chosenAbilities } 
+                            setChosenItems={ (a) => setChosenAbilities(a) } 
+                            limit = { 2 }
+                        />
+                    </div>
+                </div>
+                <div className="bottom-barrier">
+                    <div className="row-gap-container">
+                        <div>
+                            <label className="col-label">Hidden Ability</label>
+                        </div>
+                        <SearchMultiSelect 
+                            initialGroupedItems={ abilities } 
+                            group={ group } 
+                            setGroup={ handleSetGroup } 
+                            chosenItems={ chosenHiddenAbility } 
+                            setChosenItems={ (a) => setchosenHiddenAbility(a) } 
+                            limit = { 1 }
+                        />
+                    </div>
+                </div>
             </Form>
         </div>
     );

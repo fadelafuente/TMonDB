@@ -12,8 +12,6 @@ export default function ExploreButtons({ parentBtn, setParentBtn, btns=[] }) {
         setParentBtn(e.target.name);
     }
 
-    console.log(parentBtn);
-
     return (
         <div className="bottom-barrier">
             {

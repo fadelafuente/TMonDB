@@ -24,7 +24,7 @@
   }
   
   input.form-control {
-    border: 1px solid var(--input-box-color);
+    border: 0.125em solid var(--input-box-color);
     height: 40px;
     width: 100%;
     font-family: "Inter", sans-serif;
@@ -42,7 +42,7 @@
 
   /* Change color of autofills to match rest of the form */
   input.form-control:-webkit-autofill {
-    border: 1px solid var(--input-box-color);
+    border: 0.125em solid var(--input-box-color);
     -webkit-text-fill-color: var(--text-color);
     -webkit-box-shadow: 0 0 0px 1000px var(--input-box-color) inset;
     transition: background-color 5000s ease-in-out 0s;
@@ -50,7 +50,6 @@
 
   input.form-control:-webkit-autofill:focus {
     border-color: var(--accent-color);
-    outline: 2px solid var(--accent-color);
     -webkit-text-fill-color: var(--text-color);
     -webkit-box-shadow: none;
     transition: background-color 5000s ease-in-out 0s;
@@ -58,9 +57,9 @@
   
   input.form-control:focus {
     border-color: var(--accent-color);
-    outline: 2px solid var(--accent-color);
     color: var(--text-color);
     box-shadow: none;
+    outline: none;
     transition: background-color 5000s ease-in-out 0s;
   }
 
@@ -146,6 +145,7 @@
 
   label.col-label {
     text-wrap: nowrap;
+    width: 6.8125em;
     margin: 0.375em;
   }
 
@@ -204,11 +204,19 @@ div.search-container.open > input.search-input {
 }
 
 /* Form Multiselect Styling */
+div.multiselect-container {
+  width: 100%;
+}
+
 div.multiselect__control {
-  background-color: var(--background-content-color);
-  color: var(--placeholder-text-color);
+  background-color: var(--input-box-color);
+  color: var(--text-color);
   border-radius: 0.375em;
-  border: 0.125em solid var(--placeholder-text-color);
+  border: 0.125em solid transparent;
+}
+
+div.multiselect__placeholder {
+  color: var(--placeholder-text-color);
 }
 
 div.multiselect__control--menu-is-open,
@@ -253,13 +261,87 @@ div.multiselect__option--is-disabled {
   background-color: var(--background-content-color);
 }
 
-div.multiselect__indicator:hover {
-  color: var(--accent-color);
+div.multiselect__menu {
+  box-shadow: 0em 0em 1em var(--background-color);
 }
 
 div.multiselect__group-heading {
   color: var(--accent-color);
   font-weight: bold;
+}
+
+/* Images Upload Styling */
+input[type=file] {
+  display: none;
+}
+
+.images-upload-input {
+  background-color: var(--input-box-color);
+  border-radius: 0.375em;
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+  border: 0.125em solid transparent;
+}
+
+.images-upload-input:hover {
+  border: 0.125em solid var(--accent-color);
+}
+
+.image-upload-svg-container {
+  width: 40%;
+}
+
+div.image-uploaded-svg-container {
+  width: 60%;
+}
+
+.image-upload-svg-container > svg {
+  width: 100%;
+  height: 100%;
+  color: var(--placeholder-text-color);
+}
+
+.images-upload-input:hover,
+div.multiselect__indicator:hover {
+  color: var(--accent-color);
+}
+
+a.carousel-control-next {
+  right: -20%;
+}
+
+span.carousel-control-next-icon {
+  width: 4em;
+  height: 4em;
+}
+
+a.carousel-control-prev {
+  left: -20%;
+}
+
+div.carousel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+div.uploaded-images-container,
+div.carousel-item,
+div.carousel-inner {
+  width: 100%;
+  height: 100%;
+}
+
+div.uploaded-images-container {
+  display: flex;
+}
+
+div.uploaded-images-container > img {
+  width: 100%;
+  margin: auto 0;
 }
 
 @media (max-width: 825px) {

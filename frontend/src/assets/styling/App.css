@@ -213,6 +213,7 @@ button.btn-close:focus {
 
 div.dropdown-menu {
   background-color: var(--background-content-color);
+  box-shadow: 0em 0em 1em var(--background-color);
   border: none;
 }
 

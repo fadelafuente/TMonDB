@@ -81,6 +81,10 @@ div.mon-desc-tag {
     margin-bottom: 1em;
 }
 
+.section-bottom-barrier { 
+    margin-bottom: 2em;
+}
+
 div.weakness-chart {
     width: 100%;
     overflow-x: scroll;
