@@ -176,6 +176,24 @@ export function useFormData(initialForm) {
     return [formData, handleChange];
 }
 
+export function useAdaptiveFormData(initialForm) {
+    const [formData, setFormData] = useFormData(initialForm);
+
+    function handleFormData(e, resetPost=false) {
+        if(e.target.id === "auto-resizing") {
+            const textarea = document.getElementById("auto-resizing");
+            textarea.addEventListener('input', autoResize, false);
+            function autoResize() {
+                this.style.height = "auto";
+                this.style.height = this.scrollHeight + "px";
+            }
+        }
+        setFormData(e, resetPost);
+    }
+
+    return [formData, handleFormData];
+}
+
 export function usePassword() {
     const [showPass, setShowPass] = useState(false);
 
@@ -190,20 +208,8 @@ export function usePassword() {
 }
 
 export function useCreatePost(initialForm) {
-    const [formData, setFormData] = useFormData(initialForm);
+    const [formData, setFormData] = useAdaptiveFormData(initialForm);
     const navigate = useNavigate();
-
-    function handleFormData(e, resetPost=false) {
-        if(e.target.id === "auto-resizing") {
-            const textarea = document.getElementById("auto-resizing");
-            textarea.addEventListener('input', autoResize, false);
-            function autoResize() {
-                this.style.height = "auto";
-                this.style.height = this.scrollHeight + "px";
-            }
-        }
-        setFormData(e, resetPost);
-    }
 
     function handleCreatePost(e, content, is_reply, parent) {
         e.preventDefault();
@@ -217,7 +223,7 @@ export function useCreatePost(initialForm) {
         }
     }
 
-    return [formData, handleFormData, handleCreatePost];
+    return [formData, setFormData, handleCreatePost];
 }
 
 export function useDiscardModal(formData, setShow) {

@@ -91,7 +91,7 @@ div.modal-content {
 }
 
 textarea.input-textarea, textarea.input-textarea:focus {
-    background-color: var(--background-color);
+    background-color: transparent;
     color: var(--text-color);
     resize: none;
     overflow: hidden;

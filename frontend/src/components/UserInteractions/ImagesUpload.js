@@ -12,10 +12,8 @@ export default function ImagesUpload() {
         }
     }, []);
 
-    function handleImagesUpload(e) {
-        e.preventDefault();
-
-        const newFiles = Array.from(e.target.files, (fileObject) => {
+    function handleImagesUpload(files) {
+        const newFiles = Array.from(files, (fileObject) => {
             const id = crypto.randomUUID();
 
             const url = URL.createObjectURL(fileObject);
@@ -24,6 +22,16 @@ export default function ImagesUpload() {
         });
 
         setSelectedFiles([...selectedFiles, ...newFiles]);
+    }
+
+    function handleUploadType(e) {
+        e.preventDefault();
+
+        if(e.target.files) {
+            handleImagesUpload(e.target.files);
+        } else if(e.dataTransfer.files) {
+            handleImagesUpload(e.dataTransfer.files);
+        }
     }
 
     function handleImagesDelete(e, id) {
@@ -43,14 +51,14 @@ export default function ImagesUpload() {
         <div className="row-gap-container section-bottom-barrier">
             <label 
                 className="col-gap-container images-upload-input"
-                onDrop={ e => handleImagesUpload(e) }
+                onDrop={ e => handleUploadType(e) }
                 onDragOver={ (e) => e.preventDefault() }
             >
                 <input
                     accept="image/png, image/jpg, image/gif"
                     type="file"
                     multiple 
-                    onChange={ e => handleImagesUpload(e) }
+                    onChange={ e => handleUploadType(e) }
                 />
                     {
                         selectedFiles.length > 0 ? 

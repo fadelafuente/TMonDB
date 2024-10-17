@@ -8,8 +8,29 @@
     width: 100%;
 }
 
+ .left-justify-container {
+    align-items: start;
+ }
+
 .col-gap-container {
     flex-direction: column;
+}
+
+.input-textarea-container {
+    background-color: var(--input-box-color);
+    border-radius: 0.375em;
+    padding: 0 0.5em;
+    width: 100%;
+    border: 0.125em solid transparent;
+}
+
+.input-textarea-container:hover {
+    border: 0.125em solid var(--placeholder-text-color);
+}
+
+.input-textarea-container:active,
+.input-textarea-container:focus-within {
+    border: 0.125em solid var(--accent-color);
 }
 
 @media (max-width: 825px) {

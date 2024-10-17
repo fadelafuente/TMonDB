@@ -11,11 +11,11 @@ import FollowContent from "../components/FollowContent";
 import BlockingArticles from "../components/BlockingArticles";
 import ViewMon from "../components/ViewMon";
 import ViewRegion from "../components/ViewRegion";
+import CreateMon from "../components/Creates/CreateMon";
 
 import "../assets/styling/content.css";
 import "../assets/styling/buttons.css";
 import "../assets/styling/container.css";
-import CreateMon from "../components/Creates/CreateMon";
 
 function HomePage({ isAuthenticated }) {
     const [query, setQuery] = useState("");
