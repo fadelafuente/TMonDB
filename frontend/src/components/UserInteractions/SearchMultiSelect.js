@@ -1,40 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Select from 'react-select';
 
-export default function SearchMultiSelect({ initialGroupedItems, group, setGroup, chosenItems, setChosenItems, limit=null }) {
+export default function SearchMultiSelect({ initialItems, groups=null, chosenItems, setChosenItems, limit=null, isGrouped=false, isMulti=false }) {
     const [groupedItems, setGroupedItems] = useState(
-        Object.keys(initialGroupedItems).map((key, _) => {
-            const currentGroup = initialGroupedItems[key].map(type => MakeOption(type, key));
-            return {label: key, options: currentGroup};
-        })
+        groups instanceof Array ? 
+            Object.keys(initialItems).map((key, _) => {
+                const currentGroup = initialItems[key].map(type => MakeOption(type, key));
+                return {label: key, options: currentGroup};
+            })
+        :
+            initialItems.map(type => MakeOption(type))
     ); 
 
     useEffect(() => {
-        if(group) { 
-            const groupOptions = initialGroupedItems[group].map(type => MakeOption(type, group));
-            setGroupedItems([{label: group, options: groupOptions}]);
-        } else {
+        if(groups instanceof Array && groups) { 
+            const allOptions = [];
+
+            groups.forEach((option) => {
+                const group = option["value"];
+                if(group in initialItems) {
+                    const groupOptions = initialItems[group].map(type => MakeOption(type, group));
+                    allOptions.push({label: group, options: groupOptions});
+                }
+            });
+
+            setGroupedItems(allOptions);
+        } else if(groups instanceof Array && initialItems instanceof Array) {
             setGroupedItems(
-                Object.keys(initialGroupedItems).map((key, _) => {
-                    const currentGroup = initialGroupedItems[key].map(type => MakeOption(type, key));
+                Object.keys(initialItems).map((key, _) => {
+                    const currentGroup = initialItems[key].map(type => MakeOption(type, key));
                     return {label: key, options: currentGroup};
                 })
             );
         }
-    }, [group]);
+    }, [groups, initialItems]);
 
-    function MakeOption(t, g) {
-        return {value: t, label: t, groupName: g};
+    function MakeOption(t, g=null) {
+        const option = {value: t, label: t};
+
+        if(g) {
+            option["groupName"] = g;
+        }
+
+        return option;
     }
 
     function onItemsChange(e) {
-        setChosenItems(e.map((dict, _) => { return dict["value"] }));
-
-        if(e.length > 0) {
-            setGroup(e[0]["groupName"]);
-        } else {
-            setGroup("");
-        }
+        setChosenItems(e);
     }
 
     return (
@@ -42,12 +54,12 @@ export default function SearchMultiSelect({ initialGroupedItems, group, setGroup
             <Select
                 className="multiselect-container"
                 classNamePrefix="multiselect"
-                isMulti 
-                isClearable
-                closeMenuOnSelect={ false }
+                isMulti={ isMulti } 
+                closeMenuOnSelect={ !isMulti }
                 options={ groupedItems } 
                 onChange={ e => onItemsChange(e) }
-                isOptionDisabled={ () => limit ? chosenItems.length >= limit : false }
+                isOptionDisabled={ () => limit && chosenItems ? chosenItems.length >= limit : false }
+                value={ chosenItems }
             />
         </div>
     );

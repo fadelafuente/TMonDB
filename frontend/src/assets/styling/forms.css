@@ -86,7 +86,7 @@
   
   form > button.btn {
     margin: 10px auto;
-    background-color: var(--accent-secondary-color);
+    background-color: var(--accent-color);
     border: none;
     border-radius: 6px;
     height: 40px;
@@ -102,7 +102,7 @@
 
   form > button.btn:active {
     outline: none;
-    background-color: var(--accent-color) !important;
+    background-color: var(--accent-secondary-color) !important;
     border: none;
   }
 
@@ -244,12 +244,19 @@ div.multiselect__multi-value__remove:hover {
 }
 
 div.multiselect__option:hover,
-div.multiselect__option--is-focused {
+div.multiselect__option--is-focused,
+div.multiselect__option--is-selected {
   background-color: var(--accent-color);
   color: var(--background-content-color);
+  opacity: 100%;
+}
+
+div.multiselect__option--is-selected {
+  opacity: 80%;
 }
 
 div.multiselect__input-container,
+div.multiselect__single-value,
 div.multiselect__indicator,
 div.multiselect__option--is-disabled {
   color: var(--placeholder-text-color);

@@ -43,16 +43,16 @@ export default function EditModal({show, setShow}) {
                         />
                         </Form.Group>
                     </Form>
-                    <Modal.Footer className="row-gap-container">
-                        <Button className="base-btn" onClick={ e => setShowDiscard(e) }>Cancel</Button>
-                        <Button 
-                            className="base-btn" 
-                            onClick={ e => handleClick(e) }
-                        >
-                            Save
-                        </Button>
-                    </Modal.Footer>
             </Modal.Body>
+            <Modal.Footer className="row-gap-container outer-modal-footer">
+                <Button className="base-btn" onClick={ e => setShowDiscard(e) }>Cancel</Button>
+                <Button 
+                    className="base-btn" 
+                    onClick={ e => handleClick(e) }
+                >
+                    Save
+                </Button>
+            </Modal.Footer>
         </Modal>
         <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} resetFormData={resetFormData} discard_type="bio" />
     </>

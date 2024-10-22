@@ -12,6 +12,14 @@
     align-items: start;
  }
 
+ .right-justify-container {
+    justify-content: right;
+ }
+
+ div.no-margins-container {
+    margin: 0;
+  }
+
 .col-gap-container {
     flex-direction: column;
 }
@@ -31,6 +39,10 @@
 .input-textarea-container:active,
 .input-textarea-container:focus-within {
     border: 0.125em solid var(--accent-color);
+}
+
+.hidden-info-container {
+    display: none;
 }
 
 @media (max-width: 825px) {

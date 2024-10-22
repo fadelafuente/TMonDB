@@ -239,8 +239,20 @@ div.input-group {
   min-width: 150px;
 }
 
+.top-padding {
+  padding-top: 0.75em;
+}
+
 /*  Modal Styling */
 div.modal-content {
   background-color: var(--background-content-color);
   color: var(--text-color);
+}
+
+div.modal-body {
+  padding: 1.25em;
+}
+
+div.outer-modal-footer {
+  padding: 0.75em 1.25em 0.75em 1.25em !important;
 }

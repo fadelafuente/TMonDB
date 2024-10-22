@@ -101,10 +101,6 @@ ul.explore-tabs {
     padding-bottom: 0.25em;
 }
 
-.top-barrier {
-    margin-top: 0.75em;
-}
-
 /* Media Queries */
 @media (width <= 500px) {
     .left-aside {

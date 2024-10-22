@@ -38,13 +38,13 @@ export default function CreatePost({show, setShow, is_reply=false, parent=null})
                         </Form.Group>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer className="row-gap-container outer-modal-footer">
                     <Col>
                         <Row className="no-select">
                             <Col><Button className="svg-btn svg-resize-btn center-content"><BsImages/></Button></Col>
                         </Row>
                     </Col>
-                    <div className="row-gap-container">
+                    <div className="row-gap-container right-justify-container no-margins-container">
                         <Button 
                             className="base-btn" 
                             id="discard-post-btn"

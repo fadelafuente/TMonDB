@@ -80,7 +80,7 @@ function DeleteModal({show, setShow}) {
                                 </InputGroup.Text>
                             </InputGroup>
                         </Form.Group>
-                        <div className="top-barrier align-right row-gap-container">
+                        <div className="top-barrier align-right row-gap-container top-padding">
                             <Button className="base-btn" onClick={ e => {setShow(false); setFormData(e, true); } }>Nevermind</Button>
                             <Button 
                                 className="base-btn delete-btn" 

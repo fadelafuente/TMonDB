@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Form, FormControl, InputGroup } from "react-bootstrap";
+import { Button, Form, FormControl, InputGroup } from "react-bootstrap";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import SearchMultiSelect from "../UserInteractions/SearchMultiSelect";
 import ImagesUpload from "../UserInteractions/ImagesUpload";
 import { useAdaptiveFormData } from "../../hooks/hooks";
+import Select from 'react-select';
+
 
 export default function CreateMon() {
     /* 
@@ -15,6 +17,7 @@ export default function CreateMon() {
 
                location might be nice to have grouped by region instead of world
     */
+   const worlds = ["Pokemon", "Temtem", "Nexomon"]
     const types = {Pokemon: ["fire", "water", "grass", "ice", "dragon", "ground", "rock", "electric", "bug", "normal", "fighting", "psychic", "steel", "poison", "flying", "dark", "ghost", "fairy"], 
         Temtem: ["neutral", "wind", "earth", "water", "fire", "nature", "electric", "mental", "digital", "melee", "crystal", "toxic"]};
     const abilities = {Pokemon: ["Adaptability", "Aerilate", "Cursed Body", "Drought", "Pure Power"], 
@@ -23,10 +26,29 @@ export default function CreateMon() {
         Temtem: ["Deniz", "Omninesia", "Tucma", "Kisiwa", "Cipanku", "Arbury"]};
     const moves = {Pokemon: ["Aqua Tail", "Dragon Rush", "Thunderbolt", "Flamethrower", "Ice Beam", "Waterfall"], 
         Temtem: ["Martial Kick", "Uppercut", "Heat Up", "Helicopter Kick", "Wrenching Massage", "Seismunch's Wreck", "Dim Mak"]};
-    const locations = {Pokemon: ["Viridian Forest", "Pallet Town", "Trophy Garden", "Route 1", "Forest of Focus"], 
-        Temtem: ["Dabmis' Rest", "Aguamarina Caves", "Corrupted Badlands", "Xolot Reservoir", "Mawingu Islets"]};
+    const locations = {
+        Pokemon: {
+            Kanto: ["Power Plant", "Pallet Town", "Viridian Forest"], 
+            Johto: ["Celadon City"], 
+            Hoenn: ["Safari Zone"], 
+            Sinnoh: ["Trophy Garden"], 
+            Unova: [], 
+            Kalos: ["Route 3", "Santalune City"], 
+            Alola: ["Route 1", "Hau'oli City"], 
+            Galar: ["Route 4", "Stony Wilderness", "Forest of Focus"], 
+            Paldea: ["East Province", "South Province", "West Province"]
+        },
+        Temtem: {
+            Deniz: ["Prasine Coast", "Thalassian Cliffs", "The Gifted Bridges", "Sillaro River"],
+            Omninesia: ["The Glassyway", "Anak Caldera", "The Hangroad"],
+            Tucma: ["Corrupted Badlands", "Xolot Reservoir", "Mines of Mictlan", "Gardens of Aztlan"],
+            Kisiwa: ["Mawingu Islets", "Jino Gap", "Tasa Desert", "Kilima Peaks"],
+            Cipanku: ["Iwaba", "Rice Fields"],
+            Arbury: ["Meadowdale", "Ruins of Telobos", "Burned Woodlands"]
+        }
+    };
 
-    const [group, setGroup] = useState("");
+    const [chosenWorld, setChosenWorld] = useState(null);
     const [chosenRegions, setChosenRegions] = useState([]);
     const [chosenTypes, setChosenTypes] = useState([]);
     const [chosenAbilities, setChosenAbilities] = useState([]);
@@ -41,22 +63,15 @@ export default function CreateMon() {
     const { etymology } = etymologyData;
     const { inspiration } = inspoData;
 
-    function handleSetGroup(groupName) {
-        if(groupName !== "") {
-            setGroup(groupName);
-        }
-    }
-
+    // Reset regional information on world change
     useEffect(() => {
-        if(chosenAbilities.length === 0 && 
-            chosenHiddenAbility.length === 0 && 
-            chosenTypes.length === 0 && 
-            chosenMoves.length === 0 &&
-            chosenLocations.length === 0
-        ) {
-            setGroup("");
-        } 
-    }, [chosenAbilities, chosenHiddenAbility, chosenTypes, chosenMoves, chosenLocations]);
+        setChosenLocations([]);
+        setChosenTypes([]);
+        setChosenAbilities([]);
+        setchosenHiddenAbility([]);
+        setChosenMoves([]);
+        setChosenRegions([]);
+    }, [chosenWorld]);
 
     return (
         <div className="article-container">
@@ -141,92 +156,117 @@ export default function CreateMon() {
                     </div>
                 </div>
                 <div className="section-bottom-barrier">
-                    <div className="bottom-barrier"><h4>Regional Information</h4></div>
+                    <div className="bottom-barrier"><h4>World Information</h4></div>
                     <div className="bottom-barrier">
                         <div className="row-gap-container">
                             <div>
-                                <label className="col-label">Region(s)</label>
+                                <label className="col-label">World</label>
                             </div>
-                            <SearchMultiSelect 
-                                initialGroupedItems={ regions } 
-                                group={ group } 
-                                setGroup={ handleSetGroup } 
-                                chosenItems={ chosenRegions } 
-                                setChosenItems={ (t) => setChosenRegions(t) } 
+                            <SearchMultiSelect
+                                className="multiselect-container"
+                                classNamePrefix="multiselect"
+                                isClearable
+                                initialItems={ worlds } 
+                                chosenItems={ chosenWorld }
+                                setChosenItems={ (w) => setChosenWorld(w) }
                             />
                         </div>
                     </div>
-                    <div className="bottom-barrier">
-                        <div className="row-gap-container">
-                            <div>
-                                <label className="col-label">Type(s)</label>
+                    <div className={ chosenWorld ? "" : "hidden-info-container" }>
+                        <div className="bottom-barrier">
+                            <div className="row-gap-container">
+                                <div>
+                                    <label className="col-label">Type(s)</label>
+                                </div>
+                                <SearchMultiSelect 
+                                    initialItems={ types } 
+                                    groups={ chosenWorld != null ? [chosenWorld] : [] } 
+                                    chosenItems={ chosenTypes } 
+                                    setChosenItems={ (t) => setChosenTypes(t) } 
+                                    limit={ 2 }
+                                    isMulti={ true }
+                                    isGrouped={ true }
+                                />
                             </div>
-                            <SearchMultiSelect 
-                                initialGroupedItems={ types } 
-                                group={ group } 
-                                setGroup={ handleSetGroup } 
-                                chosenItems={ chosenTypes } 
-                                setChosenItems={ (t) => setChosenTypes(t) } 
-                                limit = { 2 }
-                            />
                         </div>
-                    </div>
-                    <div className="bottom-barrier">
-                        <div className="row-gap-container">
-                            <div>
-                                <label className="col-label">Abilities</label>
+                        <div className="bottom-barrier">
+                            <div className="row-gap-container">
+                                <div>
+                                    <label className="col-label">Abilities</label>
+                                </div>
+                                <SearchMultiSelect 
+                                    initialItems={ abilities } 
+                                    groups={ chosenWorld != null ? [chosenWorld] : [] } 
+                                    chosenItems={ chosenAbilities } 
+                                    setChosenItems={ (a) => setChosenAbilities(a) } 
+                                    limit = { 2 }
+                                    isMulti={ true }
+                                    isGrouped={ true }
+                                />
                             </div>
-                            <SearchMultiSelect 
-                                initialGroupedItems={ abilities } 
-                                group={ group } 
-                                setGroup={ handleSetGroup } 
-                                chosenItems={ chosenAbilities } 
-                                setChosenItems={ (a) => setChosenAbilities(a) } 
-                                limit = { 2 }
-                            />
                         </div>
-                    </div>
-                    <div className="bottom-barrier">
-                        <div className="row-gap-container">
-                            <div>
-                                <label className="col-label">Hidden Ability</label>
+                        <div className="bottom-barrier">
+                            <div className="row-gap-container">
+                                <div>
+                                    <label className="col-label">Hidden Ability</label>
+                                </div>
+                                <SearchMultiSelect 
+                                    initialItems={ abilities } 
+                                    groups={ chosenWorld != null ? [chosenWorld] : [] } 
+                                    chosenItems={ chosenHiddenAbility } 
+                                    setChosenItems={ (a) => setchosenHiddenAbility(a) } 
+                                    limit = { 1 }
+                                    isMulti={ true }
+                                    isGrouped={ true }
+                                />
                             </div>
-                            <SearchMultiSelect 
-                                initialGroupedItems={ abilities } 
-                                group={ group } 
-                                setGroup={ handleSetGroup } 
-                                chosenItems={ chosenHiddenAbility } 
-                                setChosenItems={ (a) => setchosenHiddenAbility(a) } 
-                                limit = { 1 }
-                            />
                         </div>
-                    </div>
-                    <div className="bottom-barrier">
-                        <div className="row-gap-container">
-                            <div>
-                                <label className="col-label">Move(s)</label>
+                        <div className="bottom-barrier">
+                            <div className="row-gap-container">
+                                <div>
+                                    <label className="col-label">Move(s)</label>
+                                </div>
+                                <SearchMultiSelect 
+                                    initialItems={ moves } 
+                                    groups={ chosenWorld != null ? [chosenWorld] : [] } 
+                                    chosenItems={ chosenMoves } 
+                                    setChosenItems={ (m) => setChosenMoves(m) } 
+                                    isMulti={ true }
+                                    isGrouped={ true }
+                                />
                             </div>
-                            <SearchMultiSelect 
-                                initialGroupedItems={ moves } 
-                                group={ group } 
-                                setGroup={ handleSetGroup } 
-                                chosenItems={ chosenMoves } 
-                                setChosenItems={ (m) => setChosenMoves(m) } 
-                            />
                         </div>
-                    </div>
-                    <div className="bottom-barrier">
-                        <div className="row-gap-container">
-                            <div>
-                                <label className="col-label">Location(s)</label>
+                        <div className="bottom-barrier">
+                            <div className="row-gap-container">
+                                <div>
+                                    <label className="col-label">Region(s)</label>
+                                </div>
+                                <SearchMultiSelect 
+                                    initialItems={ regions } 
+                                    groups={ chosenWorld != null ? [chosenWorld] : [] } 
+                                    chosenItems={ chosenRegions } 
+                                    setChosenItems={ (t) => setChosenRegions(t) } 
+                                    isMulti={ true }
+                                    isGrouped={ true }
+                                />
                             </div>
-                            <SearchMultiSelect 
-                                initialGroupedItems={ locations } 
-                                group={ group } 
-                                setGroup={ handleSetGroup } 
-                                chosenItems={ chosenLocations } 
-                                setChosenItems={ (l) => setChosenLocations(l) } 
-                            />
+                        </div>
+                        <div className={ chosenRegions.length > 0 ? "" : "hidden-info-container" }>
+                            <div className="bottom-barrier">
+                                <div className="row-gap-container">
+                                    <div>
+                                        <label className="col-label">Location(s)</label>
+                                    </div>
+                                    < SearchMultiSelect
+                                        initialItems={ chosenWorld ? locations[chosenWorld["value"]] : [] } 
+                                        groups={ chosenRegions }
+                                        chosenItems={ chosenLocations } 
+                                        setChosenItems={ (l) => setChosenLocations(l) } 
+                                        isMulti={ true }
+                                        isGrouped={ true }
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -271,6 +311,8 @@ export default function CreateMon() {
                         </div>
                     </div>
                 </div>
+                <Button >submit</Button>
+                <div className="section-bottom-barrier"></div>
             </Form>
         </div>
     );

@@ -28,9 +28,9 @@ button.base-btn.explore-btn[disable]:hover {
 button.base-btn:hover,
 div.base-btn:hover,
 button.base-btn.explore-btn:hover {
-    background-color: transparent;
+    background-color: transparent !important;
     border: 1px solid var(--accent-color) !important;
-    color: var(--accent-color);
+    color: var(--accent-color) !important;
 }
 
 button.base-btn:active,
@@ -160,8 +160,8 @@ button.delete-btn {
 }
 
 button.delete-btn:hover {
-    background-color: var(--delete-color);
-    color: var(--text-color);
+    background-color: var(--delete-color) !important;
+    color: var(--text-color) !important;
     border: none !important;
 }
 

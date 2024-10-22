@@ -133,7 +133,9 @@ div.modal-header-no-border {
 
 div.modal-footer {
     border-top: 2px solid var(--background-content-color);
-    padding: 4px 12px;
+    margin: 0 !important;
+    padding: 0.5em 0.25em 0em 0.25em;
+    flex-wrap: nowrap;
 }
 
 div.modal-backdrop {
