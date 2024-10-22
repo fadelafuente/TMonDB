@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from 'react-select';
 
 export default function SearchMultiSelect({ initialItems, groups=null, chosenItems, setChosenItems, limit=null, isGrouped=false, isMulti=false }) {
