@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState, useRef } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { deletePostById, createPost, updatePostById } from "../actions/posts";
-import { handleValidation, handleDuplicatesInArray } from "../functions/handlers";
+import { handleValidation, handleDuplicatesInArray, handleHeightConversion, handleLbToKgConversion, handleKgToLbConversion } from "../functions/handlers";
 import { followUser, getCurrentUserDetails, getFollowById, getUserProfile, updateDetails } from "../actions/auth";
 
 export function useSocialAuth(provider, socialAuthenticate) {
@@ -580,4 +580,79 @@ export function useFilesUpload() {
     }
 
     return [selectedFiles, handleUploadType];
+}
+
+export function useHeightConversions(initialFt, initialIn, initialCm) {
+    const [heightFt, setHeightFt] = useState(initialFt);
+    const [heightIn, setHeightIn] = useState(initialIn);
+    const [heightCm, setHeightCm] = useState(initialCm);
+
+    function handleFtInput(e) {
+        const value = e.target.value;
+        if(value.match("^[0-9]*$")) {
+            const feet = value === "" ? 0 : parseInt(value);
+            if(feet <= 999) {
+                const cm = handleHeightConversion(feet, heightIn ? parseFloat(heightIn) : 0);
+                setHeightCm(cm > 0 ? cm : "");
+                setHeightFt(feet > 0 ? feet : "");
+            }
+        }
+    }
+
+    function handleInInput(e) {
+        const value = e.target.value;
+        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
+            const inches = value === "" ? 0 : value;
+            if(inches < 12) {
+                const cm = handleHeightConversion(heightFt ? parseInt(heightFt) : 0, inches);
+                setHeightCm(cm > 0 ? cm : "");
+                setHeightIn(inches > 0 ? inches : "");
+            }
+        }
+    }
+
+    function handleCMInput(e) {
+        if(e.target.value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
+            const cm = e.target.value;
+            if(parseFloat(cm) <= 30479.97) {
+                const [feet, inches] = handleHeightConversion(cm);
+                setHeightFt(feet > 0 ? feet : "");
+                setHeightIn(inches > 0 ? inches : "");
+                setHeightCm(cm > 0 ? cm : "");
+            }
+        }
+    }
+
+    return [heightFt, handleFtInput, heightIn, handleInInput, heightCm, handleCMInput];
+}
+
+export function useWeightConversions(initialLb, initialKg) {
+    const [weightLb, setWeightLb] = useState(initialLb);
+    const [weightKg, setWeightKg] = useState(initialKg);
+
+    function handleLbInput(e) {
+        const value = e.target.value ? e.target.value : "0";
+        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
+            const lb = value === "" ? 0 : value;
+            if(parseFloat(lb) <= 9999.99) {
+                const kg = handleLbToKgConversion(lb);
+                setWeightLb(lb > 0 ? lb : "");
+                setWeightKg(kg > 0 ? kg : "");
+            }
+        }
+    }
+
+    function handleKgInput(e) {
+        const value = e.target.value;
+        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
+            const kg = value === "" ? 0 : value;
+            if(parseFloat(kg) <= 4535.14) {
+                const lb = handleKgToLbConversion(kg);
+                setWeightLb(lb > 0 ? lb : "");
+                setWeightKg(kg > 0 ? kg : "");
+            }
+        }
+    }
+
+    return [weightLb, handleLbInput, weightKg, handleKgInput];
 }

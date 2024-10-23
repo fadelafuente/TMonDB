@@ -3,7 +3,7 @@ import { Button, Form, FormControl, InputGroup } from "react-bootstrap";
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import SearchMultiSelect from "../UserInteractions/SearchMultiSelect";
 import ImagesUpload from "../UserInteractions/ImagesUpload";
-import { useAdaptiveFormData } from "../../hooks/hooks";
+import { useAdaptiveFormData, useHeightConversions, useWeightConversions } from "../../hooks/hooks";
 import { handleHeightConversion, handleKgToLbConversion, handleLbToKgConversion } from "../../functions/handlers";
 
 export default function CreateMon() {
@@ -47,11 +47,10 @@ export default function CreateMon() {
         }
     };
 
-    const [chosenHeightCM, setChosenHeightCM] = useState("");
-    const [chosenHeightIn, setChosenHeightIn] = useState("");
-    const [chosenHeightFt, setChosenHeightFt] = useState("");
-    const [chosenWeightLb, setChosenWeightLb] = useState("");
-    const [chosenWeightKg, setChosenWeightKg] = useState("");
+    const [chosenHeightFt, setChosenHeightFt, 
+        chosenHeightIn, setChosenHeightIn, 
+        chosenHeightCm, setChosenHeightCm] = useHeightConversions("", "", "");
+    const [chosenWeightLb, setChosenWeightLb, chosenWeightKg, setChosenWeightKg] = useWeightConversions("", "");
     const [chosenWorld, setChosenWorld] = useState(null);
     const [chosenRegions, setChosenRegions] = useState([]);
     const [chosenTypes, setChosenTypes] = useState([]);
@@ -76,66 +75,6 @@ export default function CreateMon() {
         setChosenMoves([]);
         setChosenRegions([]);
     }, [chosenWorld]);
-
-    function handleCMInput(e) {
-        if(e.target.value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
-            const cm = e.target.value;
-            if(parseFloat(cm) <= 30479.97) {
-                const [feet, inches] = handleHeightConversion(cm);
-                setChosenHeightFt(feet > 0 ? feet : "");
-                setChosenHeightIn(inches > 0 ? inches : "");
-                setChosenHeightCM(cm > 0 ? cm : "");
-            }
-        }
-    }
-
-    function handleFtInput(e) {
-        const value = e.target.value;
-        if(value.match("^[0-9]*$")) {
-            const feet = value == "" ? 0 : parseInt(value);
-            if(feet <= 999) {
-                const cm = handleHeightConversion(feet, chosenHeightIn);
-                setChosenHeightCM(cm > 0 ? cm : "");
-                setChosenHeightFt(feet > 0 ? feet : "");
-            }
-        }
-    }
-
-    function handleInInput(e) {
-        const value = e.target.value;
-        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
-            const inches = value == "" ? 0 : value;
-            if(inches < 12) {
-                const cm = handleHeightConversion(chosenHeightFt, inches);
-                setChosenHeightCM(cm > 0 ? cm : "");
-                setChosenHeightIn(inches > 0 ? inches : "");
-            }
-        }
-    }
-
-    function handleLbInput(e) {
-        const value = e.target.value ? e.target.value : "0";
-        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
-            const lb = value == "" ? 0 : value;
-            if(parseFloat(lb) <= 9999.99) {
-                const kg = handleLbToKgConversion(lb);
-                setChosenWeightLb(lb > 0 ? lb : "");
-                setChosenWeightKg(kg > 0 ? kg : "");
-            }
-        }
-    }
-
-    function handleKgInput(e) {
-        const value = e.target.value;
-        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
-            const kg = value == "" ? 0 : value;
-            if(parseFloat(kg) <= 4535.14) {
-                const lb = handleKgToLbConversion(kg);
-                setChosenWeightLb(lb > 0 ? lb : "");
-                setChosenWeightKg(kg > 0 ? kg : "");
-            }
-        }
-    }
     
     return (
         <div className="article-container">
@@ -165,7 +104,7 @@ export default function CreateMon() {
                                         placeholder="0" 
                                         className="text-align-right"
                                         value={ chosenHeightFt }
-                                        onChange={ (e) => handleFtInput(e) }
+                                        onChange={ (e) => setChosenHeightFt(e) }
                                     />
                                     <InputGroup.Text id="basic-addon2">
                                         ft
@@ -175,7 +114,7 @@ export default function CreateMon() {
                                         placeholder="0" 
                                         className="text-align-right" 
                                         value={ chosenHeightIn }
-                                        onChange={ (e) => handleInInput(e) }
+                                        onChange={ (e) => setChosenHeightIn(e) }
                                     />
                                     <InputGroup.Text id="basic-addon2">
                                         in
@@ -186,8 +125,8 @@ export default function CreateMon() {
                                         type="text" 
                                         placeholder="0" 
                                         className="text-align-right"
-                                        value={ chosenHeightCM }
-                                        onChange={ (e) => handleCMInput(e) }
+                                        value={ chosenHeightCm }
+                                        onChange={ (e) => setChosenHeightCm(e) }
                                         min={ 0 }
                                     />
                                     <InputGroup.Text id="basic-addon2">
@@ -209,7 +148,7 @@ export default function CreateMon() {
                                         placeholder="0" 
                                         className="text-align-right" 
                                         value={ chosenWeightLb }
-                                        onChange={ (e) => handleLbInput(e) }
+                                        onChange={ (e) => setChosenWeightLb(e) }
                                     />
                                     <InputGroup.Text id="basic-addon2">
                                         lbs
@@ -223,7 +162,7 @@ export default function CreateMon() {
                                         max={999.99}
                                         min={0}
                                         value={ chosenWeightKg }
-                                        onChange={ (e) => handleKgInput(e) }
+                                        onChange={ (e) => setChosenWeightKg(e) }
                                     />
                                     <InputGroup.Text id="basic-addon2">
                                         kg
