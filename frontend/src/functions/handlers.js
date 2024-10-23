@@ -132,3 +132,25 @@ export function handleDuplicatesInArray(source, result) {
 
     return result;
 }
+
+export function handleHeightConversion(h1, h2=null) {
+    if(h2 != null) {
+        const cm = 2.54 * ((h1 * 12) + parseFloat(h2));
+
+        return cm.toFixed(2);
+    } else {
+        let inches = h1 / 2.54;
+        const feet = Math.floor(inches / 12);
+        inches = (inches % 12).toFixed(2);
+        
+        return [feet, inches];
+    }
+}
+
+export function handleKgToLbConversion(wt) {
+    return (wt * 2.205).toFixed(2);
+}
+
+export function handleLbToKgConversion(wt) {
+    return (wt / 2.205).toFixed(2);
+}

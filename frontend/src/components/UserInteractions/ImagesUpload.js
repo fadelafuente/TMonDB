@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import { Carousel } from "react-bootstrap";
 import { BsImages } from "react-icons/bs";
 import { useFilesUpload } from "../../hooks/hooks";
@@ -24,13 +23,13 @@ export default function ImagesUpload() {
                             <div className="image-aspect-container image-uploaded-svg-container">
                                 <Carousel interval={ null }>
                                     {
-                                        selectedFiles.map((file, _) => {
+                                        selectedFiles.map((file, index) => {
                                             return (
                                                 <Carousel.Item key={ file.id } onClick={ e => setSelectedFiles(e, file.id) }>
                                                     <div className="uploaded-images-container">
                                                         <img
                                                             src={ file.url }
-                                                            alt={ "uploaded image" }
+                                                            alt={ `new_mon_${index}` }
                                                         />
                                                     </div>
                                                 </Carousel.Item>

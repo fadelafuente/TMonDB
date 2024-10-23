@@ -4,8 +4,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import SearchMultiSelect from "../UserInteractions/SearchMultiSelect";
 import ImagesUpload from "../UserInteractions/ImagesUpload";
 import { useAdaptiveFormData } from "../../hooks/hooks";
-import Select from 'react-select';
-
+import { handleHeightConversion, handleKgToLbConversion, handleLbToKgConversion } from "../../functions/handlers";
 
 export default function CreateMon() {
     /* 
@@ -48,6 +47,11 @@ export default function CreateMon() {
         }
     };
 
+    const [chosenHeightCM, setChosenHeightCM] = useState("");
+    const [chosenHeightIn, setChosenHeightIn] = useState("");
+    const [chosenHeightFt, setChosenHeightFt] = useState("");
+    const [chosenWeightLb, setChosenWeightLb] = useState("");
+    const [chosenWeightKg, setChosenWeightKg] = useState("");
     const [chosenWorld, setChosenWorld] = useState(null);
     const [chosenRegions, setChosenRegions] = useState([]);
     const [chosenTypes, setChosenTypes] = useState([]);
@@ -73,6 +77,66 @@ export default function CreateMon() {
         setChosenRegions([]);
     }, [chosenWorld]);
 
+    function handleCMInput(e) {
+        if(e.target.value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
+            const cm = e.target.value;
+            if(parseFloat(cm) <= 30479.97) {
+                const [feet, inches] = handleHeightConversion(cm);
+                setChosenHeightFt(feet > 0 ? feet : "");
+                setChosenHeightIn(inches > 0 ? inches : "");
+                setChosenHeightCM(cm > 0 ? cm : "");
+            }
+        }
+    }
+
+    function handleFtInput(e) {
+        const value = e.target.value;
+        if(value.match("^[0-9]*$")) {
+            const feet = value == "" ? 0 : parseInt(value);
+            if(feet <= 999) {
+                const cm = handleHeightConversion(feet, chosenHeightIn);
+                setChosenHeightCM(cm > 0 ? cm : "");
+                setChosenHeightFt(feet > 0 ? feet : "");
+            }
+        }
+    }
+
+    function handleInInput(e) {
+        const value = e.target.value;
+        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
+            const inches = value == "" ? 0 : value;
+            if(inches < 12) {
+                const cm = handleHeightConversion(chosenHeightFt, inches);
+                setChosenHeightCM(cm > 0 ? cm : "");
+                setChosenHeightIn(inches > 0 ? inches : "");
+            }
+        }
+    }
+
+    function handleLbInput(e) {
+        const value = e.target.value ? e.target.value : "0";
+        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
+            const lb = value == "" ? 0 : value;
+            if(parseFloat(lb) <= 9999.99) {
+                const kg = handleLbToKgConversion(lb);
+                setChosenWeightLb(lb > 0 ? lb : "");
+                setChosenWeightKg(kg > 0 ? kg : "");
+            }
+        }
+    }
+
+    function handleKgInput(e) {
+        const value = e.target.value;
+        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
+            const kg = value == "" ? 0 : value;
+            if(parseFloat(kg) <= 4535.14) {
+                const lb = handleKgToLbConversion(kg);
+                setChosenWeightLb(lb > 0 ? lb : "");
+                setChosenWeightKg(kg > 0 ? kg : "");
+            }
+        }
+    }
+    
     return (
         <div className="article-container">
             <Form>
@@ -96,17 +160,36 @@ export default function CreateMon() {
                             </div>
                             <div className="row-to-col-container">
                                 <InputGroup>
-                                    <FormControl type="text" placeholder="0" className="text-align-right" />
+                                    <FormControl 
+                                        type="text" 
+                                        placeholder="0" 
+                                        className="text-align-right"
+                                        value={ chosenHeightFt }
+                                        onChange={ (e) => handleFtInput(e) }
+                                    />
                                     <InputGroup.Text id="basic-addon2">
                                         ft
                                     </InputGroup.Text>
-                                    <FormControl type="text" placeholder="0" className="text-align-right" />
+                                    <FormControl 
+                                        type="text" 
+                                        placeholder="0" 
+                                        className="text-align-right" 
+                                        value={ chosenHeightIn }
+                                        onChange={ (e) => handleInInput(e) }
+                                    />
                                     <InputGroup.Text id="basic-addon2">
                                         in
                                     </InputGroup.Text>
                                 </InputGroup>
                                 <InputGroup>
-                                    <FormControl type="text" placeholder="0" className="text-align-right" />
+                                    <FormControl 
+                                        type="text" 
+                                        placeholder="0" 
+                                        className="text-align-right"
+                                        value={ chosenHeightCM }
+                                        onChange={ (e) => handleCMInput(e) }
+                                        min={ 0 }
+                                    />
                                     <InputGroup.Text id="basic-addon2">
                                         cm
                                     </InputGroup.Text>
@@ -121,13 +204,27 @@ export default function CreateMon() {
                             </div>
                             <div className="row-to-col-container">
                                 <InputGroup>
-                                    <FormControl type="text" placeholder="0" className="text-align-right" max={9999.99} min={0} />
+                                    <FormControl 
+                                        type="text" 
+                                        placeholder="0" 
+                                        className="text-align-right" 
+                                        value={ chosenWeightLb }
+                                        onChange={ (e) => handleLbInput(e) }
+                                    />
                                     <InputGroup.Text id="basic-addon2">
                                         lbs
                                     </InputGroup.Text>
                                 </InputGroup>
                                 <InputGroup>
-                                    <Form.Control type="text" placeholder="0" className="text-align-right" max={999.99} min={0} />
+                                    <Form.Control 
+                                        type="text"
+                                        placeholder="0"
+                                        className="text-align-right"
+                                        max={999.99}
+                                        min={0}
+                                        value={ chosenWeightKg }
+                                        onChange={ (e) => handleKgInput(e) }
+                                    />
                                     <InputGroup.Text id="basic-addon2">
                                         kg
                                     </InputGroup.Text>
