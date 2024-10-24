@@ -100,12 +100,9 @@ function MonCard({post=null, isAuthenticated}) {
                                         </Row>
                                     </div>
                                     <Row className='content-text'>
-                                        <Row className="mon-info">
+                                        <Row className="mon-info top-barrier">
                                             <Col className="view-name">
-                                                <h3>Bulbasaur</h3>
-                                                <div className='mon-species'>
-                                                    The Bulb Pokemon
-                                                </div>
+                                                <h4 className="no-margin-container">Bulbasaur</h4>
                                             </Col>
                                             <Col className='typing'>
                                                 <Button href='/trending' className='links type1'>GRA</Button>

@@ -37,7 +37,6 @@ export default function ViewPost() {
 
     return (
         <>
-            <MonCard />
             { post ? 
                 post.isBlocked ?
                     <div className="article-container">

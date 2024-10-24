@@ -8,17 +8,18 @@
     width: 100%;
 }
 
- .left-justify-container {
+.left-justify-container {
     align-items: start;
- }
+}
 
- .right-justify-container {
+.right-justify-container {
     justify-content: right;
- }
+}
 
- div.no-margins-container {
+div.no-margins-container,
+.no-margin-container {
     margin: 0;
-  }
+}
 
 .col-gap-container {
     flex-direction: column;

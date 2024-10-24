@@ -181,12 +181,14 @@ export function useAdaptiveFormData(initialForm) {
 
     function handleFormData(e, resetPost=false) {
         if(e.target.id === "auto-resizing") {
-            const textarea = document.getElementById("auto-resizing");
-            textarea.addEventListener('input', autoResize, false);
+            const textarea = e.target;
+
             function autoResize() {
                 this.style.height = "auto";
                 this.style.height = this.scrollHeight + "px";
             }
+
+            textarea.addEventListener('input', autoResize, false);
         }
         setFormData(e, resetPost);
     }

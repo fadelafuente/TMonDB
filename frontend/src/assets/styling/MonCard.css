@@ -59,8 +59,7 @@ div.mon-card-body {
 }
 
 div.mon-card-header {
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0.375em 1em;
 }
 
 div.name-and-time {
@@ -198,7 +197,7 @@ a.links:hover {
 
 div.description {
     max-width: 100%;
-    height: calc(90% - 41.2px);
+    height: calc(96% - 41.2px);
     padding: 0;
 }
 

@@ -36,9 +36,9 @@ button.base-btn.explore-btn:hover {
 button.base-btn:active,
 div.base-btn:active,
 button.base-btn.explore-btn:active {
-    background-color: transparent;
-    border: 1px solid var(--accent-secondary-color);
-    color: var(--accent-secondary-color);
+    background-color: transparent !important;
+    border: 1px solid var(--accent-secondary-color) !important;
+    color: var(--accent-secondary-color) !important;
     opacity: 80%;
 }
 

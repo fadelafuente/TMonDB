@@ -154,3 +154,7 @@ export function handleKgToLbConversion(wt) {
 export function handleLbToKgConversion(wt) {
     return (wt / 2.205).toFixed(2);
 }
+
+export function capitalize(s) {
+    return s.charAt(0).toUpperCase() + s.substring(1);
+}

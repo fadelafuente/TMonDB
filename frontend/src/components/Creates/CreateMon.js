@@ -4,9 +4,9 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import SearchMultiSelect from "../UserInteractions/SearchMultiSelect";
 import ImagesUpload from "../UserInteractions/ImagesUpload";
 import { useAdaptiveFormData, useHeightConversions, useWeightConversions } from "../../hooks/hooks";
-import { handleHeightConversion, handleKgToLbConversion, handleLbToKgConversion } from "../../functions/handlers";
+import { capitalize } from "../../functions/handlers";
 
-export default function CreateMon() {
+export default function CreateMon({action="create"}) {
     /* 
         PLACEHOLDERS!!! Eventually will be replaced with data from backend! 
 
@@ -28,10 +28,10 @@ export default function CreateMon() {
     const locations = {
         Pokemon: {
             Kanto: ["Power Plant", "Pallet Town", "Viridian Forest"], 
-            Johto: ["Celadon City"], 
-            Hoenn: ["Safari Zone"], 
-            Sinnoh: ["Trophy Garden"], 
-            Unova: [], 
+            Johto: ["Celadon City"],
+            Hoenn: ["Safari Zone"],
+            Sinnoh: ["Trophy Garden"],
+            Unova: [],
             Kalos: ["Route 3", "Santalune City"], 
             Alola: ["Route 1", "Hau'oli City"], 
             Galar: ["Route 4", "Stony Wilderness", "Forest of Focus"], 
@@ -58,13 +58,16 @@ export default function CreateMon() {
     const [chosenHiddenAbility, setchosenHiddenAbility] = useState([]);
     const [chosenMoves, setChosenMoves] = useState([]);
     const [chosenLocations, setChosenLocations] = useState([]);
-    const [formData, setFormData] = useAdaptiveFormData("");
-    const [etymologyData, setEtymologyData] = useAdaptiveFormData("");
-    const [inspoData, setInspoData] = useAdaptiveFormData("");
+    const [formData, setFormData] = useAdaptiveFormData({
+        name: "",
+        nationalId: "",
+        species: "",
+        description: "",
+        etymology: "",
+        inspiration : ""
+    });
     
-    const { description } = formData;
-    const { etymology } = etymologyData;
-    const { inspiration } = inspoData;
+    const { name, nationalId, species, description, etymology, inspiration } = formData;
 
     // Reset regional information on world change
     useEffect(() => {
@@ -79,18 +82,36 @@ export default function CreateMon() {
     return (
         <div className="article-container">
             <Form>
-                <div className="bottom-barrier"><h2>Create New Monster</h2></div>
+                <div className="bottom-barrier"><h2>{ capitalize(action) } Monster</h2></div>
                 <ImagesUpload />
                 <div className="section-bottom-barrier">
                     <div className="bottom-barrier"><h4>Basic Information</h4></div>
                     <FloatingLabel controlId="floatingInput" label="Name" className="mb-3">
-                        <FormControl type="text" placeholder="Name" />
+                        <FormControl 
+                            type="text"
+                            placeholder="Name"
+                            name="name"
+                            value={ name }
+                            onChange={ (e) => setFormData(e) }
+                        />
                     </FloatingLabel>
                     <FloatingLabel controlId="floatingInput" label="National Id" className="mb-3">
-                        <FormControl type="text" placeholder="National Id" />
+                        <FormControl
+                            type="text" 
+                            placeholder="National Id" 
+                            name="nationalId"
+                            value={ nationalId } 
+                            onChange={ (e) => setFormData(e) }
+                        />
                     </FloatingLabel>
                     <FloatingLabel controlId="floatingInput" label="Species" className="mb-3">
-                        <FormControl type="text" placeholder="Species" />
+                        <FormControl
+                            type="text"
+                            placeholder="Species"
+                            name="species"
+                            value={ species }
+                            onChange={ (e) => setFormData(e) }
+                        />
                     </FloatingLabel>
                     <div className="bottom-barrier">
                         <div className="row-gap-container">
@@ -127,7 +148,6 @@ export default function CreateMon() {
                                         className="text-align-right"
                                         value={ chosenHeightCm }
                                         onChange={ (e) => setChosenHeightCm(e) }
-                                        min={ 0 }
                                     />
                                     <InputGroup.Text id="basic-addon2">
                                         cm
@@ -159,8 +179,6 @@ export default function CreateMon() {
                                         type="text"
                                         placeholder="0"
                                         className="text-align-right"
-                                        max={999.99}
-                                        min={0}
                                         value={ chosenWeightKg }
                                         onChange={ (e) => setChosenWeightKg(e) }
                                     />
@@ -321,7 +339,7 @@ export default function CreateMon() {
                                         placeholder=""
                                         value={ etymology }
                                         name="etymology"
-                                        onChange={ e => setEtymologyData(e) } 
+                                        onChange={ e => setFormData(e) } 
                                     />
                                 </Form.Group>
                             </div>
@@ -340,7 +358,7 @@ export default function CreateMon() {
                                         placeholder=""
                                         value={ inspiration }
                                         name="inspiration"
-                                        onChange={ e => setInspoData(e) } 
+                                        onChange={ e => setFormData(e) } 
                                     />
                                 </Form.Group>
                             </div>
