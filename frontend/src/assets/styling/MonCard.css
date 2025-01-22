@@ -227,7 +227,6 @@ div.interaction-nums > span {
 
 div.evo-card {
     width: 100%;
-    align-items: baseline;
     padding-top: 0.625em;
     padding-bottom: 0.625em;
     border-bottom: 0.0625em solid var(--input-box-color);

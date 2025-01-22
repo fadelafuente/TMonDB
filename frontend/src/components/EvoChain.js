@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { BsImage } from "react-icons/bs";
+import { BsDot, BsImage } from "react-icons/bs";
 
 
 import "../assets/styling/content.css";
@@ -25,7 +25,7 @@ export default function EvoChain() {
         {method: " level 36"},
         {method: " level 42"},
         {method: " level 60"},
-        {method: "Defeat 3 Bisharp that are holding the Leader's crest. Defeat 3 Bisharp that are holding the Leader's crest."},
+        {method: "Defeat 3 Bisharp that are holding the Leader's crest."},
         {method: "Collect 999 coins from roaming form"},
         {method: " Use Rage Fist 20 times"}
     ];
@@ -42,7 +42,12 @@ export default function EvoChain() {
                                     <div className="pfp-image rounded-icon">
                                         <BsImage />
                                     </div>
-                                <p>{ dict.method }</p>
+                                    <div>
+                                        <div>
+                                            <span>#001 | <strong>Fakemon</strong> | Type1<BsDot />Type2</span>
+                                        </div>
+                                        <span>{ dict.method }</span>
+                                    </div>
                             </div>);
                         })
                     }
@@ -58,7 +63,12 @@ export default function EvoChain() {
                                     <div className="pfp-image rounded-icon">
                                         <BsImage />
                                     </div>
-                                <p>{ dict.method }</p>
+                                    <div>
+                                        <div>
+                                            <p>#001 | <strong>Fakemon</strong> | Type1<BsDot />Type2</p>
+                                        </div>
+                                        <p>{ dict.method }</p>
+                                    </div>
                             </div>);
                         })
                     }
