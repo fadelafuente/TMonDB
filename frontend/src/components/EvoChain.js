@@ -1,5 +1,3 @@
-import { BsDot, BsImage } from "react-icons/bs";
-import { handleLeadingZeroes } from "../functions/handlers";
 import EvoChainTable from "./TableComponents/EvoChainTable";
 
 import "../assets/styling/content.css";

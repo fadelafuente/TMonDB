@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { BsCaretDownFill, BsCaretRightFill } from "react-icons/bs";
 
-import "../assets/styling/content.css";
-import "../assets/styling/types.css";
+import "../../assets/styling/content.css";
+import "../../assets/styling/types.css";
 
 export default function TypesTable({ types }) {
     const [typeAdvantages, setTypeAdvantages] = useState({});

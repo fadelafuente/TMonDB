@@ -9,6 +9,8 @@ import { Col, NavDropdown, Row, Tab, Tabs } from "react-bootstrap";
 import WeaknessChart from "./WeaknessChart";
 import StatChart from "./StatChart";
 import EvoChain from "./EvoChain";
+import MovesTable from "./TableComponents/MovesTable";
+
 
 import "../assets/styling/content.css";
 import "../assets/styling/UserProfile.css";
@@ -39,6 +41,15 @@ function ViewMon({ isAuthenticated }) {
     //     }).catch(e => {
     //     });
     // }, [pid]);
+
+    const moves = [
+        {level: 19, name: "Fire Fang", type: "Fire", power: 65},
+        {level: 24, name: "Slash", type: "Normal", power: 70},
+        {level: 30, name: "Flamethrower", type: "Fire", power: 90},
+        {level: 37, name: "Scary Face", type: "Normal", Power: null},
+        {level: 48, name: "Inferno", type: "Fire", power: 100},
+        {level: 54, name: "Flare Blitz", type: "Fire", power: 120}
+    ];
 
     function handleMoreClick() {
         return (
@@ -182,7 +193,7 @@ function ViewMon({ isAuthenticated }) {
                             <WeaknessChart />
                         </Tab>
                         <Tab title="Moves" eventKey="moves">
-
+                            <MovesTable method="Level" moves= { moves } />
                         </Tab>
                         <Tab title="Evo. Chain" eventKey="evoChain">
                             <EvoChain />

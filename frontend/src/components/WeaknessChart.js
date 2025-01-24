@@ -38,17 +38,17 @@ export default function WeaknessChart() {
 
         const multiplier = weaknesses[t];
 
-        return `weakness-chart-cell-spacing ${EFFECTIVE_CHART[multiplier]}`;
+        return `general-table-cell-spacing ${EFFECTIVE_CHART[multiplier]}`;
     }
 
     return (
-        <div className="weakness-chart bottom-barrier">
+        <div className="general-table bottom-barrier">
             <table>
                 <thead>
                     <tr>
                         {
                             Array.from(Object.keys(weaknesses), attacking_type => (
-                                <th className="weakness-chart-cell-spacing" key={ attacking_type }>
+                                <th className="general-table-cell-spacing" key={ attacking_type }>
                                     { attacking_type.substring(0, 3) }
                                 </th>
                             ))

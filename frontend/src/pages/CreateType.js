@@ -5,7 +5,7 @@ import { useCurrentUserDetails, useNavigateNotAuth } from "../hooks/hooks";
 import { connect } from "react-redux";
 import { Button, Card } from "react-bootstrap";
 import { BsArrowLeft, BsDashCircle, BsPlusCircle } from "react-icons/bs";
-import TypesTable from "../components/TypesTable";
+import TypesTable from "../components/TableComponents/TypesTable";
 
 import "../assets/styling/content.css";
 import "../assets/styling/types.css";
