@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState } from "react";
 import { BsDot, BsImage } from "react-icons/bs";
-
+import { handleLeadingZeroes } from "../functions/handlers";
+import EvoChainTable from "./TableComponents/EvoChainTable";
 
 import "../assets/styling/content.css";
 import "../assets/styling/UserProfile.css";
 import "../assets/styling/ViewMon.css";
-import { handleLeadingZeroes } from "../functions/handlers";
 
 export default function EvoChain() {
     const preEvoChain = [
@@ -23,51 +22,17 @@ export default function EvoChain() {
     ];
 
     return (
-        <div className="col-gap-container bottom-barrier" id="evolution-parent">
+        <div className="col-gap-container bottom-barrier">
             <div className="col-gap-container bottom-barrier">
                 <h3 className="no-margin-container">Pre-Evolution(s)</h3>
                 <div className="max-width-container top-border">
-                    {
-                        preEvoChain.map((dict, index) => {
-                            return (
-                                <div className="row-gap-container evo-card" key={ `${index}-evo` }>
-                                    <div className="pfp-image rounded-icon">
-                                        <BsImage />
-                                    </div>
-                                    <div>
-                                        <div>
-                                            <span>#{ handleLeadingZeroes(dict.national_id, dict.monster_count) } | <strong>{ dict.name }</strong> | { dict.types[0] }
-                                                { dict.types.length == 2 ? <><BsDot />{ dict.types[1] }</> : "" }
-                                            </span>
-                                        </div>
-                                        <span>{ dict.method }</span>
-                                    </div>
-                            </div>);
-                        })
-                    }
+                    <EvoChainTable evoChain = { preEvoChain } />
                 </div>
             </div>
             <div className="col-gap-container">
                 <h3 className="no-margin-container">Evolution(s)</h3>
                 <div className="max-width-container top-border">
-                    {
-                        evoChain.map((dict, index) => {
-                            return (
-                                <div className="row-gap-container evo-card" key={ `${index}-evo` }>
-                                    <div className="pfp-image rounded-icon">
-                                        <BsImage />
-                                    </div>
-                                    <div>
-                                        <div>
-                                            <span>#{ handleLeadingZeroes(dict.national_id, dict.monster_count) } | <strong>{ dict.name }</strong> | { dict.types[0] }
-                                                { dict.types.length == 2 ? <><BsDot />{ dict.types[1] }</> : "" }
-                                            </span>
-                                        </div>
-                                        <span>{ dict.method }</span>
-                                    </div>
-                            </div>);
-                        })
-                    }
+                    <EvoChainTable evoChain={ evoChain } />
                 </div>
             </div>
         </div>
