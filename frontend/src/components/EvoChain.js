@@ -5,29 +5,21 @@ import { BsDot, BsImage } from "react-icons/bs";
 import "../assets/styling/content.css";
 import "../assets/styling/UserProfile.css";
 import "../assets/styling/ViewMon.css";
+import { handleLeadingZeroes } from "../functions/handlers";
 
 export default function EvoChain() {
     const preEvoChain = [
-        {method: " level 16"},
-        {method: " level 16"},
-        {method: " level 16"},
-        {method: " level 16"},
-        {method: " level 16"},
-        {method: " level 16"},
-        {method: "High Friendship: Nighttime"},
-        {method: " Lightning Stone"},
-        {method: " Moon Stone"},
-        {method: " Sun Stone"}
+        {name: "Charmander", method: " level 16", national_id: 4, monster_count: 1254, types: ["Fire"]},
+        {name: "Charmander", method: "High Friendship: Daytime", national_id: 4, monster_count: 1254, types: ["Fire"]},
+        {name: "Charmander", method: " Fire Stone", national_id: 4, monster_count: 1254, types: ["Fire"]},
+        {name: "Charmander", method: " Sun Stone", national_id: 4, monster_count: 1254, types: ["Fire"]}
     ];
 
     const evoChain = [
-        {method: " level 32"},
-        {method: " level 36"},
-        {method: " level 42"},
-        {method: " level 60"},
-        {method: "Defeat 3 Bisharp that are holding the Leader's crest."},
-        {method: "Collect 999 coins from roaming form"},
-        {method: " Use Rage Fist 20 times"}
+        {name: "Charizard", method: " level 36", national_id: 6, monster_count: 1254, types: ["Fire", "Flying"]},
+        {name: "Charizard", method: "Defeat 3 Bisharp that are holding the Leader's crest.", national_id: 6, monster_count: 1254, types: ["Fire", "Flying"]},
+        {name: "Charizard", method: "Collect 999 coins from roaming form", national_id: 6, monster_count: 1254, types: ["Fire", "Flying"]},
+        {name: "Charizard", method: " Use Rage Fist 20 times", national_id: 6, monster_count: 1254, types: ["Fire", "Flying"]}
     ];
 
     return (
@@ -44,7 +36,9 @@ export default function EvoChain() {
                                     </div>
                                     <div>
                                         <div>
-                                            <span>#001 | <strong>Fakemon</strong> | Type1<BsDot />Type2</span>
+                                            <span>#{ handleLeadingZeroes(dict.national_id, dict.monster_count) } | <strong>{ dict.name }</strong> | { dict.types[0] }
+                                                { dict.types.length == 2 ? <><BsDot />{ dict.types[1] }</> : "" }
+                                            </span>
                                         </div>
                                         <span>{ dict.method }</span>
                                     </div>
@@ -65,9 +59,11 @@ export default function EvoChain() {
                                     </div>
                                     <div>
                                         <div>
-                                            <p>#001 | <strong>Fakemon</strong> | Type1<BsDot />Type2</p>
+                                            <span>#{ handleLeadingZeroes(dict.national_id, dict.monster_count) } | <strong>{ dict.name }</strong> | { dict.types[0] }
+                                                { dict.types.length == 2 ? <><BsDot />{ dict.types[1] }</> : "" }
+                                            </span>
                                         </div>
-                                        <p>{ dict.method }</p>
+                                        <span>{ dict.method }</span>
                                     </div>
                             </div>);
                         })

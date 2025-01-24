@@ -158,3 +158,17 @@ export function handleLbToKgConversion(wt) {
 export function capitalize(s) {
     return s.charAt(0).toUpperCase() + s.substring(1);
 }
+
+export function handleLeadingZeroes(nid, monster_count) {
+    let result = "";
+
+    const nid_length = nid.toString().length;
+    let monster_count_length = monster_count.toString().length;
+
+    while(monster_count_length > nid_length) {
+        result += "0";
+        monster_count_length -= 1;
+    }
+
+    return result + nid;
+}
