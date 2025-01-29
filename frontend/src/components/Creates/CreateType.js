@@ -1,14 +1,14 @@
-import TitleBar from "../components/TitleBar";
+import TitleBar from "../Bars/TitleBar";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useCurrentUserDetails, useNavigateNotAuth } from "../hooks/hooks";
+import { useCurrentUserDetails, useNavigateNotAuth } from "../../hooks/hooks";
 import { connect } from "react-redux";
 import { Button, Card } from "react-bootstrap";
 import { BsArrowLeft, BsDashCircle, BsPlusCircle } from "react-icons/bs";
-import TypesTable from "../components/TableComponents/TypesTable";
+import TypesTable from "../TablesAndCharts/TypesTable";
 
-import "../assets/styling/content.css";
-import "../assets/styling/types.css";
+import "../../assets/styling/content.css";
+import "../../assets/styling/types.css";
 
 function CreateType({ isAuthenticated }) {
     const [user] = useCurrentUserDetails(isAuthenticated);

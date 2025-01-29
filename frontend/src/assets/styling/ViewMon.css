@@ -81,7 +81,8 @@ div.mon-desc-tag {
     margin-bottom: 1em;
 }
 
-div.top-barrier {
+div.top-barrier,
+.top-barrier {
     margin-top: 0.5em;
 }
 

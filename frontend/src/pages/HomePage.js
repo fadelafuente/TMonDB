@@ -1,4 +1,4 @@
-import TitleBar from "../components/TitleBar";
+import TitleBar from "../components/Bars/TitleBar";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useState } from "react";
 import PostArticle from "../components/PostArticle";
@@ -7,7 +7,7 @@ import ViewPost from "../components/ViewPost";
 import { useCurrentUserDetails } from "../hooks/hooks";
 import { connect } from "react-redux";
 import Account from "../components/Account";
-import FollowContent from "../components/FollowContent";
+import FollowContent from "../components/Content/FollowContent";
 import BlockingArticles from "../components/BlockingArticles";
 import ViewMon from "../components/ViewMon";
 import ViewRegion from "../components/ViewRegion";

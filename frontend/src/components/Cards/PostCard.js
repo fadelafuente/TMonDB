@@ -8,7 +8,7 @@ import { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { DeletedCard } from './DeletedCard';
 import BlockModal from '../Modals/BlockModal';
-import SocialInteractions from '../SocialInteractions';
+import SocialInteractions from '../UserInteractions/SocialInteractions';
 
 import "../../assets/styling/PostCard.css";
 

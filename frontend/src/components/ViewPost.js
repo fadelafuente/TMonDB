@@ -3,14 +3,13 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getPostById } from "../actions/posts";
 import PostArticle from "./PostArticle";
-import ReplyBar from "./ReplyBar";
-
-import "../assets/styling/content.css";
-import "../assets/styling/ViewPost.css"
+import ReplyBar from "./Bars/ReplyBar";
 import { DeletedCard } from "./Cards/DeletedCard";
 import { FailedCard } from "./Cards/FailedCard";
 import { BlockedCard } from "./Cards/BlockedCard";
-import MonCard from "./Cards/MonCard";
+
+import "../assets/styling/content.css";
+import "../assets/styling/ViewPost.css";
 
 export default function ViewPost() {
     const { pid } = useParams();

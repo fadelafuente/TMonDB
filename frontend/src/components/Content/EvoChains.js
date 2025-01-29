@@ -1,10 +1,10 @@
-import EvoChainTable from "./TableComponents/EvoChainTable";
+import EvoChainTable from "../TablesAndCharts/EvoChainTable";
 
-import "../assets/styling/content.css";
-import "../assets/styling/UserProfile.css";
-import "../assets/styling/ViewMon.css";
+import "../../assets/styling/content.css";
+import "../../assets/styling/UserProfile.css";
+import "../../assets/styling/ViewMon.css";
 
-export default function EvoChain() {
+export default function EvoChains() {
     const preEvoChain = [
         {name: "Charmander", method: " level 16", national_id: 4, monster_count: 1254, types: ["Fire"]},
         {name: "Charmander", method: "High Friendship: Daytime", national_id: 4, monster_count: 1254, types: ["Fire"]},

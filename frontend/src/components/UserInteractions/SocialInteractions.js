@@ -1,12 +1,12 @@
 import { Col, Row, NavDropdown, Alert } from 'react-bootstrap';
 import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDotsFill } from 'react-icons/bs';
-import { useInteractions, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
+import { useInteractions, useMiddleViewPort, useTimedAlert } from '../../hooks/hooks';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import CreatePost from './Creates/CreatePost';
+import CreatePost from '../Creates/CreatePost';
 import { useState } from 'react';
 
-import "../assets/styling/PostCard.css";
+import "../../assets/styling/PostCard.css";
 
 function SocialInteractions({ post=null, isAuthenticated }) {
     const [liked, likes, setLike] = useInteractions(post ? post.likes_count : 0, post ? post.user_liked : 0);

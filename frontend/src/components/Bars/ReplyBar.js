@@ -1,12 +1,12 @@
 import { Button, InputGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { BsReply } from 'react-icons/bs';
-import { useCreatePost } from '../hooks/hooks';
+import { useCreatePost } from '../../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import "../assets/styling/content.css";
-import "../assets/styling/ViewPost.css"
+import "../../assets/styling/content.css";
+import "../../assets/styling/ViewPost.css"
 
 function ReplyBar({isAuthenticated, parent}) {
     const initialForm = {

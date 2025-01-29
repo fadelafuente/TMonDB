@@ -1,5 +1,4 @@
 import { Form, InputGroup, Modal } from "react-bootstrap";
-import SearchBar from "../SearchBar";
 import { BsSearch } from "react-icons/bs";
 import { useState } from "react";
 

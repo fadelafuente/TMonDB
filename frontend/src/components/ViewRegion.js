@@ -1,9 +1,9 @@
 import { Fragment, useState } from "react";
-import ReplyBar from "./ReplyBar";
+import ReplyBar from "./Bars/ReplyBar";
 import { BsThreeDots } from "react-icons/bs";
 import { useDeletePost, useMiddleViewPort } from "../hooks/hooks";
 import { connect } from "react-redux";
-import SocialInteractions from "./SocialInteractions";
+import SocialInteractions from "./UserInteractions/SocialInteractions";
 import { Col, NavDropdown, Row, Tab, Tabs } from "react-bootstrap";
 import CultureTab from "./Content/CultureTab";
 import GeographyTab from "./Content/GeographyTab";

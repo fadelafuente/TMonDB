@@ -3,7 +3,7 @@ import { handleLeadingZeroes } from "../../functions/handlers";
 
 import "../../assets/styling/content.css";
 import "../../assets/styling/UserProfile.css";
-import "../../assets/styling/ViewMon.css";
+import "../../assets/styling/MonCard.css";
 
 export default function EvoChainTable({ evoChain }) {
     return (
@@ -18,7 +18,7 @@ export default function EvoChainTable({ evoChain }) {
                             <div>
                                 <div>
                                     <span>#{ handleLeadingZeroes(dict.national_id, dict.monster_count) } | <strong>{ dict.name }</strong> | { dict.types[0] }
-                                        { dict.types.length == 2 ? <><BsDot />{ dict.types[1] }</> : "" }
+                                        { dict.types.length === 2 ? <><BsDot />{ dict.types[1] }</> : "" }
                                     </span>
                                 </div>
                                 <span>{ dict.method }</span>

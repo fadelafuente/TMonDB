@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import "../assets/styling/content.css";
-import "../assets/styling/UserProfile.css";
-import "../assets/styling/ViewMon.css";
+import "../../assets/styling/content.css";
+import "../../assets/styling/UserProfile.css";
+import "../../assets/styling/ViewMon.css";
 
 export default function StatBar({ stat, stats, total }) {
     const RANGE_CHART = {

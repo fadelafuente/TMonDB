@@ -1,9 +1,9 @@
 import { useState } from "react";
+import StatBar from "../Bars/StatBar";
 
-import "../assets/styling/content.css";
-import "../assets/styling/UserProfile.css";
-import "../assets/styling/ViewMon.css";
-import StatBar from "./StatBar";
+import "../../assets/styling/content.css";
+import "../../assets/styling/UserProfile.css";
+import "../../assets/styling/ViewMon.css";
 
 export default function StatChart() {
     const [stats, setStats] = useState({

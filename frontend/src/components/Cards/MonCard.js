@@ -7,7 +7,7 @@ import { useDeletePost, useMiddleViewPort } from '../../hooks/hooks';
 import { handleTimeDifference } from '../../functions/handlers';
 
 import '../../assets/styling/MonCard.css';
-import SocialInteractions from '../SocialInteractions';
+import SocialInteractions from '../UserInteractions/SocialInteractions';
 import { DeletedCard } from './DeletedCard';
 
 function MonCard({post=null, isAuthenticated}) {

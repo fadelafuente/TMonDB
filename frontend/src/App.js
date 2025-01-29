@@ -14,7 +14,7 @@ import Layout from './hocs/Layout';
 import SetUsername from './pages/SetUsername';
 import { SetUsernameConfirmation } from './pages/SetUsernameConfirmation';
 import SetEmailConfirm from './pages/SetEmailConfirm';
-import CreateType from './pages/CreateType';
+import CreateType from './components/Creates/CreateType';
 
 import { Provider } from 'react-redux';
 import store from './store';

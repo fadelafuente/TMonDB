@@ -6,12 +6,12 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { connect } from 'react-redux';
-import { logout } from '../actions/auth';
-import CreatePost from './Creates/CreatePost';
+import { logout } from '../../actions/auth';
+import CreatePost from '../Creates/CreatePost';
 import SearchBar from './SearchBar';
 
-import "../assets/styling/forms.css";
-import "../assets/styling/App.css";
+import "../../assets/styling/forms.css";
+import "../../assets/styling/App.css";
 
 function TitleBar({setQuery, logout, isAuthenticated, user }) {
     const [show, setShow] = useState(false);

@@ -101,6 +101,10 @@ ul.explore-tabs {
     padding-bottom: 0.25em;
 }
 
+.text-align-center {
+    text-align: center;
+}
+
 /* Media Queries */
 @media (width <= 500px) {
     .left-aside {

@@ -1,12 +1,12 @@
 import { useLocation, useParams } from 'react-router-dom';
 import { Tab, Tabs } from 'react-bootstrap';
-import { useGetProfile } from '../hooks/hooks';
+import { useGetProfile } from '../../hooks/hooks';
 import { useState } from 'react';
-import FollowList from './FollowList';
-import { BlockedCard } from './Cards/BlockedCard';
+import FollowList from '../FollowList';
+import { BlockedCard } from '../Cards/BlockedCard';
 
-import "../assets/styling/PostCard.css";
-import "../assets/styling/UserProfile.css";
+import "../../assets/styling/PostCard.css";
+import "../../assets/styling/UserProfile.css";
 
 export default function FollowContent({ query }) {
     const { state } = useLocation();

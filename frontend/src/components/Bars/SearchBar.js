@@ -1,10 +1,10 @@
 import { React, useState } from 'react';
 import { Form, InputGroup } from 'react-bootstrap';
 import { BsSearch } from 'react-icons/bs';
-import SearchModal from './Modals/SearchModal';
+import SearchModal from '../Modals/SearchModal';
 
-import "../assets/styling/forms.css";
-import "../assets/styling/App.css";
+import "../../assets/styling/forms.css";
+import "../../assets/styling/App.css";
 
 export default function SearchBar({ setQuery, width }) {
     const [formData, setFormData] = useState("");

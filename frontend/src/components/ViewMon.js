@@ -1,20 +1,21 @@
 import { Fragment, useState } from "react";
 import { useParams } from "react-router-dom";
-import ReplyBar from "./ReplyBar";
+import ReplyBar from "./Bars/ReplyBar";
 import { BsThreeDots } from "react-icons/bs";
 import { useDeletePost, useMiddleViewPort } from "../hooks/hooks";
 import { connect } from "react-redux";
-import SocialInteractions from "./SocialInteractions";
+import SocialInteractions from "./UserInteractions/SocialInteractions";
 import { Col, NavDropdown, Row, Tab, Tabs } from "react-bootstrap";
-import WeaknessChart from "./WeaknessChart";
-import StatChart from "./StatChart";
-import EvoChain from "./EvoChain";
-import MovesTable from "./TableComponents/MovesTable";
+import WeaknessChart from "./TablesAndCharts/WeaknessChart";
+import StatChart from "./TablesAndCharts/StatChart";
+import EvoChains from "./Content/EvoChains";
+import MovesTable from "./TablesAndCharts/MovesTable";
 
 
 import "../assets/styling/content.css";
 import "../assets/styling/UserProfile.css";
 import "../assets/styling/ViewMon.css";
+import MovesTab from "./Content/MovesTab";
 
 function ViewMon({ isAuthenticated }) {
     const { mid } = useParams();
@@ -42,14 +43,25 @@ function ViewMon({ isAuthenticated }) {
     //     });
     // }, [pid]);
 
-    const moves = [
-        {level: 19, name: "Fire Fang", type: "Fire", power: 65},
-        {level: 24, name: "Slash", type: "Normal", power: 70},
-        {level: 30, name: "Flamethrower", type: "Fire", power: 90},
-        {level: 37, name: "Scary Face", type: "Normal", Power: null},
-        {level: 48, name: "Inferno", type: "Fire", power: 100},
-        {level: 54, name: "Flare Blitz", type: "Fire", power: 120}
+    const levelMoves = [
+        {method_value: 19, name: "Fire Fang", type: "Fire", power: 65},
+        {method_value: 24, name: "Slash", type: "Normal", power: 70},
+        {method_value: 30, name: "Flamethrower", type: "Fire", power: 90},
+        {method_value: 37, name: "Scary Face", type: "Normal", Power: null},
+        {method_value: 48, name: "Inferno", type: "Fire", power: 100},
+        {method_value: 54, name: "Flare Blitz", type: "Fire", power: 120}
     ];
+
+    const courseMoves = [
+        {method_value: 1, name: "Take Down", type: "Normal", power: 90},
+        {method_value: 7, name: "Protect", type: "Normal", power: null},
+        {method_value: 58, name: "Brick Break", type: "Fighting", power: 75},
+        {method_value: 67, name: "Fire Punch", type: "Fire", Power: 75},
+        {method_value: 68, name: "Thunder Punch", type: "Electric", power: 75},
+        {method_value: 78, name: "Dragon Claw", type: "Dragon", power: 80}
+    ];
+
+    const courseTotal = 140;
 
     function handleMoreClick() {
         return (
@@ -193,10 +205,10 @@ function ViewMon({ isAuthenticated }) {
                             <WeaknessChart />
                         </Tab>
                         <Tab title="Moves" eventKey="moves">
-                            <MovesTable method="Level" moves= { moves } />
+                            <MovesTab levelMoves={ levelMoves } courseMoves={ courseMoves } courseTotal={ courseTotal } />
                         </Tab>
                         <Tab title="Evo. Chain" eventKey="evoChain">
-                            <EvoChain />
+                            <EvoChains />
                         </Tab>
                     </Tabs>
                     <div className="mon-interactions">

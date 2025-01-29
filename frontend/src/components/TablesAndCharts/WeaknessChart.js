@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import "../assets/styling/content.css";
-import "../assets/styling/UserProfile.css";
-import "../assets/styling/ViewMon.css";
+import "../../assets/styling/content.css";
+import "../../assets/styling/UserProfile.css";
+import "../../assets/styling/ViewMon.css";
 
 export default function WeaknessChart() {
     const [weaknesses, setWeaknesses] = useState({
