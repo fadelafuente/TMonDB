@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'moves',
     'typings',
     'users',
-    'posts'
+    'posts',
+    'articles'
 ]
 
 MIDDLEWARE = [

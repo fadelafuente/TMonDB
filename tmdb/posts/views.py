@@ -7,14 +7,12 @@ from django.contrib.auth import get_user_model
 from .serializers import PostSerializer, PostScrollSerializer
 from .models import Post
 from rest_framework.settings import api_settings
-from django.db.models import Count
+
 
 AppUser = get_user_model()
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all().annotate(likes_count=Count("who_liked", distinct=True),
-                                            reposts_count=Count("who_reposted", distinct=True),
-                                            comments_count=Count("comments", distinct=True))
+    queryset = Post.objects.with_article_details().all()
     serializer_class = PostSerializer
     permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
@@ -38,183 +36,202 @@ class PostViewSet(viewsets.ModelViewSet):
     def str2bool(self, str):
         return str.lower() in ['true']
     
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        username = self.request.query_params.get("username")
-        parent = self.request.query_params.get("parent")
-        is_reply = self.request.query_params.get("is_reply")
+    # def get_queryset(self):
+    #     queryset = super().get_queryset()
+    #     username = self.request.query_params.get("username")
+    #     parent = self.request.query_params.get("parent")
+    #     is_reply = self.request.query_params.get("is_reply")
 
-        if self.request.user.is_authenticated:
-            # Exclude posts the user is blocked from
-            blocked = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values("id")]
-            if blocked:
-                queryset = queryset.exclude(creator__in=blocked)
+    #     if self.request.user.is_authenticated:
+    #         # Exclude posts the user is blocked from
+    #         blocked = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values("id")]
+    #         if blocked:
+    #             queryset = queryset.exclude(creator__in=blocked)
 
-            # Exclude posts created by users the current user is blocking
-            blocking = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocking.all().values("id")]
-            if blocking:
-                queryset = queryset.exclude(creator__in=blocking)
+    #         # Exclude posts created by users the current user is blocking
+    #         blocking = [user["id"] for user in AppUser.objects.all().get(id=self.request.user.id).blocking.all().values("id")]
+    #         if blocking:
+    #             queryset = queryset.exclude(creator__in=blocking)
 
-        if parent is not None: 
-            queryset = queryset.filter(parent=parent)
+    #     if parent is not None: 
+    #         queryset = queryset.filter(parent=parent)
 
-        if is_reply is not None: 
-            queryset = queryset.filter(is_reply=self.str2bool(is_reply))
+    #     if is_reply is not None: 
+    #         queryset = queryset.filter(is_reply=self.str2bool(is_reply))
 
-        if username is not None:
-            try:
-                user = AppUser.objects.get(username=username)
-                queryset = queryset.filter(creator=user.id)
-            except:
-                queryset = Post.objects.none()
+    #     if username is not None:
+    #         try:
+    #             user = AppUser.objects.get(username=username)
+    #             queryset = queryset.filter(creator=user.id)
+    #         except:
+    #             queryset = Post.objects.none()
 
-        return queryset
+    #     return queryset
     
-    def get_extra_information(self, request, post):
-        creator_id = post["creator"]
-        try:
-            user = AppUser.objects.get(id=creator_id)
-            post["creator_username"] = user.get_username()
-        except:
-            post["creator_username"] = None
+    # def get_extra_information(self, request, post):
+    #     creator_id = post["creator"]
+    #     try:
+    #         user = AppUser.objects.get(id=creator_id)
+    #         post["creator_username"] = user.get_username()
+    #     except:
+    #         post["creator_username"] = None
 
-        # initialize booleans
-        post["user_liked"] = False
-        post["user_reposted"] = False
-        post["user_commented"] = False
-        post["is_current_user"] = False
+    #     # initialize booleans
+    #     post["user_liked"] = False
+    #     post["user_reposted"] = False
+    #     post["user_commented"] = False
+    #     post["is_current_user"] = False
 
-        user = request.user
-        if user.is_authenticated:
-            post["user_liked"] = user.id in post["who_liked"]
-            post["user_reposted"] = user.id in post["who_reposted"]
-            comments = Post.objects.filter(creator=user.id, parent=post["id"]).all()
-            post["user_commented"] = comments.exists()
-            post["is_current_user"] = creator_id == user.id
+    #     user = request.user
+    #     if user.is_authenticated:
+    #         post["user_liked"] = user.id in post["who_liked"]
+    #         post["user_reposted"] = user.id in post["who_reposted"]
+    #         comments = Post.objects.filter(creator=user.id, parent=post["id"]).all()
+    #         post["user_commented"] = comments.exists()
+    #         post["is_current_user"] = creator_id == user.id
+    
+    # def create(self, request, *args, **kwargs):
+    #     if "is_reply" in request.data and request.data["is_reply"]:
+    #         try:
+    #             comments = Post.objects.filter(creator=request.user.id, parent=request.data["parent"]).all()
+    #             if comments:
+    #                 return Response(data={"message": "User already replied"}, status=status.HTTP_403_FORBIDDEN)
+    #         except:
+    #             return Response(data={"message": "Post could not be found"}, status=status.HTTP_404_NOT_FOUND)
+
+    #     posted_date = timezone.now()
+    #     creator = request.user
+    #     request.data["posted_date"] = posted_date
+    #     request.data["creator"] = creator.id
+        
+    #     response = super().create(request, *args, **kwargs)
+    #     response.data["creator_username"] = creator.username
+    #     return response
     
     def create(self, request, *args, **kwargs):
         if "is_reply" in request.data and request.data["is_reply"]:
             try:
-                comments = Post.objects.filter(creator=request.user.id, parent=request.data["parent"]).all()
+                comments = Post.objects.filter(article__creator=request.user.id, parent=request.data["parent"]).all()
                 if comments:
                     return Response(data={"message": "User already replied"}, status=status.HTTP_403_FORBIDDEN)
             except:
-                return Response(data={"message": "Post could not be found"}, status=status.HTTP_404_NOT_FOUND)
+                return Response(data={"message": "Could not create reply"}, status=status.HTTP_404_NOT_FOUND)
 
-        posted_date = timezone.now()
-        creator = request.user
-        request.data["posted_date"] = posted_date
-        request.data["creator"] = creator.id
+        if "posted_date" not in request.data:
+            posted_date = timezone.now()
+            request.data["posted_date"] = posted_date
         
         response = super().create(request, *args, **kwargs)
-        response.data["creator_username"] = creator.username
+
+
+
         return response
     
-    def destroy(self, request, *args, **kwargs):
-        pid = request.path.split("/")[-2]
+    # def destroy(self, request, *args, **kwargs):
+    #     pid = request.path.split("/")[-2]
 
-        try: 
-            Post.objects.filter(parent=pid).update(parent_deleted=True)
-            instance = self.get_object()
-            if instance.creator != request.user:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
+    #     try: 
+    #         Post.objects.filter(parent=pid).update(parent_deleted=True)
+    #         instance = self.get_object()
+    #         if instance.creator != request.user:
+    #             return Response(status=status.HTTP_401_UNAUTHORIZED)
             
-            self.perform_destroy(instance)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "Failed to delete post."})
+    #         self.perform_destroy(instance)
+    #         return Response(status=status.HTTP_204_NO_CONTENT)
+    #     except:
+    #         return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "Failed to delete post."})
     
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
+    # def list(self, request, *args, **kwargs):
+    #     response = super().list(request, *args, **kwargs)
 
-        for post in response.data["results"]:
-            self.get_extra_information(request, post)
+    #     for post in response.data["results"]:
+    #         self.get_extra_information(request, post)
         
-        return response
+    #     return response
     
-    def retrieve(self, request, *args, **kwargs):
-        try:
-            response = super().retrieve(request, *args, **kwargs)
-        except:
-            pid = request.path.split("/")[-2]
-            post = Post.objects.filter(id=pid)
-            if post.exists():
-                return Response(status=status.HTTP_403_FORBIDDEN, data={"isBlocked": True, "creator": post.first().creator.username})
-            else: 
-                return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post was deleted or does not exist"})
+    # def retrieve(self, request, *args, **kwargs):
+    #     try:
+    #         response = super().retrieve(request, *args, **kwargs)
+    #     except:
+    #         pid = request.path.split("/")[-2]
+    #         post = Post.objects.filter(id=pid)
+    #         if post.exists():
+    #             return Response(status=status.HTTP_403_FORBIDDEN, data={"isBlocked": True, "creator": post.first().creator.username})
+    #         else: 
+    #             return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post was deleted or does not exist"})
 
-        try:
-            self.get_extra_information(request, response.data)
-        except:
-            response.data = {}
+    #     try:
+    #         self.get_extra_information(request, response.data)
+    #     except:
+    #         response.data = {}
 
-        return response
+    #     return response
     
-    def partial_update(self, request, *args, **kwargs):
-        request.data["is_edited"] = True
+    # def partial_update(self, request, *args, **kwargs):
+    #     request.data["is_edited"] = True
 
-        instance = self.get_object()
-        if instance.creator != request.user:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+    #     instance = self.get_object()
+    #     if instance.creator != request.user:
+    #         return Response(status=status.HTTP_401_UNAUTHORIZED)
         
-        return self.perform_partial_update(request, args, kwargs)
+    #     return self.perform_partial_update(request, args, kwargs)
                 
-    def perform_partial_update(self, request, *args, **kwargs):
-        kwargs['partial'] = True
-        return self.update(request, *args, **kwargs)
+    # def perform_partial_update(self, request, *args, **kwargs):
+    #     kwargs['partial'] = True
+    #     return self.update(request, *args, **kwargs)
     
-    @action(detail=True, methods=['patch'])
-    def like(self, request, pk=None):
-        if(pk == None):
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
+    # @action(detail=True, methods=['patch'])
+    # def like(self, request, pk=None):
+    #     if(pk == None):
+    #         return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
         
-        response = self.perform_partial_update(request)
-        if response.status_code != 200:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        try:
-            post = Post.objects.get(id=pk)
-            if post.who_liked.exists():
-                user_liked = post.who_liked.filter(id=request.user.id)
-                if user_liked:
-                    post.who_liked.remove(request.user)
-                    response.data["user_liked"] = False
-                else:
-                    post.who_liked.add(request.user)
-                    response.data["user_liked"] = True
-            elif not post.who_liked.exists():
-                post.who_liked.add(request.user)
-                response.data["user_liked"] = True
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
+    #     response = self.perform_partial_update(request)
+    #     if response.status_code != 200:
+    #         return Response(status=status.HTTP_400_BAD_REQUEST)
+    #     try:
+    #         post = Post.objects.get(id=pk)
+    #         if post.who_liked.exists():
+    #             user_liked = post.who_liked.filter(id=request.user.id)
+    #             if user_liked:
+    #                 post.who_liked.remove(request.user)
+    #                 response.data["user_liked"] = False
+    #             else:
+    #                 post.who_liked.add(request.user)
+    #                 response.data["user_liked"] = True
+    #         elif not post.who_liked.exists():
+    #             post.who_liked.add(request.user)
+    #             response.data["user_liked"] = True
+    #     except:
+    #         return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
 
-        post.save()
+    #     post.save()
 
-        return response
+    #     return response
     
-    @action(detail=True, methods=['patch'])
-    def repost(self, request, pk=None):
-        if(pk == None):
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
+    # @action(detail=True, methods=['patch'])
+    # def repost(self, request, pk=None):
+    #     if(pk == None):
+    #         return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A post id was not given"})
         
-        response = super().partial_update(request)
-        if response.status_code != 200:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
-        try:
-            post = Post.objects.get(id=pk)
-            if post.who_reposted.exists():
-                user_reposted = post.who_reposted.filter(id=request.user.id)
-                if user_reposted:
-                    post.who_reposted.remove(request.user)
-                    response.data["user_reposted"] = False
-                else: 
-                    post.who_reposted.add(request.user)
-                    response.data["user_reposted"] = True
-            elif not post.who_reposted.exists():
-                    post.who_reposted.add(request.user)
-                    response.data["user_reposted"] = True
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
+    #     response = super().partial_update(request)
+    #     if response.status_code != 200:
+    #         return Response(status=status.HTTP_400_BAD_REQUEST)
+    #     try:
+    #         post = Post.objects.get(id=pk)
+    #         if post.who_reposted.exists():
+    #             user_reposted = post.who_reposted.filter(id=request.user.id)
+    #             if user_reposted:
+    #                 post.who_reposted.remove(request.user)
+    #                 response.data["user_reposted"] = False
+    #             else: 
+    #                 post.who_reposted.add(request.user)
+    #                 response.data["user_reposted"] = True
+    #         elif not post.who_reposted.exists():
+    #                 post.who_reposted.add(request.user)
+    #                 response.data["user_reposted"] = True
+    #     except:
+    #         return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "Post could not be found"})
         
-        post.save()
+    #     post.save()
             
-        return response
+    #     return response
