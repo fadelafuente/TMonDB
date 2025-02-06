@@ -26,7 +26,7 @@ from typings.views import *
 from rest_framework.routers import DefaultRouter
 
 api_router = DefaultRouter()
-api_router.register(r"posts", PostViewSet)
+api_router.register(r"posts", PostViewSet, basename="Post")
 api_router.register(r"monsters", TMonDBMonsterViewset)
 api_router.register(r"types", TMonDBTypeViewset)
 api_router.register(r"advantages", TMondDBTypeModifierViewSet)

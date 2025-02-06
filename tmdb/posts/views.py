@@ -12,7 +12,6 @@ from rest_framework.settings import api_settings
 AppUser = get_user_model()
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.with_article_details().all()
     serializer_class = PostSerializer
     permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
@@ -35,6 +34,14 @@ class PostViewSet(viewsets.ModelViewSet):
     
     def str2bool(self, str):
         return str.lower() in ['true']
+    
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+    
+    def get_queryset(self):
+        queryset = Post.objects.get_annotated_queryset(self.request.user).all()
+
+        return queryset
     
     # def get_queryset(self):
     #     queryset = super().get_queryset()
@@ -107,25 +114,6 @@ class PostViewSet(viewsets.ModelViewSet):
     #     response = super().create(request, *args, **kwargs)
     #     response.data["creator_username"] = creator.username
     #     return response
-    
-    def create(self, request, *args, **kwargs):
-        if "is_reply" in request.data and request.data["is_reply"]:
-            try:
-                comments = Post.objects.filter(article__creator=request.user.id, parent=request.data["parent"]).all()
-                if comments:
-                    return Response(data={"message": "User already replied"}, status=status.HTTP_403_FORBIDDEN)
-            except:
-                return Response(data={"message": "Could not create reply"}, status=status.HTTP_404_NOT_FOUND)
-
-        if "posted_date" not in request.data:
-            posted_date = timezone.now()
-            request.data["posted_date"] = posted_date
-        
-        response = super().create(request, *args, **kwargs)
-
-
-
-        return response
     
     # def destroy(self, request, *args, **kwargs):
     #     pid = request.path.split("/")[-2]

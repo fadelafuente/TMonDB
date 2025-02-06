@@ -254,14 +254,28 @@ class TestPosts(APITestCase):
             article = Article.objects.create(creator=cls.user2)
             Post.objects.create(content=f"test post {index}", posted_date=cls.test_start_time, article=article)
         
-        cls.post = Post.objects.all()[1]
+        cls.post = Post.objects.all()[0]
 
-    def test_get_post(self):
+    def test_get_post_anonymous(self):
         self.user = AnonymousUser()
 
         expected = {'id': self.post.id, 'content': self.post.content, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 0, 
                     'parent': None, 'posted_date': self.test_start_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ"), 
-                    'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username}), 'is_reply': False}
+                    'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username}), 'is_reply': False,
+                    'is_current_user': False, 'user_liked': False, 'user_reposted': False, 'user_commented': False}
+
+        response = self.client.get(f"/api/posts/{self.post.id}/")
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, expected)
+
+    def test_get_post_logged_in(self):
+        self.client.force_authenticate(user=self.user1)
+
+        expected = {'id': self.post.id, 'content': self.post.content, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 0, 
+                    'parent': None, 'posted_date': self.test_start_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ"), 
+                    'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username}), 'is_reply': False,
+                    'is_current_user': True, 'user_liked': False, 'user_reposted': False, 'user_commented': False}
 
         response = self.client.get(f"/api/posts/{self.post.id}/")
         

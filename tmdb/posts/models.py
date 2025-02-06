@@ -1,16 +1,21 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Case, When
 from articles.models import Article
 
 UserModel = get_user_model()
 
 
 class PostManager(models.Manager):
-    def with_article_details(self):
+    def get_annotated_queryset(self, user):
         return self.annotate(likes_count=Count("article__who_liked", distinct=True),
                             reposts_count=Count("article__who_reposted", distinct=True),
-                            comments_count=Count("article__comments", distinct=True))
+                            comments_count=Count("article__comments", distinct=True),
+                            is_current_user=Q(article__creator__id=user.id),
+                            user_liked=Case(When(Q(article__who_liked__in=[user.id]), then=True), default=False),
+                            user_reposted=Case(When(Q(article__who_reposted__in=[user.id]), then=True), default=False),
+                            user_commented=Q(parent__comments__article__creator__isnull=False) & 
+                            Q(parent__comments__article__creator__id=user.id))
     
     def create(self, **kwargs):
         instance = super().create(**kwargs)

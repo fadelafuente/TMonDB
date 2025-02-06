@@ -29,12 +29,17 @@ class PostScrollSerializer(PostSerializer):
     likes_count = serializers.IntegerField()
     reposts_count = serializers.IntegerField()
     comments_count = serializers.IntegerField()
+    is_current_user = serializers.BooleanField()
+    user_liked = serializers.BooleanField()
+    user_reposted = serializers.BooleanField()
+    user_commented = serializers.BooleanField()
     article = ArticleCreatorSerializer()
 
     class Meta:
         model = Post
         fields = ('id', 'content', 'posted_date', 'comments_count', 'article',
-                  'likes_count', 'reposts_count', 'parent', 'is_reply')
+                  'likes_count', 'reposts_count', 'parent', 'is_reply', 'is_current_user',
+                  'user_liked', 'user_reposted', 'user_commented')
         
     def to_representation(self, instance):
         representation = super().to_representation(instance)

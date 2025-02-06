@@ -75,7 +75,7 @@ class TMonDBUserViewset(UserViewSet):
             return PatchSerializer
         elif self.action == "block":
             if self.request.method == "GET":
-                return BlockingSerializer
+                return CreatorSerializer
             return PatchSerializer
         elif self.action in ["following", "followers"]:
             return FollowingSerializer
