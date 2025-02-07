@@ -6,7 +6,7 @@ from articles.models import Article
 from articles.serializers import ArticleSerializer, ArticleCreatorSerializer
 from django.db import transaction
 
-MAX_POST_LENGTH = 240
+MAX_POST_LENGTH = 300
 
 class PostSerializer(serializers.ModelSerializer):
     article = ArticleSerializer()
@@ -19,7 +19,7 @@ class PostSerializer(serializers.ModelSerializer):
         content = self.validated_data.get('content')
 
         if content and len(content) > MAX_POST_LENGTH:
-            raise ValidationError('This post is too long')
+            raise ValidationError(f'Content length too long: {len(content)} characters. Content should have a max of {MAX_POST_LENGTH} characters.')
     
     def is_valid(self, *, raise_exception=False):
         if super().is_valid(raise_exception=raise_exception):
