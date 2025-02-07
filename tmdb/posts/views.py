@@ -8,7 +8,6 @@ from .serializers import PostSerializer, PostScrollSerializer
 from .models import Post
 from rest_framework.settings import api_settings
 
-
 AppUser = get_user_model()
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -34,9 +33,6 @@ class PostViewSet(viewsets.ModelViewSet):
     
     def str2bool(self, str):
         return str.lower() in ['true']
-    
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
     
     def get_queryset(self):
         queryset = Post.objects.get_annotated_queryset(self.request.user).all()
@@ -75,45 +71,19 @@ class PostViewSet(viewsets.ModelViewSet):
 
     #     return queryset
     
-    # def get_extra_information(self, request, post):
-    #     creator_id = post["creator"]
-    #     try:
-    #         user = AppUser.objects.get(id=creator_id)
-    #         post["creator_username"] = user.get_username()
-    #     except:
-    #         post["creator_username"] = None
+    def create(self, request, *args, **kwargs):
+        # if "is_reply" in request.data and request.data["is_reply"]:
+        #     try:
+        #         comments = Post.objects.filter(creator=request.user.id, parent=request.data["parent"]).all()
+        #         if comments:
+        #             return Response(data={"message": "User already replied"}, status=status.HTTP_403_FORBIDDEN)
+        #     except:
+        #         return Response(data={"message": "Post could not be found"}, status=status.HTTP_404_NOT_FOUND)
+            
+        creator = request.user        
+        request.data['article'] = {'creator': creator.id}
 
-    #     # initialize booleans
-    #     post["user_liked"] = False
-    #     post["user_reposted"] = False
-    #     post["user_commented"] = False
-    #     post["is_current_user"] = False
-
-    #     user = request.user
-    #     if user.is_authenticated:
-    #         post["user_liked"] = user.id in post["who_liked"]
-    #         post["user_reposted"] = user.id in post["who_reposted"]
-    #         comments = Post.objects.filter(creator=user.id, parent=post["id"]).all()
-    #         post["user_commented"] = comments.exists()
-    #         post["is_current_user"] = creator_id == user.id
-    
-    # def create(self, request, *args, **kwargs):
-    #     if "is_reply" in request.data and request.data["is_reply"]:
-    #         try:
-    #             comments = Post.objects.filter(creator=request.user.id, parent=request.data["parent"]).all()
-    #             if comments:
-    #                 return Response(data={"message": "User already replied"}, status=status.HTTP_403_FORBIDDEN)
-    #         except:
-    #             return Response(data={"message": "Post could not be found"}, status=status.HTTP_404_NOT_FOUND)
-
-    #     posted_date = timezone.now()
-    #     creator = request.user
-    #     request.data["posted_date"] = posted_date
-    #     request.data["creator"] = creator.id
-        
-    #     response = super().create(request, *args, **kwargs)
-    #     response.data["creator_username"] = creator.username
-    #     return response
+        return super().create(request, *args, **kwargs)
     
     # def destroy(self, request, *args, **kwargs):
     #     pid = request.path.split("/")[-2]

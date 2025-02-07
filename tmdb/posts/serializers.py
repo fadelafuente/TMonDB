@@ -2,7 +2,9 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 from .models import Post
+from articles.models import Article
 from articles.serializers import ArticleSerializer, ArticleCreatorSerializer
+from django.db import transaction
 
 MAX_POST_LENGTH = 240
 
@@ -25,6 +27,15 @@ class PostSerializer(serializers.ModelSerializer):
             return True
         return False
     
+    @transaction.atomic
+    def create(self, validated_data):
+        article_data = validated_data.pop('article')
+
+        article = Article.objects.create(**article_data)
+        instance = Post.objects.create(**validated_data, article=article)
+        
+        return instance
+    
 class PostScrollSerializer(PostSerializer):
     likes_count = serializers.IntegerField()
     reposts_count = serializers.IntegerField()
@@ -45,7 +56,8 @@ class PostScrollSerializer(PostSerializer):
         representation = super().to_representation(instance)
         article = representation.pop('article')
 
-        for key, value in article.items():
-            representation[key] = value
+        if article:
+            for key, value in article.items():
+                representation[key] = value
 
         return representation

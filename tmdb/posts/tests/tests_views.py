@@ -1,5 +1,4 @@
 from rest_framework.test import APITestCase
-
 from posts.models import Post
 from articles.models import Article
 from django.contrib.auth import get_user_model
@@ -7,6 +6,7 @@ from django.utils import timezone
 from django.contrib.auth.models import AnonymousUser
 from django.utils import timezone
 from collections import OrderedDict
+import json
 
 AppUser = get_user_model()
 
@@ -257,8 +257,6 @@ class TestPosts(APITestCase):
         cls.post = Post.objects.all()[0]
 
     def test_get_post_anonymous(self):
-        self.user = AnonymousUser()
-
         expected = {'id': self.post.id, 'content': self.post.content, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 0, 
                     'parent': None, 'posted_date': self.test_start_time.strftime("%Y-%m-%dT%H:%M:%S.%fZ"), 
                     'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username}), 'is_reply': False,
@@ -282,10 +280,23 @@ class TestPosts(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, expected)
 
-    def test_get_all_posts(self):
-        self.user = AnonymousUser()
-
+    def test_get_all_posts_anonymous(self):
         response = self.client.get("/api/posts/?page=1")
                 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data['results']), 4)
+
+    def test_create_post_anonymous(self):
+        data = {"content": "TESTING!!!"}
+        response = self.client.post("/api/posts/", data=json.dumps(data), content_type="application/json")
+        
+        self.assertEqual(response.status_code, 401)
+
+    def test_create_post_logged_in(self):
+        self.client.force_authenticate(user=self.user1)
+
+        data = {"content": "TESTING!!!"}
+        response = self.client.post("/api/posts/", data=json.dumps(data), content_type="application/json")
+        
+        self.assertEqual(response.status_code, 201)
+        self.assertTrue('article' in response.data)

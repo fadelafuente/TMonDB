@@ -16,5 +16,3 @@ class ArticleCreatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ('creator',)
-
-

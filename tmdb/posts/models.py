@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.db.models import Count, Q, Case, When
 from articles.models import Article
+from django.utils import timezone
 
 UserModel = get_user_model()
 
@@ -16,21 +17,12 @@ class PostManager(models.Manager):
                             user_reposted=Case(When(Q(article__who_reposted__in=[user.id]), then=True), default=False),
                             user_commented=Q(parent__comments__article__creator__isnull=False) & 
                             Q(parent__comments__article__creator__id=user.id))
-    
-    def create(self, **kwargs):
-        instance = super().create(**kwargs)
 
-        # if instance:
-        #     Article.objects.create({'creator': instance.id})
-
-        return instance
-    
-# Create your models here.
 class Post(models.Model):
     article = models.OneToOneField(Article, related_name="post", on_delete=models.CASCADE, null=True, blank=True)
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to="images/", blank=True, null=True)
-    posted_date = models.DateTimeField(null=False)
+    posted_date = models.DateTimeField(default=timezone.now, blank=True)
     is_repost = models.BooleanField(default=False)
     is_reply = models.BooleanField(default=False)
     is_edited = models.BooleanField(default=False)
