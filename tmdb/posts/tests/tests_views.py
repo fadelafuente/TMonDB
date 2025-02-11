@@ -27,7 +27,9 @@ class TestPosts(APITestCase):
         
         cls.post = Post.objects.all()[0]
 
-    # Test create posts
+    '''
+        Test Create posts
+    '''
     def test_create_post_by_unauthenticated_user(self):
         data = {'content': 'TESTING!!!'}
         response = self.client.post('/api/posts/', data=json.dumps(data), content_type='application/json')
@@ -64,7 +66,9 @@ class TestPosts(APITestCase):
         self.assertTrue(response.data['is_reply'])
         self.assertEqual(response.data['parent'], self.post.article.id)
 
-    # Test List/Retrieve posts
+    '''
+        Test List/Retrieve posts
+    '''
     def test_get_post_anonymous(self):
         expected = {'id': self.post.id, 'content': self.post.content, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 0, 
                     'parent': None, 'posted_date': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), 
@@ -152,7 +156,9 @@ class TestPosts(APITestCase):
 
         self.assertEqual(response.status_code, 403)
     
-    # Test Update Posts
+    '''
+        Test Update posts
+    '''
     def test_update_content_user_authenticated(self):
         self.client.force_authenticate(user=self.user1)
 
@@ -203,7 +209,9 @@ class TestPosts(APITestCase):
         
         self.assertEqual(response.status_code, 401)
     
-    # Test delete posts
+    '''
+        Test Delete posts
+    '''
     def test_delete_post_of_other_user(self):
         self.client.force_authenticate(user=self.user2)
 

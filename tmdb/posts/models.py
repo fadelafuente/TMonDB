@@ -10,10 +10,11 @@ UserModel = get_user_model()
 
 class PostManager(models.Manager):
     def get_annotated_queryset(self, user):
-        queryset = super().get_queryset()
         if user.is_authenticated:
-            queryset = self.exclude(article__creator_id__in=list(user.blocking.values_list('id', flat=True)))
-            queryset = queryset.exclude(article__creator_id__in=list(user.blocked.values_list('id', flat=True)))
+            queryset = super().get_queryset().exclude(article__creator_id__in=list(user.blocking.values_list('id', 
+                        flat=True))).exclude(article__creator_id__in=list(user.blocked.values_list('id', flat=True)))
+        else:
+            queryset = super().get_queryset()
 
         return queryset.annotate(likes_count=Count("article__who_liked", distinct=True),
                             reposts_count=Count("article__who_reposted", distinct=True),
