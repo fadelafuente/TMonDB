@@ -1,7 +1,9 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
+
 from .models import Article
 from users.serializers import CreatorSerializer
-from django.contrib.auth import get_user_model
 
 AppUser = get_user_model()
 
@@ -15,4 +17,4 @@ class ArticleCreatorSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Article
-        fields = ('creator',)
+        fields = ('id', 'creator',)

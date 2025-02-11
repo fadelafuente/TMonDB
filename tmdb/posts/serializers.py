@@ -1,10 +1,10 @@
 from django.core.exceptions import ValidationError
+from django.db import transaction
 from rest_framework import serializers
 
 from .models import Post
 from articles.models import Article
 from articles.serializers import ArticleSerializer, ArticleCreatorSerializer
-from django.db import transaction
 
 MAX_POST_LENGTH = 300
 
@@ -51,13 +51,3 @@ class PostScrollSerializer(PostSerializer):
         fields = ('id', 'content', 'posted_date', 'comments_count', 'article',
                   'likes_count', 'reposts_count', 'parent', 'is_reply', 'is_current_user',
                   'user_liked', 'user_reposted', 'user_commented')
-        
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        article = representation.pop('article')
-
-        if article:
-            for key, value in article.items():
-                representation[key] = value
-
-        return representation

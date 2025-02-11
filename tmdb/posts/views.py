@@ -1,13 +1,39 @@
-from rest_framework import viewsets, filters
-from rest_framework.permissions import AllowAny
 from django.contrib.auth import get_user_model
+from django.http import Http404
+from rest_framework import viewsets, filters, status
+from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.settings import api_settings
+
 from .serializers import PostSerializer, PostScrollSerializer
 from .models import Post
-from rest_framework.settings import api_settings
 
 AppUser = get_user_model()
 
-class PostViewSet(viewsets.ModelViewSet):
+class LikeModelMixin:
+    @action(detail=True, methods=['patch'])
+    def like(self, request, pk=None):
+        post = self.get_object()
+        user = request.user
+
+        post.article.who_liked.add(user)
+
+        return Response(status=status.HTTP_200_OK)
+    
+class RepostModelMixin:
+    @action(detail=True, methods=['patch'])
+    def repost(self, request, pk=None):
+        post = self.get_object()
+        user = request.user
+
+        post.article.who_reposted.add(user)
+
+        return Response(status=status.HTTP_200_OK)
+        
+
+class PostViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
     authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
@@ -19,7 +45,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'create':
             return PostSerializer
-        elif self.action in ['list', 'retrieve']:
+        elif self.action in ['list', 'retrieve', 'destroy']:
             return PostScrollSerializer
         return self.serializer_class
        
@@ -39,132 +65,30 @@ class PostViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(article__creator__username=username)
 
         return queryset
-      
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     username = self.request.query_params.get('username')
-    #     parent = self.request.query_params.get('parent')
-    #     is_reply = self.request.query_params.get('is_reply')
 
-    #     if self.request.user.is_authenticated:
-    #         # Exclude posts the user is blocked from
-    #         blocked = [user['id'] for user in AppUser.objects.all().get(id=self.request.user.id).blocked.all().values('id')]
-    #         if blocked:
-    #             queryset = queryset.exclude(creator__in=blocked)
-
-    #         # Exclude posts created by users the current user is blocking
-    #         blocking = [user['id'] for user in AppUser.objects.all().get(id=self.request.user.id).blocking.all().values('id')]
-    #         if blocking:
-    #             queryset = queryset.exclude(creator__in=blocking)
-
-    #     if parent is not None: 
-    #         queryset = queryset.filter(parent=parent)
-
-    #     if is_reply is not None: 
-    #         queryset = queryset.filter(is_reply=self.str2bool(is_reply))
-
-    #     if username is not None:
-    #         try:
-    #             user = AppUser.objects.get(username=username)
-    #             queryset = queryset.filter(creator=user.id)
-    #         except:
-    #             queryset = Post.objects.none()
-
-    #     return queryset
+    def perform_destroy(self, instance):
+        if instance.article.creator != self.request.user:
+            raise PermissionDenied('You do not have permission to delete this post.')
+        return super().perform_destroy(instance)
     
-    def create(self, request, *args, **kwargs):
-        # if 'is_reply' in request.data and request.data['is_reply']:
-        #     try:
-        #         comments = Post.objects.filter(creator=request.user.id, parent=request.data['parent']).all()
-        #         if comments:
-        #             return Response(data={'message': 'User already replied'}, status=status.HTTP_403_FORBIDDEN)
-        #     except:
-        #         return Response(data={'message': 'Post could not be found'}, status=status.HTTP_404_NOT_FOUND)
-            
+    def perform_update(self, serializer):
+        path = self.request.path.split("/")[-1]
+        if serializer.instance.article.creator != self.request.user and path != 'like':
+            raise PermissionDenied('You do not have permission to update this post.')
+        return super().perform_update(serializer)
+    
+    def create(self, request, *args, **kwargs):    
         creator = request.user        
         request.data['article'] = {'creator': creator.id}
 
         return super().create(request, *args, **kwargs)
     
-    # def destroy(self, request, *args, **kwargs):
-    #     pid = request.path.split('/')[-2]
-
-    #     try: 
-    #         Post.objects.filter(parent=pid).update(parent_deleted=True)
-    #         instance = self.get_object()
-    #         if instance.creator != request.user:
-    #             return Response(status=status.HTTP_401_UNAUTHORIZED)
-            
-    #         self.perform_destroy(instance)
-    #         return Response(status=status.HTTP_204_NO_CONTENT)
-    #     except:
-    #         return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'Failed to delete post.'})
-    
-    # def partial_update(self, request, *args, **kwargs):
-    #     request.data['is_edited'] = True
-
-    #     instance = self.get_object()
-    #     if instance.creator != request.user:
-    #         return Response(status=status.HTTP_401_UNAUTHORIZED)
-        
-    #     return self.perform_partial_update(request, args, kwargs)
-                
-    # def perform_partial_update(self, request, *args, **kwargs):
-    #     kwargs['partial'] = True
-    #     return self.update(request, *args, **kwargs)
-    
-    # @action(detail=True, methods=['patch'])
-    # def like(self, request, pk=None):
-    #     if(pk == None):
-    #         return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'A post id was not given'})
-        
-    #     response = self.perform_partial_update(request)
-    #     if response.status_code != 200:
-    #         return Response(status=status.HTTP_400_BAD_REQUEST)
-    #     try:
-    #         post = Post.objects.get(id=pk)
-    #         if post.who_liked.exists():
-    #             user_liked = post.who_liked.filter(id=request.user.id)
-    #             if user_liked:
-    #                 post.who_liked.remove(request.user)
-    #                 response.data['user_liked'] = False
-    #             else:
-    #                 post.who_liked.add(request.user)
-    #                 response.data['user_liked'] = True
-    #         elif not post.who_liked.exists():
-    #             post.who_liked.add(request.user)
-    #             response.data['user_liked'] = True
-    #     except:
-    #         return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Post could not be found'})
-
-    #     post.save()
-
-    #     return response
-    
-    # @action(detail=True, methods=['patch'])
-    # def repost(self, request, pk=None):
-    #     if(pk == None):
-    #         return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'A post id was not given'})
-        
-    #     response = super().partial_update(request)
-    #     if response.status_code != 200:
-    #         return Response(status=status.HTTP_400_BAD_REQUEST)
-    #     try:
-    #         post = Post.objects.get(id=pk)
-    #         if post.who_reposted.exists():
-    #             user_reposted = post.who_reposted.filter(id=request.user.id)
-    #             if user_reposted:
-    #                 post.who_reposted.remove(request.user)
-    #                 response.data['user_reposted'] = False
-    #             else: 
-    #                 post.who_reposted.add(request.user)
-    #                 response.data['user_reposted'] = True
-    #         elif not post.who_reposted.exists():
-    #                 post.who_reposted.add(request.user)
-    #                 response.data['user_reposted'] = True
-    #     except:
-    #         return Response(status=status.HTTP_404_NOT_FOUND, data={'message': 'Post could not be found'})
-        
-    #     post.save()
-            
-    #     return response
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            return super().retrieve(request, *args, **kwargs)
+        except Http404:
+            # differentiate between a delete and a block
+            post = Post.objects.filter(id=kwargs['pk'])
+            if post.exists():
+                return Response(status=status.HTTP_403_FORBIDDEN, data={"is_blocked": True, "creator": post.first().article.creator.username})
+            return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': f'Post not found'})         
