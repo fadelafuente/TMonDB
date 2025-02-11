@@ -54,7 +54,7 @@ function MonCard({post=null, isAuthenticated}) {
     } else {
         return (
             <>
-                <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={setBlocked} username={ post ? post.creator_username : null } />
+                <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={setBlocked} username={ post ? post.article.creator.username : null } />
                 <div className="article-container">
                     <div className='card-background-aspect'>
                         <div className="aspect-border">
@@ -64,9 +64,9 @@ function MonCard({post=null, isAuthenticated}) {
                                         <Col>
                                             <div className="creator-container">
                                                 {
-                                                    post && post.creator_username ? 
-                                                        <a href={ `/${post.creator_username}` }>
-                                                            { post.creator_username }
+                                                    post && post.article.creator.username ? 
+                                                        <a href={ `/${post.article.creator.username}` }>
+                                                            { post.article.creator.username }
                                                         </a>
                                                     :
                                                     "[Deleted]"

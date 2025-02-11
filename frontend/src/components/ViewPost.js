@@ -58,10 +58,10 @@ export default function ViewPost() {
                             <PostCard post={post} />
                         </div>
                         <div className="reply-container">
-                            <ReplyBar parent={post.id} />
+                            <ReplyBar parent={post.article.id} />
                         </div>
                         <div className="comments-container article-container">
-                            <PostArticle query={ null } kwargs={ {parent: post.id} } />
+                            <PostArticle query={ null } kwargs={ {parent: post.article.id} } />
                         </div>
                     </div>
 

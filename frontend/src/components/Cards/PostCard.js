@@ -46,11 +46,11 @@ function PostCard({ post, isAuthenticated }) {
     } else {
         return (
             <>
-                <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={setBlocked} username={ post ? post.creator_username : null } />
+                <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={setBlocked} username={ post ? post.article.creator.username : null } />
                 <Card>
                     <a href={ 
-                        post ? 
-                            post.creator_username ? `/${post.creator_username}/${post.id}` : `/deleted/${post.id}`
+                        post.article.creator.username ? 
+                            post ? `/${post.article.creator.username}/${post.id}` : `/deleted/${post.id}`
                     : 
                         "/home" 
                     } 
@@ -62,9 +62,9 @@ function PostCard({ post, isAuthenticated }) {
                                     <Col>
                                         <div className="creator-container">
                                             {
-                                                post && post.creator_username ? 
-                                                    <a href={ `/${post.creator_username}` }>
-                                                        { post.creator_username }
+                                                post && post.article.creator.username ? 
+                                                    <a href={ `/${post.article.creator.username}` }>
+                                                        { post.article.creator.username }
                                                     </a>
                                                 :
                                                 "[Deleted]"

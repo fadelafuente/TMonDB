@@ -24,7 +24,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
 
     return (
         <>
-            <CreatePost show={show} setShow={post ? () => setShow() : () => {}} is_reply={true} parent={post ? post.id : null} />
+            <CreatePost show={show} setShow={post ? () => setShow() : () => {}} is_reply={true} parent={post ? post.article.id : null} />
             <Alert variant="success" className="copy-alert" show={showAlert}>
                 <Alert.Heading>Copied to clipboard.</Alert.Heading>
             </Alert>
@@ -102,8 +102,8 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                     >
                         <NavDropdown.Item onClick={() => handleCopyLink(
                             post ? 
-                                post.creator_username ? 
-                                    `${post.creator_username}/${post.id}` 
+                                post.article.creator.username ? 
+                                    `${post.article.creator.username}/${post.id}` 
                                 : 
                                     `deleted/${post.id}` 
                             : 

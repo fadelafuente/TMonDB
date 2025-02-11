@@ -1,16 +1,16 @@
-import { useEffect, useCallback, useState, useRef } from "react";
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { deletePostById, createPost, updatePostById } from "../actions/posts";
-import { handleValidation, handleDuplicatesInArray, handleHeightConversion, handleLbToKgConversion, handleKgToLbConversion } from "../functions/handlers";
-import { followUser, getCurrentUserDetails, getFollowById, getUserProfile, updateDetails } from "../actions/auth";
+import { deletePostById, createPost, updatePostById } from '../actions/posts';
+import { handleValidation, handleDuplicatesInArray, handleHeightConversion, handleLbToKgConversion, handleKgToLbConversion } from '../functions/handlers';
+import { followUser, getCurrentUserDetails, getFollowById, getUserProfile, updateDetails } from '../actions/auth';
 
 export function useSocialAuth(provider, socialAuthenticate) {
     const location = useLocation();
 
     useEffect(() => {
         const values = new URLSearchParams(location.search);
-        const state = values.has("state") ? values.get("state") : null;
-        const code = values.has("code") ? values.get("code") : null;
+        const state = values.has('state') ? values.get('state') : null;
+        const code = values.has('code') ? values.get('code') : null;
 
         if (state && code) {
             socialAuthenticate(state, code, provider);
@@ -23,7 +23,7 @@ export function useNavigateOnAuth(isAuthenticated) {
 
     useEffect(() => {
         if(isAuthenticated) {
-            return navigate("/home");
+            return navigate('/home');
         }
         // eslint-disable-next-line
     }, [isAuthenticated]);
@@ -34,7 +34,7 @@ export function useNavigateNotAuth(isAuthenticated) {
 
     useEffect(() => {
         if(isAuthenticated === false) {
-            return navigate("/login");
+            return navigate('/login');
         }
         // eslint-disable-next-line
     }, [isAuthenticated]);
@@ -45,7 +45,7 @@ export function useRequestSent(requestSent) {
 
     useEffect(() => {
         if(requestSent) {
-            return navigate("/login");
+            return navigate('/login');
         }
         // eslint-disable-next-line
     }, [requestSent]);
@@ -57,7 +57,7 @@ export function useFailedSocialAuth(email) {
 
     useEffect(() => {
         if(!location.state && !email) {
-            return navigate("/login");
+            return navigate('/login');
         }
         // eslint-disable-next-line
     }, [location.state, email]);
@@ -82,7 +82,7 @@ export function useNavigateOnVerify(verified) {
 
     useEffect(() => {
         if(verified) {
-            return navigate("/login");
+            return navigate('/login');
         }
         // eslint-disable-next-line
     }, [verified]);
@@ -93,14 +93,14 @@ export function useRegisterAttempt(errMessage, isAuthenticated, registerAttempt)
     const [message, setMessage] = useState('');
 
     const errorMessageCallback = useCallback(() => {
-        if(typeof errMessage == "string") {
-            const element = new DOMParser().parseFromString(errMessage, "text/html").getElementsByClassName("exception_value");
-            const err_message = element[0].innerHTML.replace(/['"]+/g, "");
+        if(typeof errMessage == 'string') {
+            const element = new DOMParser().parseFromString(errMessage, 'text/html').getElementsByClassName('exception_value');
+            const err_message = element[0].innerHTML.replace(/['']+/g, '');
             setMessage(err_message);
-        } else if(typeof errMessage == "object" && 'email' in errMessage) {
+        } else if(typeof errMessage == 'object' && 'email' in errMessage) {
             const err_message = errMessage['email'][0];
             setMessage(err_message);
-        } else if(typeof errMessage == "object" && 'username' in errMessage) {
+        } else if(typeof errMessage == 'object' && 'username' in errMessage) {
             let err_message = errMessage['username'][0];
             err_message = err_message.charAt(0).toUpperCase() + err_message.slice(1);
             setMessage(err_message);
@@ -148,7 +148,7 @@ export function useRequestAttempt(accountCreated, errMessage, email, registerAtt
         // if register is successful, reset accountCreated in redux store before redirecting
         if(accountCreated && !errMessage) {
             registerAttempt();
-            navigate("/verify", { state: { email: email } });
+            navigate('/verify', { state: { email: email } });
         }
         // eslint-disable-next-line
     }, [accountCreated, errMessage, email, registerAttempt]);
@@ -161,13 +161,13 @@ export function useFormData(initialForm) {
         if(resetForm) {
             setFormData(initialForm);
         } else {
-            if(e.target.id === "username-input") {
-                e.target.value = e.target.validity.valid || e.target.value === "" ? e.target.value : formData["username"];
+            if(e.target.id === 'username-input') {
+                e.target.value = e.target.validity.valid || e.target.value === '' ? e.target.value : formData['username'];
             }
 
             setFormData({ ...formData, [e.target.name]: e.target.value });
 
-            if(e.target.id === "password-input") {
+            if(e.target.id === 'password-input') {
                 handleValidation(e.target.value);
             }
         }
@@ -180,12 +180,12 @@ export function useAdaptiveFormData(initialForm) {
     const [formData, setFormData] = useFormData(initialForm);
 
     function handleFormData(e, resetPost=false) {
-        if(e.target.id === "auto-resizing") {
+        if(e.target.id === 'auto-resizing') {
             const textarea = e.target;
 
             function autoResize() {
-                this.style.height = "auto";
-                this.style.height = this.scrollHeight + "px";
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
             }
 
             textarea.addEventListener('input', autoResize, false);
@@ -202,8 +202,8 @@ export function usePassword() {
     function handleShowPass(id) {
         const password_input = document.getElementById(id);
         setShowPass((prev) => !prev);
-        const type = showPass ? "password" : "text";
-        password_input.setAttribute("type", type);
+        const type = showPass ? 'password' : 'text';
+        password_input.setAttribute('type', type);
     }
 
     return [showPass, handleShowPass];
@@ -219,7 +219,7 @@ export function useCreatePost(initialForm) {
         if(content) {
             createPost({content, is_reply, parent}).then(response => {
                 if(response && response.status === 201) {
-                    navigate(`/${response.data["creator_username"]}/${response.data["id"]}`);
+                    navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
                 }
             });
         }
@@ -239,9 +239,9 @@ export function useDiscardModal(formData, setShow) {
             } else {
                 setShowDiscard(true);
             }
-        } else if(typeof setFormData === "boolean") {
+        } else if(typeof setFormData === 'boolean') {
             setShowDiscard(setFormData);
-        } else if(typeof setFormData === "function") {
+        } else if(typeof setFormData === 'function') {
             setFormData(e, true);
             setShowDiscard(false);
             setShow(false);
@@ -272,9 +272,9 @@ export function useInteractions(initial_interaction, user_interacted) {
     }
 
     function handleInteractions(e, value) {
-        if(typeof value === "boolean") {
+        if(typeof value === 'boolean') {
             handleInteractionsHelper(value);
-        } else if(typeof value === "number") {
+        } else if(typeof value === 'number') {
             handleUpdateInteractions(e, value);
         }
     }
@@ -315,7 +315,7 @@ export function useGetProfile(username) {
         getUserProfile(username).then((response) => {
             if(response && response.status === 200) {
                 setProfile(response.data);
-                setFollow(response.data["followers_count"], response.data["user_follows"]);
+                setFollow(response.data['followers_count'], response.data['user_follows']);
             }
         }).catch(() => {
             setProfile(null);
@@ -356,7 +356,7 @@ export function useFollow(initial_interaction, user_interacted) {
     }
 
     function handleFollowHelper(value, interacted=null) {
-        if(typeof interacted === "boolean") {
+        if(typeof interacted === 'boolean') {
             setInteraction(value);
             setInteracted(interacted);   
         } else {
@@ -371,12 +371,12 @@ export function useUpdateProfile(initialForm) {
     const [formData, setFormData] = useFormData(initialForm);
 
     function handleFormData(e, resetPost=false) {
-        if(e.target.id === "auto-resizing") {
-            const textarea = document.getElementById("auto-resizing");
+        if(e.target.id === 'auto-resizing') {
+            const textarea = document.getElementById('auto-resizing');
             textarea.addEventListener('input', autoResize, false);
             function autoResize() {
-                this.style.height = "auto";
-                this.style.height = this.scrollHeight + "px";
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
             }
         }
         setFormData(e, resetPost);
@@ -394,7 +394,7 @@ export function useUpdateProfile(initialForm) {
 }
 
 export function useTimedAlert(initial_state) {
-    if(typeof initial_state !== "boolean") initial_state = false;
+    if(typeof initial_state !== 'boolean') initial_state = false;
     const [showAlert, setShowAlert] = useState(initial_state);
 
     useEffect(() => {
@@ -423,8 +423,8 @@ export function useUserFollow(uid, pageNumber, follow_type, query) {
     useEffect(() => {
         if(hasMore) {
             setLoading(true);
-            let query_details = { "page": pageNumber }
-            if(query) query_details["search"] = query
+            let query_details = { 'page': pageNumber }
+            if(query) query_details['search'] = query
 
             if (uid) {
                 getFollowById(uid, follow_type, query_details).then((response) => {
@@ -486,8 +486,8 @@ export function useGetInformation(pageNumber, query, getFunc, kwargs={}) {
     
     useEffect(() => {
         setLoading(true);
-        let query_details = {"page": pageNumber, ...kwargs};
-        if(query) query_details["search"] = query;
+        let query_details = {'page': pageNumber, ...kwargs};
+        if(query) query_details['search'] = query;
 
         getFunc(query_details).then((response) => {
             if(response) {
@@ -591,36 +591,36 @@ export function useHeightConversions(initialFt, initialIn, initialCm) {
 
     function handleFtInput(e) {
         const value = e.target.value;
-        if(value.match("^[0-9]*$")) {
-            const feet = value === "" ? 0 : parseInt(value);
+        if(value.match('^[0-9]*$')) {
+            const feet = value === '' ? 0 : parseInt(value);
             if(feet <= 999) {
                 const cm = handleHeightConversion(feet, heightIn ? parseFloat(heightIn) : 0);
-                setHeightCm(cm > 0 ? cm : "");
-                setHeightFt(feet > 0 ? feet : "");
+                setHeightCm(cm > 0 ? cm : '');
+                setHeightFt(feet > 0 ? feet : '');
             }
         }
     }
 
     function handleInInput(e) {
         const value = e.target.value;
-        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
-            const inches = value === "" ? 0 : value;
+        if(value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
+            const inches = value === '' ? 0 : value;
             if(inches < 12) {
                 const cm = handleHeightConversion(heightFt ? parseInt(heightFt) : 0, inches);
-                setHeightCm(cm > 0 ? cm : "");
-                setHeightIn(inches > 0 ? inches : "");
+                setHeightCm(cm > 0 ? cm : '');
+                setHeightIn(inches > 0 ? inches : '');
             }
         }
     }
 
     function handleCMInput(e) {
-        if(e.target.value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
+        if(e.target.value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
             const cm = e.target.value;
             if(parseFloat(cm) <= 30479.97) {
                 const [feet, inches] = handleHeightConversion(cm);
-                setHeightFt(feet > 0 ? feet : "");
-                setHeightIn(inches > 0 ? inches : "");
-                setHeightCm(cm > 0 ? cm : "");
+                setHeightFt(feet > 0 ? feet : '');
+                setHeightIn(inches > 0 ? inches : '');
+                setHeightCm(cm > 0 ? cm : '');
             }
         }
     }
@@ -633,25 +633,25 @@ export function useWeightConversions(initialLb, initialKg) {
     const [weightKg, setWeightKg] = useState(initialKg);
 
     function handleLbInput(e) {
-        const value = e.target.value ? e.target.value : "0";
-        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
-            const lb = value === "" ? 0 : value;
+        const value = e.target.value ? e.target.value : '0';
+        if(value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
+            const lb = value === '' ? 0 : value;
             if(parseFloat(lb) <= 9999.99) {
                 const kg = handleLbToKgConversion(lb);
-                setWeightLb(lb > 0 ? lb : "");
-                setWeightKg(kg > 0 ? kg : "");
+                setWeightLb(lb > 0 ? lb : '');
+                setWeightKg(kg > 0 ? kg : '');
             }
         }
     }
 
     function handleKgInput(e) {
         const value = e.target.value;
-        if(value.match("^[0-9]*(\.[0-9]{0,2}){0,1}$")) {
-            const kg = value === "" ? 0 : value;
+        if(value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
+            const kg = value === '' ? 0 : value;
             if(parseFloat(kg) <= 4535.14) {
                 const lb = handleKgToLbConversion(kg);
-                setWeightLb(lb > 0 ? lb : "");
-                setWeightKg(kg > 0 ? kg : "");
+                setWeightLb(lb > 0 ? lb : '');
+                setWeightKg(kg > 0 ? kg : '');
             }
         }
     }
