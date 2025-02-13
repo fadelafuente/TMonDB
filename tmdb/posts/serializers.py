@@ -2,9 +2,9 @@ from django.core.exceptions import ValidationError
 from django.db import transaction
 from rest_framework import serializers
 
-from .models import Post
 from articles.models import Article
 from articles.serializers import ArticleSerializer, ArticleCreatorSerializer
+from .models import Post
 
 MAX_POST_LENGTH = 300
 

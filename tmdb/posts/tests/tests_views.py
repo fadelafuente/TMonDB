@@ -5,8 +5,8 @@ from django.utils import timezone
 import json
 from rest_framework.test import APITestCase
 
-from posts.models import Post
 from articles.models import Article
+from posts.models import Post
 
 AppUser = get_user_model()
 
@@ -238,13 +238,14 @@ class TestPosts(APITestCase):
 
     def test_delete_parent(self):
         self.client.force_authenticate(user=self.user1)
+        
+        article_id = self.post.article.id
 
         # Create comment
-        data = {'content': 'TESTING!!!', 'is_reply': True, 'parent': self.post.id}
+        data = {'content': 'Testing: is child comment', 'is_reply': True, 'parent': article_id}
         response = self.client.post('/api/posts/', data=json.dumps(data), content_type='application/json')
 
         # Delete parent post
-        article_id = self.post.article.id
         self.client.delete(f'/api/posts/{self.post.id}/')
         comment_response = self.client.get(f'/api/posts/{response.data['id']}/')
         deleted_response = self.client.get(f'/api/posts/{self.post.id}/')
