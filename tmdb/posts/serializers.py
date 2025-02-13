@@ -44,10 +44,4 @@ class PostScrollSerializer(PostSerializer):
     user_liked = serializers.BooleanField()
     user_reposted = serializers.BooleanField()
     user_commented = serializers.BooleanField()
-    article = ArticleCreatorSerializer()
-
-    class Meta:
-        model = Post
-        fields = ('id', 'content', 'posted_date', 'comments_count', 'article',
-                  'likes_count', 'reposts_count', 'parent', 'is_reply', 'is_current_user',
-                  'user_liked', 'user_reposted', 'user_commented')
+    article = ArticleCreatorSerializer()        

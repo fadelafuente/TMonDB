@@ -15,7 +15,6 @@ class Post(models.Model):
     image = models.FileField(upload_to='images/', blank=True, null=True)
     posted_date = models.DateTimeField(default=timezone.now, blank=True)
     is_repost = models.BooleanField(default=False)
-    is_reply = models.BooleanField(default=False)
     is_edited = models.BooleanField(default=False)
     parent = models.ForeignKey(Article, related_name='comments', on_delete=models.SET_NULL, blank=True, null=True)
     

@@ -26,7 +26,3 @@ class MonsterScrollSerializer(MonsterSerializer):
     reposts_count = models.IntegerField()
     comments_count = models.IntegerField()
     article = ArticleCreatorSerializer()
-
-    class Meta:
-        model = Monster
-        fields = '__all__'

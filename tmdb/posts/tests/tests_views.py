@@ -59,11 +59,10 @@ class TestPosts(APITestCase):
     def test_post_comment(self):
         self.client.force_authenticate(user=self.user1)
 
-        data = {'content': 'Testing replying to a previously made post.', 'is_reply': True, 'parent': self.post.article.id}
+        data = {'content': 'Testing replying to a previously made post.', 'parent': self.post.article.id}
         response = self.client.post('/api/posts/', data=json.dumps(data), content_type='application/json')
 
         self.assertEqual(response.status_code, 201)
-        self.assertTrue(response.data['is_reply'])
         self.assertEqual(response.data['parent'], self.post.article.id)
 
     '''
@@ -73,7 +72,8 @@ class TestPosts(APITestCase):
         expected = {'id': self.post.id, 'content': self.post.content, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 0, 
                     'parent': None, 'posted_date': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), 
                     'article': OrderedDict({'id': self.post.article.id, 'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username})}),
-                    'is_reply': False, 'is_current_user': False, 'user_liked': False, 'user_reposted': False, 'user_commented': False}
+                    'is_current_user': False, 'user_liked': False, 'user_reposted': False, 'user_commented': False,
+                    'image': None, 'is_repost': self.post.is_repost, 'is_edited': self.post.is_edited}
 
         response = self.client.get(f'/api/posts/{self.post.id}/')
         
@@ -86,7 +86,8 @@ class TestPosts(APITestCase):
         expected = {'id': self.post.id, 'content': self.post.content, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 0, 
                     'parent': None, 'posted_date': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), 
                     'article': OrderedDict({'id': self.post.article.id, 'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username})}),
-                    'is_reply': False, 'is_current_user': True, 'user_liked': False, 'user_reposted': False, 'user_commented': False}
+                    'is_current_user': True, 'user_liked': False, 'user_reposted': False, 'user_commented': False,
+                    'image': None, 'is_repost': self.post.is_repost, 'is_edited': self.post.is_edited}
         
         response = self.client.get(f'/api/posts/{self.post.id}/')
         
@@ -238,11 +239,11 @@ class TestPosts(APITestCase):
 
     def test_delete_parent(self):
         self.client.force_authenticate(user=self.user1)
-        
+
         article_id = self.post.article.id
 
         # Create comment
-        data = {'content': 'Testing: is child comment', 'is_reply': True, 'parent': article_id}
+        data = {'content': 'Testing: is child comment', 'parent': article_id}
         response = self.client.post('/api/posts/', data=json.dumps(data), content_type='application/json')
 
         # Delete parent post
