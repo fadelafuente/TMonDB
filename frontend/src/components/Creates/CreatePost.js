@@ -1,11 +1,11 @@
-import { Modal, Row, Col } from "react-bootstrap";
+import { Modal, Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { BsImages } from "react-icons/bs";
-import { DiscardModal } from "../Modals/DiscardModal";
-import { useCreatePost, useDiscardModal } from "../../hooks/hooks";
+import { BsImages } from 'react-icons/bs';
+import { DiscardModal } from '../Modals/DiscardModal';
+import { useCreatePost, useDiscardModal } from '../../hooks/hooks';
 
-export default function CreatePost({show, setShow, is_reply=false, parent=null}) {
+export default function CreatePost({show, setShow, parent=null}) {
     const initialForm = {
         content: ''
     };
@@ -18,7 +18,7 @@ export default function CreatePost({show, setShow, is_reply=false, parent=null})
     return (
         <>
             <Modal 
-                className="create-post"
+                className='create-post'
                 show={show}
             >
                 <Modal.Header>
@@ -26,34 +26,34 @@ export default function CreatePost({show, setShow, is_reply=false, parent=null})
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
-                        <Form.Group controlId="auto-resizing">
+                        <Form.Group controlId='auto-resizing'>
                         <Form.Control 
-                            as="textarea"
-                            className="input-textarea" 
-                            placeholder="howdy! What will you say?"
+                            as='textarea'
+                            className='input-textarea' 
+                            placeholder='howdy! What will you say?'
                             value={ content }
-                            name="content"
+                            name='content'
                             onChange={ e => resetFormData(e) } 
                         />
                         </Form.Group>
                     </Form>
                 </Modal.Body>
-                <Modal.Footer className="row-gap-container outer-modal-footer">
+                <Modal.Footer className='row-gap-container outer-modal-footer'>
                     <Col>
-                        <Row className="no-select">
-                            <Col><Button className="svg-btn svg-resize-btn center-content"><BsImages/></Button></Col>
+                        <Row className='no-select'>
+                            <Col><Button className='svg-btn svg-resize-btn center-content'><BsImages/></Button></Col>
                         </Row>
                     </Col>
-                    <div className="row-gap-container right-justify-container no-margins-container">
+                    <div className='row-gap-container right-justify-container no-margins-container'>
                         <Button 
-                            className="base-btn" 
-                            id="discard-post-btn"
+                            className='base-btn' 
+                            id='discard-post-btn'
                             onClick={ e => setShowDiscard(e) }
                         >
                             Close
                         </Button>
-                        <Button className="base-btn" onClick={e => {
-                                setFormData(e, content, is_reply, parent);
+                        <Button className='base-btn' onClick={e => {
+                                setFormData(e, content, parent);
                                 setShow(false);
                             }}>
                             Post

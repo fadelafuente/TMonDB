@@ -11,21 +11,21 @@ AppUser = get_user_model()
 
 class LikeModelMixin:
     @action(detail=True, methods=['patch'])
-    def like(self, request, pk=None):
-        model = self.get_object()
+    def like(self, request, *args, **kwargs):
+        instance = self.get_object()
         user = request.user
 
-        model.article.who_liked.add(user)
+        instance.article.who_liked.add(user)
 
         return Response(status=status.HTTP_200_OK)
     
 class RepostModelMixin:
     @action(detail=True, methods=['patch'])
-    def repost(self, request, pk=None):
-        model = self.get_object()
+    def repost(self, request, *args, **kwargs):
+        instance = self.get_object()
         user = request.user
 
-        model.article.who_reposted.add(user)
+        instance.article.who_reposted.add(user)
 
         return Response(status=status.HTTP_200_OK)
         

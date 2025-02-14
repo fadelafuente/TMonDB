@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import CreatePost from '../Creates/CreatePost';
 import { useState } from 'react';
 
-import "../../assets/styling/PostCard.css";
+import '../../assets/styling/PostCard.css';
 
 function SocialInteractions({ post=null, isAuthenticated }) {
     const [liked, likes, setLike] = useInteractions(post ? post.likes_count : 0, post ? post.user_liked : 0);
@@ -24,19 +24,19 @@ function SocialInteractions({ post=null, isAuthenticated }) {
 
     return (
         <>
-            <CreatePost show={show} setShow={post ? () => setShow() : () => {}} is_reply={true} parent={post ? post.article.id : null} />
-            <Alert variant="success" className="copy-alert" show={showAlert}>
+            <CreatePost show={show} setShow={post ? () => setShow() : () => {}} parent={post ? post.article.id : null} />
+            <Alert variant='success' className='copy-alert' show={showAlert}>
                 <Alert.Heading>Copied to clipboard.</Alert.Heading>
             </Alert>
-            <Row className="interactions-row">
+            <Row className='interactions-row'>
                 <Col>
-                    <button className="svg-btn" onClick={
+                    <button className='svg-btn' onClick={
                         isAuthenticated ? 
                             post ?
                                 commented ? () => {} : () => setShow(true)
                             :
                                 () => {}
-                        : () => navigate("/login") 
+                        : () => navigate('/login') 
                     }>
                         <Row>
                             <Col className={commented ? 'interaction-icon interacted' : 'interaction-icon'}>
@@ -51,14 +51,14 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                     </button>
                 </Col>
                 <Col>
-                    <button className="svg-btn" name="repost" onClick={ 
+                    <button className='svg-btn' name='repost' onClick={ 
                         isAuthenticated ? 
                             post ?
                                 e => setRepost(e, post.id) 
                             :
                                 () => {}
                         : 
-                            () => navigate("/login")
+                            () => navigate('/login')
                     }>
                         <Row>
                             <Col className={reposted ? 'interaction-icon interacted' : 'interaction-icon'}>
@@ -73,14 +73,14 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                     </button>
                 </Col>
                 <Col>
-                    <button className="svg-btn" name="like" onClick={
+                    <button className='svg-btn' name='like' onClick={
                         isAuthenticated ? 
                             post ?
                                 e => setLike(e, post.id) 
                             :
                                 () => {}
                         : 
-                            () => navigate("/login")
+                            () => navigate('/login')
                     }>
                         <Row>
                             <Col className={liked ? 'interaction-icon interacted' : 'interaction-icon'}>
@@ -96,9 +96,9 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                 </Col>
                 <Col className='share-btn'>
                     <NavDropdown title={<BsShare/>} 
-                        drop={ aboveMid ? "up-centered" : "down-centered" }
+                        drop={ aboveMid ? 'up-centered' : 'down-centered' }
                         onClick={e => setAboveMid(e)}
-                        className="svg-dropdown"
+                        className='svg-dropdown'
                     >
                         <NavDropdown.Item onClick={() => handleCopyLink(
                             post ? 
@@ -107,7 +107,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                                 : 
                                     `deleted/${post.id}` 
                             : 
-                                "home"
+                                'home'
                         )}>
                             Copy link
                         </NavDropdown.Item>

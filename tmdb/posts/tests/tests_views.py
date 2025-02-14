@@ -13,8 +13,8 @@ AppUser = get_user_model()
 class TestPosts(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user1 = AppUser.objects.create_user(email='testemail@domain.com', password='testpassword', username='testuser', first_name='test', last_name='user')
-        cls.user2 = AppUser.objects.create_user(email='testemail2@domain.com', password='testpassword', username='testuser2', first_name='test2', last_name='user2')
+        cls.user1 = AppUser.objects.create_user(email='testemail@domain.com', password='TestPassword123@#$', username='testuser', first_name='test', last_name='user')
+        cls.user2 = AppUser.objects.create_user(email='testemail2@domain.com', password='TestPassword321$#@', username='testuser2', first_name='test2', last_name='user2')
         cls.test_start_time = timezone.now()
 
         for index in range(1, 3):

@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.test import TestCase
 import json
 from rest_framework.test import APITestCase
 
@@ -9,7 +8,7 @@ class TestMonsters(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = AppUser.objects.create_user(email='testemail@domain.com', 
-                                               password='testpassword', 
+                                               password='TestPassword123@#$', 
                                                username='testuser', 
                                                first_name='test', 
                                                last_name='user')

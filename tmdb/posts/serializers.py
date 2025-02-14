@@ -1,16 +1,14 @@
 from django.core.exceptions import ValidationError
-from django.db import transaction
 from rest_framework import serializers
 
-from articles.models import Article
-from articles.serializers import ArticleSerializer, ArticleCreatorSerializer
+from articles.serializers import ArticleCreatorSerializer, ModelWithArticleSerializer
 from .models import Post
 
 MAX_POST_LENGTH = 300
 
-class PostSerializer(serializers.ModelSerializer):
-    article = ArticleSerializer()
-
+class PostSerializer(ModelWithArticleSerializer):
+    model = Post
+    
     class Meta:
         model = Post
         fields = '__all__'
@@ -26,15 +24,6 @@ class PostSerializer(serializers.ModelSerializer):
             self.check_content()
             return True
         return False
-    
-    @transaction.atomic
-    def create(self, validated_data):
-        article_data = validated_data.pop('article')
-
-        article = Article.objects.create(**article_data)
-        instance = Post.objects.create(**validated_data, article=article)
-        
-        return instance
     
 class PostScrollSerializer(PostSerializer):
     likes_count = serializers.IntegerField()

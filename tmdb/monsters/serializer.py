@@ -1,25 +1,12 @@
-from django.db import transaction
-from rest_framework import serializers
-
-
-from articles.serializers import ArticleCreatorSerializer, ArticleSerializer
+from articles.serializers import ArticleCreatorSerializer, ModelWithArticleSerializer
 from .models import *
 
-class MonsterSerializer(serializers.ModelSerializer):
-    article = ArticleSerializer()
+class MonsterSerializer(ModelWithArticleSerializer):
+    model = Monster
 
     class Meta:
         model = Monster
         fields = '__all__'
-
-    @transaction.atomic
-    def create(self, validated_data):
-        article_data = validated_data.pop('article')
-
-        article = Article.objects.create(**article_data)
-        instance = Monster.objects.create(**validated_data, article=article)
-        
-        return instance
 
 class MonsterScrollSerializer(MonsterSerializer):
     likes_count = models.IntegerField()

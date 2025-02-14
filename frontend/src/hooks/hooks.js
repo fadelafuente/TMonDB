@@ -213,11 +213,11 @@ export function useCreatePost(initialForm) {
     const [formData, setFormData] = useAdaptiveFormData(initialForm);
     const navigate = useNavigate();
 
-    function handleCreatePost(e, content, is_reply, parent) {
+    function handleCreatePost(e, content, parent) {
         e.preventDefault();
 
         if(content) {
-            createPost({content, is_reply, parent}).then(response => {
+            createPost({content, parent}).then(response => {
                 if(response && response.status === 201) {
                     navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
                 }

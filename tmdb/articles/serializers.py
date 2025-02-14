@@ -1,20 +1,29 @@
-from django.contrib.auth import get_user_model
+from django.db import transaction
 from rest_framework import serializers
-
 
 from .models import Article
 from users.serializers import CreatorSerializer
-
-AppUser = get_user_model()
 
 class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = '__all__'
 
-class ArticleCreatorSerializer(serializers.ModelSerializer):
+class ArticleCreatorSerializer(ArticleSerializer):
     creator = CreatorSerializer()
     
-    class Meta:
-        model = Article
+    class Meta(ArticleSerializer.Meta):
         fields = ('id', 'creator',)
+
+class ModelWithArticleSerializer(serializers.ModelSerializer):
+    article = ArticleSerializer()
+    model = None
+   
+    @transaction.atomic
+    def create(self, validated_data):
+        article_data = validated_data.pop('article')
+
+        article = Article.objects.create(**article_data)
+        instance = self.model.objects.create(**validated_data, article=article)
+        
+        return instance
