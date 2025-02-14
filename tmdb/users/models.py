@@ -6,19 +6,22 @@ from django.db.models import Count, Case, When, Q
 from django.utils import timezone
 import re
 
+def add_annotations(queryset, user):
+    return queryset.annotate(following_count=Count('following', distinct=True),
+                followers_count=Count('followers', distinct=True),
+                user_follows=Case(When(Q(followers__in=[user.id]), then=True), default=False),
+                current_user=Case(When(Q(id=user.id), then=True), default=False))
+
 # Create your models here.
 class AppUserManager(BaseUserManager):
-    def annotated_queryset(self, user, **kwargs):
+    def get_annotated_queryset(self, user, **kwargs):
         if user.is_authenticated:
             queryset = super().get_queryset().exclude(id__in=list(user.blocked.values_list('id', 
                         flat=True))).filter(**kwargs)
         else:
             queryset = super().get_queryset().filter(**kwargs)
 
-        return queryset.annotate(following_count=Count('following', distinct=True),
-                followers_count=Count('followers', distinct=True),
-                user_follows=Case(When(Q(followers__in=[user.id]), then=True), default=False),
-                current_user=Case(When(Q(id=user.id), then=True), default=False))
+        return add_annotations(queryset, user)
 
     def create_user(self, email, password=None, **kwargs):        
         email = self.normalize_email(email)

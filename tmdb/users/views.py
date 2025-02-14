@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt import views
 
 from .serializers import *
+from .mixins import *
 
 AppUser = get_user_model()
 
@@ -57,33 +58,6 @@ class CustomProviderAuthView(social_views.ProviderAuthView):
         response = super().post(request, *args, **kwargs)
         return _post(response)
     
-class UpdateFollowingMixin:
-    @action(detail=True, methods=['patch'])
-    def follow(self, request, *args, **kwargs):
-        user = self.get_object()
-        current_user = request.user
-
-        if user.id == current_user.id:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'User cannot follow themselves.'})
-        
-        following = current_user.following.filter(id=user.id)
-        if following:
-            current_user.following.remove(user)
-        else:
-            current_user.following.add(user)
-
-        return Response(status=status.HTTP_200_OK)
-            
-class ListFollowingMixin(ListModelMixin):
-    @action(detail=False, methods=['get'])
-    def following(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-    
-class ListFollowersMixin(ListModelMixin):
-    @action(detail=False, methods=['get'])
-    def followers(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-    
 class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin, ListFollowersMixin):
     filter_backends = (filters.OrderingFilter, filters.SearchFilter)
     ordering_fields = ('id', 'username')
@@ -119,15 +93,12 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin, L
         path = self.request.path.split('/')[-2]
         for key, value in self.request.query_params.items():
             if key not in ['page']:
-                if key == 'id':
-                    if path == 'following':
-                        kwargs[f'followers__id__in'] = [int(value)]  
-                    elif path == 'followers':
-                        kwargs[f'following__id__in'] = [int(value)]  
-                else:  
-                    kwargs[key] = value
+                kwargs[key] = value
 
-        return AppUser.objects.annotated_queryset(self.request.user, **kwargs).all()
+        return AppUser.objects.get_annotated_queryset(self.request.user, **kwargs).all()
+    
+    def paginate_queryset(self, queryset):
+        return super().paginate_queryset(queryset)
 
     def get_follow_queryset(self, request, follow_list):
         queryset = AppUser.objects.all().filter(id__in=follow_list).annotate(user_follows=Case(When(Q(followers__id__in=[request.user.id]), then=True), default=False)).annotate(current_user=Q(id=request.user.id))

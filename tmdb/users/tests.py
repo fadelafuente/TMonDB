@@ -34,7 +34,7 @@ class TestPosts(APITestCase):
 
         self.client.patch(f'/auth/users/{self.user2.id}/follow/')
         self.client.patch(f'/auth/users/{self.user3.id}/follow/')
-        response = self.client.get(f'/auth/users/following/?page=1&id={self.user.id}')
+        response = self.client.get(f'/auth/users/{self.user.id}/following/?page=1')
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.data['results']) == 2)
@@ -46,7 +46,7 @@ class TestPosts(APITestCase):
         self.client.patch(f'/auth/users/{self.user2.id}/follow/')
         # second call deletes if already following
         self.client.patch(f'/auth/users/{self.user2.id}/follow/')
-        response = self.client.get(f'/auth/users/following/?page=1&id={self.user.id}')
+        response = self.client.get(f'/auth/users/{self.user.id}/following/?page=1')
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.data['results']) == 0)
@@ -57,13 +57,13 @@ class TestPosts(APITestCase):
         # first call adds if not following
         self.client.patch(f'/auth/users/{self.user2.id}/follow/')
 
-        response = self.client.get(f'/auth/users/followers/?page=1&id={self.user2.id}')
+        response = self.client.get(f'/auth/users/{self.user2.id}/followers/?page=1')
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.data['results']) == 1)
 
     def get_following_anonymous(self):
-        response = self.client.get(f'/auth/users/following/?page=1&id={self.user.id}')
+        response = self.client.get(f'/auth/users/{self.user.id}/following/?page=1')
 
         self.assertEqual(response.status_code, 200)
 
@@ -145,7 +145,7 @@ class TestPosts(APITestCase):
         self.client.patch(f'/auth/users/{self.user3.id}/follow/')
 
         response = self.client.patch(f'/auth/users/block/', data=json.dumps({'username': self.user2.username}), content_type='application/json')
-        response = self.client.get(f'/auth/users/following/?page=1&id={self.user.id}')
+        response = self.client.get(f'/auth/users/{self.user.id}/following/?page=1')
 
         for user in response.data['results']:
             if self.user2.id == user['id']:
@@ -161,7 +161,7 @@ class TestPosts(APITestCase):
         self.client.patch(f'/auth/users/block/', data=json.dumps({'username': self.user.username}), content_type='application/json')
 
         self.client.force_authenticate(user=self.user)
-        response = self.client.get(f'/auth/users/following/?page=1&id={self.user.id}')
+        response = self.client.get(f'/auth/users/{self.user.id}/following/?page=1')
         
         self.assertTrue(response.data['results'] == [])
 
@@ -171,12 +171,12 @@ class TestPosts(APITestCase):
 
         self.client.force_authenticate(user=self.user2)
         self.client.patch(f'/auth/users/block/', data=json.dumps({'username': self.user.username}), content_type='application/json')
-        response = self.client.get(f'/auth/users/followers/?page=1&id={self.user2.id}')
+        response = self.client.get(f'/auth/users/{self.user2.id}/followers/?page=1')
         self.assertTrue(response.data['results'] == [])
 
         # Unblocking does not refollow
         self.client.patch(f'/auth/users/block/', data=json.dumps({'username': self.user.username}), content_type='application/json')
-        response = self.client.get(f'/auth/users/followers/?page=1&id={self.user.id}')
+        response = self.client.get(f'/auth/users/{self.user.id}/followers/?page=1')
         self.assertTrue(response.data['results'] == [])
 
     def test_get_followers_list_after_being_blocked(self):
@@ -187,7 +187,7 @@ class TestPosts(APITestCase):
         self.client.patch(f'/auth/users/block/', data=json.dumps({'username': self.user.username}), content_type='application/json')
 
         self.client.force_authenticate(user=self.user)
-        response = self.client.get(f'/auth/users/followers/?page=1&id={self.user.id}')
+        response = self.client.get(f'/auth/users/{self.user.id}/followers/?page=1')
         self.assertTrue(response.data['results'] == [])
 
     def test_user_blocks_themselves(self):
