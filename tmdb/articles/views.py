@@ -1,34 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.http import Http404
 from rest_framework import viewsets, filters, status
-from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
+from .mixins import *
+
 AppUser = get_user_model()
-
-class LikeModelMixin:
-    @action(detail=True, methods=['patch'])
-    def like(self, request, *args, **kwargs):
-        instance = self.get_object()
-        user = request.user
-
-        instance.article.who_liked.add(user)
-
-        return Response(status=status.HTTP_200_OK)
-    
-class RepostModelMixin:
-    @action(detail=True, methods=['patch'])
-    def repost(self, request, *args, **kwargs):
-        instance = self.get_object()
-        user = request.user
-
-        instance.article.who_reposted.add(user)
-
-        return Response(status=status.HTTP_200_OK)
-        
 
 class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet):
     permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES

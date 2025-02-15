@@ -26,42 +26,29 @@ UserModel = get_user_model()
 #             raise ValidationError('User not found')
 #         return user
 
-class UserCreateSerializer(UserCreateSerializer):
+class UserSerializer(BaseSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = UserModel
         fields = '__all__'
 
-class UserSerializer(BaseSerializer):
-    class Meta(BaseSerializer.Meta):
-        model = UserModel
-        fields = ('id', 'username', 'bio')
-
 class CreatorSerializer(UserSerializer):
-    class Meta(BaseSerializer.Meta):
-        model = UserModel
+    class Meta(UserSerializer.Meta):
         fields = ('id', 'username')
 
-class CurrentUserSerializer(BaseSerializer):
-    class Meta(BaseSerializer.Meta):
-        model = UserModel
+class CurrentUserSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
         fields = ('id', 'username', 'email')
 
-class PatchSerializer(UserSerializer):
-    class Meta(UserSerializer.Meta):
-        model = UserModel
-        fields = ('id',)
-
-class FollowingSerializer(UserSerializer):
+class FollowSerializer(UserSerializer):
     user_follows = serializers.BooleanField()
     current_user = serializers.BooleanField()
 
     class Meta(UserSerializer.Meta):
         fields = ('id', 'username', 'bio', 'user_follows', 'current_user')
 
-class ProfileSerializer(UserSerializer):
+class ProfileSerializer(FollowSerializer):
     following_count = serializers.IntegerField()
     followers_count = serializers.IntegerField()
 
     class Meta(UserSerializer.Meta):
-        model = UserModel
-        fields = ('id', 'username', 'bio', 'following_count', 'followers_count', 'following', 'followers')
+        fields = ('id', 'username', 'bio', 'following_count', 'followers_count', 'user_follows', 'current_user')

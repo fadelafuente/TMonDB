@@ -2,7 +2,7 @@ import { useEffect, useCallback, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { deletePostById, createPost, updatePostById } from '../actions/posts';
 import { handleValidation, handleDuplicatesInArray, handleHeightConversion, handleLbToKgConversion, handleKgToLbConversion } from '../functions/handlers';
-import { followUser, getCurrentUserDetails, getFollowById, getUserProfile, updateDetails } from '../actions/auth';
+import { followUser, getCurrentUserDetails, getFollowByUsername, getUserProfile, updateDetails } from '../actions/auth';
 
 export function useSocialAuth(provider, socialAuthenticate) {
     const location = useLocation();
@@ -411,7 +411,7 @@ export function useTimedAlert(initial_state) {
     return [showAlert, setShowAlert];
 }
 
-export function useUserFollow(uid, pageNumber, follow_type, query) {
+export function useUserFollow(username, pageNumber, follow_type, query) {
     const [loading, setLoading] = useState(true);
     const [follow, setFollow] = useState([]);
     const [hasMore, setHasMore] = useState(true);
@@ -426,8 +426,8 @@ export function useUserFollow(uid, pageNumber, follow_type, query) {
             let query_details = { 'page': pageNumber }
             if(query) query_details['search'] = query
 
-            if (uid) {
-                getFollowById(uid, follow_type, query_details).then((response) => {
+            if (username) {
+                getFollowByUsername(username, follow_type, query_details).then((response) => {
                     if(response) {
                         setFollow(prevUsers => {
                             let result = [];
@@ -452,9 +452,9 @@ export function useUserFollow(uid, pageNumber, follow_type, query) {
     return [ loading, follow, hasMore ];
 }
 
-export function usePaginatedUserFollow(uid, follow_type, query) {
+export function usePaginatedUserFollow(username, follow_type, query) {
     const [pageNumber, setPageNumber] = useState(1);
-    const [ loading, users, hasMore ] = useUserFollow(uid, pageNumber, follow_type, query);
+    const [ loading, users, hasMore ] = useUserFollow(username, pageNumber, follow_type, query);
     const observer = useRef();
 
     useEffect(() => {

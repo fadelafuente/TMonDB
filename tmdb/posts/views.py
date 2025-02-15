@@ -14,8 +14,6 @@ class PostViewSet(BaseArticleViewSet):
     model = Post
 
     def get_serializer_class(self):
-        if self.action == 'create':
-            return PostSerializer
-        elif self.action in ['list', 'retrieve', 'destroy']:
+        if self.action in ['list', 'retrieve', 'destroy']:
             return PostScrollSerializer
         return self.serializer_class

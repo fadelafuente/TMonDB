@@ -1,5 +1,4 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Count, Case, When, Q
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin
@@ -27,22 +26,12 @@ class UpdateFollowingMixin:
         return Response(status=status.HTTP_200_OK)
             
 class ListFollowingMixin(ListModelMixin):
-    def get_follow_list_response(self, queryset):
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-
-
     @action(detail=True, methods=['get'])
     def following(self, request, *args, **kwargs):
         instance = self.get_object()
         queryset = add_annotations(instance.following, request.user).all()
 
-        return self.get_follow_list_response(queryset)        
+        return self.get_paginated_queryset(queryset)        
     
 class ListFollowersMixin(ListModelMixin):
     @action(detail=True, methods=['get'])
@@ -50,4 +39,32 @@ class ListFollowersMixin(ListModelMixin):
         instance = self.get_object()
         queryset = add_annotations(instance.followers, request.user).all()
 
-        return self.get_follow_list_response(queryset)   
+        return self.get_paginated_queryset(queryset) 
+
+class UpdateBlockingMixin: 
+    @action(detail=True, methods=['patch'])
+    def block(self, request, *args, **kwargs):
+        user = self.get_object()
+        current_user = request.user
+
+        if user.id == current_user.id:
+            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'User cannot block themselves.'})
+        
+        blocking = current_user.blocking.filter(id=user.id)
+        if blocking:
+            current_user.blocking.remove(user)
+        else:
+            current_user.blocking.add(user)
+            user.following.remove(current_user.id)
+            current_user.following.remove(user.id)
+
+        return Response(status=status.HTTP_200_OK)
+    
+class ListBlockingMixin:
+    @action(detail=False, methods=['get'])
+    def blocking(self, request, *args, **kwargs):
+        self.get_object = self.get_instance
+        instance = self.get_object()
+        queryset = add_annotations(instance.blocking, request.user).all()
+
+        return self.get_paginated_queryset(queryset) 

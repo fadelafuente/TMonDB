@@ -4,8 +4,8 @@ import FollowCard from "./Cards/FollowCard";
 
 import "../assets/styling/content.css";
 
-export default function FollowList({uid, follow_type, query}) {
-    const [users, lastUser] = usePaginatedUserFollow(uid, follow_type, query);
+export default function FollowList({username, follow_type, query}) {
+    const [users, lastUser] = usePaginatedUserFollow(username, follow_type, query);
 
     return (
         <>
