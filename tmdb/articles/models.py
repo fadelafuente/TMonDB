@@ -17,9 +17,7 @@ class ArticleManager(models.Manager):
                             comments_count=Count('article__comments', distinct=True),
                             is_current_user=Q(article__creator__id=user.id),
                             user_liked=Case(When(Q(article__who_liked__in=[user.id]), then=True), default=False),
-                            user_reposted=Case(When(Q(article__who_reposted__in=[user.id]), then=True), default=False),
-                            user_commented=Q(parent__comments__article__creator__isnull=False) & 
-                            Q(parent__comments__article__creator__id=user.id))
+                            user_reposted=Case(When(Q(article__who_reposted__in=[user.id]), then=True), default=False))
 
 # Create your models here.
 class Article(models.Model):

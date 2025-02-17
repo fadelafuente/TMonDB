@@ -1,32 +1,39 @@
 from django.contrib.auth import get_user_model
 from djoser.serializers import UserCreateSerializer, UserSerializer as BaseSerializer
 from rest_framework import serializers
+import re
 
 UserModel = get_user_model()
 
-# class UserRegisterSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = UserModel
-#         fields = '__all__'
-
-#     def create(self, clean_data):
-#         user_object = UserModel.objects.create_user(email=clean_data['email'],
-#                                                     password=clean_data['password'])
-#         user_object.username = clean_data['username']
-#         user_object.save()
-#         return user_object
-
-# class UserLoginSerializer(serializers.Serializer):
-#     email = serializers.EmailField()
-#     password = serializers.CharField()
-
-#     def check_user(self, clean_data):
-#         user = authenticate(username=clean_data['email'], password=clean_data['password'])
-#         if not user:
-#             raise ValidationError('User not found')
-#         return user
-
 class UserSerializer(BaseSerializer):
+    def validate_username(self, username):
+        if not username:
+            raise serializers.ValidationError('A username is required.')
+        if not username.isalnum():
+            raise serializers.ValidationError('Username has one or more illegal characters, please only use alphanumeric characters.')
+        return username
+    
+    def validate_password(self, password):
+        if password:
+            regex = re.compile('[@_!#$%^&*()<>?/|}{~:]')
+            missing_requirements = []
+            if len(password) < 8:
+                missing_requirements.append('at least 8 characters')
+            if len(password) > 20:
+                missing_requirements.append('at most 20 characters')
+            if not any(ele.isupper() for ele in password):
+                missing_requirements.append('at least 1 uppercase')
+            if not any(ele.islower() for ele in password):
+                missing_requirements.append('at least 1 lowercase')
+            if not any(ele.isdigit() for ele in password):
+                missing_requirements.append('at least 1 number')
+            if(regex.search(password) == None):
+                missing_requirements.append('at least 1 special character')
+            
+            if missing_requirements:
+                message = 'Password is missing: ' + ', '.join(requirement for requirement in missing_requirements) + '.'
+                raise serializers.ValidationError(message)
+        
     class Meta(UserCreateSerializer.Meta):
         model = UserModel
         fields = '__all__'

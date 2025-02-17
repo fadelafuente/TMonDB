@@ -21,14 +21,14 @@ export default function FollowContent({ query }) {
                 <div className="user-content">
                     <Tabs defaultActiveKey={ initial_type } activeKey={ followType } onSelect={ (k) => setFollowType(k) } fill>
                         <Tab eventKey="following" title="Following">
-                            { profile && profile.blocked_current_user ?
+                            { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={creator} />
                             :
                                 <FollowList username={profile ? profile.username : null} follow_type="following" query={query} />
                             }
                         </Tab>
                         <Tab eventKey="followers" title="Followers">
-                            { profile && profile.blocked_current_user ?
+                            { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={creator} />
                             :
                                 <FollowList username={profile ? profile.username : null} follow_type="followers" query={query} />

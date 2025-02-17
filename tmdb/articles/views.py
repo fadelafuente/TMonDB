@@ -55,5 +55,5 @@ class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet
             # differentiate between a delete and a block
             model = self.model.objects.filter(id=kwargs['pk'])
             if model.exists():
-                return Response(status=status.HTTP_403_FORBIDDEN, data={'is_blocked': True, 'creator': model.first().article.creator.username})
+                return Response(status=status.HTTP_403_FORBIDDEN, data={'current_user_is_blocked': True, 'creator': model.first().article.creator.username})
             return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': f'Post not found'})         

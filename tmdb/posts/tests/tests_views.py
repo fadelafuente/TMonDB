@@ -134,7 +134,7 @@ class TestPosts(APITestCase):
 
         self.assertTrue(excludes_blocked_user)
 
-    def test_get_posts_without_posts_by_user_who_blocked_current_user(self):
+    def test_get_posts_without_posts_by_user_who_current_user_is_blocked(self):
         self.client.force_authenticate(user=self.user2)
         self.user1.blocking.set([self.user2.id])
         username = self.user1.username

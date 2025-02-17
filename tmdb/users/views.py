@@ -108,5 +108,5 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin,
             username = kwargs['username']
             user = AppUser.objects.filter(username=username)
             if user.exists():
-                return Response(status=status.HTTP_403_FORBIDDEN, data={'blocked_current_user': True, 'creator': username}) 
+                return Response(status=status.HTTP_403_FORBIDDEN, data={'current_user_is_blocked': True, 'creator': username}) 
             return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': f'User not found'})      

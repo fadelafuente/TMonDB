@@ -69,7 +69,7 @@ function ProfileInfo({isAuthenticated}) {
                             {
                                 isAuthenticated ?
                                     profile ? 
-                                        profile.blocked_current_user ?
+                                        profile.current_user_is_blocked ?
                                             <Button disabled className='base-btn reverse-base-btn'>
                                                 Follow
                                             </Button>
@@ -115,28 +115,28 @@ function ProfileInfo({isAuthenticated}) {
                 <div className='user-content'>
                     <Tabs fill>
                         <Tab eventKey='posts' title='Posts' id='is-active'>
-                            { profile && profile.blocked_current_user ?
+                            { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={profile.username} />
                             :
                                 <PostArticle kwargs={{username: creator}} />
                             }
                         </Tab>
                         <Tab eventKey='replies' title='Replies'>
-                            { profile && profile.blocked_current_user ?
+                            { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={profile.username} />
                             :
                                 <PostArticle kwargs={{username: creator}} />
                             }
                         </Tab>
                         <Tab eventKey='monsters' title='Monsters'>
-                            { profile && profile.blocked_current_user ?
+                            { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={profile.username} />
                             :
                                 'all of user\'s monsters'
                             }
                         </Tab>
                         <Tab eventKey='regions' title='Regions'>
-                            { profile && profile.blocked_current_user ?
+                            { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={profile.username} />
                             :
                                 'all of user\'s regions'

@@ -25,7 +25,6 @@ class AppUserManager(BaseUserManager):
 
     def create_user(self, email, password=None, **kwargs):        
         email = self.normalize_email(email)
-        self.inputValidation(email, kwargs['username'], password)
 
         user = self.model(email=email, **kwargs)
         user.set_password(password)
@@ -41,44 +40,6 @@ class AppUserManager(BaseUserManager):
         user.is_superuser = True
         user.save()
         return user
-    
-    def inputValidation(self, email, username, password):
-        self.validateEmail(email)
-        self.validateUsername(username)
-        self.validatePassword(password)
-
-    def validateEmail(self, email):
-        if not email:
-            raise ValueError('An email is required.')
-        elif self.filter(email=email).exists():
-            raise ValidationError('Account with that email already exists.')
-
-    def validateUsername(self, username):
-        if not username:
-            raise KeyError('A username is required.')
-        if self.filter(username=username).exists():
-            raise ValueError('Account with that username already exists.')
-
-    def validatePassword(self, password):
-        if password:
-            regex = re.compile('[@_!#$%^&*()<>?/|}{~:]')
-            missing_requirements = []
-            if len(password) < 8:
-                missing_requirements.append('at least 8 characters')
-            if len(password) > 20:
-                missing_requirements.append('at most 20 characters')
-            if not any(ele.isupper() for ele in password):
-                missing_requirements.append('at least 1 uppercase')
-            if not any(ele.islower() for ele in password):
-                missing_requirements.append('at least 1 lowercase')
-            if not any(ele.isdigit() for ele in password):
-                missing_requirements.append('at least 1 number')
-            if(regex.search(password) == None):
-                missing_requirements.append('at least 1 special character')
-            
-            if missing_requirements:
-                message = 'Password is missing: ' + ', '.join(requirement for requirement in missing_requirements) + '.'
-                raise ValidationError(message)
     
 class AppUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)

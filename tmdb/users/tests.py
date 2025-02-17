@@ -11,6 +11,23 @@ class TestPosts(APITestCase):
         cls.user2 = AppUser.objects.create_user(email='testemail2@domain.com', password='TestPassword321$#@', username='testuser2', first_name='test2', last_name='user2')
         cls.user3 = AppUser.objects.create_user(email='testemail3@domain.com', password='TestPassword987^&*', username='testuser3', first_name='test3', last_name='user3')
 
+    def test_create_username_is_invalid(self):
+        data = {'email': 'testemail4@domain.com', 'password': 'TestPassword123^%$', 'username': 'test@user!', 'first_name': 'test', 'last_name': 'user4'}
+
+        response = self.client.post('/auth/users/', data=json.dumps(data), content_type='application/json')
+
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_password_is_invalid(self):
+        data = {'email': 'testemail4@domain.com', 'password': 'testpassword', 'username': 'testuser4', 'first_name': 'test', 'last_name': 'user4'}
+
+        expected_response = 'Password is missing: at least 1 uppercase, at least 1 number, at least 1 special character.'
+
+        response = self.client.post('/auth/users/', data=json.dumps(data), content_type='application/json')
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(str(response.data['password'][0]), expected_response)
+    
     # Not necessary to test, here for me to see how updating usernames would work
     def test_update_username(self):
         self.client.force_authenticate(user=self.user)
@@ -133,7 +150,7 @@ class TestPosts(APITestCase):
         self.client.force_authenticate(user=self.user)
         response = self.client.get(f'/auth/users/{self.user2.username}/')
 
-        self.assertTrue(response.data['blocked_current_user'])
+        self.assertTrue(response.data['current_user_is_blocked'])
 
     def test_get_following_list_after_blocking(self):
         self.client.force_authenticate(user=self.user)
