@@ -1,6 +1,8 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models import Count, Q, Case, When
-from django.contrib.auth import get_user_model
+from django.utils import timezone
+
 
 UserModel = get_user_model()
 
@@ -22,5 +24,6 @@ class ArticleManager(models.Manager):
 # Create your models here.
 class Article(models.Model):
     creator = models.ForeignKey(UserModel, related_name='articles', on_delete=models.SET_NULL, null=True, blank=True)
+    date_created = models.DateTimeField(default=timezone.now, blank=True)
     who_liked = models.ManyToManyField(UserModel, related_name='liked_posts', blank=True)
     who_reposted = models.ManyToManyField(UserModel, related_name='reposts', blank=True)

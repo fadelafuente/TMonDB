@@ -70,9 +70,9 @@ export function handleValidation(pw) {
     }
 }
 
-export function handleTimeDifference(posted_date) {
+export function handleTimeDifference(date_created) {
     const current_date = new Date();
-    const time = Date.parse(posted_date);
+    const time = Date.parse(date_created);
     const seconds = (current_date - time) / 1000;
     const minutes = Math.floor(seconds/60);
     const hours = Math.floor(minutes/60);

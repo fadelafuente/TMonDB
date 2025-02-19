@@ -20,8 +20,8 @@ class TestMonsters(APITestCase):
         cls.test_start_time = timezone.now()
         
         for index in range(1, 3):
-            article = Article.objects.create(creator=cls.user)
-            Monster.objects.create(name=f'Monster {index}', date_created=cls.test_start_time, article=article)
+            article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
+            Monster.objects.create(name=f'Monster {index}', article=article)
 
         cls.monster = Monster.objects.all()[0]
 
@@ -33,15 +33,47 @@ class TestMonsters(APITestCase):
         
         self.assertEqual(response.status_code, 201)
 
+    def test_create_monster_allow_numbers(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'name': '0b10'}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_monster_allow_apostrophes(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'name': 'Mak\'Wahurt'}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_monster_capitalize_name_and_allow_dashes(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'name': 'zea-Zaya'}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['name'], 'Zea-Zaya')
+
+    def test_create_monster_allow_accented_characters(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'name': 'Liloriña'}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 201)
+
     def test_get_monster(self):
         self.client.force_authenticate(user=self.user)
-        # regex = re.compile('[a-zA-Z]+[a-zA-Z0-9\s\']*')
 
         expected_data = {'id': self.monster.id, 'article': OrderedDict({'id': self.monster.article.id, 
-                        'creator': OrderedDict({'id': self.monster.article.creator.id, 'username': self.monster.article.creator.username})}), 
-                        'name': self.monster.name, 'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), 'national_id': None, 
-                        'species': None, 'avg_weight': None, 'avg_height': None, 'description': None, 'etymology': None, 'hidden_ability': None, 
-                        'types': [], 'abilities': []}
+                        'creator': OrderedDict({'id': self.monster.article.creator.id, 'username': self.monster.article.creator.username}), 
+                        'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'name': self.monster.name, 
+                        'national_id': None, 'species': None, 'avg_weight': None, 'avg_height': None, 'description': None, 
+                        'etymology': None, 'hidden_ability': None, 'types': [], 'abilities': []}
 
         response = self.client.get(f'/api/monsters/{self.monster.id}/')
 

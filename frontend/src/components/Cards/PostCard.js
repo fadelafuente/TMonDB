@@ -74,7 +74,7 @@ function PostCard({ post, isAuthenticated }) {
                                     <Col className="time-col" id="time-col">
                                         <Row className="center-row-items">
                                             <Col>
-                                                { post ? handleTimeDifference(post.posted_date) : <Placeholder xs={4} /> }
+                                                { post ? handleTimeDifference(post.article.date_created) : <Placeholder xs={4} /> }
                                             </Col>
                                             <Col className="more-col">
                                                 <div className="base-btn rounded-btn">

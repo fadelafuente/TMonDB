@@ -1,7 +1,22 @@
+import re
+from rest_framework import serializers
+
 from articles.serializers import ArticleCreatorSerializer, ModelWithArticleSerializer
 from .models import *
 
 class MonsterSerializer(ModelWithArticleSerializer):
+    def validate_name(self, name):
+        regex = re.compile(r'^[a-zA-Z0-9À-ÖØ-öø-ÿ\'-]+$')
+        if(regex.match(name) == None):
+                raise serializers.ValidationError('Monster name is invalid.')
+        return name
+        
+    def validate(self, attrs):
+         if 'name' in attrs and attrs['name'] is not None:
+            attrs['name'] = attrs['name'][0].upper() + attrs['name'][1:]
+            
+         return super().validate(attrs)
+    
     model = Monster
 
     class Meta:
@@ -17,4 +32,4 @@ class RetrieveMonsterSerializer(MonsterSerializer):
 class MonsterScrollSerializer(RetrieveMonsterSerializer):
     class Meta(RetrieveMonsterSerializer.Meta):
         fields = ['likes_count', 'repost_count', 'comments_count', 'article',
-                  'name', 'date_created', 'description', 'species', 'types']
+                  'name', 'description', 'species', 'types']

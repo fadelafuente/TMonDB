@@ -8,8 +8,8 @@ AppUser = get_user_model()
 
 class PostViewSet(BaseArticleViewSet):
     serializer_class = PostSerializer
-    ordering_fields = ('id', 'posted_date', 'likes_count')
-    ordering = ('-posted_date')
+    ordering_fields = ('id', 'article__date_created', 'likes_count')
+    ordering = ('-article__date_created')
     search_fields = ['content', 'article__creator__username']
     model = Post
 

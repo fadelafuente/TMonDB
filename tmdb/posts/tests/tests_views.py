@@ -18,12 +18,12 @@ class TestPosts(APITestCase):
         cls.test_start_time = timezone.now()
 
         for index in range(1, 3):
-            article = Article.objects.create(creator=cls.user1)
-            Post.objects.create(content=f'test post {index}', posted_date=cls.test_start_time, article=article)
+            article = Article.objects.create(creator=cls.user1, date_created=cls.test_start_time)
+            Post.objects.create(content=f'test post {index}', article=article)
 
         for index in range(1, 3):
-            article = Article.objects.create(creator=cls.user2)
-            Post.objects.create(content=f'test post {index}', posted_date=cls.test_start_time, article=article)
+            article = Article.objects.create(creator=cls.user2, date_created=cls.test_start_time)
+            Post.objects.create(content=f'test post {index}', article=article)
         
         cls.post = Post.objects.all()[0]
 
@@ -70,10 +70,9 @@ class TestPosts(APITestCase):
     '''
     def test_get_post_anonymous(self):
         expected = {'id': self.post.id, 'content': self.post.content, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 0, 
-                    'parent': None, 'posted_date': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), 
-                    'article': OrderedDict({'id': self.post.article.id, 'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username})}),
-                    'is_current_user': False, 'user_liked': False, 'user_reposted': False, 'user_commented': False,
-                    'image': None, 'is_repost': self.post.is_repost, 'is_edited': self.post.is_edited}
+                    'parent': None, 'article': OrderedDict({'id': self.post.article.id, 'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username}), 
+                    'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'is_current_user': False, 'user_liked': False, 
+                    'user_reposted': False, 'user_commented': False, 'image': None, 'is_repost': self.post.is_repost, 'is_edited': self.post.is_edited}
 
         response = self.client.get(f'/api/posts/{self.post.id}/')
         
@@ -84,10 +83,9 @@ class TestPosts(APITestCase):
         self.client.force_authenticate(user=self.user1)
 
         expected = {'id': self.post.id, 'content': self.post.content, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 0, 
-                    'parent': None, 'posted_date': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), 
-                    'article': OrderedDict({'id': self.post.article.id, 'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username})}),
-                    'is_current_user': True, 'user_liked': False, 'user_reposted': False, 'user_commented': False,
-                    'image': None, 'is_repost': self.post.is_repost, 'is_edited': self.post.is_edited}
+                    'parent': None, 'article': OrderedDict({'id': self.post.article.id, 'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username}), 
+                    'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'is_current_user': True, 'user_liked': False, 
+                    'user_reposted': False, 'user_commented': False, 'image': None, 'is_repost': self.post.is_repost, 'is_edited': self.post.is_edited}
         
         response = self.client.get(f'/api/posts/{self.post.id}/')
         

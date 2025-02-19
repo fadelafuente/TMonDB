@@ -13,7 +13,7 @@ class ArticleCreatorSerializer(ArticleSerializer):
     creator = CreatorSerializer()
     
     class Meta(ArticleSerializer.Meta):
-        fields = ('id', 'creator',)
+        fields = ('id', 'creator', 'date_created')
 
 class ModelWithArticleSerializer(serializers.ModelSerializer):
     article = ArticleSerializer()

@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.utils import timezone
 
 from articles.models import Article, ArticleManager
 from typings.models import Type
@@ -18,7 +17,6 @@ class MonsterManager(ArticleManager):
 # Create your models here.
 class Monster(models.Model):
     name = models.CharField(max_length=30, unique=True)
-    date_created = models.DateTimeField(default=timezone.now, blank=True)
     article = models.OneToOneField(Article, related_name='monster', on_delete=models.CASCADE, null=True, blank=True)
     national_id = models.IntegerField(null=True, blank=True)
     species = models.CharField(max_length=100, null=True, blank=True)

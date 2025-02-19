@@ -76,7 +76,7 @@ function MonCard({post=null, isAuthenticated}) {
                                         <Col className="time-col" id="time-col">
                                             <Row className="center-row-items">
                                                 <Col>
-                                                    { post ? handleTimeDifference(post.posted_date) : "0s" }
+                                                    { post ? handleTimeDifference(post.article.date_created) : "0s" }
                                                 </Col>
                                                 <Col className="more-col">
                                                     <div className="base-btn rounded-btn">
