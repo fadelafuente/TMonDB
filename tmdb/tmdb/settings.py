@@ -47,12 +47,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'rest_framework.authtoken',
     'social_django',
+    'abilities',
+    'articles',
     'monsters',
     'moves',
-    'typings',
-    'users',
     'posts',
-    'articles'
+    'typings',
+    'users'
 ]
 
 MIDDLEWARE = [

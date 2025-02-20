@@ -1,20 +1,15 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from abilities.models import Ability
 from articles.models import Article, ArticleManager
 from typings.models import Type
 
 UserModel = get_user_model()
 
-class Ability(models.Model):
-    name = models.CharField(max_length=100)
-    effect = models.TextField()
-    article = models.OneToOneField(Article, related_name='ability', on_delete=models.CASCADE, null=True, blank=True)
-
 class MonsterManager(ArticleManager):
     pass
 
-# Create your models here.
 class Monster(models.Model):
     name = models.CharField(max_length=30, unique=True)
     article = models.OneToOneField(Article, related_name='monster', on_delete=models.CASCADE, null=True, blank=True)

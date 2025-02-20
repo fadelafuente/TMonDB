@@ -98,6 +98,18 @@ class TestPosts(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data['results']), 4)
 
+    def test_get_all_comments(self):
+        self.client.force_authenticate(user=self.user1)
+
+        data = {'content': 'Testing replying to a previously made post.', 'parent': self.post.article.id}
+        post_response = self.client.post('/api/posts/', data=json.dumps(data), content_type='application/json')
+
+        get_response = self.client.get(f'/api/posts/?page=1&parent={self.post.article.id}')
+
+        self.assertEqual(post_response.status_code, 201)
+        self.assertEqual(get_response.status_code, 200)
+        self.assertEqual(len(get_response.data['results']), 1)
+
     def test_get_posts_by_username_user_found(self):
         username = self.user1.username
         response = self.client.get(f'/api/posts/?page=1&username={username}')

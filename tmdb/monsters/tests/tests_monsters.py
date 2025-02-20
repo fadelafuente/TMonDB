@@ -66,16 +66,43 @@ class TestMonsters(APITestCase):
         
         self.assertEqual(response.status_code, 201)
 
+    def test_create_monster_invalid_name(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'name': 'P!k@cHu'}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 400)
+
     def test_get_monster(self):
         self.client.force_authenticate(user=self.user)
 
         expected_data = {'id': self.monster.id, 'article': OrderedDict({'id': self.monster.article.id, 
                         'creator': OrderedDict({'id': self.monster.article.creator.id, 'username': self.monster.article.creator.username}), 
-                        'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'name': self.monster.name, 
-                        'national_id': None, 'species': None, 'avg_weight': None, 'avg_height': None, 'description': None, 
-                        'etymology': None, 'hidden_ability': None, 'types': [], 'abilities': []}
+                        'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'likes_count': 0, 'reposts_count': 0, 
+                        'comments_count': 0, 'name': self.monster.name, 'national_id': None, 'species': None, 'avg_weight': None, 
+                        'avg_height': None, 'description': None, 'etymology': None, 'hidden_ability': None, 'types': [], 'abilities': []}
 
         response = self.client.get(f'/api/monsters/{self.monster.id}/')
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, expected_data)
+
+    def test_comment_on_monster(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'content': 'This monster is so cool!', 'parent': self.monster.article.id}
+        response = self.client.post('/api/posts/', data=json.dumps(data), content_type='application/json')
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['parent'], self.monster.article.id)
+
+    def test_like_monster(self):
+        self.client.force_authenticate(user=self.user)
+
+        response1 = self.client.get(f'/api/monsters/{self.monster.id}/')
+        response2 = self.client.patch(f'/api/monsters/{self.monster.id}/like/')
+        response3 = self.client.get(f'/api/monsters/{self.monster.id}/')
+        
+        self.assertEqual(response2.status_code, 200)
+        self.assertEqual(response1.data['likes_count'], response3.data['likes_count'] - 1)

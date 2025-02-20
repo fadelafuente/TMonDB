@@ -47,4 +47,4 @@ class Type(models.Model):
 class TypeModifier(models.Model):
     attacking_type = models.ForeignKey(Type, related_name='attack_modifiers', on_delete=models.CASCADE)
     defending_type = models.ForeignKey(Type, related_name='defense_modifiers', on_delete=models.CASCADE)
-    multiplier = models.DecimalField(default=1.0, max_digits=3, decimal_places=1)
+    multiplier = models.DecimalField(default=1.0, max_digits=3, decimal_places=2)
