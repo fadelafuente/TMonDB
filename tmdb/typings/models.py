@@ -4,6 +4,9 @@ from django.utils import timezone
 
 UserModel = get_user_model()
 
+class TypeManager(models.Manager):    
+    pass
+
 class Type(models.Model):
     creator = models.ForeignKey(UserModel, blank=True, null=True, on_delete=models.CASCADE, related_name="types")
     name = models.CharField(max_length=30)
@@ -14,35 +17,21 @@ class Type(models.Model):
 '''
     NOTE: Here so I can figure out how the json data for type advantage would look like.
     {
-        "fire": {
-            "attacking_advantage": {
-                "fire": 0.5,
-                "water": 0.5,
-                "grass" : 2.0
-            },
-            "defending_advantage": {
-                "fire": 0.5,
-                "water": 2.0,
-                "grass": 0.5
-            }
+        types: [{"name": "fire"}, {"name": "water"}, {"name": "grass"}]
+        type_advantages: [
+            {"attacking_type": "fire", "defending_type": "water", "multiplier": 0.5},
+            {"attacking_type": "fire", "defending_type": "grass", "multiplier": 2.0},
+            {"attacking_type": "fire", "defending_type": "fire", "multiplier": 0.5},
+            ...
+        ]
+    }
+
+    [
+        {
+            "name": "fire"
+            "attack_modifiers": {}
         }
-    }
-
-    need to figure out if referenced type for attacking/defending type would be the name, or the id
-    of that type.
-    "attacking_advantage": {
-        "fire": 0.5,
-        "water": 0.5,
-        "grass" : 2.0
-    }
-
-    OR
-
-    "attacking_advantage": {
-        1: 0.5,
-        2: 0.5,
-        3 : 2.0
-    }
+    ]
 '''
 class TypeModifier(models.Model):
     attacking_type = models.ForeignKey(Type, related_name='attack_modifiers', on_delete=models.CASCADE)
