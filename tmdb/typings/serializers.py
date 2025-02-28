@@ -33,10 +33,10 @@ class TypeWithModifiersSerializer(TypeSerializer):
     defense_modifiers = DefenseModifiersSerializer(many=True)
     creator = CreatorSerializer()
 
-# class CreateTypeAndModifiersSerializer(serializers.BaseSerializer):
-#     types = TypeSerializer(many=True)
-#     type_advantages = TypeModifierSerializer(many=True)
+class CreateTypeAndModifiersSerializer(serializers.BaseSerializer):
+    types = TypeSerializer(many=True)
+    type_advantages = TypeModifierSerializer(many=True)
 
-#     class Meta:
-#         model = Type
-#         fields = ['types', 'type_advantages']
+    class Meta:
+        model = Type
+        fields = ['types', 'type_advantages']

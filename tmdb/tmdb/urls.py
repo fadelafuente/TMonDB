@@ -29,7 +29,6 @@ api_router = DefaultRouter()
 api_router.register(r'posts', PostViewSet, basename='Post')
 api_router.register(r'monsters', TMonDBMonsterViewset, basename='Monster')
 api_router.register(r'types', TMonDBTypeViewset)
-api_router.register(r'advantages', TMondDBTypeModifierViewSet)
 
 auth_router = DefaultRouter()
 auth_router.register(r'users', TMonDBUserViewset)
