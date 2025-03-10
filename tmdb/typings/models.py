@@ -5,7 +5,14 @@ from django.utils import timezone
 UserModel = get_user_model()
 
 class TypeManager(models.Manager):    
-    pass
+    def get_annotated_queryset(self, user, **kwargs):
+        if user.is_authenticated:
+            queryset = super().get_queryset().exclude(creator_id__in=list(user.blocking.values_list('id', 
+                        flat=True))).exclude(creator_id__in=list(user.blocked.values_list('id', flat=True))).filter(**kwargs)
+        else:
+            queryset = super().get_queryset().filter(**kwargs)
+        
+        return queryset
 
 class Type(models.Model):
     creator = models.ForeignKey(UserModel, blank=True, null=True, on_delete=models.CASCADE, related_name="types")
@@ -13,26 +20,8 @@ class Type(models.Model):
     date_created = models.DateTimeField(default=timezone.now, null=False)
     locked = models.BooleanField(default= False)
 
+    objects = TypeManager()
 
-'''
-    NOTE: Here so I can figure out how the json data for type advantage would look like.
-    {
-        types: [{"name": "fire"}, {"name": "water"}, {"name": "grass"}]
-        type_advantages: [
-            {"attacking_type": "fire", "defending_type": "water", "multiplier": 0.5},
-            {"attacking_type": "fire", "defending_type": "grass", "multiplier": 2.0},
-            {"attacking_type": "fire", "defending_type": "fire", "multiplier": 0.5},
-            ...
-        ]
-    }
-
-    [
-        {
-            "name": "fire"
-            "attack_modifiers": {}
-        }
-    ]
-'''
 class TypeModifier(models.Model):
     attacking_type = models.ForeignKey(Type, related_name='attack_modifiers', on_delete=models.CASCADE)
     defending_type = models.ForeignKey(Type, related_name='defense_modifiers', on_delete=models.CASCADE)

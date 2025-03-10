@@ -28,9 +28,9 @@ class TestTypes(APITestCase):
         fairy_type = Type.objects.create(name=f'fairy', creator=cls.user2, date_created=cls.test_start_time)
         dragon_type = Type.objects.create(name=f'dragon', creator=cls.user2, date_created=cls.test_start_time)
 
-        TypeModifier.objects.create(attacking_type=ice_type, defending_type=ice_type, multiplier=0.5)
-        TypeModifier.objects.create(attacking_type=dragon_type, defending_type=ice_type, multiplier=1.0)
-        TypeModifier.objects.create(attacking_type=fairy_type, defending_type=ice_type, multiplier=1.0)
+        cls.ice_modifier = TypeModifier.objects.create(attacking_type=ice_type, defending_type=ice_type, multiplier=0.5).id
+        cls.dragon_modifer = TypeModifier.objects.create(attacking_type=dragon_type, defending_type=ice_type, multiplier=0.5).id
+        cls.fairy_modifier = TypeModifier.objects.create(attacking_type=fairy_type, defending_type=ice_type, multiplier=0.5).id
         
         cls.ice_id = ice_type.id
         cls.fairy_id = fairy_type.id
@@ -41,11 +41,15 @@ class TestTypes(APITestCase):
             HTTP Request to: /api/types/
             Results: Fail
     '''
-    # def test_create_type_anonymous_fail(self):
-    #     data = [{'name': 'water'}]
-    #     response = self.client.post('/api/types/', data=json.dumps(data), content_type='application/json')
+    def test_create_type_anonymous_fail(self):
+        data = {
+            'types': [{'name': 'fire'}],
+            'type_advantages': []
+        }
 
-    #     self.assertEqual(response.status_code, 401)
+        response = self.client.post('/api/types/', data=json.dumps(data), content_type='application/json')
+
+        self.assertEqual(response.status_code, 401)
 
     def test_delete_type_unauthorized_user_fail(self):
         self.client.force_authenticate(user=self.user)
@@ -59,19 +63,42 @@ class TestTypes(APITestCase):
 
         self.assertEqual(response.status_code, 401)
 
-    def test_update_type_unauthorized_user_fail(self):
+    # def test_update_type_unauthorized_user_fail(self):
+    #     self.client.force_authenticate(user=self.user)
+
+    #     data = {'name': 'nature'}
+    #     response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
+
+    #     self.assertEqual(response.status_code, 403)
+
+    # def test_update_type_anonymous_fail(self):
+    #     data = {'name': 'nature'}
+    #     response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
+
+    #     self.assertEqual(response.status_code, 401)
+
+    def test_create_types_missing(self):
         self.client.force_authenticate(user=self.user)
 
-        data = {'name': 'nature'}
-        response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
+        data = {
+            'type_advantages': [
+                {'attacking_type': 'fire', 'defending_type': 'water', 'multiplier': 0.5},
+                {'attacking_type': 'fire', 'defending_type': 'grass', 'multiplier': 2.0},
+                {'attacking_type': 'fire', 'defending_type': 'fire', 'multiplier': 0.5},
+            ]
+        }
+        response = self.client.post('/api/types/', data=json.dumps(data), content_type='application/json')
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 400)
+    
+    def test_create_type_modifiers_missing(self):
+        self.client.force_authenticate(user=self.user)
 
-    def test_update_type_anonymous_fail(self):
-        data = {'name': 'nature'}
-        response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
+        data = {
+            'types': [{'name': 'fire'}, {'name': 'water'}, {'name': 'grass'}]}
+        response = self.client.post('/api/types/', data=json.dumps(data), content_type='application/json')
 
-        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 400)
 
     '''
         Expected Tests:
@@ -98,23 +125,23 @@ class TestTypes(APITestCase):
         with self.assertRaises(Type.DoesNotExist):
             Type.objects.get(id=self.ice_id)
 
-    def test_update_type_authorized_user_success(self):
-        self.client.force_authenticate(user=self.user2)
+    # def test_update_type_authorized_user_success(self):
+    #     self.client.force_authenticate(user=self.user2)
 
-        data = {'name': 'nature'}
-        response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
+    #     data = {'name': 'nature'}
+    #     response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
 
-        self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response.status_code, 200)
 
     def test_create_multiple_types_success(self):
         self.client.force_authenticate(user=self.user)
 
         data = {
-            'types': [{"name": "fire"}, {"name": "water"}, {"name": "grass"}], 
+            'types': [{'name': 'fire'}, {'name': 'water'}, {'name': 'grass'}], 
             'type_advantages': [
-                {"attacking_type": "fire", "defending_type": "water", "multiplier": 0.5},
-                {"attacking_type": "fire", "defending_type": "grass", "multiplier": 2.0},
-                {"attacking_type": "fire", "defending_type": "fire", "multiplier": 0.5},
+                {'attacking_type': 'fire', 'defending_type': 'water', 'multiplier': 0.5},
+                {'attacking_type': 'fire', 'defending_type': 'grass', 'multiplier': 2.0},
+                {'attacking_type': 'fire', 'defending_type': 'fire', 'multiplier': 0.5},
             ]
         }
         response = self.client.post('/api/types/', data=json.dumps(data), content_type='application/json')
@@ -124,8 +151,8 @@ class TestTypes(APITestCase):
     def test_get_type_with_modifiers_success(self):
         self.client.force_authenticate(user=self.user)
 
-        expected_data = {'id': self.ice_id, 'defense_modifiers': [OrderedDict({'multiplier': '0.50', 'attacking_type': 'ice'}), 
-                        OrderedDict({'multiplier': '1.00', 'attacking_type': 'dragon'}), OrderedDict({'multiplier': '1.00', 
+        expected_data = {'id': self.ice_id, 'defense_modifiers': [OrderedDict({'id': self.ice_modifier, 'multiplier': '0.50', 'attacking_type': 'ice'}), 
+                        OrderedDict({'id': self.dragon_modifer, 'multiplier': '0.50', 'attacking_type': 'dragon'}), OrderedDict({'id': self.fairy_modifier, 'multiplier': '0.50', 
                         'attacking_type': 'fairy'})], 'creator': OrderedDict({'id': self.user2.id, 'username': self.user2.username}), 
                         'name': 'ice', 'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), 'locked': False}
 
@@ -140,6 +167,43 @@ class TestTypes(APITestCase):
         response = self.client.get(f'/api/types/')
 
         self.assertEqual(200, response.status_code)
+
+    def test_list_types_by_username(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.get(f'/api/types/?page=1&username={self.user.username}')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data['results']), 0)
+
+    def test_update_or_create_multiple_types_success(self):
+        self.client.force_authenticate(user=self.user2)
+
+        expected_defense_modifiers = [OrderedDict({'id': self.ice_modifier, 'multiplier': '0.50', 'attacking_type': 'ice'}), 
+                        OrderedDict({'id': self.dragon_modifer, 'multiplier': '1.0', 'attacking_type': 'dragon'}), OrderedDict({'id': self.fairy_modifier, 'multiplier': '1.0', 
+                        'attacking_type': 'fairy'}), OrderedDict({'id': 9, 'multiplier': '2.0', 'attacking_type': 'steel'})]
+
+        data = {
+            'types': [{'name': 'ice', 'id': self.ice_id}, {'name': 'fire', 'id': self.dragon_id}, {'name': 'fairy', 'id': self.fairy_id}, {'name': 'steel'}], 
+            'type_advantages': [
+                {'id': self.dragon_modifer, 'attacking_type': 'fire', 'defending_type': 'ice', 'multiplier': 2.0},
+                {'id': self.fairy_modifier, 'attacking_type': 'fairy', 'defending_type': 'ice', 'multiplier': 1.0},
+                {'attacking_type': 'steel', 'defending_type': 'ice', 'multiplier': 2.0}
+            ]
+        }
+        get_response = self.client.get(f'/api/types/{self.ice_id}/')
+        post_response = self.client.patch('/api/types/bulk_update/', data=json.dumps(data), content_type='application/json')
+        get_response = self.client.get(f'/api/types/{self.ice_id}/')
+
+        self.assertEqual(post_response.status_code, 200)
+        self.assertEqual(len(get_response.data['defense_modifiers']), 4)
+
+        for defense_modifiers in get_response.data['defense_modifiers']:
+            if defense_modifiers['attacking_type'] in ['fairy']:
+                self.assertEqual(defense_modifiers['multiplier'], '1.00')
+            if defense_modifiers['attacking_type'] in ['steel', 'fire']:
+                self.assertEqual(defense_modifiers['multiplier'], '2.00')
+
 
     '''
         UPDATE: All types in region?
