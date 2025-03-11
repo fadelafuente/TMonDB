@@ -7,10 +7,7 @@ from articles.models import Article, ArticleManager
 UserModel = get_user_model()
 
 class PostManager(ArticleManager):
-    def get_annotated_queryset(self, user, **kwargs):
-        queryset = super().get_annotated_queryset(user, **kwargs)
-        return queryset.annotate(user_commented=Q(article__comments__isnull=False) & 
-                            Q(article__comments__article__creator__id=user.id))
+    pass
     
 class Post(models.Model):
     article = models.OneToOneField(Article, related_name='post', on_delete=models.CASCADE, null=True, blank=True)

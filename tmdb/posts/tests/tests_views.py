@@ -104,7 +104,6 @@ class TestPosts(APITestCase):
         response = self.client.post('/api/posts/', data=json.dumps(data), content_type='application/json')
 
         response = self.client.get(f'/api/posts/{self.post.id}/')
-        print(response.data)
         
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, expected)
