@@ -24,14 +24,14 @@ export default function FollowContent({ query }) {
                             { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={creator} />
                             :
-                                <FollowList username={profile ? profile.username : null} follow_type="following" query={query} />
+                                profile ? <FollowList username={profile ? profile.username : null} follow_type="following" query={query} /> : ""
                             }
                         </Tab>
                         <Tab eventKey="followers" title="Followers">
                             { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={creator} />
                             :
-                                <FollowList username={profile ? profile.username : null} follow_type="followers" query={query} />
+                                profile ? <FollowList username={profile ? profile.username : null} follow_type="followers" query={query} /> : ""
                             }
                         </Tab>
                     </Tabs>

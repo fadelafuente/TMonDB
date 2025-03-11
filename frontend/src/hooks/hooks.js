@@ -345,8 +345,8 @@ export function useFollow(initial_interaction, user_interacted) {
     const [interaction, setInteraction] = useState(initial_interaction);
     const [interacted, setInteracted] = useState(user_interacted);
 
-    function handleFollowUser(pid) {
-        followUser(pid).then((response) => {
+    function handleFollowUser(username) {
+        followUser(username).then((response) => {
             if(response && response.status === 200) {
                 let change = interacted ? -1 : 1;
                 setInteraction(interaction + change);
@@ -447,14 +447,14 @@ export function useUserFollow(username, pageNumber, follow_type, query) {
         }
 
         // eslint-disable-next-line
-    }, [query, pageNumber, follow_type, uid])
+    }, [query, pageNumber, follow_type])
 
     return [ loading, follow, hasMore ];
 }
 
 export function usePaginatedUserFollow(username, follow_type, query) {
     const [pageNumber, setPageNumber] = useState(1);
-    const [ loading, users, hasMore ] = useUserFollow(username, pageNumber, follow_type, query);
+    const [loading, users, hasMore] = useUserFollow(username, pageNumber, follow_type, query);
     const observer = useRef();
 
     useEffect(() => {

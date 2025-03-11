@@ -79,7 +79,7 @@ function ProfileInfo({isAuthenticated}) {
                                                     Edit Profile
                                                 </Button>
                                             :
-                                                <Button className='base-btn reverse-base-btn' onClick={ () => setFollow(profile.id) }>
+                                                <Button className='base-btn reverse-base-btn' onClick={ () => setFollow(profile.username) }>
                                                     { followed ? 'Unfollow' : 'Follow' } 
                                                 </Button>
                                     :

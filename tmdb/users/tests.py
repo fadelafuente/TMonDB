@@ -60,7 +60,7 @@ class TestPosts(APITestCase):
         response = self.client.get(f'/auth/users/{self.user.username}/following/?page=1')
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(len(response.data['results']) == 2)
+        self.assertEqual(len(response.data['results']), 2)
 
     def test_delete_followers(self):
         self.client.force_authenticate(user=self.user)

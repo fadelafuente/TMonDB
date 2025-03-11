@@ -26,20 +26,20 @@ import {
 axios.defaults.withCredentials = true;
 
 export const checkAuthenticated = () => async dispatch => {
-    if(localStorage.getItem("access")) {
+    if(localStorage.getItem('access')) {
         const config = {
             headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             }
         };
 
-        const body = JSON.stringify({ token: localStorage.getItem("access") });
+        const body = JSON.stringify({ token: localStorage.getItem('access') });
 
         try {
             const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/verify/`, body, config);
 
-            if(res.data.code !== "token_not_valid") {
+            if(res.data.code !== 'token_not_valid') {
                 dispatch({
                     type: AUTHENTICATED_SUCCESS
                 });
@@ -61,16 +61,16 @@ export const checkAuthenticated = () => async dispatch => {
 }
 
 export const socialAuthenticate = (state, code, provider) => async dispatch => {
-    if(state && code && !localStorage.getItem("access")) {
+    if(state && code && !localStorage.getItem('access')) {
         const config = {
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
+                'Content-Type': 'application/x-www-form-urlencoded'
             }
         };
 
         const details = {
-            "state": state,
-            "code": code
+            'state': state,
+            'code': code
         };
 
         const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
@@ -97,12 +97,12 @@ export const socialAuthenticate = (state, code, provider) => async dispatch => {
 }
 
 export const loadUser = () => async dispatch => {
-    if(localStorage.getItem("access")) {
+    if(localStorage.getItem('access')) {
         const config = {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `JWT ${localStorage.getItem("access")}`,
-                "Accept": "application/json"
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                'Accept': 'application/json'
             }
         };
 
@@ -128,7 +128,7 @@ export const loadUser = () => async dispatch => {
 export const login = (email, password) => async dispatch => {
     const config = {
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         }
     };
 
@@ -159,7 +159,7 @@ export const logout = () => async dispatch => {
 export const register = (first_name, last_name, username, email, password, re_password) => async dispatch => {
     const config = {
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         }
     };
 
@@ -191,7 +191,7 @@ export const register = (first_name, last_name, username, email, password, re_pa
 export const verify = (uid, token) => async dispatch => {
     const config = {
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         }
     };
 
@@ -213,7 +213,7 @@ export const verify = (uid, token) => async dispatch => {
 export const setLoginByEmail = (email, reset_type) => async dispatch => {
     const config = {
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         }
     };
 
@@ -232,10 +232,10 @@ export const setLoginByEmail = (email, reset_type) => async dispatch => {
     }
 }
 
-export const resetLoginConfirm = (uid, token, kwargs={}, reset_type="password") => async dispatch => {
+export const resetLoginConfirm = (uid, token, kwargs={}, reset_type='password') => async dispatch => {
     const config = {
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         }
     };
 
@@ -279,7 +279,7 @@ export const registerAttempt = () => dispatch => {
 export const resendActivation = (email) => async dispatch => {
     const config = {
         headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
         }
     };
 
@@ -301,8 +301,8 @@ export const resendActivation = (email) => async dispatch => {
 export async function updateDetails(kwargs) {
     const config = {
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${localStorage.getItem("access")}`
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${localStorage.getItem('access')}`
         }
     };
 
@@ -315,13 +315,13 @@ export async function updateDetails(kwargs) {
 }
 
 export async function getUserProfile(username) {
-    const access = localStorage.getItem("access");  
+    const access = localStorage.getItem('access');  
     let config = undefined;
     if(access) {
         config = {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `JWT ${access}`
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`
             }
         };
     }
@@ -334,12 +334,12 @@ export async function getUserProfile(username) {
 }
 
 export async function getCurrentUserDetails() {
-    const access = localStorage.getItem("access");  
+    const access = localStorage.getItem('access');  
     if(access) {
         const config = {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `JWT ${access}`
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`
             }
         };
 
@@ -352,17 +352,19 @@ export async function getCurrentUserDetails() {
 }
 
 export async function followUser(username) {
-    const access = localStorage.getItem("access");
-    
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${access}`
-        }
-    };
+    const access = localStorage.getItem('access');
+    let config = undefined;
+    if(access) {
+        config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`
+            }
+        };
+    }
 
     try {
-        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/${username}/follow/`, config);
+        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/${username}/follow/`, {}, config);
     } catch(err) {
         return null;
     }
@@ -371,10 +373,10 @@ export async function followUser(username) {
 export async function deleteUser(current_password) {    
     const config = {
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${localStorage.getItem("access")}`
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${localStorage.getItem('access')}`
         },
-        "data": JSON.stringify({ current_password })
+        'data': JSON.stringify({ current_password })
     };
 
     try {
@@ -386,14 +388,14 @@ export async function deleteUser(current_password) {
     }
 }
 
-export async function getFollowByUsername(username, follow_type, kwargs={"page": 1}) {    
-    const access = localStorage.getItem("access");  
+export async function getFollowByUsername(username, follow_type, kwargs={'page': 1}) {    
+    const access = localStorage.getItem('access');  
     let config = undefined;
     if(access) {
         config = {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `JWT ${access}`
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`
             }
         };
     }
@@ -407,14 +409,14 @@ export async function getFollowByUsername(username, follow_type, kwargs={"page":
     }
 }
 
-export async function getCurrentUsersBlockedList(details={"page": 1}) {    
-    const access = localStorage.getItem("access");  
+export async function getCurrentUsersBlockedList(details={'page': 1}) {    
+    const access = localStorage.getItem('access');  
     let config = undefined;
     if(access) {
         config = {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `JWT ${access}`
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`
             }
         };
     }
@@ -428,14 +430,14 @@ export async function getCurrentUsersBlockedList(details={"page": 1}) {
     }
 }
 
-export async function patchCurrentUsersBlockedList(username, kwargs={"page": 1}) {    
-    const access = localStorage.getItem("access");  
+export async function patchCurrentUsersBlockedList(username, kwargs={'page': 1}) {    
+    const access = localStorage.getItem('access');  
     let config = undefined;
     if(access) {
         config = {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `JWT ${access}`
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`
             }
         };
     }
