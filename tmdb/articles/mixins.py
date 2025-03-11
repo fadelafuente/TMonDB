@@ -8,7 +8,11 @@ class LikeModelMixin:
         instance = self.get_object()
         user = request.user
 
-        instance.article.who_liked.add(user)
+        user_liked = instance.article.who_liked.filter(id=user.id)
+        if not user_liked:
+            instance.article.who_liked.add(user)
+        else:
+            instance.article.who_liked.remove(user)
 
         return Response(status=status.HTTP_200_OK)
     
@@ -18,6 +22,10 @@ class RepostModelMixin:
         instance = self.get_object()
         user = request.user
 
-        instance.article.who_reposted.add(user)
+        user_liked = instance.article.who_reposted.filter(id=user.id)
+        if not user_liked:
+            instance.article.who_reposted.add(user)
+        else:
+            instance.article.who_reposted.remove(user)
 
         return Response(status=status.HTTP_200_OK)

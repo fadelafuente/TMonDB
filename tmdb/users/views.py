@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.http import Http404
+from djoser.conf import settings
 from djoser.social import views as social_views
 from djoser.views import UserViewSet
 from rest_framework import status, filters
@@ -58,7 +59,6 @@ class CustomProviderAuthView(social_views.ProviderAuthView):
     
 class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin, 
                         ListFollowersMixin, UpdateBlockingMixin, ListBlockingMixin):
-    serializer_class = CreatorSerializer
     filter_backends = (filters.OrderingFilter, filters.SearchFilter)
     ordering_fields = ('id', 'username')
     ordering = ('username')
@@ -73,8 +73,9 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin,
         return super().get_permissions()
         
     def get_serializer_class(self):
-        if self.action in ['create']:
-            return UserSerializer
+        if self.action == "create":
+            if settings.USER_CREATE_PASSWORD_RETYPE:
+                return CreateAppUserSerializer
         if self.action in ['following', 'followers']:
             return FollowSerializer
         elif self.action == 'me' and self.request.method == 'GET':

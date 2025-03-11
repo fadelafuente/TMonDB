@@ -12,16 +12,23 @@ class TestPosts(APITestCase):
         cls.user3 = AppUser.objects.create_user(email='testemail3@domain.com', password='TestPassword987^&*', username='testuser3', first_name='test3', last_name='user3')
 
     def test_create_username_is_invalid(self):
-        data = {'email': 'testemail4@domain.com', 'password': 'TestPassword123^%$', 'username': 'test@user!', 'first_name': 'test', 'last_name': 'user4'}
+        data = {'email': 'testemail4@domain.com', 'password': 'TestPassword123^%$', 're_password': 'TestPassword123^%$', 'username': 'test@user!', 'first_name': 'test', 'last_name': 'user4'}
 
         response = self.client.post('/auth/users/', data=json.dumps(data), content_type='application/json')
 
         self.assertEqual(response.status_code, 400)
 
-    def test_create_password_is_invalid(self):
-        data = {'email': 'testemail4@domain.com', 'password': 'testpassword', 'username': 'testuser4', 'first_name': 'test', 'last_name': 'user4'}
+    def test_create_username_isvalid(self):
+        data = {'email': 'testemail4@domain.com', 'password': 'TestPassword123!@#', 're_password': 'TestPassword123!@#', 'username': 'testuser4', 'first_name': 'test', 'last_name': 'user4'}
 
-        expected_response = 'Password is missing: at least 1 uppercase, at least 1 number, at least 1 special character.'
+        response = self.client.post('/auth/users/', data=json.dumps(data), content_type='application/json')
+
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_password_is_invalid(self):
+        data = {'email': 'testemail4@domain.com', 'password': 'testpassword', 're_password': 'testpassword', 'username': 'testuser4', 'first_name': 'test', 'last_name': 'user4'}
+
+        expected_response = 'Password is missing the following requirements: at least 1 uppercase, at least 1 number, at least 1 special character.'
 
         response = self.client.post('/auth/users/', data=json.dumps(data), content_type='application/json')
 

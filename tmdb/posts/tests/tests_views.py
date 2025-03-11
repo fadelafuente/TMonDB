@@ -92,6 +92,23 @@ class TestPosts(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data, expected)
 
+    def test_get_post_current_user_commented_on(self):
+        self.client.force_authenticate(user=self.user1)
+
+        expected = {'id': self.post.id, 'content': self.post.content, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 1, 
+                    'parent': None, 'article': OrderedDict({'id': self.post.article.id, 'creator': OrderedDict({'id': self.user1.id, 'username': self.user1.username}), 
+                    'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'is_current_user': True, 'user_liked': False, 
+                    'user_reposted': False, 'user_commented': True, 'image': None, 'is_repost': self.post.is_repost, 'is_edited': self.post.is_edited}
+        
+        data = {'content': 'Testing replying to a previously made post.', 'parent': self.post.article.id}
+        response = self.client.post('/api/posts/', data=json.dumps(data), content_type='application/json')
+
+        response = self.client.get(f'/api/posts/{self.post.id}/')
+        print(response.data)
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, expected)
+
     def test_get_all_posts_anonymous(self):
         response = self.client.get('/api/posts/?page=1')
                 

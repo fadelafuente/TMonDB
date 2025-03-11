@@ -61,6 +61,7 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
         headers = self.get_success_headers(type_modifiers_serializer.data)
         return Response(type_modifiers_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
+    @transaction.atomic
     @action(detail=False, methods=['patch'])
     def bulk_update(self, request, *args, **kwargs):
         if 'types' not in request.data or 'type_advantages' not in request.data:
@@ -122,6 +123,7 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
             instance = self.get_modifier_instance(data)
 
         create_list, update_list = self.get_create_and_update_objects(obj_model, data, user)
+
         update_serializer = self.bulk_update_helper(obj_model, instance, update_list)
         if getattr(instance, '_prefetched_objects_cache', None):
             # If 'prefetch_related' has been applied to a queryset, we need to
@@ -129,6 +131,7 @@ class TMonDBTypeViewset(viewsets.ModelViewSet):
             instance._prefetched_objects_cache = {}
 
         create_serializer = self.bulk_create_helper(obj_model, create_list)
+
         return update_serializer, create_serializer
     
     def flatten_list_of_dicts(self, list):

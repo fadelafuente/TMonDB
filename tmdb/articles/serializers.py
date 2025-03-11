@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.db import transaction
 from rest_framework import serializers
 
@@ -27,3 +28,9 @@ class ModelWithArticleSerializer(serializers.ModelSerializer):
         instance = self.model.objects.create(**validated_data, article=article)
         
         return instance
+    
+    def to_representation(self, instance):
+        result =  super().to_representation(instance)
+        if instance and result:
+            result['article']['creator'] = OrderedDict({'id': instance.article.creator.id, 'username': instance.article.creator.username})
+        return result

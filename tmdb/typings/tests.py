@@ -63,19 +63,19 @@ class TestTypes(APITestCase):
 
         self.assertEqual(response.status_code, 401)
 
-    # def test_update_type_unauthorized_user_fail(self):
-    #     self.client.force_authenticate(user=self.user)
+    def test_update_type_unauthorized_user_fail(self):
+        self.client.force_authenticate(user=self.user)
 
-    #     data = {'name': 'nature'}
-    #     response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
+        data = {'name': 'nature'}
+        response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
 
-    #     self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
 
-    # def test_update_type_anonymous_fail(self):
-    #     data = {'name': 'nature'}
-    #     response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
+    def test_update_type_anonymous_fail(self):
+        data = {'name': 'nature'}
+        response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
 
-    #     self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.status_code, 401)
 
     def test_create_types_missing(self):
         self.client.force_authenticate(user=self.user)
@@ -125,13 +125,13 @@ class TestTypes(APITestCase):
         with self.assertRaises(Type.DoesNotExist):
             Type.objects.get(id=self.ice_id)
 
-    # def test_update_type_authorized_user_success(self):
-    #     self.client.force_authenticate(user=self.user2)
+    def test_update_type_authorized_user_success(self):
+        self.client.force_authenticate(user=self.user2)
 
-    #     data = {'name': 'nature'}
-    #     response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
+        data = {'name': 'nature'}
+        response = self.client.patch(f'/api/types/{self.ice_id}/', data=json.dumps(data), content_type='application/json')
 
-    #     self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
     def test_create_multiple_types_success(self):
         self.client.force_authenticate(user=self.user)
@@ -180,8 +180,8 @@ class TestTypes(APITestCase):
         self.client.force_authenticate(user=self.user2)
 
         expected_defense_modifiers = [OrderedDict({'id': self.ice_modifier, 'multiplier': '0.50', 'attacking_type': 'ice'}), 
-                        OrderedDict({'id': self.dragon_modifer, 'multiplier': '1.0', 'attacking_type': 'dragon'}), OrderedDict({'id': self.fairy_modifier, 'multiplier': '1.0', 
-                        'attacking_type': 'fairy'}), OrderedDict({'id': 9, 'multiplier': '2.0', 'attacking_type': 'steel'})]
+                        OrderedDict({'id': self.dragon_modifer, 'multiplier': '2.00', 'attacking_type': 'fire'}), OrderedDict({'id': self.fairy_modifier, 'multiplier': '1.00', 
+                        'attacking_type': 'fairy'}), OrderedDict({'id': 7, 'multiplier': '2.00', 'attacking_type': 'steel'})]
 
         data = {
             'types': [{'name': 'ice', 'id': self.ice_id}, {'name': 'fire', 'id': self.dragon_id}, {'name': 'fairy', 'id': self.fairy_id}, {'name': 'steel'}], 
@@ -196,14 +196,7 @@ class TestTypes(APITestCase):
         get_response = self.client.get(f'/api/types/{self.ice_id}/')
 
         self.assertEqual(post_response.status_code, 200)
-        self.assertEqual(len(get_response.data['defense_modifiers']), 4)
-
-        for defense_modifiers in get_response.data['defense_modifiers']:
-            if defense_modifiers['attacking_type'] in ['fairy']:
-                self.assertEqual(defense_modifiers['multiplier'], '1.00')
-            if defense_modifiers['attacking_type'] in ['steel', 'fire']:
-                self.assertEqual(defense_modifiers['multiplier'], '2.00')
-
+        self.assertEqual(get_response.data['defense_modifiers'], expected_defense_modifiers)
 
     '''
         UPDATE: All types in region?

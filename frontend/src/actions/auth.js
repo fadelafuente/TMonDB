@@ -351,7 +351,7 @@ export async function getCurrentUserDetails() {
     }
 }
 
-export async function followUser(id) {
+export async function followUser(username) {
     const access = localStorage.getItem("access");
     
     const config = {
@@ -443,7 +443,7 @@ export async function patchCurrentUsersBlockedList(username, kwargs={"page": 1})
     const query = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');
 
     try {
-        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/${username}/block/?${query}`, body, config);
+        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/${username}/block/?${query}`, config);
     } catch(err) {
         return null;
     }
