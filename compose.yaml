@@ -7,7 +7,7 @@ services:
     volumes:
       - ./tmdb:/tmdb
     env_file:
-      - .env.development.local
+      - ./env/.env.development.local
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     profiles: ['backendlocal', 'devlocal']
 
@@ -19,7 +19,7 @@ services:
       - ./frontend:/frontend
       - node_modules:/frontend/node_modules
     env_file:
-      - .env
+      - ./env/.env
     environment:
       - WATCHPACK_POLLING=true
     command: bash -c "npm start"
@@ -47,7 +47,7 @@ services:
     depends_on:
       - db
     env_file:
-      - .env.development
+      - ./env/.env.development
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     profiles: ['', 'dev', 'backend']
 

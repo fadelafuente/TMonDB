@@ -50,10 +50,28 @@ The following profiles are available:
 frontend
 backend
 backendlocal
-dev (default)
-devlocal
+dev (default, spins up frontend, backend, and postgres containers)
+devlocal (spins up frontend and backendlocal containers)
 ```
 
+### Running Tests in a Docker Container
+To run the backend tests, there are two methods you can do. First, you want to run the following command and copy either the id or name for the backend container.
+```
+docker container ls
+```
+
+The second step has two methods. The first method is to enter the backend container and run the test command.
+```
+docker exec -it <id-or-name> bash
+// while in the container
+python manage.py test
+// type 'exit' and press enter to leave the container
+```
+
+The second methond is to run the tests using the docker exec command.
+```
+docker exec -it <id-or-name> python manage.py test
+```
 
 
 
