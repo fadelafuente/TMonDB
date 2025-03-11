@@ -125,7 +125,7 @@ function ProfileInfo({isAuthenticated}) {
                             { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={profile.username} />
                             :
-                                <PostArticle kwargs={{username: creator}} />
+                                <PostArticle kwargs={{username: creator, is_reply: true}} />
                             }
                         </Tab>
                         <Tab eventKey='monsters' title='Monsters'>

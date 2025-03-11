@@ -21,10 +21,11 @@ class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet
             self.permission_classes = (AllowAny,)
         return super().get_permissions()
     
-    def str2bool(self, str):
-        return str.lower() in ['true']
-    
     def get_queryset(self):
+        kwargs = self.get_kwargs()
+        return self.model.objects.get_annotated_queryset(self.request.user, **kwargs).all()
+    
+    def get_kwargs(self):
         kwargs = {}
         username = self.request.query_params.get('username')
         parent = self.request.query_params.get('parent')
@@ -32,8 +33,8 @@ class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet
             kwargs['article__creator__username'] = username
         if parent:
             kwargs['parent'] = parent
-
-        return self.model.objects.get_annotated_queryset(self.request.user, **kwargs).all()
+        
+        return kwargs
 
     def perform_destroy(self, instance):
         if instance.article.creator != self.request.user:

@@ -17,3 +17,12 @@ class PostViewSet(BaseArticleViewSet):
         if self.action in ['list', 'retrieve', 'destroy']:
             return PostScrollSerializer
         return self.serializer_class
+    
+    def get_kwargs(self):
+        kwargs = super().get_kwargs()
+        is_reply = self.request.query_params.get("is_reply")
+
+        if is_reply:
+            kwargs['parent__isnull'] = False
+
+        return kwargs
