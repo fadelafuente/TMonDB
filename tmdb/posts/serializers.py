@@ -1,7 +1,6 @@
 from django.core.exceptions import ValidationError
-from rest_framework import serializers
 
-from articles.serializers import ArticleCreatorSerializer, ModelWithArticleSerializer
+from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer
 from .models import Post
 
 MAX_POST_LENGTH = 300
@@ -25,12 +24,5 @@ class PostSerializer(ModelWithArticleSerializer):
             return True
         return False
     
-class PostScrollSerializer(PostSerializer):
-    likes_count = serializers.IntegerField()
-    reposts_count = serializers.IntegerField()
-    comments_count = serializers.IntegerField()
-    is_current_user = serializers.BooleanField()
-    user_liked = serializers.BooleanField()
-    user_reposted = serializers.BooleanField()
-    user_commented = serializers.BooleanField()
-    article = ArticleCreatorSerializer()        
+class PostScrollSerializer(ModelScrollWithArticleSerializer, PostSerializer):
+    pass      

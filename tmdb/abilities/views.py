@@ -2,7 +2,7 @@ from articles.views import BaseArticleViewSet
 from .models import *
 from .serializers import *
         
-class TMonDBMonsterViewset(BaseArticleViewSet):
+class TMonDBAbilityViewset(BaseArticleViewSet):
     serializer_class = AbilitySerializer
     ordering_fields = ('id', 'name', 'effect')
     ordering = ('id')

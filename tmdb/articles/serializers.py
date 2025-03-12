@@ -34,3 +34,13 @@ class ModelWithArticleSerializer(serializers.ModelSerializer):
         if instance and result:
             result['article']['creator'] = OrderedDict({'id': instance.article.creator.id, 'username': instance.article.creator.username})
         return result
+    
+class ModelScrollWithArticleSerializer(serializers.ModelSerializer):
+    likes_count = serializers.IntegerField()
+    reposts_count = serializers.IntegerField()
+    comments_count = serializers.IntegerField()
+    is_current_user = serializers.BooleanField()
+    user_liked = serializers.BooleanField()
+    user_reposted = serializers.BooleanField()
+    user_commented = serializers.BooleanField()
+    article = ArticleCreatorSerializer()

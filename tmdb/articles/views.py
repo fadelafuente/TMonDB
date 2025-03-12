@@ -28,11 +28,9 @@ class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet
     def get_kwargs(self):
         kwargs = {}
         username = self.request.query_params.get('username')
-        parent = self.request.query_params.get('parent')
+
         if username:
             kwargs['article__creator__username'] = username
-        if parent:
-            kwargs['parent'] = parent
         
         return kwargs
 

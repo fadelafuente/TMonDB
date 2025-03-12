@@ -2,10 +2,16 @@ import re
 from rest_framework import serializers
 
 from abilities.serializers import MinimumAbilitySerializer
-from articles.serializers import ArticleCreatorSerializer, ModelWithArticleSerializer
+from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer
 from .models import *
 
 class MonsterSerializer(ModelWithArticleSerializer):
+    model = Monster
+
+    class Meta:
+        model = Monster
+        fields = '__all__'
+
     def validate_name(self, name):
         regex = re.compile(r'^[a-zA-Z0-9À-ÖØ-öø-ÿ\'-]+$')
         name = name[0].upper() + name[1:]
@@ -22,22 +28,13 @@ class MonsterSerializer(ModelWithArticleSerializer):
         if len(types):
             raise serializers.ValidationError('Monsters can only have 2 types.')
         return types
-    
-    model = Monster
 
-    class Meta:
-        model = Monster
-        fields = '__all__'
-
-class RetrieveMonsterSerializer(MonsterSerializer):
-    likes_count = serializers.IntegerField()
-    reposts_count = serializers.IntegerField()
-    comments_count = serializers.IntegerField()
-    article = ArticleCreatorSerializer()
+class RetrieveMonsterSerializer(ModelScrollWithArticleSerializer, MonsterSerializer):
     abilities = MinimumAbilitySerializer(many=True)
     hidden_ability = MinimumAbilitySerializer()
 
 class MonsterScrollSerializer(RetrieveMonsterSerializer):
     class Meta(RetrieveMonsterSerializer.Meta):
-        fields = ['likes_count', 'repost_count', 'comments_count', 'article',
-                  'name', 'description', 'species', 'types']
+        fields = ['likes_count', 'repost_count', 'comments_count', 'user_liked', 
+                  'user_reposted', 'user_commented' 'article', 'name', 'description', 
+                  'species', 'types', 'is_current_user']

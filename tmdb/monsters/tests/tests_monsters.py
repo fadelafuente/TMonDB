@@ -80,8 +80,9 @@ class TestMonsters(APITestCase):
         expected_data = {'id': self.monster.id, 'article': OrderedDict({'id': self.monster.article.id, 
                         'creator': OrderedDict({'id': self.monster.article.creator.id, 'username': self.monster.article.creator.username}), 
                         'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'likes_count': 0, 'reposts_count': 0, 
-                        'comments_count': 0, 'name': self.monster.name, 'national_id': None, 'species': None, 'avg_weight': None, 
-                        'avg_height': None, 'description': None, 'etymology': None, 'hidden_ability': None, 'types': [], 'abilities': []}
+                        'comments_count': 0, 'is_current_user' : True, 'user_liked': False, 'user_reposted': False, 'user_commented': False, 
+                        'name': self.monster.name, 'national_id': None, 'species': None, 'avg_weight': None, 'avg_height': None, 
+                        'description': None, 'etymology': None, 'hidden_ability': None, 'types': [], 'abilities': []}
 
         response = self.client.get(f'/api/monsters/{self.monster.id}/')
 

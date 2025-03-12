@@ -21,8 +21,11 @@ class PostViewSet(BaseArticleViewSet):
     def get_kwargs(self):
         kwargs = super().get_kwargs()
         is_reply = self.request.query_params.get("is_reply")
+        parent = self.request.query_params.get('parent')
 
         if is_reply:
             kwargs['parent__isnull'] = False
+        if parent:
+            kwargs['parent'] = parent
 
         return kwargs

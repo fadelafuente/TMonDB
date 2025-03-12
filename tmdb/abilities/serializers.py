@@ -1,18 +1,15 @@
-from rest_framework import serializers
-
-from articles.serializers import ArticleCreatorSerializer, ModelWithArticleSerializer
+from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer
 from .models import *
 
 class AbilitySerializer(ModelWithArticleSerializer):
+    model = Ability
+
     class Meta:
         model = Ability
         fields = '__all__'
 
-class AbilityScrollSerializer(AbilitySerializer):
-    likes_count = serializers.IntegerField()
-    reposts_count = serializers.IntegerField()
-    comments_count = serializers.IntegerField()
-    article = ArticleCreatorSerializer()
+class AbilityScrollSerializer(ModelScrollWithArticleSerializer, AbilitySerializer):
+    pass
 
 class MinimumAbilitySerializer(AbilitySerializer):
     class Meta(AbilitySerializer.Meta):
