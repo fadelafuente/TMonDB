@@ -31,7 +31,7 @@ class ModelWithArticleSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         result =  super().to_representation(instance)
-        if instance and result:
+        if result and 'article' in result:
             result['article']['creator'] = OrderedDict({'id': instance.article.creator.id, 'username': instance.article.creator.username})
         return result
     

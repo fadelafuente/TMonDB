@@ -1,3 +1,4 @@
+from django.db import transaction
 import re
 from rest_framework import serializers
 
@@ -11,6 +12,17 @@ class MonsterSerializer(ModelWithArticleSerializer):
     class Meta:
         model = Monster
         fields = '__all__'
+
+    @transaction.atomic
+    def create(self, validated_data):
+        abilities_data = validated_data.pop('abilities', None)
+
+        instance = super().create(validated_data)
+        
+        if abilities_data:
+            instance.abilities.set(abilities_data)
+        
+        return instance
 
     def validate_name(self, name):
         regex = re.compile(r'^[a-zA-Z0-9À-ÖØ-öø-ÿ\'-]+$')
