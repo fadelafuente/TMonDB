@@ -198,6 +198,21 @@ class TestTypes(APITestCase):
         self.assertEqual(post_response.status_code, 200)
         self.assertEqual(get_response.data['defense_modifiers'], expected_defense_modifiers)
 
+    def test_update_or_create_multiple_types_fail(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {
+            'types': [{'name': 'ice', 'id': self.ice_id}, {'name': 'fire', 'id': self.dragon_id}, {'name': 'fairy', 'id': self.fairy_id}, {'name': 'steel'}], 
+            'type_advantages': [
+                {'id': self.dragon_modifer, 'attacking_type': 'fire', 'defending_type': 'ice', 'multiplier': 2.0},
+                {'id': self.fairy_modifier, 'attacking_type': 'fairy', 'defending_type': 'ice', 'multiplier': 1.0},
+                {'attacking_type': 'steel', 'defending_type': 'ice', 'multiplier': 2.0}
+            ]
+        }
+        post_response = self.client.patch('/api/types/bulk_update/', data=json.dumps(data), content_type='application/json')
+
+        self.assertEqual(post_response.status_code, 403)
+
     '''
         UPDATE: All types in region?
             brainstorming:

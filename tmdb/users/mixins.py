@@ -14,9 +14,6 @@ class UpdateFollowingMixin:
         user = self.get_object()
         current_user = request.user
 
-        if user.id == current_user.id:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'User cannot follow themselves.'})
-        
         following = current_user.following.filter(id=user.id)
         if following:
             current_user.following.remove(user)
@@ -46,9 +43,6 @@ class UpdateBlockingMixin:
     def block(self, request, *args, **kwargs):
         user = self.get_object()
         current_user = request.user
-
-        if user.id == current_user.id:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'message': 'User cannot block themselves.'})
         
         blocking = current_user.blocking.filter(id=user.id)
         if blocking:
@@ -63,8 +57,7 @@ class UpdateBlockingMixin:
 class ListBlockingMixin:
     @action(detail=False, methods=['get'])
     def blocking(self, request, *args, **kwargs):
-        self.get_object = self.get_instance
-        instance = self.get_object()
-        queryset = add_annotations(instance.blocking, request.user).all()
+        instance = self.get_instance()
+        queryset = instance.blocking.all()
 
         return self.get_paginated_queryset(queryset) 

@@ -9,8 +9,9 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt import views
 
-from .serializers import *
 from .mixins import *
+from.permissions import *
+from .serializers import *
 
 AppUser = get_user_model()
 
@@ -67,7 +68,9 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin,
 
     def get_permissions(self):
         if self.action in ['follow', 'block']:
-            return (IsAuthenticated(),)
+            return (IsAuthenticated(), IsNotCurrentUser())
+        elif self.action in ['blocking']:
+            return (IsAuthenticated(), IsCurrentUser())
         elif self.action in ['following', 'retrieve', 'followers']:
             return (AllowAny(),)
         return super().get_permissions()
@@ -82,6 +85,8 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin,
             return CurrentUserSerializer
         elif self.action in ['list', 'retrieve']:
             return ProfileSerializer
+        elif self.action in ['blocking']:
+            return CreatorSerializer
         return super().get_serializer_class()
     
     def get_queryset(self):
@@ -109,5 +114,5 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin,
             username = kwargs['username']
             user = AppUser.objects.filter(username=username)
             if user.exists():
-                return Response(status=status.HTTP_403_FORBIDDEN, data={'current_user_is_blocked': True, 'creator': username}) 
-            return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': f'User not found'})      
+                return Response(status=status.HTTP_403_FORBIDDEN, data={'current_user_is_blocked': True, 'creator': username})
+            return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': f'User not found'})

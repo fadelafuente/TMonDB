@@ -5,6 +5,7 @@ from rest_framework import serializers
 from abilities.serializers import MinimumAbilitySerializer
 from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer
 from .models import *
+from typings.serializers import MonsterTypesSerializer
 
 class MonsterSerializer(ModelWithArticleSerializer):
     model = Monster
@@ -16,11 +17,14 @@ class MonsterSerializer(ModelWithArticleSerializer):
     @transaction.atomic
     def create(self, validated_data):
         abilities_data = validated_data.pop('abilities', None)
+        types_data = validated_data.pop('types', None)
 
         instance = super().create(validated_data)
         
         if abilities_data:
             instance.abilities.set(abilities_data)
+        if types_data:
+             instance.types.set(types_data)
         
         return instance
 
@@ -37,11 +41,12 @@ class MonsterSerializer(ModelWithArticleSerializer):
         return abilities
     
     def validate_types(self, types):
-        if len(types):
+        if len(types) > 2:
             raise serializers.ValidationError('Monsters can only have 2 types.')
         return types
 
 class RetrieveMonsterSerializer(ModelScrollWithArticleSerializer, MonsterSerializer):
+    types = MonsterTypesSerializer(many=True)
     abilities = MinimumAbilitySerializer(many=True)
     hidden_ability = MinimumAbilitySerializer()
 

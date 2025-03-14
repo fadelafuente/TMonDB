@@ -7,6 +7,7 @@ from rest_framework.test import APITestCase
 from abilities.models import Ability
 from articles.models import Article
 from monsters.models import Monster
+from typings.models import Type
 
 AppUser = get_user_model()
 
@@ -29,6 +30,12 @@ class TestMonsters(APITestCase):
                                    article=article))
 
         cls.abilities = abilities
+
+        ice_type = Type.objects.create(name=f'ice', creator=cls.user, date_created=cls.test_start_time)
+        fairy_type = Type.objects.create(name=f'fairy', creator=cls.user, date_created=cls.test_start_time)
+        dragon_type = Type.objects.create(name=f'dragon', creator=cls.user, date_created=cls.test_start_time)
+        
+        cls.types = [ice_type, fairy_type, dragon_type]
         
         for index in range(1, 3):
             article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
@@ -36,6 +43,7 @@ class TestMonsters(APITestCase):
 
         cls.monster = Monster.objects.all()[0]
         cls.monster.abilities.set([abilities[0].id])
+        cls.monster.types.set([cls.types[0].id])
 
     def test_create_monster(self):
         self.client.force_authenticate(user=self.user)
@@ -48,7 +56,15 @@ class TestMonsters(APITestCase):
     def test_create_monster_with_abilities(self):
         self.client.force_authenticate(user=self.user)
 
-        data = {'name': 'Umbreon', 'abilities':[self.abilities[0].id]}
+        data = {'name': 'Umbreon', 'abilities': [self.abilities[0].id]}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 201)
+
+    def test_create_monster_with_type(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'name': 'Umbreon', 'types': [self.types[0].id]}
         response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 201)
@@ -102,8 +118,9 @@ class TestMonsters(APITestCase):
                         'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'likes_count': 0, 'reposts_count': 0, 
                         'comments_count': 0, 'is_current_user' : True, 'user_liked': False, 'user_reposted': False, 'user_commented': False, 
                         'name': self.monster.name, 'national_id': None, 'species': None, 'avg_weight': None, 'avg_height': None, 
-                        'description': None, 'etymology': None, 'hidden_ability': None, 'types': [], 'abilities': [OrderedDict({'id': 4, 
-                        'name': self.abilities[0].name, 'effect': self.abilities[0].effect})]}
+                        'description': None, 'etymology': None, 'hidden_ability': None, 'types': [OrderedDict({'id': self.types[0].id, 
+                        'name': self.types[0].name, 'defense_modifiers': []})], 'abilities': [OrderedDict({'id': 4, 'name': self.abilities[0].name, 
+                        'effect': self.abilities[0].effect})]}
 
         response = self.client.get(f'/api/monsters/{self.monster.id}/')
 
@@ -132,7 +149,7 @@ class TestMonsters(APITestCase):
     def test_update_monster_with_new_abilities(self):
         self.client.force_authenticate(user=self.user)
 
-        data = {'abilities':[self.abilities[0].id, self.abilities[1].id, self.abilities[2].id], 'hidden_ability': self.abilities[3].id}
+        data = {'abilities': [self.abilities[0].id, self.abilities[1].id, self.abilities[2].id], 'hidden_ability': self.abilities[3].id}
         response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 200)
@@ -142,11 +159,24 @@ class TestMonsters(APITestCase):
     def test_update_monster_with_too_many_abilities(self):
         self.client.force_authenticate(user=self.user)
 
-        abilities = []
-        for ability in self.abilities:
-            abilities.append(ability.id)
+        data = {'abilities': [obj.id for obj in self.abilities]}
+        response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 400)
 
-        data = {'abilities': abilities}
+    def test_update_monster_types(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'types': [self.types[1].id, self.types[2].id]}
+        response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data['types']), 2)
+
+    def test_update_monster_with_too_many_types(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'types': [obj.id for obj in self.types]}
         response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 400)

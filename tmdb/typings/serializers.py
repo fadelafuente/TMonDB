@@ -104,3 +104,7 @@ class DefenseModifiersSerializer(TypeModifierSerializer):
 class TypeWithModifiersSerializer(TypeSerializer):
     defense_modifiers = DefenseModifiersSerializer(many=True)
     creator = CreatorSerializer()
+    
+class MonsterTypesSerializer(TypeWithModifiersSerializer):
+    class Meta(TypeWithModifiersSerializer.Meta):
+        fields = ['id', 'name', 'defense_modifiers']

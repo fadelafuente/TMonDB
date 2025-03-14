@@ -1,12 +1,12 @@
 from django.contrib.auth import get_user_model
 from django.http import Http404
 from rest_framework import viewsets, filters, status
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 
 from .mixins import *
+from .permissions import IsCreator
 
 AppUser = get_user_model()
 
@@ -18,7 +18,9 @@ class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet
        
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
-            self.permission_classes = (AllowAny,)
+             return [permission() for permission in [AllowAny]]
+        if self.action in ['destroy', 'update', 'partial_update']:
+             return [permission() for permission in [IsAuthenticated, IsCreator]]
         return super().get_permissions()
     
     def get_queryset(self):
@@ -33,16 +35,6 @@ class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet
             kwargs['article__creator__username'] = username
         
         return kwargs
-
-    def perform_destroy(self, instance):
-        if instance.article.creator != self.request.user:
-            raise PermissionDenied('You do not have permission to delete this post.')
-        return super().perform_destroy(instance)
-    
-    def perform_update(self, serializer):
-        if serializer.instance.article.creator != self.request.user:
-            raise PermissionDenied('You do not have permission to update this post.')
-        return super().perform_update(serializer)
     
     def create(self, request, *args, **kwargs):    
         creator = request.user        

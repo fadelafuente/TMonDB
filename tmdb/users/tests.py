@@ -216,4 +216,11 @@ class TestPosts(APITestCase):
 
         response = self.client.patch(f'/auth/users/{self.user.username}/block/')
 
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 403)
+
+    def test_user_follows_themselves(self):
+        self.client.force_authenticate(user=self.user)
+
+        response = self.client.patch(f'/auth/users/{self.user.username}/follow/')
+
+        self.assertEqual(response.status_code, 403)
