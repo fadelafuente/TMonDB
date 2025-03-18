@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 
 from abilities.models import Ability
 from articles.models import Article
-from monsters.models import Monster
+from monsters.models import Monster, Evolution
 from typings.models import Type
 
 AppUser = get_user_model()
@@ -40,6 +40,8 @@ class TestMonsters(APITestCase):
         for index in range(1, 3):
             article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
             Monster.objects.create(name=f'Monster {index}', article=article)
+
+        Evolution.objects.create(from_monster=Monster.objects.all()[0], to_monster=Monster.objects.all()[1], method='Level 16')
 
         cls.monster = Monster.objects.all()[0]
         cls.monster.abilities.set([abilities[0].id])
@@ -120,7 +122,8 @@ class TestMonsters(APITestCase):
                         'name': self.monster.name, 'national_id': None, 'species': None, 'avg_weight': None, 'avg_height': None, 
                         'description': None, 'etymology': None, 'hidden_ability': None, 'types': [OrderedDict({'id': self.types[0].id, 
                         'name': self.types[0].name, 'defense_modifiers': []})], 'abilities': [OrderedDict({'id': 4, 'name': self.abilities[0].name, 
-                        'effect': self.abilities[0].effect})]}
+                        'effect': self.abilities[0].effect})], 'evolutions': [{'id': 2, 'name': 'Monster 2', 'method': 'Level 16'}], 
+                        'pre_evolutions': []}
 
         response = self.client.get(f'/api/monsters/{self.monster.id}/')
 
@@ -180,3 +183,22 @@ class TestMonsters(APITestCase):
         response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 400)
+
+    def test_create_pre_evolution(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'name': 'Preevomon', 'evolutions': [{'to_monster': self.monster.id, 'method': 'Level 16'}]}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(len(response.data['evolutions']), 1)
+
+    def test_create_evolution(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'name': 'Evomon', 'evolutions': [{'from_monster': self.monster.id, 'method': 'Level 16'}]}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+        get_response = self.client.get(f'/api/monsters/{response.data['id']}/')
+        
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(list(get_response.data['pre_evolutions'][0].keys()), ['id', 'name', 'method'])

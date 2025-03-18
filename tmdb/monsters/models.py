@@ -22,5 +22,11 @@ class Monster(models.Model):
     hidden_ability = models.ForeignKey(Ability, related_name='hidden_monsters', null=True, blank=True, on_delete=models.SET_NULL)
     description = models.TextField(blank=True, null=True)
     etymology = models.TextField(blank=True, null=True)
+    evolutions = models.ManyToManyField('self', through='Evolution', symmetrical=False, related_name='pre_evolutions', blank=True)
 
     objects = MonsterManager()
+
+class Evolution(models.Model):
+    from_monster = models.ForeignKey(Monster, on_delete=models.CASCADE, related_name='from_monster')
+    to_monster = models.ForeignKey(Monster, on_delete=models.CASCADE, related_name='to_monster')
+    method = models.CharField(max_length=255)
