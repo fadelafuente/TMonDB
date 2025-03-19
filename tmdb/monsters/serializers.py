@@ -3,14 +3,46 @@ import re
 from rest_framework import serializers
 
 from abilities.serializers import MinimumAbilitySerializer
-from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer
+from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer, BaseListSerializer
 from .models import *
 from typings.serializers import MonsterTypesSerializer
+
+class EvolutionListSerializer(BaseListSerializer):
+    update_lookup_field = 'from_monster'
+
+    class Meta(BaseListSerializer.Meta):
+        model = Evolution
+
+    def to_internal_value(self, data):
+        return super(BaseListSerializer, self).to_internal_value(data)
+    
+    def get_mappings(self, instance, validated_data):
+        obj_mapping = {f'{obj.from_monster}&{obj.to_monster}': obj for obj in instance}
+        data_mapping = {}
+        for item in validated_data:
+            if 'from_monster' in item and 'to_monster' in item:
+                data_mapping[f'{item['from_monster']}&{item['to_monster']}'] = item
+
+        return obj_mapping, data_mapping
 
 class EvolutionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Evolution
         fields = '__all__'
+        list_serializer_class = EvolutionListSerializer
+
+    def validate(self, attrs):
+        to_monster = attrs.get('to_monster', None)
+        from_monster = attrs.get('from_monster', None)
+        if to_monster and from_monster:
+            if to_monster == from_monster:
+                raise serializers.ValidationError('A monster cannot evolve into itself.')
+            
+            existing_evolution = Evolution.objects.filter(to_monster=from_monster, from_monster=to_monster)
+            if existing_evolution.exists():
+                raise serializers.ValidationError('A monster cannot evolve back into a pre-evolution.')
+        
+        return super().validate(attrs)
 
 class RetrieveEvolutionSerializer(EvolutionSerializer):
     class Meta(EvolutionSerializer.Meta):

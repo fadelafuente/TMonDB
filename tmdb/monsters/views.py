@@ -1,9 +1,13 @@
 from django.db import transaction
+from rest_framework import status
 from rest_framework.exceptions import ErrorDetail
+from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
 
 from articles.views import BaseArticleViewSet
-from .models import Monster
+from .models import Monster, Evolution
+from .permissions import IsCreator
 from .serializers import MonsterSerializer, MonsterScrollSerializer, RetrieveMonsterSerializer, EvolutionSerializer
         
 class TMonDBMonsterViewset(BaseArticleViewSet):
@@ -12,6 +16,11 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
     ordering = ('id')
     search_fields = ['name', 'species', 'description', 'article__creator__username']
     model = Monster
+
+    def get_permissions(self):
+        if self.action in ['destroy', 'update', 'partial_update']:
+             return [permission() for permission in [IsAuthenticated, IsCreator]]
+        return super().get_permissions()
 
     def get_serializer_class(self):
         if self.action in ['retrieve', 'destroy']:
@@ -33,7 +42,7 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
                     elif 'to_monster' not in evolution:
                         evolution['to_monster'] = response.data['id']
             except TypeError as e:
-                return Response(data=[{'evolutions': ErrorDetail(string='Invalid evolutions - could not be read properly.')}])
+                return Response(data=[{'evolutions': ErrorDetail(string='Invalid evolutions - could not be read properly.')}], status=status.HTTP_400_BAD_REQUEST)
         
             serializer = EvolutionSerializer(data=evolutions_data, many=True)
             serializer.is_valid(raise_exception=True)
@@ -41,3 +50,26 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
             response.data['evolutions'] = serializer.data
 
         return response
+    
+    @transaction.atomic
+    def update(self, request, *args, **kwargs):
+        evolutions_data = request.data.pop('evolutions', None)
+        pre_evolutions_data = request.data.pop('pre_evolutions', None)
+        response = super().update(request, *args, **kwargs)
+
+        if evolutions_data and response.status_code == 200:
+            instance = self.get_objects()
+            serializer = EvolutionSerializer(instance, data=evolutions_data, many=True, partial=True)
+            serializer.is_valid(raise_exception=True)
+            self.perform_update(serializer)
+            response.data['evolutions'] = serializer.data
+
+        return response
+    
+    def get_objects(self):
+        instance = Evolution.objects.filter(from_monster=self.kwargs['pk'])
+
+        for obj in instance:
+            self.check_object_permissions(self.request, obj)
+        
+        return instance

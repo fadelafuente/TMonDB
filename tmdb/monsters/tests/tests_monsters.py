@@ -19,6 +19,11 @@ class TestMonsters(APITestCase):
                                                username='testuser', 
                                                first_name='test', 
                                                last_name='user')
+        cls.user2 = AppUser.objects.create_user(email='testemail2@domain.com',
+                                                password='TestPassword321$#@',
+                                                username='testuser2',
+                                                first_name='test2',
+                                                last_name='user2')
         cls.test_start_time = timezone.now()
 
         abilities = []
@@ -37,13 +42,15 @@ class TestMonsters(APITestCase):
         
         cls.types = [ice_type, fairy_type, dragon_type]
         
-        for index in range(1, 3):
+        for index in range(1, 4):
             article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
             Monster.objects.create(name=f'Monster {index}', article=article)
 
         Evolution.objects.create(from_monster=Monster.objects.all()[0], to_monster=Monster.objects.all()[1], method='Level 16')
 
         cls.monster = Monster.objects.all()[0]
+        cls.monster2 = Monster.objects.all()[1]
+        cls.monster3 = Monster.objects.all()[2]
         cls.monster.abilities.set([abilities[0].id])
         cls.monster.types.set([cls.types[0].id])
 
@@ -202,3 +209,37 @@ class TestMonsters(APITestCase):
         
         self.assertEqual(response.status_code, 201)
         self.assertEqual(list(get_response.data['pre_evolutions'][0].keys()), ['id', 'name', 'method'])
+
+    def test_update_evolution_with_new_evolutions(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'evolutions': [{'from_monster': self.monster.id, 'to_monster': self.monster3.id, 'method': 'Level 32'}]}
+        response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
+        get_response = self.client.get(f'/api/monsters/{response.data['id']}/')
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(get_response.data['evolutions'][0]['id'], self.monster3.id)    
+
+    def test_update_evolution_fail(self):
+        self.client.force_authenticate(user=self.user2)
+
+        data = {'evolutions': [{'from_monster': self.monster.id, 'to_monster': self.monster3.id, 'method': 'Level 16'}]}
+        response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 403)
+
+    def test_update_same_evolution_fail(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'evolutions': [{'from_monster': self.monster.id, 'to_monster': self.monster.id, 'method': 'Level 16'}]}
+        response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 400)
+
+    def test_update_pre_evolution_as_evolution_fail(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'evolutions': [{'from_monster': self.monster2.id, 'to_monster': self.monster.id, 'method': 'Level 16'}]}
+        response = self.client.patch(f'/api/monsters/{self.monster2.id}/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 400)
