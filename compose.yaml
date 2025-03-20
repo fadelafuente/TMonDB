@@ -28,12 +28,10 @@ services:
   # Local Development with dockerized postgreSQL DB
   db: 
     image: postgres:16.0
+    env_file:
+      - ./env/.env.development
     ports:
       - '5432:5432'
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     profiles: ['', 'dev', 'backend']

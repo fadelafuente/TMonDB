@@ -1,6 +1,4 @@
 from django.db import transaction
-from rest_framework import status
-from rest_framework.exceptions import ErrorDetail
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.response import Response
@@ -35,16 +33,13 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
         response = super().create(request, *args, **kwargs)
         
         if evolutions_data and response.status_code == 201:
-            try:
-                for evolution in evolutions_data:
-                    if 'from_monster' not in evolution:
-                        evolution['from_monster'] = response.data['id']
-                    elif 'to_monster' not in evolution:
-                        evolution['to_monster'] = response.data['id']
-            except TypeError as e:
-                return Response(data=[{'evolutions': ErrorDetail(string='Invalid evolutions - could not be read properly.')}], status=status.HTTP_400_BAD_REQUEST)
-        
-            serializer = EvolutionSerializer(data=evolutions_data, many=True)
+            for evolution in evolutions_data:
+                if 'from_monster' not in evolution:
+                    evolution['from_monster'] = response.data['id']
+                elif 'to_monster' not in evolution:
+                    evolution['to_monster'] = response.data['id']
+
+            serializer = EvolutionSerializer(data=evolutions_data, many=True, context={'request': request})
             serializer.is_valid(raise_exception=True)
             self.perform_create(serializer)
             response.data['evolutions'] = serializer.data

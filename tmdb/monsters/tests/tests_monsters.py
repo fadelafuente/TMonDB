@@ -243,3 +243,11 @@ class TestMonsters(APITestCase):
         response = self.client.patch(f'/api/monsters/{self.monster2.id}/', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 400)
+
+    def test_create_with_another_users_monster_as_evolution(self):
+        self.client.force_authenticate(user=self.user2)
+
+        data = {'name': 'failmon', 'evolutions': [{'from_monster': self.monster.id, 'method': 'Level 16'}]}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 403)

@@ -1,6 +1,7 @@
 from django.db import transaction
 import re
 from rest_framework import serializers
+from rest_framework.exceptions import PermissionDenied
 
 from abilities.serializers import MinimumAbilitySerializer
 from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer, BaseListSerializer
@@ -43,6 +44,16 @@ class EvolutionSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError('A monster cannot evolve back into a pre-evolution.')
         
         return super().validate(attrs)
+    
+    def validate_to_monster(self, to_monster):
+        request = self.context.get('request', None)
+        if request and request.user != to_monster.article.creator:
+            raise PermissionDenied('Can only use a monster created by the user in evolution.')
+
+        return to_monster
+    
+    def validate_from_monster(self, from_monster):
+        return self.validate_to_monster(from_monster)
 
 class RetrieveEvolutionSerializer(EvolutionSerializer):
     class Meta(EvolutionSerializer.Meta):
@@ -125,6 +136,6 @@ class RetrieveMonsterSerializer(ModelScrollWithArticleSerializer, MonsterSeriali
 
 class MonsterScrollSerializer(RetrieveMonsterSerializer):
     class Meta(RetrieveMonsterSerializer.Meta):
-        fields = ['likes_count', 'repost_count', 'comments_count', 'user_liked', 
-                  'user_reposted', 'user_commented' 'article', 'name', 'description', 
+        fields = ['likes_count', 'reposts_count', 'comments_count', 'user_liked', 
+                  'user_reposted', 'user_commented', 'article', 'name', 'description', 
                   'species', 'types', 'is_current_user']
