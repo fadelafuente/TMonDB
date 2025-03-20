@@ -29,7 +29,7 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
     def create(self, request, *args, **kwargs):
         evolutions_data = request.data.pop('evolutions', None)
         response = super().create(request, *args, **kwargs)
-        
+
         if evolutions_data and response.status_code == 201:
             for evolution in evolutions_data:
                 if 'from_monster' not in evolution:
@@ -51,18 +51,18 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
         response = super().update(request, *args, **kwargs)
 
         if evolutions_data and response.status_code == 200:
-            serializer = self.perform_update_helper(EvolutionSerializer, evolutions_data, from_monster=self.kwargs['pk'])
+            serializer = self.perform_update_helper(evolutions_data, from_monster=self.kwargs['pk'])
             response.data['evolutions'] = serializer.data
 
         if pre_evolutions_data and response.status_code == 200:
-            serializer = self.perform_update_helper(EvolutionSerializer, pre_evolutions_data, to_monster=self.kwargs['pk'])
+            serializer = self.perform_update_helper(pre_evolutions_data, to_monster=self.kwargs['pk'])
             response.data['pre_evolutions'] = serializer.data
 
         return response
     
-    def perform_update_helper(self, obj_serializer, data, **kwargs):
+    def perform_update_helper(self, data, **kwargs):
         instance = self.get_objects(**kwargs)
-        serializer = obj_serializer(instance, data=data, many=True, partial=True)
+        serializer = EvolutionSerializer(instance, data=data, many=True, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return serializer
