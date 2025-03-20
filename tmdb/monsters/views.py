@@ -1,8 +1,6 @@
 from django.db import transaction
 from rest_framework.permissions import IsAuthenticated
 
-from rest_framework.response import Response
-
 from articles.views import BaseArticleViewSet
 from .models import Monster, Evolution
 from .permissions import IsCreator
@@ -53,16 +51,24 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
         response = super().update(request, *args, **kwargs)
 
         if evolutions_data and response.status_code == 200:
-            instance = self.get_objects()
-            serializer = EvolutionSerializer(instance, data=evolutions_data, many=True, partial=True)
-            serializer.is_valid(raise_exception=True)
-            self.perform_update(serializer)
+            serializer = self.perform_update_helper(EvolutionSerializer, evolutions_data, from_monster=self.kwargs['pk'])
             response.data['evolutions'] = serializer.data
+
+        if pre_evolutions_data and response.status_code == 200:
+            serializer = self.perform_update_helper(EvolutionSerializer, pre_evolutions_data, to_monster=self.kwargs['pk'])
+            response.data['pre_evolutions'] = serializer.data
 
         return response
     
-    def get_objects(self):
-        instance = Evolution.objects.filter(from_monster=self.kwargs['pk'])
+    def perform_update_helper(self, obj_serializer, data, **kwargs):
+        instance = self.get_objects(**kwargs)
+        serializer = obj_serializer(instance, data=data, many=True, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return serializer
+    
+    def get_objects(self, **kwargs):
+        instance = Evolution.objects.filter(**kwargs)
 
         for obj in instance:
             self.check_object_permissions(self.request, obj)

@@ -218,7 +218,17 @@ class TestMonsters(APITestCase):
         get_response = self.client.get(f'/api/monsters/{response.data['id']}/')
         
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(get_response.data['evolutions'][0]['id'], self.monster3.id)    
+        self.assertEqual(get_response.data['evolutions'][0]['id'], self.monster3.id)
+
+    def test_update_pre_evolution_with_new_evolutions(self):
+        self.client.force_authenticate(user=self.user)
+
+        data = {'pre_evolutions': [{'from_monster': self.monster3.id, 'to_monster': self.monster.id, 'method': 'Level 16'}]}
+        response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
+        get_response = self.client.get(f'/api/monsters/{response.data['id']}/')
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(get_response.data['pre_evolutions'][0]['id'], self.monster3.id)
 
     def test_update_evolution_fail(self):
         self.client.force_authenticate(user=self.user2)

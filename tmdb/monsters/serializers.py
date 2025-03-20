@@ -9,8 +9,6 @@ from .models import *
 from typings.serializers import MonsterTypesSerializer
 
 class EvolutionListSerializer(BaseListSerializer):
-    update_lookup_field = 'from_monster'
-
     class Meta(BaseListSerializer.Meta):
         model = Evolution
 
