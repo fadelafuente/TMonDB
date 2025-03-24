@@ -18,13 +18,17 @@ export default function CreateMon({action="create"}) {
     */
    const worlds = ["Pokemon", "Temtem", "Nexomon"]
     const types = {Pokemon: ["fire", "water", "grass", "ice", "dragon", "ground", "rock", "electric", "bug", "normal", "fighting", "psychic", "steel", "poison", "flying", "dark", "ghost", "fairy"], 
-        Temtem: ["neutral", "wind", "earth", "water", "fire", "nature", "electric", "mental", "digital", "melee", "crystal", "toxic"]};
+        Temtem: ["neutral", "wind", "earth", "water", "fire", "nature", "electric", "mental", "digital", "melee", "crystal", "toxic"],
+        Nexomon: []};
     const abilities = {Pokemon: ["Adaptability", "Aerilate", "Cursed Body", "Drought", "Pure Power"], 
-        Temtem: ["Aggressor", "Arcane Wrap", "Benefactor", "Channeler", "Coward's Rest", "Synergy Master"]};
+        Temtem: ["Aggressor", "Arcane Wrap", "Benefactor", "Channeler", "Coward's Rest", "Synergy Master"],
+        Nexomon: []};
     const regions = {Pokemon: ["Kanto", "Johto", "Hoenn", "Sinnoh", "Unova", "Kalos", "Alola", "Galar", "Paldea"], 
-        Temtem: ["Deniz", "Omninesia", "Tucma", "Kisiwa", "Cipanku", "Arbury"]};
+        Temtem: ["Deniz", "Omninesia", "Tucma", "Kisiwa", "Cipanku", "Arbury"],
+        Nexomon: []};
     const moves = {Pokemon: ["Aqua Tail", "Dragon Rush", "Thunderbolt", "Flamethrower", "Ice Beam", "Waterfall"], 
-        Temtem: ["Martial Kick", "Uppercut", "Heat Up", "Helicopter Kick", "Wrenching Massage", "Seismunch's Wreck", "Dim Mak"]};
+        Temtem: ["Martial Kick", "Uppercut", "Heat Up", "Helicopter Kick", "Wrenching Massage", "Seismunch's Wreck", "Dim Mak"],
+        Nexomon: []};
     const locations = {
         Pokemon: {
             Kanto: ["Power Plant", "Pallet Town", "Viridian Forest"], 
@@ -44,7 +48,8 @@ export default function CreateMon({action="create"}) {
             Kisiwa: ["Mawingu Islets", "Jino Gap", "Tasa Desert", "Kilima Peaks"],
             Cipanku: ["Iwaba", "Rice Fields"],
             Arbury: ["Meadowdale", "Ruins of Telobos", "Burned Woodlands"]
-        }
+        },
+        Nexomon: {}
     };
 
     const [chosenHeightFt, setChosenHeightFt, 
@@ -58,6 +63,8 @@ export default function CreateMon({action="create"}) {
     const [chosenHiddenAbility, setchosenHiddenAbility] = useState([]);
     const [chosenMoves, setChosenMoves] = useState([]);
     const [chosenLocations, setChosenLocations] = useState([]);
+    const [chosenEvolutions, setChosenEvolutions] = useState([]);
+    const [chosenPreEvolutions, setChosenPreEvolutions] = useState([]);
     const [formData, setFormData] = useAdaptiveFormData({
         name: "",
         nationalId: "",
@@ -278,21 +285,6 @@ export default function CreateMon({action="create"}) {
                         <div className="bottom-barrier">
                             <div className="row-gap-container">
                                 <div>
-                                    <label className="col-label">Move(s)</label>
-                                </div>
-                                <SearchMultiSelect 
-                                    initialItems={ moves } 
-                                    groups={ chosenWorld != null ? [chosenWorld] : [] } 
-                                    chosenItems={ chosenMoves } 
-                                    setChosenItems={ (m) => setChosenMoves(m) } 
-                                    isMulti={ true }
-                                    isGrouped={ true }
-                                />
-                            </div>
-                        </div>
-                        <div className="bottom-barrier">
-                            <div className="row-gap-container">
-                                <div>
                                     <label className="col-label">Region(s)</label>
                                 </div>
                                 <SearchMultiSelect 
@@ -320,6 +312,32 @@ export default function CreateMon({action="create"}) {
                                         isGrouped={ true }
                                     />
                                 </div>
+                            </div>
+                        </div>
+                        <div className="bottom-barrier">
+                            <div className="row-gap-container">
+                                <div>
+                                    <label className="col-label">Evolution(s)</label>
+                                </div>
+                                <SearchMultiSelect
+                                    isClearable
+                                    initialItems={ [] } 
+                                    chosenItems={ chosenEvolutions } 
+                                    setChosenItems={ (e) => setChosenEvolutions(e) } 
+                                />
+                            </div>
+                        </div>
+                        <div className="bottom-barrier">
+                            <div className="row-gap-container">
+                                <div>
+                                    <label className="col-label">Pre-Evolution(s)</label>
+                                </div>
+                                <SearchMultiSelect
+                                    isClearable
+                                    initialItems={ [] } 
+                                    chosenItems={ chosenPreEvolutions } 
+                                    setChosenItems={ (e) => setChosenPreEvolutions(e) } 
+                                />
                             </div>
                         </div>
                     </div>

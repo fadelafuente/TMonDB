@@ -8,7 +8,7 @@ services:
       - ./tmdb:/tmdb
     env_file:
       - ./env/.env.development.local
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     profiles: ['backendlocal', 'devlocal']
 
   frontend:
@@ -46,7 +46,7 @@ services:
       - db
     env_file:
       - ./env/.env.development
-    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     profiles: ['', 'dev', 'backend']
 
 volumes:

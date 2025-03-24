@@ -4,6 +4,8 @@ from django.db import models
 from django.db.models import Count, Case, When, Q
 from django.utils import timezone
 
+from articles.validators import MaxLengthValidator
+
 def add_annotations(queryset, user):
     return queryset.annotate(following_count=Count('following', distinct=True),
                 followers_count=Count('followers', distinct=True),
@@ -42,7 +44,7 @@ class AppUserManager(BaseUserManager):
 class AppUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
     username =  models.CharField(max_length=50, unique=True, blank=True)
-    bio = models.TextField(default='This is where my bio would go, if I wrote one!', blank=True)
+    bio = models.TextField(default='This is where my bio would go, if I wrote one!', blank=True, validators=[MaxLengthValidator()])
     following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
     blocking = models.ManyToManyField('self', symmetrical=False, related_name='blocked', blank=True)
     date_joined = models.DateTimeField(default=timezone.now, blank=True)

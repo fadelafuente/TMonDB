@@ -6,7 +6,8 @@ from rest_framework.test import APITestCase
 
 from abilities.models import Ability
 from articles.models import Article
-from monsters.models import Monster, Evolution
+from monsters.models import Monster, Evolution, MoveSet
+from moves.models import Move
 from typings.models import Type
 
 AppUser = get_user_model()
@@ -46,7 +47,11 @@ class TestMonsters(APITestCase):
             article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
             Monster.objects.create(name=f'Monster {index}', article=article)
 
+        article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
+        cls.move = Move.objects.create(name='Ice Beam', power=90, article=article)
+
         Evolution.objects.create(from_monster=Monster.objects.all()[0], to_monster=Monster.objects.all()[1], method='Level 16')
+        MoveSet.objects.create(monster=Monster.objects.all()[0], move=cls.move, method='Level 20')
 
         cls.monster = Monster.objects.all()[0]
         cls.monster2 = Monster.objects.all()[1]
@@ -130,7 +135,8 @@ class TestMonsters(APITestCase):
                         'description': None, 'etymology': None, 'hidden_ability': None, 'types': [OrderedDict({'id': self.types[0].id, 
                         'name': self.types[0].name, 'defense_modifiers': []})], 'abilities': [OrderedDict({'id': 4, 'name': self.abilities[0].name, 
                         'effect': self.abilities[0].effect})], 'evolutions': [{'id': 2, 'name': 'Monster 2', 'method': 'Level 16'}], 
-                        'pre_evolutions': []}
+                        'pre_evolutions': [], 'moveset': [{'id': self.move.id, 'name': self.move.name, 'type': None, 'properties': None, 
+                        'method': 'Level 20'}]}
 
         response = self.client.get(f'/api/monsters/{self.monster.id}/')
 

@@ -6,6 +6,7 @@ from rest_framework.exceptions import PermissionDenied
 from abilities.serializers import MinimumAbilitySerializer
 from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer, BaseListSerializer
 from .models import *
+from moves.serializers import MonsterMoveSerializer
 from typings.serializers import MonsterTypesSerializer
 
 class EvolutionListSerializer(BaseListSerializer):
@@ -21,6 +22,22 @@ class EvolutionListSerializer(BaseListSerializer):
         for item in validated_data:
             if 'from_monster' in item and 'to_monster' in item:
                 data_mapping[f'{item['from_monster']}&{item['to_monster']}'] = item
+
+        return obj_mapping, data_mapping
+    
+class MovesetListSerializer(BaseListSerializer):
+    class Meta(BaseListSerializer.Meta):
+        model = MoveSet
+
+    def to_internal_value(self, data):
+        return super(BaseListSerializer, self).to_internal_value(data)
+    
+    def get_mappings(self, instance, validated_data):
+        obj_mapping = {f'{obj.monster}&{obj.move}': obj for obj in instance}
+        data_mapping = {}
+        for item in validated_data:
+            if 'monster' in item and 'move' in item:
+                data_mapping[f'{item['monster']}&{item['move']}'] = item
 
         return obj_mapping, data_mapping
 
@@ -56,6 +73,24 @@ class EvolutionSerializer(serializers.ModelSerializer):
 class RetrieveEvolutionSerializer(EvolutionSerializer):
     class Meta(EvolutionSerializer.Meta):
         fields = ['method']
+
+class RetrieveMovesetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MoveSet
+        fields = ['method']
+
+class MonsterMovesetSerializer(MonsterMoveSerializer):
+    def serialize_moveset(self, move_instance):
+        if 'monster_instance' in self.context:
+            moveset_instance = MoveSet.objects.filter(monster_id=self.context['monster_instance'].id, move_id=move_instance.id).first()
+
+            if moveset_instance:
+                return RetrieveMovesetSerializer(moveset_instance).data
+        return {}
+    
+    def to_representation(self, instance):
+        result = super().to_representation(instance)
+        return {**result, **self.serialize_moveset(instance)}   
 
 class MonsterSerializer(ModelWithArticleSerializer):
     model = Monster
@@ -99,6 +134,9 @@ class MonsterSerializer(ModelWithArticleSerializer):
     
     def get_pre_evolutions(self, monster):
         return MinimumMonsterSerializer(monster.pre_evolutions.all(), many=True, context={'to_monster_instance': monster}).data
+    
+    def get_moveset(self, monster):
+        return MonsterMovesetSerializer(monster.moveset.all(), many=True, context={'monster_instance': monster}).data
 
     def to_representation(self, instance):
         result = super().to_representation(instance)
@@ -131,6 +169,7 @@ class RetrieveMonsterSerializer(ModelScrollWithArticleSerializer, MonsterSeriali
     hidden_ability = MinimumAbilitySerializer()
     evolutions = serializers.SerializerMethodField()
     pre_evolutions = serializers.SerializerMethodField()
+    moveset = serializers.SerializerMethodField()
 
 class MonsterScrollSerializer(RetrieveMonsterSerializer):
     class Meta(RetrieveMonsterSerializer.Meta):
