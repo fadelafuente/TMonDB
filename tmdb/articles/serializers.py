@@ -54,10 +54,6 @@ class BaseListSerializer(serializers.ListSerializer):
     def update(self, instance, validated_data):
         obj_mapping, data_mapping = self.get_mappings(instance, validated_data)
         
-        for item in validated_data:
-            if 'id' in item:
-                data_mapping[item['id']] = item
-
         result = []
         for obj_id, data in data_mapping.items():
             obj = obj_mapping.get(obj_id, None)

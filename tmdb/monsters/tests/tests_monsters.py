@@ -47,11 +47,13 @@ class TestMonsters(APITestCase):
             article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
             Monster.objects.create(name=f'Monster {index}', article=article)
 
-        article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
-        cls.move = Move.objects.create(name='Ice Beam', power=90, article=article)
+        cls.moves = []
+        for index in range(1, 4):
+            article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
+            cls.moves.append(Move.objects.create(name=f'Ice Beam {index}', power=30 * index, article=article))
 
         Evolution.objects.create(from_monster=Monster.objects.all()[0], to_monster=Monster.objects.all()[1], method='Level 16')
-        MoveSet.objects.create(monster=Monster.objects.all()[0], move=cls.move, method='Level 20')
+        MoveSet.objects.create(monster=Monster.objects.all()[0], move=cls.moves[0], method='Level 20')
 
         cls.monster = Monster.objects.all()[0]
         cls.monster2 = Monster.objects.all()[1]
@@ -135,7 +137,7 @@ class TestMonsters(APITestCase):
                         'description': None, 'etymology': None, 'hidden_ability': None, 'types': [OrderedDict({'id': self.types[0].id, 
                         'name': self.types[0].name, 'defense_modifiers': []})], 'abilities': [OrderedDict({'id': 4, 'name': self.abilities[0].name, 
                         'effect': self.abilities[0].effect})], 'evolutions': [{'id': 2, 'name': 'Monster 2', 'method': 'Level 16'}], 
-                        'pre_evolutions': [], 'moveset': [{'id': self.move.id, 'name': self.move.name, 'type': None, 'properties': None, 
+                        'pre_evolutions': [], 'moveset': [{'id': self.moves[0].id, 'name': self.moves[0].name, 'type': None, 'properties': None, 
                         'method': 'Level 20'}]}
 
         response = self.client.get(f'/api/monsters/{self.monster.id}/')
@@ -267,3 +269,17 @@ class TestMonsters(APITestCase):
         response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 403)
+
+    def test_update_monsters_moves(self):
+        self.client.force_authenticate(user=self.user)
+
+        moveset = []
+        for move in self.moves:
+            moveset.append({'move': move.id, 'monster': self.monster.id, 'method': 'level 32'})
+
+        data = {'moveset': moveset}
+        response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
+        get_response = self.client.get(f'/api/monsters/{self.monster.id}/')
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(move['method'] == 'level 32' for move in get_response.data['moveset'])

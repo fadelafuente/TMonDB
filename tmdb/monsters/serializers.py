@@ -9,6 +9,16 @@ from .models import *
 from moves.serializers import MonsterMoveSerializer
 from typings.serializers import MonsterTypesSerializer
 
+'''
+    Evolution serializers
+        - EvolutionListSerializer:
+            Used for bulk creating and bulk updating the Evolution through table.
+        - EvolutionSerializer:
+            Base Evolution serializer.
+        - RetrieveEvolutionSerializer:
+            Used to obtain information not obtainable through normal means such
+            as the method of how a monster evolves.
+'''
 class EvolutionListSerializer(BaseListSerializer):
     class Meta(BaseListSerializer.Meta):
         model = Evolution
@@ -22,22 +32,6 @@ class EvolutionListSerializer(BaseListSerializer):
         for item in validated_data:
             if 'from_monster' in item and 'to_monster' in item:
                 data_mapping[f'{item['from_monster']}&{item['to_monster']}'] = item
-
-        return obj_mapping, data_mapping
-    
-class MovesetListSerializer(BaseListSerializer):
-    class Meta(BaseListSerializer.Meta):
-        model = MoveSet
-
-    def to_internal_value(self, data):
-        return super(BaseListSerializer, self).to_internal_value(data)
-    
-    def get_mappings(self, instance, validated_data):
-        obj_mapping = {f'{obj.monster}&{obj.move}': obj for obj in instance}
-        data_mapping = {}
-        for item in validated_data:
-            if 'monster' in item and 'move' in item:
-                data_mapping[f'{item['monster']}&{item['move']}'] = item
 
         return obj_mapping, data_mapping
 
@@ -74,6 +68,38 @@ class RetrieveEvolutionSerializer(EvolutionSerializer):
     class Meta(EvolutionSerializer.Meta):
         fields = ['method']
 
+'''
+    MoveSet serializers
+        - MoveSetListSerializer:
+            Used for bulk creating and bulk updating the MoveSet through table.
+        - MoveSetSerializer:
+            Base MoveSet serializer.
+        - RetrieveMovesetSerializer:
+            Used to obtain information not obtainable through normal means such
+            as the method a monster learns a move.
+'''  
+class MoveSetListSerializer(BaseListSerializer):
+    class Meta(BaseListSerializer.Meta):
+        model = MoveSet
+
+    def to_internal_value(self, data):
+        return super(BaseListSerializer, self).to_internal_value(data)
+    
+    def get_mappings(self, instance, validated_data):
+        obj_mapping = {f'{obj.monster}&{obj.move}': obj for obj in instance}
+        data_mapping = {}
+        for item in validated_data:
+            if 'monster' in item and 'move' in item:
+                data_mapping[f'{item['monster']}&{item['move']}'] = item
+
+        return obj_mapping, data_mapping
+    
+class MoveSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MoveSet
+        fields = '__all__'
+        list_serializer_class = MoveSetListSerializer
+
 class RetrieveMovesetSerializer(serializers.ModelSerializer):
     class Meta:
         model = MoveSet
@@ -92,6 +118,20 @@ class MonsterMovesetSerializer(MonsterMoveSerializer):
         result = super().to_representation(instance)
         return {**result, **self.serialize_moveset(instance)}   
 
+'''
+    Monster Serializers
+        - MonsterSerializer:
+            Base Monster serializer.
+        - MinimumMonsterSerializer:
+            Used to obtain the least amount of information needed, such
+            as listing for evolution/pre-evolution lists.
+        - RetrieveMonsterSerializer:
+            Used to obtain all the information needed for any particular
+            monster page.
+        - MonsterScrollSerializer:
+            Used to obtain all the information needed if monsters were
+            listed as posts.
+'''
 class MonsterSerializer(ModelWithArticleSerializer):
     model = Monster
 
