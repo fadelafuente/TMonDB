@@ -36,9 +36,9 @@ class TypeUpdateSerializer(TypeSerializer):
     class Meta(TypeSerializer.Meta):
         list_serializer_class = TypeListSerializer
 
-class TypeNameOnlySerializer(TypeSerializer):
+class MinimumTypeSerializer(TypeSerializer):
     class Meta(TypeSerializer.Meta):
-        fields = ['name']
+        fields = ['id', 'name']
 
 class TypeModifierSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,7 +50,7 @@ class ModifierUpdateSerializer(TypeModifierSerializer):
         list_serializer_class = ModifierListSerializer
 
 class DefenseModifiersSerializer(TypeModifierSerializer):
-    attacking_type = TypeNameOnlySerializer()
+    attacking_type = MinimumTypeSerializer()
 
     class Meta(TypeModifierSerializer.Meta):
         fields = ['id', 'attacking_type', 'multiplier']

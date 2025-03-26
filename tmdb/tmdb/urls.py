@@ -15,14 +15,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 '''
 from django.contrib import admin
-from monsters.views import *
 from django.urls import path, include, re_path, include
 from django.views.generic import TemplateView
-from users.views import *
-from posts.views import *
-from monsters.views import *
-from typings.views import *
-from abilities.views import *
+
+from abilities.views import TMonDBAbilityViewset
+from monsters.views import TMonDBMonsterViewset
+from moves.views import TMonDBMoveViewset
+from posts.views import PostViewSet
+from typings.views import TMonDBTypeViewset
+from users.views import TMonDBUserViewset, CustomTokenCreateView, CustomProviderAuthView, CustomTokenVerifyView
 
 from rest_framework.routers import DefaultRouter
 
@@ -31,6 +32,7 @@ api_router.register(r'posts', PostViewSet, basename='Post')
 api_router.register(r'monsters', TMonDBMonsterViewset, basename='Monster')
 api_router.register(r'types', TMonDBTypeViewset, basename='Type')
 api_router.register(r'abilities', TMonDBAbilityViewset, basename='Ability')
+api_router.register(r'moves', TMonDBMoveViewset, basename='Move')
 
 auth_router = DefaultRouter()
 auth_router.register(r'users', TMonDBUserViewset)

@@ -1,5 +1,9 @@
+import json
+from rest_framework import serializers
+
 from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer
 from .models import *
+from typings.serializers import MinimumTypeSerializer
 
 class MoveSerializer(ModelWithArticleSerializer):
     model = Move
@@ -12,5 +16,8 @@ class MonsterMoveSerializer(MoveSerializer):
     class Meta(MoveSerializer.Meta):
         fields = ['id', 'name', 'type', 'properties']
 
-class MoveScrollSerializer(ModelScrollWithArticleSerializer, MoveSerializer):
+class RetrieveMoveSerializer(ModelScrollWithArticleSerializer, MoveSerializer):
+    type = MinimumTypeSerializer()
+
+class MoveScrollSerializer(RetrieveMoveSerializer):
     pass

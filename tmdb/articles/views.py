@@ -50,4 +50,4 @@ class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet
             model = self.model.objects.filter(id=kwargs['pk'])
             if model.exists():
                 return Response(status=status.HTTP_403_FORBIDDEN, data={'current_user_is_blocked': True, 'creator': model.first().article.creator.username})
-            return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': f'Post not found'})         
+            return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': f'Post not found.'})
