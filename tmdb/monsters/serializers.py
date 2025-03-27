@@ -100,6 +100,20 @@ class MoveSetSerializer(serializers.ModelSerializer):
         fields = '__all__'
         list_serializer_class = MoveSetListSerializer
 
+    def validate_monster(self, monster):
+        request = self.context.get('request', None)
+        if request and request.user != monster.article.creator:
+            raise PermissionDenied('Can only use a monster created by the user in evolution.')
+
+        return monster
+    
+    def validate_move(self, move):
+        request = self.context.get('request', None)
+        if request and request.user != move.article.creator:
+            raise PermissionDenied('Can only use a move created by the user in evolution.')
+
+        return move
+    
 class RetrieveMovesetSerializer(serializers.ModelSerializer):
     class Meta:
         model = MoveSet

@@ -254,6 +254,17 @@ class TestMonsters(APITestCase):
         
         self.assertEqual(response.status_code, 400)
 
+    def test_update_evolution_with_another_users_monsters(self):
+        self.client.force_authenticate(user=self.user2)
+
+        data = {'name': 'failmon'}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+
+        data = {'evolutions': [{'from_monster': response.data['id'], 'to_monster': self.monster.id, 'method': 'Level 16'}]}
+        response = self.client.patch(f'/api/monsters/{self.monster.id}/', data=json.dumps(data), content_type='application/json')
+        
+        self.assertEqual(response.status_code, 403)
+
     def test_update_pre_evolution_as_evolution_fail(self):
         self.client.force_authenticate(user=self.user)
 
@@ -283,3 +294,18 @@ class TestMonsters(APITestCase):
         
         self.assertEqual(response.status_code, 200)
         self.assertTrue(move['method'] == 'level 32' for move in get_response.data['moveset'])
+
+    def test_update_monster_with_another_users_moves(self):
+        self.client.force_authenticate(user=self.user2)
+
+        data = {'name': 'Umbreon'}
+        response = self.client.post('/api/monsters/', data=json.dumps(data), content_type='application/json')
+        
+        moveset = []
+        for move in self.moves:
+            moveset.append({'move': move.id, 'monster': response.data['id'], 'method': 'level 32'})
+
+        data = {'moveset': moveset}
+        response = self.client.patch(f'/api/monsters/{response.data['id']}/', data=json.dumps(data), content_type='application/json')
+
+        self.assertEqual(response.status_code, 403)

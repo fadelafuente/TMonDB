@@ -52,23 +52,23 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
         response = super().update(request, *args, **kwargs)
 
         if evolutions_data and response.status_code == 200:
-            serializer = self.perform_update_helper(evolutions_data, from_monster=self.kwargs['pk'], obj_model=Evolution, serializer_class=EvolutionSerializer)
+            serializer = self.perform_update_helper(request, evolutions_data, from_monster=self.kwargs['pk'], obj_model=Evolution, serializer_class=EvolutionSerializer)
             response.data['evolutions'] = serializer.data
 
         if pre_evolutions_data and response.status_code == 200:
-            serializer = self.perform_update_helper(pre_evolutions_data, to_monster=self.kwargs['pk'], obj_model=Evolution, serializer_class=EvolutionSerializer)
+            serializer = self.perform_update_helper(request, pre_evolutions_data, to_monster=self.kwargs['pk'], obj_model=Evolution, serializer_class=EvolutionSerializer)
             response.data['pre_evolutions'] = serializer.data
 
         if moveset_data and response.status_code == 200:
-            serializer = self.perform_update_helper(moveset_data, monster=self.kwargs['pk'], obj_model = MoveSet, serializer_class=MoveSetSerializer)
+            serializer = self.perform_update_helper(request, moveset_data, monster=self.kwargs['pk'], obj_model = MoveSet, serializer_class=MoveSetSerializer)
             response.data['moveset'] = serializer.data
 
         return response
     
-    def perform_update_helper(self, data, **kwargs):
+    def perform_update_helper(self, request, data, **kwargs):
         serializer_class = kwargs.pop('serializer_class', None)
         instance = self.get_objects(**kwargs)
-        serializer = serializer_class(instance, data=data, many=True, partial=True)
+        serializer = serializer_class(instance, data=data, many=True, partial=True, context={'request': request})
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return serializer
