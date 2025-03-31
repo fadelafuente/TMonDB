@@ -1,35 +1,37 @@
-import { Fragment, useState } from "react";
-import ReplyBar from "./Bars/ReplyBar";
-import { BsThreeDots } from "react-icons/bs";
-import { useDeletePost, useMiddleViewPort } from "../hooks/hooks";
-import { connect } from "react-redux";
-import SocialInteractions from "./UserInteractions/SocialInteractions";
-import { Col, NavDropdown, Row, Tab, Tabs } from "react-bootstrap";
-import CultureTab from "./Content/CultureTab";
-import GeographyTab from "./Content/GeographyTab";
-import FeatureTab from "./Content/FeatureTab";
-import TriviaTab from "./Content/TriviaTab";
+import { Fragment, useState } from 'react';
+import { Col, NavDropdown, Row, Tab, Tabs } from 'react-bootstrap';
+import { BsThreeDots } from 'react-icons/bs';
+import { connect } from 'react-redux';
 
-import "../assets/styling/content.css";
-import "../assets/styling/UserProfile.css";
-import "../assets/styling/ViewMon.css";
-import "../assets/styling/buttons.css";
+import ReplyBar from './Bars/ReplyBar';
+import CultureTab from './Content/CultureTab';
+import FeatureTab from './Content/FeatureTab';
+import GeographyTab from './Content/GeographyTab';
+import TriviaTab from './Content/TriviaTab';
+import { useDeletePost, useMiddleViewPort } from '../hooks/hooks';
+import SocialInteractions from './UserInteractions/SocialInteractions';
+
+
+import '../assets/styling/content.css';
+import '../assets/styling/UserProfile.css';
+import '../assets/styling/ViewMon.css';
+import '../assets/styling/buttons.css';
 
 function ViewRegion({ isAuthenticated }) {
-    const [post, setPost] = useState("");
+    const [post, setPost] = useState('');
     const [showBlock, setShowBlock] = useState(false);
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [isDeleted, setIsDeleted] = useDeletePost(false);
-    const [tab, setTab] = useState("culture");
+    const [tab, setTab] = useState('culture');
 
     // useEffect(() => {
-    //     getPostById(pid).then((response) => {
+    //     getResourceById('regions', pid).then((response) => {
     //         if(response && response.status === 403) {
     //             setPost(response.data);
     //         } else if(response && response.status === 200) {
     //             setPost(response.data);
-    //             if(response.data["parent"]){
-    //                getPostById(response.data["parent"]).then((parent_response) => {
+    //             if(response.data['parent']){
+    //                getResourceById('regions', response.data['parent']).then((parent_response) => {
     //                     if(parent_response && parent_response.status === 200) {
     //                         setParent(parent_response.data);
     //                     }
@@ -44,7 +46,7 @@ function ViewRegion({ isAuthenticated }) {
         return (
             <Fragment>
                 { post.is_current_user ? 
-                    <NavDropdown.Item onClick={() => { setIsDeleted(post.id) }}>
+                    <NavDropdown.Item onClick={() => { setIsDeleted('regions', post.id) }}>
                         Delete Post
                     </NavDropdown.Item>
                 : 
@@ -59,25 +61,25 @@ function ViewRegion({ isAuthenticated }) {
     return (
         <>
             <div>
-                <div className="article-container">
-                    <Row className="view-name">
+                <div className='article-container'>
+                    <Row className='view-name'>
                         Deniz
                     </Row>
-                    <Row className="center-row-items view-creator">
+                    <Row className='center-row-items view-creator'>
                         <Col>
-                            <div className="creator-container">
+                            <div className='creator-container'>
                                 @username
                             </div>
                         </Col>
-                        <Col className="time-col" id="time-col">
-                            <Row className="center-row-items">
+                        <Col className='time-col' id='time-col'>
+                            <Row className='center-row-items'>
                                 <Col>
                                     12h
                                 </Col>
-                                <Col className="more-col">
-                                    <div className="base-btn rounded-btn">
+                                <Col className='more-col'>
+                                    <div className='base-btn rounded-btn'>
                                         <NavDropdown title={<BsThreeDots />} 
-                                            drop={ aboveMid ? "up-centered" : "down-centered" }
+                                            drop={ aboveMid ? 'up-centered' : 'down-centered' }
                                             onClick={e => setAboveMid(e)}
                                             disabled={ !isAuthenticated }
                                         >
@@ -88,9 +90,9 @@ function ViewRegion({ isAuthenticated }) {
                             </Row>
                         </Col>
                     </Row>
-                    <div className="bottom-barrier view-info-details">
-                        <div className="view-img-container bottom-barrier">
-                            <img src={ require("../assets/images/missing-img.png") } className="view-image" />
+                    <div className='bottom-barrier view-info-details'>
+                        <div className='view-img-container bottom-barrier'>
+                            <img src={ require('../assets/images/missing-img.png') } className='view-image' />
                         </div>
                         <div view-desc>
                             <p>
@@ -102,27 +104,27 @@ function ViewRegion({ isAuthenticated }) {
                         </div>
                     </div>
                     <Tabs activeKey={ tab } onSelect={ (k) => setTab(k) } fill>
-                        <Tab title="Culture" eventKey="culture">
+                        <Tab title='Culture' eventKey='culture'>
                             <CultureTab />
                         </Tab>
-                        <Tab title="Geography" eventKey="geography">
+                        <Tab title='Geography' eventKey='geography'>
                             <GeographyTab />
                         </Tab>
-                        <Tab title="Features" eventKey="features">
+                        <Tab title='Features' eventKey='features'>
                             <FeatureTab />
                         </Tab>
-                        <Tab title="Trivia" eventKey="trivia">
+                        <Tab title='Trivia' eventKey='trivia'>
                             <TriviaTab />
                         </Tab>
                     </Tabs>
-                    <div className="mon-interactions">
-                        <SocialInteractions />
+                    <div className='mon-interactions'>
+                        <SocialInteractions resource='regions' />
                     </div>
                 </div>
-                <div className="reply-container">
+                <div className='reply-container'>
                     <ReplyBar />
                 </div>
-                <div className="comments-container article-container">
+                <div className='comments-container article-container'>
                     {/* <PostArticle query={ null } kwargs={ {parent: post.id} } /> */}
                 </div>
             </div>

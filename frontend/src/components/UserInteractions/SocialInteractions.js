@@ -8,10 +8,10 @@ import { useState } from 'react';
 
 import '../../assets/styling/PostCard.css';
 
-function SocialInteractions({ post=null, isAuthenticated }) {
-    const [liked, likes, setLike] = useInteractions(post ? post.likes_count : 0, post ? post.user_liked : 0);
-    const [reposted, reposts, setRepost] = useInteractions(post ? post.reposts_count : 0, post ? post.user_reposted : 0);
-    const [commented, comments] = useInteractions(post ? post.comments_count : 0, post ? post.user_commented : 0);
+function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
+    const [liked, likes, setLike] = useInteractions(obj ? obj.likes_count : 0, obj ? obj.user_liked : 0);
+    const [reposted, reposts, setRepost] = useInteractions(obj ? obj.reposts_count : 0, obj ? obj.user_reposted : 0);
+    const [commented, comments] = useInteractions(obj ? obj.comments_count : 0, obj ? obj.user_commented : 0);
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [showAlert, setShowAlert] = useTimedAlert(false);
     const [show, setShow] = useState(false);
@@ -24,7 +24,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
 
     return (
         <>
-            <CreatePost show={show} setShow={post ? () => setShow() : () => {}} parent={post ? post.article.id : null} />
+            <CreatePost show={show} setShow={obj ? () => setShow() : () => {}} parent={obj ? obj.article.id : null} />
             <Alert variant='success' className='copy-alert' show={showAlert}>
                 <Alert.Heading>Copied to clipboard.</Alert.Heading>
             </Alert>
@@ -32,7 +32,7 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                 <Col>
                     <button className='svg-btn' onClick={
                         isAuthenticated ? 
-                            post ?
+                            obj ?
                                 commented ? () => {} : () => setShow(true)
                             :
                                 () => {}
@@ -53,8 +53,8 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                 <Col>
                     <button className='svg-btn' name='repost' onClick={ 
                         isAuthenticated ? 
-                            post ?
-                                e => setRepost(e, post.id) 
+                            obj ?
+                                e => setRepost(e, resource, obj.id) 
                             :
                                 () => {}
                         : 
@@ -75,8 +75,8 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                 <Col>
                     <button className='svg-btn' name='like' onClick={
                         isAuthenticated ? 
-                            post ?
-                                e => setLike(e, post.id) 
+                            obj ?
+                                e => setLike(e, resource, obj.id) 
                             :
                                 () => {}
                         : 
@@ -101,11 +101,11 @@ function SocialInteractions({ post=null, isAuthenticated }) {
                         className='svg-dropdown'
                     >
                         <NavDropdown.Item onClick={() => handleCopyLink(
-                            post ? 
-                                post.article.creator.username ? 
-                                    `${post.article.creator.username}/${post.id}` 
+                            obj ? 
+                                obj.article.creator.username ? 
+                                    `${obj.article.creator.username}/${obj.id}` 
                                 : 
-                                    `deleted/${post.id}` 
+                                    `deleted/${obj.id}` 
                             : 
                                 'home'
                         )}>

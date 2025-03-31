@@ -1,8 +1,9 @@
 import { useEffect, useCallback, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { deletePostById, createPost, updatePostById } from '../actions/posts';
-import { handleValidation, handleDuplicatesInArray, handleHeightConversion, handleLbToKgConversion, handleKgToLbConversion } from '../functions/handlers';
+
+import { createResource, deleteResourceById, updateResourceById } from '../actions/api';
 import { followUser, getCurrentUserDetails, getFollowByUsername, getUserProfile, updateDetails } from '../actions/auth';
+import { handleValidation, handleDuplicatesInArray, handleHeightConversion, handleLbToKgConversion, handleKgToLbConversion } from '../functions/handlers';
 
 export function useSocialAuth(provider, socialAuthenticate) {
     const location = useLocation();
@@ -209,15 +210,15 @@ export function usePassword() {
     return [showPass, handleShowPass];
 }
 
-export function useCreatePost(initialForm) {
+export function useCreateResource(initialForm) {
     const [formData, setFormData] = useAdaptiveFormData(initialForm);
     const navigate = useNavigate();
 
-    function handleCreatePost(e, content, parent) {
+    function handleCreateResource(e, resource, content, parent) {
         e.preventDefault();
 
         if(content) {
-            createPost({content, parent}).then(response => {
+            createResource(resource, {content, parent}).then(response => {
                 if(response && response.status === 201) {
                     navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
                 }
@@ -225,7 +226,7 @@ export function useCreatePost(initialForm) {
         }
     }
 
-    return [formData, setFormData, handleCreatePost];
+    return [formData, setFormData, handleCreateResource];
 }
 
 export function useDiscardModal(formData, setShow) {
@@ -255,8 +256,8 @@ export function useInteractions(initial_interaction, user_interacted) {
     const [interaction, setInteraction] = useState(initial_interaction);
     const [interacted, setInteracted] = useState(user_interacted);
 
-    function handleUpdateInteractions(e, pid) {
-        updatePostById(pid, e.currentTarget.name).then((response) => {
+    function handleUpdateInteractions(e, resource, pid) {
+        updateResourceById(resource, pid, {}, e.currentTarget.name).then((response) => {
             if(response && response.status === 200) {
                 let change = interacted ? -1 : 1;
                 setInteraction(interaction + change);
@@ -265,21 +266,7 @@ export function useInteractions(initial_interaction, user_interacted) {
         });
     }
 
-    function handleInteractionsHelper(value) {
-        let change = value ? 1 : 0;
-        setInteraction(interaction + change);
-        setInteracted(value);
-    }
-
-    function handleInteractions(e, value) {
-        if(typeof value === 'boolean') {
-            handleInteractionsHelper(value);
-        } else if(typeof value === 'number') {
-            handleUpdateInteractions(e, value);
-        }
-    }
-
-    return [interacted, interaction, handleInteractions];
+    return [interacted, interaction, handleUpdateInteractions];
 }
 
 export function useMiddleViewPort() {
@@ -296,8 +283,8 @@ export function useMiddleViewPort() {
 export function useDeletePost(initial) {
     const [isDeleted, setIsDeleted] = useState(initial);
 
-    function handleDelete(pid) {
-        deletePostById(pid).then((response) => {
+    function handleDelete(resource, pid) {
+        deleteResourceById(resource, pid).then((response) => {
             if(response && response.status === 204) {
                 setIsDeleted(true);
             }
@@ -475,7 +462,7 @@ export function usePaginatedUserFollow(username, follow_type, query) {
     return [users, lastUser];
 }
 
-export function useGetInformation(pageNumber, query, getFunc, kwargs={}) {
+export function useGetInformation(pageNumber, query, getFunc, resource, kwargs={}) {
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState([]);
     const [hasMore, setHasMore] = useState(false);
@@ -489,7 +476,7 @@ export function useGetInformation(pageNumber, query, getFunc, kwargs={}) {
         let query_details = {'page': pageNumber, ...kwargs};
         if(query) query_details['search'] = query;
 
-        getFunc(query_details).then((response) => {
+        getFunc(resource, query_details).then((response) => {
             if(response) {
                 setItems(prevPosts => {
                     let result = [];
@@ -512,9 +499,9 @@ export function useGetInformation(pageNumber, query, getFunc, kwargs={}) {
     return { loading, items, hasMore };
 }
 
-export function usePagination(query, getFunc, kwargs) {
+export function usePagination(query, getFunc, resource, kwargs) {
     const [pageNumber, setPageNumber] = useState(1);
-    const { loading, items, hasMore } = useGetInformation(pageNumber, query, getFunc, kwargs);
+    const { loading, items, hasMore } = useGetInformation(pageNumber, query, getFunc, resource, kwargs);
     const observer = useRef();
 
     useEffect(() => {

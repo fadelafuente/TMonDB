@@ -3,14 +3,14 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsImages } from 'react-icons/bs';
 import { DiscardModal } from '../Modals/DiscardModal';
-import { useCreatePost, useDiscardModal } from '../../hooks/hooks';
+import { useCreateResource, useDiscardModal } from '../../hooks/hooks';
 
 export default function CreatePost({show, setShow, parent=null}) {
     const initialForm = {
         content: ''
     };
 
-    const [formData, resetFormData, setFormData] = useCreatePost(initialForm);
+    const [formData, resetFormData, setFormData] = useCreateResource(initialForm);
     const [showDiscard, setShowDiscard] = useDiscardModal(formData, setShow);
     
     const { content } = formData;
@@ -53,7 +53,7 @@ export default function CreatePost({show, setShow, parent=null}) {
                             Close
                         </Button>
                         <Button className='base-btn' onClick={e => {
-                                setFormData(e, content, parent);
+                                setFormData(e, 'posts', content, parent);
                                 setShow(false);
                             }}>
                             Post

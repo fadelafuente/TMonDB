@@ -191,7 +191,6 @@ class TestTypes(APITestCase):
                 {'attacking_type': 'steel', 'defending_type': 'ice', 'multiplier': 2.0}
             ]
         }
-        get_response = self.client.get(f'/api/types/{self.ice_id}/')
         post_response = self.client.patch('/api/types/bulk_update/', data=json.dumps(data), content_type='application/json')
         get_response = self.client.get(f'/api/types/{self.ice_id}/')
 

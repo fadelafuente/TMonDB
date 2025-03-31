@@ -15,12 +15,13 @@ class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet
     authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
     filter_backends = (filters.OrderingFilter, filters.SearchFilter)
     model = None
+    creator_permissions = IsCreator
        
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
              return [permission() for permission in [AllowAny]]
         if self.action in ['destroy', 'update', 'partial_update']:
-             return [permission() for permission in [IsAuthenticated, IsCreator]]
+             return [permission() for permission in [IsAuthenticated, self.creator_permissions]]
         return super().get_permissions()
     
     def get_queryset(self):

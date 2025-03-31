@@ -1,5 +1,4 @@
 from django.db import transaction
-from rest_framework.permissions import IsAuthenticated
 
 from articles.views import BaseArticleViewSet
 from .models import Monster, Evolution, MoveSet
@@ -12,11 +11,7 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
     ordering = ('id')
     search_fields = ['name', 'species', 'description', 'article__creator__username']
     model = Monster
-
-    def get_permissions(self):
-        if self.action in ['destroy', 'update', 'partial_update']:
-             return [permission() for permission in [IsAuthenticated, IsCreator]]
-        return super().get_permissions()
+    creator_permissions = IsCreator
 
     def get_serializer_class(self):
         if self.action in ['retrieve', 'destroy']:

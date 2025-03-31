@@ -29,7 +29,7 @@ function PostCard({ post, isAuthenticated }) {
         return (
             <Fragment>
                 { post.is_current_user ? 
-                    <NavDropdown.Item onClick={() => { setIsDeleted(post.id) }}>
+                    <NavDropdown.Item onClick={() => { setIsDeleted('posts', post.id) }}>
                         Delete Post
                     </NavDropdown.Item>
                 : 
@@ -106,7 +106,7 @@ function PostCard({ post, isAuthenticated }) {
                         </Card.Body>
                     </a>
                     <Card.Footer className="no-select">
-                            <SocialInteractions post={ post } />
+                            <SocialInteractions resource={'posts'} obj={ post } />
                     </Card.Footer>
                 </Card>
             </>

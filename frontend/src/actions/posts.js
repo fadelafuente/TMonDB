@@ -2,15 +2,15 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-export async function getAllPosts(details={"page": 1}) {
-    const access = localStorage.getItem("access");
+export async function getAllPosts(details={'page': 1}) {
+    const access = localStorage.getItem('access');
     
     let config = undefined;
     if(access) {
         config = {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `JWT ${access}`
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`
             }
         };
     }
@@ -25,13 +25,13 @@ export async function getAllPosts(details={"page": 1}) {
 }
 
 export async function getPostById(pid) {  
-    const access = localStorage.getItem("access");  
+    const access = localStorage.getItem('access');  
     let config = undefined;
     if(access) {
         config = {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `JWT ${access}`
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${access}`
             }
         };
     }
@@ -47,12 +47,12 @@ export async function getPostById(pid) {
 }
 
 export async function createPost(data) {
-    const access = localStorage.getItem("access");
+    const access = localStorage.getItem('access');
     
     const config = {
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${access}`
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${access}`
         }
     };
 
@@ -65,12 +65,12 @@ export async function createPost(data) {
 }
 
 export async function deletePostById(pid) {
-    const access = localStorage.getItem("access");
+    const access = localStorage.getItem('access');
     
     const config = {
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${access}`
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${access}`
         }
     };
 
@@ -81,12 +81,12 @@ export async function deletePostById(pid) {
 }
 
 export async function updatePostById(pid, interaction_type, data={}) {
-    const access = localStorage.getItem("access");
+    const access = localStorage.getItem('access');
     
     const config = {
         headers: {
-            "Content-Type": "application/json",
-            "Authorization": `JWT ${access}`
+            'Content-Type': 'application/json',
+            'Authorization': `JWT ${access}`
         }
     };
 

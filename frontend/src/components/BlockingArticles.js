@@ -1,15 +1,16 @@
-import { usePagination } from "../hooks/hooks";
-import BlockingCard from "./Cards/BlockingCard";
+import { useEffect, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
-import { FailedCard } from "./Cards/FailedCard";
-import { useEffect, useState } from "react";
-import { getCurrentUsersBlockedList } from "../actions/auth";
 
-import "../assets/styling/content.css";
+import { getCurrentUsersBlockedList } from '../actions/auth';
+import BlockingCard from './Cards/BlockingCard';
+import { FailedCard } from './Cards/FailedCard';
+import { usePagination } from '../hooks/hooks';
+
+import '../assets/styling/content.css';
 
 export default function BlockingArticles({query, kwargs={}}) {
     const [loading, setLoading] = useState(true);
-    const [blocks, lastBlock] = usePagination(query, getCurrentUsersBlockedList, kwargs);
+    const [blocks, lastBlock] = usePagination(query, getCurrentUsersBlockedList, 'users', kwargs);
 
     useEffect(() => {
        setLoading(true);
@@ -32,13 +33,13 @@ export default function BlockingArticles({query, kwargs={}}) {
             }
             {
                 loading ? 
-                    <div className="loading-container center-content">
-                        <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Loading...</span>
+                    <div className='loading-container center-content'>
+                        <Spinner animation='border' role='status'>
+                            <span className='visually-hidden'>Loading...</span>
                         </Spinner>
                     </div>
-                    :
-                    ""
+                :
+                    ''
             }
         </>
     )

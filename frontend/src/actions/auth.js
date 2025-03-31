@@ -409,7 +409,7 @@ export async function getFollowByUsername(username, follow_type, kwargs={'page':
     }
 }
 
-export async function getCurrentUsersBlockedList(details={'page': 1}) {    
+export async function getCurrentUsersBlockedList(resource='users', details={'page': 1}) {    
     const access = localStorage.getItem('access');  
     let config = undefined;
     if(access) {
@@ -424,7 +424,7 @@ export async function getCurrentUsersBlockedList(details={'page': 1}) {
     const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
 
     try {
-        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/blocking/?${body}`, config);
+        return await axios.get(`${process.env.REACT_APP_API_URL}/auth/${resource}/blocking/?${body}`, config);
     } catch(err) {
         return null;
     }
