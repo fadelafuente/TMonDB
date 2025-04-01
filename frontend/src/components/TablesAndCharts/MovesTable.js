@@ -15,7 +15,7 @@ export default function MovesTable({ method, moves, courseTotal=null }) {
                 <tbody>
                     {
                         Array.from(moves, move => (
-                            <tr>
+                            <tr key={ move.name }>
                                 <td className="general-table-data-spacing">
                                     { courseTotal ? handleLeadingZeroes(move.method_value, courseTotal) : move.method_value }
                                 </td>

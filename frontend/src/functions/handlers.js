@@ -148,11 +148,11 @@ export function handleHeightConversion(h1, h2=null) {
 }
 
 export function handleKgToLbConversion(wt) {
-    return (wt * 2.205).toFixed(2);
+    return (parseFloat(wt) * 2.205).toFixed(2);
 }
 
 export function handleLbToKgConversion(wt) {
-    return (wt / 2.205).toFixed(2);
+    return (parseFloat(wt) / 2.205).toFixed(2);
 }
 
 export function capitalize(s) {

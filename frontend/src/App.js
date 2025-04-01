@@ -44,18 +44,18 @@ export default function App() {
       <Route path='set_username' element={ <SetUsername /> } />
       <Route path='username/reset/confirm' element={ <SetUsernameConfirmation /> } />
       <Route path='types' element= { <CreateType /> } />
-      <Route path='home' element={ <HomePage /> } >
+      <Route path='' element={ <HomePage /> } >
         <Route path='' element= { <div className='article-container'><PostArticles /></div> } />
       </Route>
       <Route path=':creator' element={ <HomePage /> } >
         <Route path='' element= { <ProfileInfo /> } />
         <Route path='follow' element={ <FollowContent /> } />
-        <Route path=':pid' element={ <ViewPost /> } />
+        <Route path=':id' element={ <ViewPost /> } />
       </Route>
       <Route path='monsters' element={ <HomePage /> } >
         {/* <Route path='' element= { <div className='article-container'><MonArticles query={ query } /></div> } /> */}
         <Route path='create' element={ <CreateMon /> } />
-        <Route path=':mid' element={ <ViewMon /> } />
+        <Route path=':id' element={ <ViewMon /> } />
       </Route>
       <Route path='regions' element={ <HomePage /> } >
         {/* <Route path='' element= { <div className='article-container'><RegionArticles query={ query } /></div> } /> */}

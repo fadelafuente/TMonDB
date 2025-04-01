@@ -52,7 +52,7 @@ function PostCard({ post, isAuthenticated }) {
                         post.article.creator.username ? 
                             post ? `/${post.article.creator.username}/${post.id}` : `/deleted/${post.id}`
                     : 
-                        '/home' 
+                        '/' 
                     } 
                         className='post-link'
                     >

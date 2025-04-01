@@ -18,7 +18,7 @@ function ReplyBar({isAuthenticated, parent}) {
     const { content } = formData;
 
     return (
-        <Form className='reply-form' onSubmit={ isAuthenticated ? e => setFormData(e, 'posts', content, parent) : () => {navigate('/login')} }>
+        <Form className='reply-form' onSubmit={ isAuthenticated ? e => setFormData(e, 'posts', { content, parent }) : () => {navigate('/login')} }>
             <InputGroup>
                 <InputGroup.Text>
                         <BsReply />

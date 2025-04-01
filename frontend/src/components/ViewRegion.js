@@ -20,12 +20,11 @@ import '../assets/styling/buttons.css';
 
 function ViewRegion({ isAuthenticated }) {
     const { query } = useOutletContext();
-    const [region, setRegion] = useState('');
+    const [region, setRegion] = useState({});
     const [showBlock, setShowBlock] = useState(false);
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [isDeleted, setIsDeleted] = useDeleteResource(false);
     const [tab, setTab] = useState('culture');
-
 
     function handleMoreClick() {
         return (
@@ -107,7 +106,7 @@ function ViewRegion({ isAuthenticated }) {
                     </div>
                 </div>
                 <div className='reply-container'>
-                    <ReplyBar />
+                    <ReplyBar parent={ region && region.article ? region.article.id : null } />
                 </div>
                 <div className='comments-container article-container'>
                     {/* <PostArticles query={ query } kwargs={ {parent: region.article.id} } /> */}

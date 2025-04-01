@@ -8,16 +8,16 @@ export function SetUsernameConfirmation() {
     const location = useLocation();
 
     return (
-        <div className="form-container">
-            <h2 className="form-title">Welcome {location.state.username}! </h2>
-            <Form className="form">
+        <div className='form-container'>
+            <h2 className='form-title'>Welcome {location.state.username}! </h2>
+            <Form className='form'>
                 <FormText>
                     Your username has successfully been changed, click on the button below to return to the homepage.
                 </FormText>
                 <Button 
-                    variant="primary" 
-                    type="submit"
-                    onClick={ () => navigate("/home") }
+                    variant='primary' 
+                    type='submit'
+                    onClick={ () => navigate('/') }
                 >
                     return to homepage
                 </Button>

@@ -46,7 +46,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                     <NavDropdown.Item href='#action/3.1'>
                         Create Region
                     </NavDropdown.Item>
-                    <NavDropdown.Item href='#action/3.2'>
+                    <NavDropdown.Item href={ user ? '/monsters/create' : '/' }>
                         Create Monster
                     </NavDropdown.Item>
                     <NavDropdown.Item href='/types'>
@@ -60,7 +60,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                     </NavDropdown.Item>
                 </NavDropdown> 
                 <NavDropdown title={ <BsPersonCircle /> } id='nav-dropdown' className='rounded-circle' drop='down' align='end'>
-                    <NavDropdown.Item href={ user ? `/${user.username}` : '/home' }>
+                    <NavDropdown.Item href={ user ? `/${user.username}` : '/' }>
                         Account
                     </NavDropdown.Item>
                     <NavDropdown.Item href='#action/3.2'>
@@ -72,7 +72,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                     <NavDropdown.Item href='/settings/account'>
                         Settings
                     </NavDropdown.Item>
-                    <NavDropdown.Item href='/home' onClick={ () => logout() }>
+                    <NavDropdown.Item href='/' onClick={ () => logout() }>
                         Logout
                     </NavDropdown.Item>
                 </NavDropdown>
@@ -86,7 +86,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                 { width ? 
                     <Navbar.Toggle aria-controls='offcanvasNavbar-expand-lg' id='navbar-toggler' className='navbar-dark' />
                 :
-                    <Navbar.Brand href='/home'>The Monster Database</Navbar.Brand>
+                    <Navbar.Brand href='/'>The Monster Database</Navbar.Brand>
                 }
                 <Navbar.Offcanvas
                     id='offcanvasNavbar-expand-lg'
@@ -100,7 +100,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className='me-auto'>
-                            <Nav.Link href='/home'>Home</Nav.Link>
+                            <Nav.Link href='/'>Home</Nav.Link>
                             <Nav.Link href='#for-you'>For You</Nav.Link>
                             <Nav.Link href='#home'>Trending</Nav.Link>
                             <Nav.Link href='#link'>Monsters</Nav.Link>

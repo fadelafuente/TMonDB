@@ -53,7 +53,7 @@ export default function CreatePost({show, setShow, parent=null}) {
                             Close
                         </Button>
                         <Button className='base-btn' onClick={e => {
-                                setFormData(e, 'posts', content, parent);
+                                setFormData(e, 'posts', { content, parent });
                                 setShow(false);
                             }}>
                             Post

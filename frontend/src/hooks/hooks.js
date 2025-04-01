@@ -24,7 +24,7 @@ export function useNavigateOnAuth(isAuthenticated) {
 
     useEffect(() => {
         if(isAuthenticated) {
-            return navigate('/home');
+            return navigate('/');
         }
         // eslint-disable-next-line
     }, [isAuthenticated]);
@@ -214,13 +214,17 @@ export function useCreateResource(initialForm) {
     const [formData, setFormData] = useAdaptiveFormData(initialForm);
     const navigate = useNavigate();
 
-    function handleCreateResource(e, resource, content, parent) {
+    function handleCreateResource(e, resource, data) {
         e.preventDefault();
 
-        if(content) {
-            createResource(resource, {content, parent}).then(response => {
+        if(data) {
+            createResource(resource, data).then(response => {
                 if(response && response.status === 201) {
-                    navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
+                    if(resource == 'posts') {
+                        navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
+                    } else {
+                        navigate(`/${resource}/${response.data['id']}`);
+                    }
                 }
             });
         }
@@ -571,88 +575,97 @@ export function useFilesUpload() {
     return [selectedFiles, handleUploadType];
 }
 
-export function useHeightConversions(initialFt, initialIn, initialCm) {
+export function useHeightConversions(initialFt, initialIn) {
     const [heightFt, setHeightFt] = useState(initialFt);
     const [heightIn, setHeightIn] = useState(initialIn);
-    const [heightCm, setHeightCm] = useState(initialCm);
 
-    function handleFtInput(e) {
+    function handleFtInput(e, setFormData) {
         const value = e.target.value;
         if(value.match('^[0-9]*$')) {
             const feet = value === '' ? 0 : parseInt(value);
-            if(feet <= 999) {
+            if(feet <= 32) {
                 const cm = handleHeightConversion(feet, heightIn ? parseFloat(heightIn) : 0);
-                setHeightCm(cm > 0 ? cm : '');
-                setHeightFt(feet > 0 ? feet : '');
+                if (cm <= 999.99) {
+                    setHeightFt(feet > 0 ? feet : '');
+                    const cmInput = document.getElementById('average-height-input');
+                    cmInput.value = cm;
+                    setFormData({target: cmInput});
+                }
             }
         }
     }
 
-    function handleInInput(e) {
+    function handleInInput(e, setFormData) {
         const value = e.target.value;
         if(value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
             const inches = value === '' ? 0 : value;
             if(inches < 12) {
                 const cm = handleHeightConversion(heightFt ? parseInt(heightFt) : 0, inches);
-                setHeightCm(cm > 0 ? cm : '');
-                setHeightIn(inches > 0 ? inches : '');
+                if (cm <= 999.99) {
+                    setHeightIn(inches > 0 ? inches : '');
+                    const cmInput = document.getElementById('average-height-input');
+                    cmInput.value = cm;
+                    setFormData({target: cmInput});
+                }
             }
         }
     }
 
-    function handleCMInput(e) {
+    function handleCMInput(e, setFormData) {
+        const value = e.target.value;
         if(e.target.value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
-            const cm = e.target.value;
-            if(parseFloat(cm) <= 30479.97) {
+            const cm = value === '' ? 0 : value;
+            if(parseFloat(cm) <= 9999.99) {
                 const [feet, inches] = handleHeightConversion(cm);
                 setHeightFt(feet > 0 ? feet : '');
                 setHeightIn(inches > 0 ? inches : '');
-                setHeightCm(cm > 0 ? cm : '');
+                setFormData(e);
             }
         }
     }
 
-    return [heightFt, handleFtInput, heightIn, handleInInput, heightCm, handleCMInput];
+    return [heightFt, handleFtInput, heightIn, handleInInput, handleCMInput];
 }
 
-export function useWeightConversions(initialLb, initialKg) {
+export function useWeightConversions(initialLb) {
     const [weightLb, setWeightLb] = useState(initialLb);
-    const [weightKg, setWeightKg] = useState(initialKg);
 
-    function handleLbInput(e) {
+    function handleLbInput(e, setFormData) {
         const value = e.target.value ? e.target.value : '0';
         if(value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
             const lb = value === '' ? 0 : value;
-            if(parseFloat(lb) <= 9999.99) {
+            if(parseFloat(lb) <= 2204.98) {
                 const kg = handleLbToKgConversion(lb);
                 setWeightLb(lb > 0 ? lb : '');
-                setWeightKg(kg > 0 ? kg : '');
+                const kgInput = document.getElementById('average-weight-input');
+                kgInput.value = kg;
+                setFormData({target: kgInput});
             }
         }
     }
 
-    function handleKgInput(e) {
+    function handleKgInput(e, setFormData) {
         const value = e.target.value;
         if(value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
             const kg = value === '' ? 0 : value;
-            if(parseFloat(kg) <= 4535.14) {
+            if(parseFloat(kg) <= 999.99) {
                 const lb = handleKgToLbConversion(kg);
                 setWeightLb(lb > 0 ? lb : '');
-                setWeightKg(kg > 0 ? kg : '');
+                setFormData(e);
             }
         }
     }
 
-    return [weightLb, handleLbInput, weightKg, handleKgInput];
+    return [weightLb, handleLbInput, handleKgInput];
 }
 
 export function useGetResourceById(resource) {
-    const { pid } = useParams();
+    const { id } = useParams();
     const [obj, setObj] = useState('');
     const [parent, setParent] = useState('');
 
     useEffect(() => {
-        getResourceById(resource, pid).then((response) => {
+        getResourceById(resource, id).then((response) => {
             if(response && response.status === 200) {
                 setObj(response.data);
                 if(Object.keys(response.data).includes('parent') && response.data['parent']) {
@@ -667,7 +680,7 @@ export function useGetResourceById(resource) {
             }
         }).catch(e => {
         });
-    }, [pid]);
+    }, [id]);
 
     return [obj, parent];
 }
