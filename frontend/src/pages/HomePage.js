@@ -1,89 +1,50 @@
-import TitleBar from "../components/Bars/TitleBar";
-import { Link, useLocation, useParams } from "react-router-dom";
-import { useState } from "react";
-import PostArticle from "../components/PostArticle";
-import ProfileInfo from "../components/ProfileInfo";
-import ViewPost from "../components/ViewPost";
-import { useCurrentUserDetails } from "../hooks/hooks";
-import { connect } from "react-redux";
-import Account from "../components/Account";
-import FollowContent from "../components/Content/FollowContent";
-import BlockingArticles from "../components/BlockingArticles";
-import ViewMon from "../components/ViewMon";
-import ViewRegion from "../components/ViewRegion";
-import CreateMon from "../components/Creates/CreateMon";
+import { useState } from 'react';
+import { connect } from 'react-redux';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
-import "../assets/styling/content.css";
-import "../assets/styling/buttons.css";
-import "../assets/styling/container.css";
+import TitleBar from '../components/Bars/TitleBar';
+import { useCurrentUserDetails } from '../hooks/hooks';
+
+import '../assets/styling/content.css';
+import '../assets/styling/buttons.css';
+import '../assets/styling/container.css';
 
 function HomePage({ isAuthenticated }) {
-    const [query, setQuery] = useState("");
+    const [query, setQuery] = useState('');
     const [user] = useCurrentUserDetails(isAuthenticated);
-    const params = useParams();
     const location = useLocation();
-
-    function handlePath() {
-        if(location.pathname === "/home") {
-            return (
-                <div className="article-container">
-                    <PostArticle query={query} />
-                </div>
-            );
-
-        } else if(location.pathname === "/settings/account") {
-            return <Account user={ user } />;
-        } else if(location.pathname === "/settings/blocked") {
-            return <BlockingArticles query={ query } />;
-        } else if(location.pathname === "/monsters") {
-            return <ViewMon query={ query } />;
-        } else if(location.pathname === "/monsters/create") {
-            return <CreateMon />;
-        } else if(location.pathname === "/regions") {
-            return <ViewRegion query={ query } />;
-        } else if("creator" in params && "pid" in params) {
-            if(params["pid"] === "follow") {
-                return <FollowContent query={ query } />;
-            }
-            return <ViewPost />;
-        } else if("creator" in params) {
-            return <ProfileInfo />;
-        } else {
-            return <ProfileInfo />;
-        }
-    }
 
     return (
         <>
-            <div className="navbar-container">
+            <div className='navbar-container'>
                 <TitleBar setQuery={(value) => setQuery(value)} user={user} />
             </div>
-            <div className="content-container center-content">
-                <div className="aside-container left-aside" id="left-container">
-                    <div id="sticky-anchor"></div>
-                    <div className="content-left">
-                        <div className="navigation-links">
-                            <Link to="/">For You</Link>
-                            <Link to="/">Trending</Link>
-                            <Link to="/">Monsters</Link>
-                            <Link to="/">Regions</Link>
-                            { user ? <Link to={ `/${user.username}` }>Account</Link> : "" }
+            <div className='content-container center-content'>
+                <div className='aside-container left-aside' id='left-container'>
+                    <div id='sticky-anchor'></div>
+                    <div className='content-left'>
+                        <div className='navigation-links'>
+                            <Link to='/'>For You</Link>
+                            <Link to='/'>Trending</Link>
+                            <Link to='/'>Monsters</Link>
+                            <Link to='/'>Regions</Link>
+                            { user ? <Link to={ `/${user.username}` }>Account</Link> : '' }
                         </div>
                     </div>
                 </div>
-                <div id="content-center" className="content-center">
-                    { handlePath() }
+                <div id='content-center' className='content-center'>
+                    <Outlet context={{ user: user, query: query }} />
                 </div>
-                <div className="aside-container right-aside" id="right-container">
-                    <div className="right-container">
-                        <div id="sticky-anchor"></div>
-                        <div className="content-right">
-                            {location.pathname.includes("/settings/") ? 
-                                <div className="align-col">
-                                    <button className="svg-btn square-no-border-btn" onClick={() => {window.history.replaceState(null, "", "/settings/account"); window.location.reload();} }>Account</button> 
-                                    <button className="svg-btn square-no-border-btn" onClick={() => {window.history.replaceState(null, "", "/settings/blocked"); window.location.reload();} }>Blocked List</button> 
+                <div className='aside-container right-aside' id='right-container'>
+                    <div className='right-container'>
+                        <div id='sticky-anchor'></div>
+                        <div className='content-right'>
+                            {location.pathname.includes('/settings/') ? 
+                                <div className='align-col'>
+                                    <button className='svg-btn square-no-border-btn' onClick={() => {window.history.replaceState(null, '', '/settings/account'); window.location.reload();} }>Account</button> 
+                                    <button className='svg-btn square-no-border-btn' onClick={() => {window.history.replaceState(null, '', '/settings/blocked'); window.location.reload();} }>Blocked List</button> 
                                 </div>
-                                : "Right" 
+                                : 'Right' 
                             }
                         </div>
                     </div>

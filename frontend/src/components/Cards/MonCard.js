@@ -1,27 +1,28 @@
 import { Fragment, React, useEffect, useRef, useState } from 'react';
-import { BsThreeDots } from 'react-icons/bs';
 import { Button, Card, Col, NavDropdown, Row } from 'react-bootstrap';
-import BlockModal from '../Modals/BlockModal';
+import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { useDeletePost, useMiddleViewPort } from '../../hooks/hooks';
+
+import { DeletedCard } from './DeletedCard';
+import BlockModal from '../Modals/BlockModal';
+import SocialInteractions from '../UserInteractions/SocialInteractions';
 import { handleTimeDifference } from '../../functions/handlers';
+import { useDeleteResource, useMiddleViewPort } from '../../hooks/hooks';
 
 import '../../assets/styling/MonCard.css';
-import SocialInteractions from '../UserInteractions/SocialInteractions';
-import { DeletedCard } from './DeletedCard';
 
 function MonCard({post=null, isAuthenticated}) {
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [showBlock, setShowBlock] = useState(false);
     const [blocked, setBlocked] = useState(false);
-    const [isDeleted, setIsDeleted] = useDeletePost(false);
+    const [isDeleted, setIsDeleted] = useDeleteResource(false);
     const desc = useRef();
 
     useEffect(() => {
         if(!desc?.current) return;
 
         const resizeObserver = new ResizeObserver(() => {
-            const description = document.getElementById("desc-span");
+            const description = document.getElementById('desc-span');
             const computedSize = window.getComputedStyle(description).fontSize;
             const numLines = Math.floor(desc.current.clientHeight / (parseInt(computedSize.substring(0,2)) * 1.4)) - 1;
             description.style.webkitLineClamp = numLines;
@@ -55,33 +56,33 @@ function MonCard({post=null, isAuthenticated}) {
         return (
             <>
                 <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={setBlocked} username={ post ? post.article.creator.username : null } />
-                <div className="article-container">
+                <div className='article-container'>
                     <div className='card-background-aspect'>
-                        <div className="aspect-border">
+                        <div className='aspect-border'>
                             <Card className='aspect-inner'>
-                                <Card.Header className="mon-card-header">
-                                    <Row className="center-row-items">
+                                <Card.Header className='mon-card-header'>
+                                    <Row className='center-row-items'>
                                         <Col>
-                                            <div className="creator-container">
+                                            <div className='creator-container'>
                                                 {
                                                     post && post.article.creator.username ? 
                                                         <a href={ `/${post.article.creator.username}` }>
                                                             { post.article.creator.username }
                                                         </a>
                                                     :
-                                                    "[Deleted]"
+                                                    '[Deleted]'
                                                 }
                                             </div>
                                         </Col>
-                                        <Col className="time-col" id="time-col">
-                                            <Row className="center-row-items">
+                                        <Col className='time-col' id='time-col'>
+                                            <Row className='center-row-items'>
                                                 <Col>
-                                                    { post ? handleTimeDifference(post.article.date_created) : "0s" }
+                                                    { post ? handleTimeDifference(post.article.date_created) : '0s' }
                                                 </Col>
-                                                <Col className="more-col">
-                                                    <div className="base-btn rounded-btn">
+                                                <Col className='more-col'>
+                                                    <div className='base-btn rounded-btn'>
                                                         <NavDropdown title={<BsThreeDots />} 
-                                                            drop={ aboveMid ? "up-centered" : "down-centered" }
+                                                            drop={ aboveMid ? 'up-centered' : 'down-centered' }
                                                             onClick={e => setAboveMid(e)}
                                                             disabled={ !isAuthenticated }
                                                         >
@@ -93,16 +94,16 @@ function MonCard({post=null, isAuthenticated}) {
                                         </Col>
                                     </Row>
                                 </Card.Header>
-                                <Card.Body className="mon-card-body">
-                                    <div className="image-aspect-container">
+                                <Card.Body className='mon-card-body'>
+                                    <div className='image-aspect-container'>
                                         <Row className='image-container'>
                                                 
                                         </Row>
                                     </div>
                                     <Row className='content-text'>
-                                        <Row className="mon-info top-barrier">
-                                            <Col className="view-name">
-                                                <h4 className="no-margin-container">Bulbasaur</h4>
+                                        <Row className='mon-info top-barrier'>
+                                            <Col className='view-name'>
+                                                <h4 className='no-margin-container'>Bulbasaur</h4>
                                             </Col>
                                             <Col className='typing'>
                                                 <Button href='/trending' className='links type1'>GRA</Button>

@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
+import { useOutletContext } from 'react-router-dom';
 
-import { getCurrentUsersBlockedList } from '../actions/auth';
-import BlockingCard from './Cards/BlockingCard';
-import { FailedCard } from './Cards/FailedCard';
-import { usePagination } from '../hooks/hooks';
+import { getCurrentUsersBlockedList } from '../../actions/auth';
+import BlockingCard from '../Cards/BlockingCard';
+import { FailedCard } from '../Cards/FailedCard';
+import LoadingCard from '../Cards/LoadingCard';
+import { usePagination } from '../../hooks/hooks';
 
-import '../assets/styling/content.css';
+import '../../assets/styling/content.css';
 
-export default function BlockingArticles({query, kwargs={}}) {
+export default function BlockingArticles({kwargs={}}) {
+    const { query } = useOutletContext();
     const [loading, setLoading] = useState(true);
     const [blocks, lastBlock] = usePagination(query, getCurrentUsersBlockedList, 'users', kwargs);
 
@@ -33,11 +35,7 @@ export default function BlockingArticles({query, kwargs={}}) {
             }
             {
                 loading ? 
-                    <div className='loading-container center-content'>
-                        <Spinner animation='border' role='status'>
-                            <span className='visually-hidden'>Loading...</span>
-                        </Spinner>
-                    </div>
+                    <LoadingCard />
                 :
                     ''
             }

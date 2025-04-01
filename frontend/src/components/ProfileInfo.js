@@ -1,13 +1,14 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Col, Row, Tab, Tabs, NavDropdown, Alert } from 'react-bootstrap';
-import { useGetProfile, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
-import { BsThreeDots } from 'react-icons/bs';
-import PostArticle from './PostArticle';
-import EditModal from './Modals/EditModal';
 import { useState } from 'react';
+import { Button, Col, Row, Tab, Tabs, NavDropdown, Alert } from 'react-bootstrap';
+import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+
+import PostArticles from './Articles/PostArticles';
 import { BlockedCard } from './Cards/BlockedCard';
 import BlockModal from './Modals/BlockModal';
+import EditModal from './Modals/EditModal';
+import { useGetProfile, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
 
 import '../assets/styling/PostCard.css';
 import '../assets/styling/UserProfile.css';
@@ -118,14 +119,14 @@ function ProfileInfo({isAuthenticated}) {
                             { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={profile.username} />
                             :
-                                <PostArticle kwargs={{username: creator}} />
+                                <PostArticles kwargs={{username: creator}} />
                             }
                         </Tab>
                         <Tab eventKey='replies' title='Replies'>
                             { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={profile.username} />
                             :
-                                <PostArticle kwargs={{username: creator, is_reply: true}} />
+                                <PostArticles kwargs={{username: creator, is_reply: true}} />
                             }
                         </Tab>
                         <Tab eventKey='monsters' title='Monsters'>

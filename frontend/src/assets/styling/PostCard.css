@@ -178,17 +178,22 @@ div.delete-alert {
     min-width: 250px; 
 }
 
-div.deleted-icon {
+div.deleted-icon, div.centered-icon {
     display: flex;
     justify-content: center;
     padding: 20px 0;
-    font-size: 10vh;
 }
 
-h4.deleted-text {
-    text-align: center;
+div.deleted-icon {
+    font-size: 5em;
 }
 
-p.deleted-text {
+p.centered-card-text, h4.centered-card-text, div.centered-card-content {
     text-align: center;
+    margin: 0 auto;
+}
+
+div.spinner {
+    width: 5em;
+    height: 5em;
 }

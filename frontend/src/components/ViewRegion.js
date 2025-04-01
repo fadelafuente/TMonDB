@@ -2,13 +2,14 @@ import { Fragment, useState } from 'react';
 import { Col, NavDropdown, Row, Tab, Tabs } from 'react-bootstrap';
 import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
+import { useOutletContext } from 'react-router-dom';
 
 import ReplyBar from './Bars/ReplyBar';
 import CultureTab from './Content/CultureTab';
 import FeatureTab from './Content/FeatureTab';
 import GeographyTab from './Content/GeographyTab';
 import TriviaTab from './Content/TriviaTab';
-import { useDeletePost, useMiddleViewPort } from '../hooks/hooks';
+import { useDeleteResource, useMiddleViewPort } from '../hooks/hooks';
 import SocialInteractions from './UserInteractions/SocialInteractions';
 
 
@@ -18,36 +19,20 @@ import '../assets/styling/ViewMon.css';
 import '../assets/styling/buttons.css';
 
 function ViewRegion({ isAuthenticated }) {
-    const [post, setPost] = useState('');
+    const { query } = useOutletContext();
+    const [region, setRegion] = useState('');
     const [showBlock, setShowBlock] = useState(false);
     const [aboveMid, setAboveMid] = useMiddleViewPort();
-    const [isDeleted, setIsDeleted] = useDeletePost(false);
+    const [isDeleted, setIsDeleted] = useDeleteResource(false);
     const [tab, setTab] = useState('culture');
 
-    // useEffect(() => {
-    //     getResourceById('regions', pid).then((response) => {
-    //         if(response && response.status === 403) {
-    //             setPost(response.data);
-    //         } else if(response && response.status === 200) {
-    //             setPost(response.data);
-    //             if(response.data['parent']){
-    //                getResourceById('regions', response.data['parent']).then((parent_response) => {
-    //                     if(parent_response && parent_response.status === 200) {
-    //                         setParent(parent_response.data);
-    //                     }
-    //                 }) 
-    //             }   
-    //         }
-    //     }).catch(e => {
-    //     });
-    // }, [pid]);
 
     function handleMoreClick() {
         return (
             <Fragment>
-                { post.is_current_user ? 
-                    <NavDropdown.Item onClick={() => { setIsDeleted('regions', post.id) }}>
-                        Delete Post
+                { region.is_current_user ? 
+                    <NavDropdown.Item onClick={() => { setIsDeleted('regions', region.id) }}>
+                        Delete Region
                     </NavDropdown.Item>
                 : 
                     <NavDropdown.Item onClick={() => setShowBlock(true) }>
@@ -125,7 +110,7 @@ function ViewRegion({ isAuthenticated }) {
                     <ReplyBar />
                 </div>
                 <div className='comments-container article-container'>
-                    {/* <PostArticle query={ null } kwargs={ {parent: post.id} } /> */}
+                    {/* <PostArticles query={ query } kwargs={ {parent: region.article.id} } /> */}
                 </div>
             </div>
         </>

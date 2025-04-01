@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useState, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { createResource, deleteResourceById, updateResourceById } from '../actions/api';
+import { createResource, deleteResourceById, updateResourceById, getResourceById } from '../actions/api';
 import { followUser, getCurrentUserDetails, getFollowByUsername, getUserProfile, updateDetails } from '../actions/auth';
 import { handleValidation, handleDuplicatesInArray, handleHeightConversion, handleLbToKgConversion, handleKgToLbConversion } from '../functions/handlers';
 
@@ -280,7 +280,7 @@ export function useMiddleViewPort() {
     return [aboveMid, handleMiddleHeight];
 }
 
-export function useDeletePost(initial) {
+export function useDeleteResource(initial) {
     const [isDeleted, setIsDeleted] = useState(initial);
 
     function handleDelete(resource, pid) {
@@ -644,4 +644,30 @@ export function useWeightConversions(initialLb, initialKg) {
     }
 
     return [weightLb, handleLbInput, weightKg, handleKgInput];
+}
+
+export function useGetResourceById(resource) {
+    const { pid } = useParams();
+    const [obj, setObj] = useState('');
+    const [parent, setParent] = useState('');
+
+    useEffect(() => {
+        getResourceById(resource, pid).then((response) => {
+            if(response && response.status === 200) {
+                setObj(response.data);
+                if(Object.keys(response.data).includes('parent') && response.data['parent']) {
+                    getResourceById(resource, response.data['parent']).then((parent_response) => {
+                        if(parent_response && parent_response.status === 200) {
+                            setParent(parent_response.data);
+                        }
+                    }) 
+                }   
+            } else if(response) {
+                setObj(response.data);
+            }
+        }).catch(e => {
+        });
+    }, [pid]);
+
+    return [obj, parent];
 }

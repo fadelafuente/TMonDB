@@ -1,47 +1,31 @@
 import { Fragment, useState } from 'react';
 import { Col, NavDropdown, Row, Tab, Tabs } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
 import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
+import { useOutletContext, useParams } from 'react-router-dom';
 
 import ReplyBar from './Bars/ReplyBar';
 import EvoChains from './Content/EvoChains';
 import MovesTab from './Content/MovesTab';
-import { useDeletePost, useMiddleViewPort } from '../hooks/hooks';
 import MovesTable from './TablesAndCharts/MovesTable';
 import StatChart from './TablesAndCharts/StatChart';
 import WeaknessChart from './TablesAndCharts/WeaknessChart';
 import SocialInteractions from './UserInteractions/SocialInteractions';
+import { useDeleteResource, useMiddleViewPort } from '../hooks/hooks';
 
 import '../assets/styling/content.css';
 import '../assets/styling/UserProfile.css';
 import '../assets/styling/ViewMon.css';
 
 function ViewMon({ isAuthenticated }) {
+    const { query } = useOutletContext();
     const { mid } = useParams();
-    const [post, setPost] = useState('');
+    const [monster, setMonster] = useState('');
     const [showBlock, setShowBlock] = useState(false);
     const [aboveMid, setAboveMid] = useMiddleViewPort();
-    const [isDeleted, setIsDeleted] = useDeletePost(false);
+    const [isDeleted, setIsDeleted] = useDeleteResource(false);
     const [tab, setTab] = useState('stats');
 
-    // useEffect(() => {
-    //     getResourceById('monsters', pid).then((response) => {
-    //         if(response && response.status === 403) {
-    //             setPost(response.data);
-    //         } else if(response && response.status === 200) {
-    //             setPost(response.data);
-    //             if(response.data['parent']){
-    //                getResourceById('monsters', response.data['parent']).then((parent_response) => {
-    //                     if(parent_response && parent_response.status === 200) {
-    //                         setParent(parent_response.data);
-    //                     }
-    //                 }) 
-    //             }   
-    //         }
-    //     }).catch(e => {
-    //     });
-    // }, [pid]);
 
     const levelMoves = [
         {method_value: 19, name: 'Fire Fang', type: 'Fire', power: 65},
@@ -66,9 +50,9 @@ function ViewMon({ isAuthenticated }) {
     function handleMoreClick() {
         return (
             <Fragment>
-                { post.is_current_user ? 
-                    <NavDropdown.Item onClick={() => { setIsDeleted(post.id) }}>
-                        Delete Post
+                { monster.is_current_user ? 
+                    <NavDropdown.Item onClick={() => { setIsDeleted(monster.id) }}>
+                        Delete Monster
                     </NavDropdown.Item>
                 : 
                     <NavDropdown.Item onClick={() => setShowBlock(true) }>
@@ -219,7 +203,7 @@ function ViewMon({ isAuthenticated }) {
                     <ReplyBar />
                 </div>
                 <div className='comments-container article-container'>
-                    {/* <PostArticle query={ null } kwargs={ {parent: post.id} } /> */}
+                    {/* <PostArticles query={ null } kwargs={ {parent: monster.article.id} } /> */}
                 </div>
             </div>
         </>

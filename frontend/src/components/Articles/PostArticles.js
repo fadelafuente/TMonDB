@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
+import { useOutletContext } from 'react-router-dom';
 
-import { getAllResources } from '../actions/api';
-import { FailedCard } from './Cards/FailedCard';
-import PostCard from './Cards/PostCard';
-import { usePagination } from '../hooks/hooks';
+import { FailedCard } from '../Cards/FailedCard';
+import LoadingCard from '../Cards/LoadingCard';
+import PostCard from '../Cards/PostCard';
+import { getAllResources } from '../../actions/api';
+import { usePagination } from '../../hooks/hooks';
 
-import '../assets/styling/content.css';
+import '../../assets/styling/content.css';
 
-export default function PostArticle({query, kwargs={}}) {
+export default function PostArticles({kwargs={}}) {
+    const { query } = useOutletContext();
     const [loading, setLoading] = useState(true);
     const [posts, lastPost] = usePagination(query, getAllResources, 'posts', kwargs);
 
@@ -21,11 +23,7 @@ export default function PostArticle({query, kwargs={}}) {
         <>
             {
                 loading ? 
-                    <div className='loading-container center-content'>
-                        <Spinner animation='border' role='status'>
-                            <span className='visually-hidden'>Loading...</span>
-                        </Spinner>
-                    </div>
+                    <LoadingCard />
                 :
                     posts ? 
                         posts.map((post, index) => {
