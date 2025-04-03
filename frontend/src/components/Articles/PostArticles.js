@@ -32,7 +32,7 @@ export default function PostArticles({kwargs={}}) {
                             } else {
                                 return <div key={post.id}><PostCard post={post} /></div>
                             }
-                        }) : kwargs['parent'] ? '' 
+                        })
                     :
                         <FailedCard />
             }

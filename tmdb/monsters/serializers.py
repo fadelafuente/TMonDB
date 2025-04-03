@@ -227,6 +227,6 @@ class RetrieveMonsterSerializer(ModelScrollWithArticleSerializer, MonsterSeriali
 
 class MonsterScrollSerializer(RetrieveMonsterSerializer):
     class Meta(RetrieveMonsterSerializer.Meta):
-        fields = ['likes_count', 'reposts_count', 'comments_count', 'user_liked', 
+        fields = ['id', 'likes_count', 'reposts_count', 'comments_count', 'user_liked', 
                   'user_reposted', 'user_commented', 'article', 'name', 'description', 
-                  'species', 'types', 'is_current_user']
+                  'species', 'types', 'is_current_user', 'avg_weight', 'avg_height']

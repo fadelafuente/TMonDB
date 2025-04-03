@@ -88,11 +88,6 @@
   border-radius: 10px;
 }
 
-.typing {
-  display: flex;
-  direction: row;
-}
-
 .App-logo {
   height: 40vmin;
   pointer-events: none;

@@ -54,7 +54,7 @@ function PostCard({ post, isAuthenticated }) {
                     : 
                         '/' 
                     } 
-                        className='post-link'
+                        className='obj-link'
                     >
                         <Card.Body>
                             <Card.Title>

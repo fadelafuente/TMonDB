@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import PostArticles from './Articles/PostArticles';
+import MonsterArticles from './Articles/MonsterArticles';
 import { BlockedCard } from './Cards/BlockedCard';
 import BlockModal from './Modals/BlockModal';
 import EditModal from './Modals/EditModal';
@@ -49,12 +50,12 @@ function ProfileInfo({isAuthenticated}) {
                     </div>
                     <div className='row-gap-container'>
                         <div className='follow'>
-                            <button className='post-link text-link' onClick={() => navigate(`follow`, {state: {initial_type: 'following'}})}>
+                            <button className='obj-link text-link' onClick={() => navigate(`follow`, {state: {initial_type: 'following'}})}>
                                 { profile && profile.following_count ? profile.following_count : 0 } Following
                             </button>
                         </div>
                         <div className='followers follow'>
-                            <button className='post-link text-link' onClick={() => navigate(`follow`, {state: {initial_type: 'followers'}})}>
+                            <button className='obj-link text-link' onClick={() => navigate(`follow`, {state: {initial_type: 'followers'}})}>
                                 { profile && profile.followers_count ? profile.followers_count : follows ? follows : 0 } Followers
                             </button>
                         </div>
@@ -133,7 +134,7 @@ function ProfileInfo({isAuthenticated}) {
                             { profile && profile.current_user_is_blocked ?
                                 <BlockedCard creator={profile.username} />
                             :
-                                'all of user\'s monsters'
+                                <MonsterArticles kwargs={{}} />
                             }
                         </Tab>
                         <Tab eventKey='regions' title='Regions'>
