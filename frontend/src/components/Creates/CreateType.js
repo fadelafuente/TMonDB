@@ -1,20 +1,21 @@
-import TitleBar from "../Bars/TitleBar";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useCurrentUserDetails, useNavigateNotAuth } from "../../hooks/hooks";
-import { connect } from "react-redux";
-import { Button, Card } from "react-bootstrap";
-import { BsArrowLeft, BsDashCircle, BsPlusCircle } from "react-icons/bs";
-import TypesTable from "../TablesAndCharts/TypesTable";
+import { useState } from 'react';
+import { Button, Card } from 'react-bootstrap';
+import { BsArrowLeft, BsDashCircle, BsPlusCircle } from 'react-icons/bs';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-import "../../assets/styling/content.css";
-import "../../assets/styling/types.css";
+import TitleBar from '../Bars/TitleBar';
+import TypesTable from '../TablesAndCharts/TypesTable';
+import { useCurrentUserDetails, useNavigateNotAuth } from '../../hooks/hooks';
+
+import '../../assets/styling/content.css';
+import '../../assets/styling/types.css';
 
 function CreateType({ isAuthenticated }) {
     const [user] = useCurrentUserDetails(isAuthenticated);
     const navigate = useNavigate();
     const [types, setTypes] = useState([]);
-    const [newType, setNewType] = useState("");
+    const [newType, setNewType] = useState('');
     useNavigateNotAuth(isAuthenticated);
 
     function addType(t) {
@@ -22,7 +23,7 @@ function CreateType({ isAuthenticated }) {
             return;
         if(!types.includes(t))
             setTypes([...types, t]);
-        setNewType("");
+        setNewType('');
     }
 
     function deleteType(n) {
@@ -32,54 +33,54 @@ function CreateType({ isAuthenticated }) {
 
     return (
         <>
-            <div className="navbar-container">
+            <div className='navbar-container'>
                 <TitleBar setQuery={() => {}} user={user} />
             </div>
-            <div className="content-container center-content">
-                <div id="content-center" className="content-center">
+            <div className='content-container center-content'>
+                <div id='content-center' className='content-center'>
                 <Card>
                     <Card.Header>
-                        <div className="row-gap-container">
-                            <Button className="svg-btn svg-resize-btn center-content" onClick={ () => navigate(-1) }>
+                        <div className='row-gap-container'>
+                            <Button className='svg-btn svg-resize-btn center-content' onClick={ () => navigate(-1) }>
                                 <BsArrowLeft/>
                             </Button>
-                            <h4 className="types-h4">
+                            <h4 className='types-h4'>
                                 Create New Type(s)
                             </h4>
                         </div>
                     </Card.Header>
                     <Card.Body>
-                        <div className="type-list">
+                        <div className='type-list'>
                             {
                                 Array.from(types, type => (
-                                    <div className="type-row">
-                                        <div className="type-name">
+                                    <div className='type-row'>
+                                        <div className='type-name'>
                                             {type}
                                         </div>
-                                        <Button className="svg-btn svg-resize-btn remove-btn" onClick={ () => deleteType(type) }>
+                                        <button className='svg-btn svg-resize-btn remove-btn' onClick={ () => deleteType(type) }>
                                             <BsDashCircle />
-                                        </Button>
+                                        </button>
                                     </div>
                                 ))
                             }
-                            <div className="row-gap-container">
-                                <input className="type-input" onChange={ e => setNewType(e.target.value) } value={ newType } />
-                                <Button className="svg-btn svg-resize-btn" onClick={ () => addType(newType) }>
+                            <div className='row-gap-container'>
+                                <input className='type-input' onChange={ e => setNewType(e.target.value) } value={ newType } />
+                                <button className='svg-btn svg-resize-btn' onClick={ () => addType(newType) }>
                                     <BsPlusCircle/>
-                                </Button>
+                                </button>
                             </div>
                         </div>
                         <TypesTable types={ types } />
                     </Card.Body>
-                    <Card.Footer className="align-right row-gap-container">
+                    <Card.Footer className='align-right row-gap-container'>
                         <Button 
-                            className="base-btn" 
-                            id="discard-post-btn"
+                            className='base-btn' 
+                            id='discard-post-btn'
                             onClick={ () => navigate(-1) }
                         >
                             Cancel
                         </Button>
-                        <Button className="base-btn" onClick={e => {}}>
+                        <Button className='base-btn' onClick={e => {}}>
                             Create
                         </Button>
                     </Card.Footer>

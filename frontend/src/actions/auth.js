@@ -364,7 +364,7 @@ export async function followUser(username) {
     }
 
     try {
-        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/${username}/follow/`, {}, config);
+        return await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/${username}/follow/`, {}, config);
     } catch(err) {
         return null;
     }
@@ -430,9 +430,10 @@ export async function getCurrentUsersBlockedList(resource='users', details={'pag
     }
 }
 
-export async function patchCurrentUsersBlockedList(username, kwargs={'page': 1}) {    
-    const access = localStorage.getItem('access');  
-    let config = undefined;
+export async function patchCurrentUsersBlockedList(username) {    
+    const access = localStorage.getItem('access');
+    let config = {};
+    
     if(access) {
         config = {
             headers: {
@@ -442,10 +443,8 @@ export async function patchCurrentUsersBlockedList(username, kwargs={'page': 1})
         };
     }
 
-    const query = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');
-
     try {
-        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/${username}/block/?${query}`, config);
+        return await axios.patch(`${process.env.REACT_APP_API_URL}/auth/users/${username}/block/`, {}, config);
     } catch(err) {
         return null;
     }

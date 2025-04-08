@@ -45,7 +45,7 @@ class TestMoves(APITestCase):
 
         expected_data = {'id': self.move.id, 'likes_count': 0, 'reposts_count': 0, 'comments_count': 0, 
                         'is_current_user': True, 'user_liked': False, 'user_reposted': False, 
-                        'user_commented': False, 'article': OrderedDict({'id': self.move.article.id, 
+                        'user_commented': False, 'article': OrderedDict({'id': self.move.article_id, 
                         'creator': OrderedDict({'id': self.user.id, 'username': self.user.username}),
                         'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 
                         'name': self.move.name, 'description': self.move.description, 'power': self.move.power, 

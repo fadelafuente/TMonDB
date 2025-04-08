@@ -1,7 +1,8 @@
 import { Fragment, useState, useEffect } from 'react';
-import { Col, Placeholder, Row, NavDropdown, Card } from 'react-bootstrap';
+import { Col, Placeholder, Row, Card, Dropdown, DropdownButton } from 'react-bootstrap';
 import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { DeletedCard } from './DeletedCard';
 import ImageGallery from '../ImageGallery';
@@ -12,12 +13,12 @@ import { useDeleteResource, useMiddleViewPort } from '../../hooks/hooks';
 
 import '../../assets/styling/PostCard.css';
 
-
 function PostCard({ post, isAuthenticated }) {
     const [showBlock, setShowBlock] = useState(false);
     const [blocked, setBlocked] = useState(false);
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [isDeleted, setIsDeleted] = useDeleteResource(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if(blocked) {
@@ -29,16 +30,21 @@ function PostCard({ post, isAuthenticated }) {
         return (
             <Fragment>
                 { post.is_current_user ? 
-                    <NavDropdown.Item onClick={() => { setIsDeleted('posts', post.id) }}>
+                    <Dropdown.Item onClick={() => { setIsDeleted('posts', post.id) }}>
                         Delete Post
-                    </NavDropdown.Item>
+                    </Dropdown.Item>
                 : 
-                    <NavDropdown.Item onClick={() => setShowBlock(true) }>
+                    <Dropdown.Item onClick={() => setShowBlock(true) }>
                         Block user
-                    </NavDropdown.Item>
+                    </Dropdown.Item>
                 }
             </Fragment>
         )
+    }
+
+    function handleNavigate(e) {
+        e.preventDefault(); 
+        navigate(`/${post.article.creator.username}`);
     }
 
     if(isDeleted) {
@@ -63,9 +69,9 @@ function PostCard({ post, isAuthenticated }) {
                                         <div className='creator-container'>
                                             {
                                                 post && post.article.creator.username ? 
-                                                    <a href={ `/${post.article.creator.username}` }>
-                                                        { post.article.creator.username }
-                                                    </a>
+                                                    <button className='link-as-button' onClick={ e => handleNavigate(e) }>
+                                                        @{ post.article.creator.username }
+                                                    </button>
                                                 :
                                                 '[Deleted]'
                                             }
@@ -77,15 +83,15 @@ function PostCard({ post, isAuthenticated }) {
                                                 { post ? handleTimeDifference(post.article.date_created) : <Placeholder xs={4} /> }
                                             </Col>
                                             <Col className='more-col'>
-                                                <div className='base-btn rounded-btn'>
-                                                    <NavDropdown title={<BsThreeDots />} 
+                                                    <DropdownButton
+                                                    className='base-btn rounded-btn'
                                                         drop={ aboveMid ? 'up-centered' : 'down-centered' }
                                                         onClick={e => setAboveMid(e)}
                                                         disabled={ !isAuthenticated }
-                                                    >
-                                                        { handleMoreClick() }
-                                                    </NavDropdown>
-                                                </div>
+                                                        variant='secondary'
+                                                        title={ <BsThreeDots /> }>
+                                                            { handleMoreClick() }
+                                                    </DropdownButton>
                                             </Col>
                                         </Row>
                                     </Col>

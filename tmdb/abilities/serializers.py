@@ -7,6 +7,7 @@ class AbilitySerializer(ModelWithArticleSerializer):
     class Meta:
         model = Ability
         fields = '__all__'
+        indexes = [models.Index(fields=['name', 'effect'])]
 
 class AbilityScrollSerializer(ModelScrollWithArticleSerializer, AbilitySerializer):
     pass

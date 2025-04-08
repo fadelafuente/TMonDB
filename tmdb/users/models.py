@@ -7,19 +7,24 @@ from django.utils import timezone
 from articles.validators import MaxLengthValidator
 
 def add_annotations(queryset, user):
-    return queryset.annotate(following_count=Count('following', distinct=True),
-                followers_count=Count('followers', distinct=True),
-                user_follows=Case(When(Q(followers__in=[user.id]), then=True), default=False),
-                current_user=Case(When(Q(id=user.id), then=True), default=False))
+    queryset = queryset.annotate(following_count=Count('following', distinct=True),
+                followers_count=Count('followers', distinct=True))
+    
+    if user.is_authenticated:
+        queryset = queryset.annotate(user_follows=Count(Q(followers=user)),
+                user_blocks=Count(Q(blocked=user)),
+                current_user=Case(When(id=user.id, then=1), default=0))
+        
+    return queryset
 
 # Create your models here.
 class AppUserManager(BaseUserManager):
     def get_annotated_queryset(self, user, **kwargs):
+        queryset = super().get_queryset().prefetch_related('following', 'followers', 'blocked').filter(**kwargs)
+        
         if user.is_authenticated:
-            queryset = super().get_queryset().exclude(id__in=list(user.blocked.values_list('id', 
-                        flat=True))).filter(**kwargs)
-        else:
-            queryset = super().get_queryset().filter(**kwargs)
+            queryset = queryset.exclude(id__in=list(user.blocked.values_list('id', 
+                        flat=True)))
 
         return add_annotations(queryset, user)
 
@@ -43,7 +48,7 @@ class AppUserManager(BaseUserManager):
     
 class AppUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
-    username =  models.CharField(max_length=50, unique=True, blank=True)
+    username =  models.CharField(max_length=35, unique=True, blank=True, db_index=True)
     bio = models.TextField(default='This is where my bio would go, if I wrote one!', blank=True, validators=[MaxLengthValidator()])
     following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
     blocking = models.ManyToManyField('self', symmetrical=False, related_name='blocked', blank=True)

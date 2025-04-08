@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from djoser.conf import settings
 from djoser.social import views as social_views
 from djoser.views import UserViewSet
@@ -59,7 +60,7 @@ class CustomProviderAuthView(social_views.ProviderAuthView):
         return _post(response)
     
 class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin, 
-                        ListFollowersMixin, UpdateBlockingMixin, ListBlockingMixin):
+                        ListFollowersMixin, UpdateBlockingMixin, ListBlockingMixin, ListLikesMixin):
     filter_backends = (filters.OrderingFilter, filters.SearchFilter)
     ordering_fields = ('id', 'username')
     ordering = ('username')
@@ -71,7 +72,7 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin,
             return (IsAuthenticated(), IsNotCurrentUser())
         elif self.action in ['blocking']:
             return (IsAuthenticated(), IsCurrentUser())
-        elif self.action in ['following', 'retrieve', 'followers']:
+        elif self.action in ['following', 'retrieve', 'followers', 'likes']:
             return (AllowAny(),)
         return super().get_permissions()
         
@@ -92,18 +93,33 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin,
     def get_queryset(self):
         kwargs = {}
         for key, value in self.request.query_params.items():
-            if key not in ['page']:
+            if key not in ['page', 'search']:
                 kwargs[key] = value
 
         return AppUser.objects.get_annotated_queryset(self.request.user, **kwargs).all()
     
-    def get_paginated_queryset(self, queryset):
+    def lookup_object(self):
+        queryset = self.get_queryset()
+     
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = get_object_or_404(queryset, **filter_kwargs)
+
+        self.check_object_permissions(self.request, obj)
+
+        return obj
+        
+    def _get_paginated_response(self, queryset):
+        return self._get_paginated_response_from_serializer_class(queryset, self.get_serializer_class())
+    
+    def _get_paginated_response_from_serializer_class(self, queryset, serializer_class):
         page = self.paginate_queryset(queryset)
         if page is not None:
-            serializer = self.get_serializer(page, many=True)
+            serializer = serializer_class(page, many=True)
             return self.get_paginated_response(serializer.data)
         
-        serializer = self.get_serializer(queryset, many=True)
+        serializer = serializer_class(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):

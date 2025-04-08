@@ -81,8 +81,8 @@ class CurrentUserSerializer(UserSerializer):
         fields = ('id', 'username', 'email')
 
 class FollowSerializer(UserSerializer):
-    user_follows = serializers.BooleanField()
-    current_user = serializers.BooleanField()
+    user_follows = serializers.BooleanField(default=False)
+    current_user = serializers.BooleanField(default=False)
 
     class Meta(UserSerializer.Meta):
         fields = ('id', 'username', 'bio', 'user_follows', 'current_user')
@@ -90,6 +90,7 @@ class FollowSerializer(UserSerializer):
 class ProfileSerializer(FollowSerializer):
     following_count = serializers.IntegerField()
     followers_count = serializers.IntegerField()
+    user_blocks = serializers.BooleanField(default=False)
 
     class Meta(UserSerializer.Meta):
-        fields = ('id', 'username', 'bio', 'following_count', 'followers_count', 'user_follows', 'current_user')
+        fields = ('id', 'username', 'bio', 'following_count', 'followers_count', 'user_follows', 'current_user', 'user_blocks')

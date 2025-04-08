@@ -1,6 +1,7 @@
 import { React, useState } from 'react';
 import { Card, Col, Row } from 'react-bootstrap';
 import { BsDot } from 'react-icons/bs';
+import { useNavigate } from 'react-router-dom';
 
 import BlockModal from '../Modals/BlockModal';
 import SocialInteractions from '../UserInteractions/SocialInteractions';
@@ -11,6 +12,7 @@ import '../../assets/styling/MonCard.css';
 export default function MonsterCard({monster=null}) {
     const [showBlock, setShowBlock] = useState(false);
     const [blocked, setBlocked] = useState(false);
+    const navigate = useNavigate();
 
     let [feet, inches] = ['???', '???']; 
     if(monster && monster.avg_height) {
@@ -20,6 +22,11 @@ export default function MonsterCard({monster=null}) {
     let lb = '???'; 
     if(monster && monster.avg_weight) {
         lb = handleKgToLbConversion(monster.avg_weight);
+    }
+
+    function handleNavigateToCreatorProfile(e) {
+        e.preventDefault(); 
+        navigate(`/${monster.article.creator.username}`);
     }
 
     return (
@@ -38,9 +45,12 @@ export default function MonsterCard({monster=null}) {
                                         {
                                             monster && monster.article.creator.username ? 
                                                 <div className='creator-container'>
-                                                    <a href={ `/${monster.article.creator.username}` }>
+                                                    <button className='link-as-button' onClick={ e => handleNavigateToCreatorProfile(e) }>
                                                         @{ monster.article && monster.article.creator ? monster.article.creator.username : '???' }
-                                                    </a> <BsDot /> { monster ? handleTimeDifference(monster.article.date_created) : '0s' }
+                                                    </button> 
+                                                    <div>
+                                                        <BsDot />{ monster ? handleTimeDifference(monster.article.date_created) : '0s' }
+                                                    </div>
                                                 </div>
                                         :
                                             '[Deleted]'

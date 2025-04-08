@@ -48,15 +48,15 @@ class TestPosts(APITestCase):
     def test_follow_user(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.patch(f'/auth/users/{self.user2.username}/follow/')
+        response = self.client.post(f'/auth/users/{self.user2.username}/follow/')
 
         self.assertEqual(response.status_code, 200)
 
     def test_get_following(self):
         self.client.force_authenticate(user=self.user)
 
-        self.client.patch(f'/auth/users/{self.user2.username}/follow/')
-        self.client.patch(f'/auth/users/{self.user3.username}/follow/')
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
+        self.client.post(f'/auth/users/{self.user3.username}/follow/')
         response = self.client.get(f'/auth/users/{self.user.username}/following/?page=1')
 
         self.assertEqual(response.status_code, 200)
@@ -66,9 +66,9 @@ class TestPosts(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         # first call adds if not following
-        self.client.patch(f'/auth/users/{self.user2.username}/follow/')
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
         # second call deletes if already following
-        self.client.patch(f'/auth/users/{self.user2.username}/follow/')
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
         response = self.client.get(f'/auth/users/{self.user.username}/following/?page=1')
 
         self.assertEqual(response.status_code, 200)
@@ -78,9 +78,21 @@ class TestPosts(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         # first call adds if not following
-        self.client.patch(f'/auth/users/{self.user2.username}/follow/')
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
 
         response = self.client.get(f'/auth/users/{self.user2.username}/followers/?page=1')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(len(response.data['results']) == 1)
+
+    def test_get_followers_with_sort(self):
+        self.client.force_authenticate(user=self.user)
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
+
+        self.client.force_authenticate(user=self.user3)
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
+
+        response = self.client.get(f'/auth/users/{self.user2.username}/followers/?page=1&search={self.user3.username}')
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.data['results']) == 1)
@@ -98,6 +110,19 @@ class TestPosts(APITestCase):
         self.assertTrue(response.status_code == 200)
         self.assertTrue(key in ['id', 'username', 'bio', 'following_count', 'followers_count'] for key in response.data.keys())
         self.assertFalse(response.data['current_user'])
+        self.assertFalse(response.data['user_follows'])
+
+    def test_get_following_user_profile(self):
+        self.client.force_authenticate(user=self.user)
+
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
+
+        response = self.client.get(f'/auth/users/{self.user2.username}/')
+
+        self.assertTrue(response.status_code == 200)
+        self.assertTrue(key in ['id', 'username', 'bio', 'following_count', 'followers_count'] for key in response.data.keys())
+        self.assertFalse(response.data['current_user'])
+        self.assertTrue(response.data['user_follows'])
 
     def test_get_current_user_profile(self):
         self.client.force_authenticate(user=self.user)
@@ -105,7 +130,8 @@ class TestPosts(APITestCase):
         response = self.client.get(f'/auth/users/{self.user.username}/')
     
         self.assertTrue(response.status_code == 200)
-        # self.assertTrue(response.data['current_user'])
+        self.assertTrue(response.data['current_user'])
+        self.assertFalse(response.data['user_follows'])
 
     def test_get_user_anonymous(self):
         response = self.client.get(f'/auth/users/{self.user.username}/')
@@ -162,8 +188,8 @@ class TestPosts(APITestCase):
     def test_get_following_list_after_blocking(self):
         self.client.force_authenticate(user=self.user)
 
-        self.client.patch(f'/auth/users/{self.user2.username}/follow/')
-        self.client.patch(f'/auth/users/{self.user3.username}/follow/')
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
+        self.client.post(f'/auth/users/{self.user3.username}/follow/')
 
         response = self.client.patch(f'/auth/users/{self.user2.username}/block/')
         response = self.client.get(f'/auth/users/{self.user.username}/following/?page=1')
@@ -176,7 +202,7 @@ class TestPosts(APITestCase):
 
     def test_get_following_list_after_being_blocked(self):
         self.client.force_authenticate(user=self.user)
-        self.client.patch(f'/auth/users/{self.user2.username}/follow/')
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
 
         self.client.force_authenticate(user=self.user2)
         self.client.patch(f'/auth/users/{self.user.username}/block/')
@@ -188,7 +214,7 @@ class TestPosts(APITestCase):
 
     def test_get_followers_list_after_blocking(self):
         self.client.force_authenticate(user=self.user)
-        self.client.patch(f'/auth/users/{self.user2.username}/follow/')
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
 
         self.client.force_authenticate(user=self.user2)
         self.client.patch(f'/auth/users/{self.user.username}/block/')
@@ -202,7 +228,7 @@ class TestPosts(APITestCase):
 
     def test_get_followers_list_after_being_blocked(self):
         self.client.force_authenticate(user=self.user)
-        self.client.patch(f'/auth/users/{self.user2.username}/follow/')
+        self.client.post(f'/auth/users/{self.user2.username}/follow/')
 
         self.client.force_authenticate(user=self.user2)
         self.client.patch(f'/auth/users/{self.user.username}/block/')
@@ -221,6 +247,6 @@ class TestPosts(APITestCase):
     def test_user_follows_themselves(self):
         self.client.force_authenticate(user=self.user)
 
-        response = self.client.patch(f'/auth/users/{self.user.username}/follow/')
+        response = self.client.post(f'/auth/users/{self.user.username}/follow/')
 
         self.assertEqual(response.status_code, 403)

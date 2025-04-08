@@ -220,7 +220,7 @@ export function useCreateResource(initialForm) {
         if(data) {
             createResource(resource, data).then(response => {
                 if(response && response.status === 201) {
-                    if(resource == 'posts') {
+                    if(resource === 'posts') {
                         navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
                     } else {
                         navigate(`/${resource}/${response.data['id']}`);
@@ -277,6 +277,7 @@ export function useMiddleViewPort() {
     const [aboveMid, setAboveMid] = useState(true);
 
     function handleMiddleHeight(e) {
+        e.preventDefault(); 
         const middlehalf = window.innerHeight / 2;
         setAboveMid(e.clientY > middlehalf);
     }
@@ -532,6 +533,7 @@ export function useFilesUpload() {
 
     useEffect(() => {
         return () => {
+            // eslint-disable-next-line
             for(const url of urls.current) URL.revokeObjectURL(url);
         }
     }, []);
@@ -597,7 +599,7 @@ export function useHeightConversions(initialFt, initialIn) {
 
     function handleInInput(e, setFormData) {
         const value = e.target.value;
-        if(value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
+        if(value.match('^[0-9]*(.[0-9]{0,2}){0,1}$')) {
             const inches = value === '' ? 0 : value;
             if(inches < 12) {
                 const cm = handleHeightConversion(heightFt ? parseInt(heightFt) : 0, inches);
@@ -613,7 +615,7 @@ export function useHeightConversions(initialFt, initialIn) {
 
     function handleCMInput(e, setFormData) {
         const value = e.target.value;
-        if(e.target.value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
+        if(e.target.value.match('^[0-9]*(.[0-9]{0,2}){0,1}$')) {
             const cm = value === '' ? 0 : value;
             if(parseFloat(cm) <= 9999.99) {
                 const [feet, inches] = handleHeightConversion(cm);
@@ -632,7 +634,7 @@ export function useWeightConversions(initialLb) {
 
     function handleLbInput(e, setFormData) {
         const value = e.target.value ? e.target.value : '0';
-        if(value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
+        if(value.match('^[0-9]*(.[0-9]{0,2}){0,1}$')) {
             const lb = value === '' ? 0 : value;
             if(parseFloat(lb) <= 2204.98) {
                 const kg = handleLbToKgConversion(lb);
@@ -646,7 +648,7 @@ export function useWeightConversions(initialLb) {
 
     function handleKgInput(e, setFormData) {
         const value = e.target.value;
-        if(value.match('^[0-9]*(\.[0-9]{0,2}){0,1}$')) {
+        if(value.match('^[0-9]*(.[0-9]{0,2}){0,1}$')) {
             const kg = value === '' ? 0 : value;
             if(parseFloat(kg) <= 999.99) {
                 const lb = handleKgToLbConversion(kg);
@@ -680,7 +682,7 @@ export function useGetResourceById(resource) {
             }
         }).catch(e => {
         });
-    }, [id]);
+    }, [id, resource]);
 
     return [obj, parent];
 }

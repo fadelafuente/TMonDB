@@ -15,6 +15,6 @@ class Post(models.Model):
     image = models.FileField(upload_to='images/', blank=True, null=True)
     is_repost = models.BooleanField(default=False)
     is_edited = models.BooleanField(default=False)
-    parent = models.ForeignKey(Article, related_name='comments', on_delete=models.SET_NULL, blank=True, null=True)
+    parent = models.ForeignKey(Article, related_name='comments', on_delete=models.SET_NULL, blank=True, null=True, db_index=True)
     
     objects = PostManager()

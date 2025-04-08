@@ -7,6 +7,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import PostArticles from './Articles/PostArticles';
 import MonsterArticles from './Articles/MonsterArticles';
 import { BlockedCard } from './Cards/BlockedCard';
+import LoadingCard from './Cards/LoadingCard';
+import { ViewBlockedUserCard } from './Cards/ViewingBlockedUserCard';
 import BlockModal from './Modals/BlockModal';
 import EditModal from './Modals/EditModal';
 import { useGetProfile, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
@@ -27,128 +29,142 @@ function ProfileInfo({isAuthenticated}) {
         navigator.clipboard.writeText(`${process.env.REACT_APP_WEB_URL}/${path}`);
         setShowAlert(true);
     }
-
-    return (
-        <>
-            <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={() => {window.location.reload()}} username={ profile ? profile.username : null } />
-            <EditModal show={show} setShow={() => setShow() } />
-            <Alert variant='success' className='copy-alert' show={showAlert}>
-                <Alert.Heading>Copied to clipboard.</Alert.Heading>
-            </Alert>
-            <div className='banner-container'>
+    
+    if(profile && profile.user_blocks) {
+        return (
+            <div className='article-container'>
+                <ViewBlockedUserCard creator={ creator } />
             </div>
-            <div className='profile-info-container'>
-                <div className='about-user-container'>
-                    <div className='user-row'>
-                        <div className='pfp-outer-container'>
-                            <div className='pfp-container'>
+        );
+    }
+    else {
+        return (
+            <>
+                { profile ? 
+                    <div>
+                        <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={() => {window.location.reload()}} username={ profile ? profile.username : null } />
+                        <EditModal show={show} setShow={() => setShow() } />
+                        <Alert variant='success' className='copy-alert' show={showAlert}>
+                            <Alert.Heading>Copied to clipboard.</Alert.Heading>
+                        </Alert>
+                        <div className='banner-container'>
+                        </div>
+                        <div className='profile-info-container'>
+                            <div className='about-user-container'>
+                                <div className='user-row'>
+                                    <div className='pfp-outer-container'>
+                                        <div className='pfp-container'>
+                                        </div>
+                                    </div>
+                                    <div className='username-container'>
+                                        @{ profile && profile.username ? profile.username : creator }
+                                    </div>
+                                </div>
+                                <div className='row-gap-container'>
+                                    <div className='follow'>
+                                        <button className='obj-link text-link' onClick={() => navigate(`follow`, {state: {initial_type: 'following'}})}>
+                                            { profile && profile.following_count ? profile.following_count : 0 } Following
+                                        </button>
+                                    </div>
+                                    <div className='followers follow'>
+                                        <button className='obj-link text-link' onClick={() => navigate(`follow`, {state: {initial_type: 'followers'}})}>
+                                            { profile && profile.followers_count ? profile.followers_count : follows ? follows : 0 } Followers
+                                        </button>
+                                    </div>
+                                </div>
+                                <div className='bio-container'>
+                                    { profile ? profile.bio : 'This is where my bio would go, if I wrote one!' }
+                                </div>
                             </div>
-                        </div>
-                        <div className='username-container'>
-                            @{ profile && profile.username ? profile.username : creator }
-                        </div>
-                    </div>
-                    <div className='row-gap-container'>
-                        <div className='follow'>
-                            <button className='obj-link text-link' onClick={() => navigate(`follow`, {state: {initial_type: 'following'}})}>
-                                { profile && profile.following_count ? profile.following_count : 0 } Following
-                            </button>
-                        </div>
-                        <div className='followers follow'>
-                            <button className='obj-link text-link' onClick={() => navigate(`follow`, {state: {initial_type: 'followers'}})}>
-                                { profile && profile.followers_count ? profile.followers_count : follows ? follows : 0 } Followers
-                            </button>
-                        </div>
-
-                    </div>
-                    <div className='bio-container'>
-                        { profile ? profile.bio : 'This is where my bio would go, if I wrote one!' }
-                    </div>
-                </div>
-                <div className='interact-row'>
-                    <Row>
-                        <Col className='row-gap-container'>
-                            {
-                                isAuthenticated ?
-                                    profile ? 
-                                        profile.current_user_is_blocked ?
-                                            <Button disabled className='base-btn reverse-base-btn'>
-                                                Follow
-                                            </Button>
-                                        :
-                                            profile.current_user ?
-                                                <Button className='base-btn reverse-base-btn edit-btn' onClick={ () => setShow(true) }>
-                                                    Edit Profile
-                                                </Button>
+                            <div className='interact-row'>
+                                <Row>
+                                    <Col className='row-gap-container'>
+                                        {
+                                            isAuthenticated ?
+                                                profile ? 
+                                                    profile.current_user_is_blocked ?
+                                                        <Button disabled className='base-btn reverse-base-btn'>
+                                                            Follow
+                                                        </Button>
+                                                    :
+                                                        profile.current_user ?
+                                                            <Button className='base-btn reverse-base-btn edit-btn' onClick={ () => setShow(true) }>
+                                                                Edit Profile
+                                                            </Button>
+                                                        :
+                                                            <Button className='base-btn reverse-base-btn' onClick={ () => setFollow(profile.username) }>
+                                                                { followed ? 'Unfollow' : 'Follow' } 
+                                                            </Button>
+                                                :
+                                                    <Button className='base-btn reverse-base-btn'>
+                                                        Follow
+                                                    </Button>
                                             :
-                                                <Button className='base-btn reverse-base-btn' onClick={ () => setFollow(profile.username) }>
-                                                    { followed ? 'Unfollow' : 'Follow' } 
+                                                <Button className='base-btn reverse-base-btn' onClick={ () => navigate('/login') }>
+                                                    Follow
                                                 </Button>
-                                    :
-                                        <Button className='base-btn reverse-base-btn'>
-                                            Follow
-                                        </Button>
-                                :
-                                    <Button className='base-btn reverse-base-btn' onClick={ () => navigate('/login') }>
-                                        Follow
-                                    </Button>
-                            }
-                            <div className='base-btn rounded-btn bigger-rounded-btn'>
-                                <NavDropdown title={<BsThreeDots/>} 
-                                    className='more-dropdown'
-                                    drop={ aboveMid ? 'up-centered' : 'down-centered' }
-                                    onClick={e => setAboveMid(e)}
-                                >
-                                    { isAuthenticated && profile && !profile.current_user && !profile.is_blocking ?
-                                        <NavDropdown.Item onClick={() => setShowBlock(true) }>
-                                            Block user
-                                        </NavDropdown.Item>
-                                    :
-                                        ''
-                                    }
-                                    <NavDropdown.Item onClick={() =>  profile ? handleCopyLink(`${profile.username}`) : () => {} }>
-                                        Copy link
-                                    </NavDropdown.Item>
-                                </NavDropdown>
+                                        }
+                                        <div className='base-btn rounded-btn bigger-rounded-btn'>
+                                            <NavDropdown title={<BsThreeDots/>} 
+                                                className='more-dropdown'
+                                                drop={ aboveMid ? 'up-centered' : 'down-centered' }
+                                                onClick={e => setAboveMid(e)}
+                                            >
+                                                { isAuthenticated && profile && !profile.current_user && !profile.is_blocking ?
+                                                    <NavDropdown.Item onClick={() => setShowBlock(true) }>
+                                                        Block user
+                                                    </NavDropdown.Item>
+                                                :
+                                                    ''
+                                                }
+                                                <NavDropdown.Item onClick={() =>  profile ? handleCopyLink(`${profile.username}`) : () => {} }>
+                                                    Copy link
+                                                </NavDropdown.Item>
+                                            </NavDropdown>
+                                        </div>
+                                    </Col>
+                                </Row>
                             </div>
-                        </Col>
-                    </Row>
-                </div>
-                <div className='user-content'>
-                    <Tabs fill>
-                        <Tab eventKey='posts' title='Posts' id='is-active'>
-                            { profile && profile.current_user_is_blocked ?
-                                <BlockedCard creator={profile.username} />
-                            :
-                                <PostArticles kwargs={{username: creator}} />
-                            }
-                        </Tab>
-                        <Tab eventKey='replies' title='Replies'>
-                            { profile && profile.current_user_is_blocked ?
-                                <BlockedCard creator={profile.username} />
-                            :
-                                <PostArticles kwargs={{username: creator, is_reply: true}} />
-                            }
-                        </Tab>
-                        <Tab eventKey='monsters' title='Monsters'>
-                            { profile && profile.current_user_is_blocked ?
-                                <BlockedCard creator={profile.username} />
-                            :
-                                <MonsterArticles kwargs={{}} />
-                            }
-                        </Tab>
-                        <Tab eventKey='regions' title='Regions'>
-                            { profile && profile.current_user_is_blocked ?
-                                <BlockedCard creator={profile.username} />
-                            :
-                                'all of user\'s regions'
-                            }
-                        </Tab>
-                    </Tabs>
-                </div>
-            </div>
-        </>
-    )
+                            <div className='user-content'>
+                                <Tabs fill>
+                                    <Tab eventKey='posts' title='Posts' id='is-active'>
+                                        { profile && profile.current_user_is_blocked ?
+                                            <BlockedCard creator={profile.username} />
+                                        :
+                                            <PostArticles kwargs={{username: creator}} />
+                                        }
+                                    </Tab>
+                                    <Tab eventKey='replies' title='Replies'>
+                                        { profile && profile.current_user_is_blocked ?
+                                            <BlockedCard creator={profile.username} />
+                                        :
+                                            <PostArticles kwargs={{username: creator, is_reply: true}} />
+                                        }
+                                    </Tab>
+                                    <Tab eventKey='monsters' title='Monsters'>
+                                        { profile && profile.current_user_is_blocked ?
+                                            <BlockedCard creator={profile.username} />
+                                        :
+                                            <MonsterArticles kwargs={{}} />
+                                        }
+                                    </Tab>
+                                    <Tab eventKey='regions' title='Regions'>
+                                        { profile && profile.current_user_is_blocked ?
+                                            <BlockedCard creator={profile.username} />
+                                        :
+                                            'all of user\'s regions'
+                                        }
+                                    </Tab>
+                                </Tabs>
+                            </div>
+                        </div>
+                    </div>
+                :
+                    <LoadingCard />
+                }
+            </>
+        );
+    }
 }
 
 const mapStateToProps = state => ({

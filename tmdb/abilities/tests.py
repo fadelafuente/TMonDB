@@ -41,7 +41,7 @@ class TestAbilities(APITestCase):
     def test_get_ability(self):
         self.client.force_authenticate(user=self.user)
 
-        expected_data = {'id': self.ability.id, 'article': OrderedDict({'id': self.ability.article.id, 
+        expected_data = {'id': self.ability.id, 'article': OrderedDict({'id': self.ability.article_id, 
                         'creator': OrderedDict({'id': self.ability.article.creator.id, 'username': self.ability.article.creator.username}), 
                         'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'likes_count': 0, 'reposts_count': 0, 
                         'comments_count': 0, 'is_current_user' : True, 'user_liked': False, 'user_reposted': False, 'user_commented': False, 

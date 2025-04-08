@@ -50,6 +50,11 @@ div.monster-creator-container {
     flex-basis: auto;
 }
 
+div.creator-container {
+    display: flex;
+    flex-direction: row;
+}
+
 .monster-text-emphasis {
     font-size: calc(max(1rem, min(1.5vw, 1.25rem)));
     font-weight: bold;

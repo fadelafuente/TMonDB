@@ -1,12 +1,12 @@
 import { useOutletContext } from 'react-router-dom';
 
+import PostArticles from './Articles/PostArticles';
 import ReplyBar from './Bars/ReplyBar';
 import { BlockedCard } from './Cards/BlockedCard';
 import { DeletedCard } from './Cards/DeletedCard';
 import { FailedCard } from './Cards/FailedCard';
 import LoadingCard from './Cards/LoadingCard';
 import PostCard from './Cards/PostCard';
-import PostArticles from './Articles/PostArticles';
 import { useGetResourceById } from '../hooks/hooks';
 
 import '../assets/styling/content.css';
@@ -18,13 +18,13 @@ export default function ViewPost() {
 
     return (
         <>
-            { post ? 
+            { post && typeof post === 'object' ? 
                 post.current_user_is_blocked ?
                     <div className='article-container'>
                         <BlockedCard creator={post.creator} />
                     </div>
                 :
-                    post.detail == 'Post not found.' ? 
+                    post.detail === 'Post not found.' ? 
                         <div className='article-container'>
                             <FailedCard />
                         </div>

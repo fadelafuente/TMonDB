@@ -56,7 +56,7 @@ button.square-no-border-btn:focus {
 }
 
 /* SVG button and dropdown styling */
-button.svg-btn, div.svg-dropdown {
+button.svg-btn, div.svg-dropdown, button.dropdown-toggle {
     all: unset;
     display: flex;
     align-items: center;
@@ -65,16 +65,17 @@ button.svg-btn, div.svg-dropdown {
     color: var(--placeholder-text-color);
 }
 
-button.svg-btn:hover, div.svg-dropdown:hover {
-    all: unset;
-    display: flex;
-    align-items: center;
-    text-align: center;
+button.dropdown-toggle, button.btn:disabled {
+    background-color: transparent;
+}
+
+button.svg-btn:hover, div.svg-dropdown:hover, button.dropdown-toggle:hover, div.dropdown-center:hover {
     color: var(--accent-color);
+    background-color: transparent;
     cursor: pointer;
 }
 
-button.svg-btn:active {
+button.svg-btn:active, button.svg-btn:first-child:active, button.dropdown-toggle:first-child:active, button.show {
     background-color: transparent;
     color: var(--accent-secondary-color);
 }
@@ -196,6 +197,19 @@ div.rounded-btn {
     border-radius: 50% !important;
     border: 1px solid transparent;
     color: var(--text-color);
+    display: flex;
+    align-items: center;
+}
+
+div.rounded-btn > button {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+div.rounded-btn > button.btn.show {
+    background-color: var(--background-content-color);
+    color: var(--accent-color);
 }
 
 div.bigger-rounded-btn {

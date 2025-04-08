@@ -152,6 +152,7 @@ class MonsterSerializer(ModelWithArticleSerializer):
     class Meta:
         model = Monster
         fields = '__all__'
+        indexes = [models.Index(fields=['name', 'species', 'description'])]
 
     @transaction.atomic
     def create(self, validated_data):

@@ -4,14 +4,14 @@ import Card from 'react-bootstrap/Card';
 
 import '../../assets/styling/PostCard.css';
 
-export function BlockedCard({creator='Anonymous'}) {
+export function ViewBlockedUserCard({ creator='Anonymous' }) {
     return (
         <Card>
             <Card.Body className='deleted-icon'>
                 <BsSlashCircle/>
             </Card.Body>
             <Card.Footer>
-                <h4 className='centered-card-text'>You're blocked by { creator }.</h4>
+                <h4 className='centered-card-text'>You're blocking { creator }.</h4>
                 <p className='centered-card-text'>
                     You cannot follow or view @{ creator }'s posts.
                 </p>
