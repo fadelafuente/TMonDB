@@ -1,8 +1,8 @@
 import { Fragment, useState } from 'react';
-import { Col, NavDropdown, Row, Tab, Tabs } from 'react-bootstrap';
+import { Col, Dropdown, DropdownButton, Row, Tab, Tabs } from 'react-bootstrap';
 import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import PostArticles from './Articles/PostArticles';
 import ReplyBar from './Bars/ReplyBar';
@@ -29,7 +29,7 @@ function ViewMon({ isAuthenticated }) {
     const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [isDeleted, setIsDeleted] = useDeleteResource(false);
     const [tab, setTab] = useState('stats');
-
+    const navigate = useNavigate();
 
     const levelMoves = [
         {method_value: 19, name: 'Fire Fang', type: 'Fire', power: 65},
@@ -55,13 +55,18 @@ function ViewMon({ isAuthenticated }) {
         return (
             <Fragment>
                 { monster.is_current_user ? 
-                    <NavDropdown.Item onClick={() => { setIsDeleted(monster.id) }}>
-                        Delete Monster
-                    </NavDropdown.Item>
+                    <>
+                        <Dropdown.Item onClick={() => { setIsDeleted(monster.id) }}>
+                            Delete Monster
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={() => navigate(`update`)}>
+                            Update Monster
+                        </Dropdown.Item>
+                    </>
                 : 
-                    <NavDropdown.Item onClick={() => setShowBlock(true) }>
+                    <Dropdown.Item onClick={() => setShowBlock(true) }>
                         Block user
-                    </NavDropdown.Item>
+                    </Dropdown.Item>
                 }
             </Fragment>
         )
@@ -111,13 +116,15 @@ function ViewMon({ isAuthenticated }) {
                                                 </Col>
                                                 <Col className='more-col'>
                                                     <div className='base-btn rounded-btn'>
-                                                        <NavDropdown title={<BsThreeDots />} 
+                                                        <DropdownButton
+                                                            className='base-btn rounded-btn'
                                                             drop={ aboveMid ? 'up-centered' : 'down-centered' }
                                                             onClick={e => setAboveMid(e)}
                                                             disabled={ !isAuthenticated }
-                                                        >
-                                                            { handleMoreClick() }
-                                                        </NavDropdown>
+                                                            variant='secondary'
+                                                            title={ <BsThreeDots /> }>
+                                                                { handleMoreClick() }
+                                                        </DropdownButton>
                                                     </div>
                                                 </Col>
                                             </Row>

@@ -7,8 +7,8 @@ from django.utils import timezone
 from articles.validators import MaxLengthValidator
 
 def add_annotations(queryset, user):
-    queryset = queryset.annotate(following_count=Count('following', distinct=True),
-                followers_count=Count('followers', distinct=True))
+    queryset = queryset.annotate(following_count=Count('following'),
+                followers_count=Count('followers'))
     
     if user.is_authenticated:
         queryset = queryset.annotate(user_follows=Count(Q(followers=user)),
@@ -17,10 +17,9 @@ def add_annotations(queryset, user):
         
     return queryset
 
-# Create your models here.
 class AppUserManager(BaseUserManager):
     def get_annotated_queryset(self, user, **kwargs):
-        queryset = super().get_queryset().prefetch_related('following', 'followers', 'blocked').filter(**kwargs)
+        queryset = super().get_queryset().filter(**kwargs)
         
         if user.is_authenticated:
             queryset = queryset.exclude(id__in=list(user.blocked.values_list('id', 

@@ -72,9 +72,10 @@ class ListLikesMixin:
     @transaction.atomic
     @action(detail=True, methods=['get'])
     def likes(self, request, *args, **kwargs):
-        instance = self.lookup_object()
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        username =self.kwargs[lookup_url_kwarg]
         
-        post_queryset = Post.objects.get_annotated_queryset(self.request.user, article__who_liked=instance)
+        post_queryset = Post.objects.get_annotated_queryset(self.request.user, article__who_liked__username=username)
         post_response = self._get_paginated_response_from_serializer_class(post_queryset, PostScrollSerializer)
 
         data = {}

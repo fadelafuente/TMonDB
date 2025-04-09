@@ -52,6 +52,14 @@
   display: none !important; 
 }
 
+div.dropdown-menu:active {
+  z-index: 10001;
+}
+
+button.btn.show {
+  background-color: transparent;
+}
+
 .appBar {
   background-color: --background-content-color;
   font-size: large;

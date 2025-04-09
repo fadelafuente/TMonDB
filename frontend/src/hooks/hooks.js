@@ -174,11 +174,11 @@ export function useFormData(initialForm) {
         }
     }
 
-    return [formData, handleChange];
+    return [formData, handleChange, setFormData];
 }
 
 export function useAdaptiveFormData(initialForm) {
-    const [formData, setFormData] = useFormData(initialForm);
+    const [formData, setFormData, setInitialData] = useFormData(initialForm);
 
     function handleFormData(e, resetPost=false) {
         if(e.target.id === 'auto-resizing') {
@@ -194,7 +194,7 @@ export function useAdaptiveFormData(initialForm) {
         setFormData(e, resetPost);
     }
 
-    return [formData, handleFormData];
+    return [formData, handleFormData, setInitialData];
 }
 
 export function usePassword() {
@@ -231,6 +231,26 @@ export function useCreateResource(initialForm) {
     }
 
     return [formData, setFormData, handleCreateResource];
+}
+
+export function useUpdateResource(initialForm) {
+    const [formData, setFormData, setInitialData] = useAdaptiveFormData(initialForm);
+    const navigate = useNavigate();
+    const { id } = useParams();
+
+    function handleUpdateResource(e, resource, data) {
+        e.preventDefault();
+
+        if(data) {
+            updateResourceById(resource, id, data).then(response => {
+                if(response && response.status === 200) {
+                    navigate(`/${resource}/${response.data['id']}`);
+                }
+            });
+        }
+    }
+
+    return [formData, setFormData, handleUpdateResource, setInitialData];
 }
 
 export function useDiscardModal(formData, setShow) {
@@ -586,12 +606,12 @@ export function useHeightConversions(initialFt, initialIn) {
         if(value.match('^[0-9]*$')) {
             const feet = value === '' ? 0 : parseInt(value);
             if(feet <= 32) {
-                const cm = handleHeightConversion(feet, heightIn ? parseFloat(heightIn) : 0);
-                if (cm <= 999.99) {
+                const m = handleHeightConversion(feet, heightIn ? parseFloat(heightIn) : 0);
+                if (m <= 999.9) {
                     setHeightFt(feet > 0 ? feet : '');
-                    const cmInput = document.getElementById('average-height-input');
-                    cmInput.value = cm;
-                    setFormData({target: cmInput});
+                    const mInput = document.getElementById('average-height-input');
+                    mInput.value = m;
+                    setFormData({target: mInput});
                 }
             }
         }
@@ -599,26 +619,26 @@ export function useHeightConversions(initialFt, initialIn) {
 
     function handleInInput(e, setFormData) {
         const value = e.target.value;
-        if(value.match('^[0-9]*(.[0-9]{0,2}){0,1}$')) {
+        if(value.match('^[0-9]*(.[0-9]{0,1}){0,1}$')) {
             const inches = value === '' ? 0 : value;
             if(inches < 12) {
-                const cm = handleHeightConversion(heightFt ? parseInt(heightFt) : 0, inches);
-                if (cm <= 999.99) {
+                const m = handleHeightConversion(heightFt ? parseInt(heightFt) : 0, inches);
+                if (m <= 999.9) {
                     setHeightIn(inches > 0 ? inches : '');
-                    const cmInput = document.getElementById('average-height-input');
-                    cmInput.value = cm;
-                    setFormData({target: cmInput});
+                    const mInput = document.getElementById('average-height-input');
+                    mInput.value = m;
+                    setFormData({target: mInput});
                 }
             }
         }
     }
 
-    function handleCMInput(e, setFormData) {
+    function handleMInput(e, setFormData) {
         const value = e.target.value;
-        if(e.target.value.match('^[0-9]*(.[0-9]{0,2}){0,1}$')) {
-            const cm = value === '' ? 0 : value;
-            if(parseFloat(cm) <= 9999.99) {
-                const [feet, inches] = handleHeightConversion(cm);
+        if(e.target.value.match('^[0-9]*(.[0-9]{0,1}){0,1}$')) {
+            const m = value === '' ? 0 : value;
+            if(parseFloat(m) <= 999.9) {
+                const [feet, inches] = handleHeightConversion(m);
                 setHeightFt(feet > 0 ? feet : '');
                 setHeightIn(inches > 0 ? inches : '');
                 setFormData(e);
@@ -626,7 +646,7 @@ export function useHeightConversions(initialFt, initialIn) {
         }
     }
 
-    return [heightFt, handleFtInput, heightIn, handleInInput, handleCMInput];
+    return [heightFt, handleFtInput, heightIn, handleInInput, handleMInput];
 }
 
 export function useWeightConversions(initialLb) {
@@ -634,9 +654,9 @@ export function useWeightConversions(initialLb) {
 
     function handleLbInput(e, setFormData) {
         const value = e.target.value ? e.target.value : '0';
-        if(value.match('^[0-9]*(.[0-9]{0,2}){0,1}$')) {
+        if(value.match('^[0-9]*(.[0-9]{0,1}){0,1}$')) {
             const lb = value === '' ? 0 : value;
-            if(parseFloat(lb) <= 2204.98) {
+            if(parseFloat(lb) <= 2204.8) {
                 const kg = handleLbToKgConversion(lb);
                 setWeightLb(lb > 0 ? lb : '');
                 const kgInput = document.getElementById('average-weight-input');
@@ -650,7 +670,7 @@ export function useWeightConversions(initialLb) {
         const value = e.target.value;
         if(value.match('^[0-9]*(.[0-9]{0,2}){0,1}$')) {
             const kg = value === '' ? 0 : value;
-            if(parseFloat(kg) <= 999.99) {
+            if(parseFloat(kg) <= 999.9) {
                 const lb = handleKgToLbConversion(kg);
                 setWeightLb(lb > 0 ? lb : '');
                 setFormData(e);

@@ -1,4 +1,4 @@
-import { Col, Row, NavDropdown, Alert } from 'react-bootstrap';
+import { Col, Row, Dropdown, Alert, DropdownButton } from 'react-bootstrap';
 import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDotsFill } from 'react-icons/bs';
 import { useInteractions, useMiddleViewPort, useTimedAlert } from '../../hooks/hooks';
 import { connect } from 'react-redux';
@@ -95,12 +95,12 @@ function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
                     </button>
                 </Col>
                 <Col className='share-btn'>
-                    <NavDropdown title={<BsShare/>} 
+                    <DropdownButton title={<BsShare/>} 
                         drop={ aboveMid ? 'up-centered' : 'down-centered' }
                         onClick={e => setAboveMid(e)}
                         className='svg-dropdown'
                     >
-                        <NavDropdown.Item onClick={() => handleCopyLink(
+                        <Dropdown.Item onClick={() => handleCopyLink(
                             obj ? 
                                 obj.article.creator.username ? 
                                     `${obj.article.creator.username}/${obj.id}` 
@@ -110,8 +110,8 @@ function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
                                 'home'
                         )}>
                             Copy link
-                        </NavDropdown.Item>
-                    </NavDropdown>
+                        </Dropdown.Item>
+                    </DropdownButton>
                 </Col>
             </Row>
         </>

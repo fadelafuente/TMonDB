@@ -135,24 +135,24 @@ export function handleDuplicatesInArray(source, result) {
 
 export function handleHeightConversion(h1, h2=null) {
     if(h2 != null) {
-        const cm = 2.54 * ((h1 * 12) + parseFloat(h2));
+        const m = 0.0254 * ((h1 * 12) + parseFloat(h2));
 
-        return cm.toFixed(2);
+        return m.toFixed(1);
     } else {
-        let inches = h1 / 2.54;
+        let inches = h1 / 0.0254;
         const feet = Math.floor(inches / 12);
-        inches = (inches % 12).toFixed(2);
+        inches = (inches % 12).toFixed(1);
         
         return [feet, inches];
     }
 }
 
 export function handleKgToLbConversion(wt) {
-    return (parseFloat(wt) * 2.205).toFixed(2);
+    return (parseFloat(wt) * 2.205).toFixed(1);
 }
 
 export function handleLbToKgConversion(wt) {
-    return (parseFloat(wt) / 2.205).toFixed(2);
+    return (parseFloat(wt) / 2.205).toFixed(1);
 }
 
 export function capitalize(s) {

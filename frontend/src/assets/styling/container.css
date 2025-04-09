@@ -50,7 +50,7 @@ div.no-margins-container,
     display: none;
 }
 
-@media (max-width: 825px) {
+@media (max-width: 940px) {
     div.row-to-col-container {
         flex-direction: column;
     }

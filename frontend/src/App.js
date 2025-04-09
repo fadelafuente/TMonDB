@@ -9,6 +9,7 @@ import CreateMon from './components/Creates/CreateMon';
 import CreateType from './components/Creates/CreateType';
 import FollowContent from './components/Content/FollowContent';
 import ProfileInfo from './components/ProfileInfo';
+import UpdateMon from './components/Updates/UpdateMon';
 import ViewMon from './components/ViewMon';
 import ViewPost from './components/ViewPost';
 import Activate from './pages/Activate';
@@ -55,6 +56,7 @@ export default function App() {
       <Route path='monsters' element={ <HomePage /> } >
         {/* <Route path='' element= { <div className='article-container'><MonArticles query={ query } /></div> } /> */}
         <Route path='create' element={ <CreateMon /> } />
+        <Route path=':id/update' element={ <UpdateMon /> } />
         <Route path=':id' element={ <ViewMon /> } />
       </Route>
       <Route path='regions' element={ <HomePage /> } >

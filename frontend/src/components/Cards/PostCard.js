@@ -84,7 +84,7 @@ function PostCard({ post, isAuthenticated }) {
                                             </Col>
                                             <Col className='more-col'>
                                                     <DropdownButton
-                                                    className='base-btn rounded-btn'
+                                                        className='base-btn rounded-btn'
                                                         drop={ aboveMid ? 'up-centered' : 'down-centered' }
                                                         onClick={e => setAboveMid(e)}
                                                         disabled={ !isAuthenticated }
