@@ -12,7 +12,7 @@ class MoveSerializer(ModelWithArticleSerializer):
 
 class MonsterMoveSerializer(MoveSerializer):
     class Meta(MoveSerializer.Meta):
-        fields = ['id', 'name', 'type', 'properties']
+        fields = ['id', 'name', 'type']
 
 class RetrieveMoveSerializer(ModelScrollWithArticleSerializer, MoveSerializer):
     type = MinimumTypeSerializer()
