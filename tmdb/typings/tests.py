@@ -154,7 +154,7 @@ class TestTypes(APITestCase):
         expected_data = {'id': self.ice_id, 'defense_modifiers': [OrderedDict({'id': self.ice_modifier, 'multiplier': '0.50', 'attacking_type': 'ice'}), 
                         OrderedDict({'id': self.dragon_modifer, 'multiplier': '0.50', 'attacking_type': 'dragon'}), OrderedDict({'id': self.fairy_modifier, 'multiplier': '0.50', 
                         'attacking_type': 'fairy'})], 'creator': OrderedDict({'id': self.user2.id, 'username': self.user2.username}), 
-                        'name': 'ice', 'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), 'locked': False}
+                        'name': 'ice', 'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ'), 'locked': False, 'world': None}
 
         response = self.client.get(f'/api/types/{self.ice_id}/')
 

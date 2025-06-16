@@ -49,7 +49,7 @@ class TestMoves(APITestCase):
                         'creator': OrderedDict({'id': self.user.id, 'username': self.user.username}),
                         'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 
                         'name': self.move.name, 'description': self.move.description, 'power': self.move.power, 
-                        'type': OrderedDict({'id': self.fairy_type.id, 'name': self.fairy_type.name})}
+                        'type': OrderedDict({'id': self.fairy_type.id, 'name': self.fairy_type.name}), 'world': None}
         
         response = self.client.get(f'/api/moves/{self.move.id}/')
 

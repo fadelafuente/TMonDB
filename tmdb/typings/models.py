@@ -2,6 +2,8 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
 
+from worlds.models import World
+
 UserModel = get_user_model()
 
 class TypeManager(models.Manager):    
@@ -19,6 +21,7 @@ class Type(models.Model):
     name = models.CharField(max_length=30)
     date_created = models.DateTimeField(default=timezone.now, null=False)
     locked = models.BooleanField(default= False)
+    world = models.ForeignKey(World, related_name='types', blank=True, null=True, on_delete=models.CASCADE)
 
     objects = TypeManager()
 

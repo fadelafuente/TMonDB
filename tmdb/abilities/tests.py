@@ -45,7 +45,7 @@ class TestAbilities(APITestCase):
                         'creator': OrderedDict({'id': self.ability.article.creator.id, 'username': self.ability.article.creator.username}), 
                         'date_created': self.test_start_time.strftime('%Y-%m-%dT%H:%M:%S.%fZ')}), 'likes_count': 0, 'reposts_count': 0, 
                         'comments_count': 0, 'is_current_user' : True, 'user_liked': False, 'user_reposted': False, 'user_commented': False, 
-                        'name': self.ability.name, 'effect': self.ability.effect}
+                        'name': self.ability.name, 'effect': self.ability.effect, 'world': None}
 
         response = self.client.get(f'/api/abilities/{self.ability.id}/')
 

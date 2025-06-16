@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'moves',
     'posts',
     'typings',
-    'users'
+    'users',
+    'worlds'
 ]
 
 MIDDLEWARE = [

@@ -1,5 +1,7 @@
+from django.db import models
+
 from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer
-from .models import *
+from .models import Ability
 
 class AbilitySerializer(ModelWithArticleSerializer):
     model = Ability

@@ -24,6 +24,7 @@ from moves.views import TMonDBMoveViewset
 from posts.views import PostViewSet
 from typings.views import TMonDBTypeViewset
 from users.views import TMonDBUserViewset, CustomTokenCreateView, CustomProviderAuthView, CustomTokenVerifyView
+from worlds.views import TMonDBWorldViewset
 
 from rest_framework.routers import DefaultRouter
 
@@ -33,6 +34,7 @@ api_router.register(r'monsters', TMonDBMonsterViewset, basename='Monster')
 api_router.register(r'types', TMonDBTypeViewset, basename='Type')
 api_router.register(r'abilities', TMonDBAbilityViewset, basename='Ability')
 api_router.register(r'moves', TMonDBMoveViewset, basename='Move')
+api_router.register(r'worlds', TMonDBWorldViewset, basename='World')
 
 auth_router = DefaultRouter()
 auth_router.register(r'users', TMonDBUserViewset)

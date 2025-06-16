@@ -25,7 +25,7 @@ class Monster(models.Model):
     description = models.TextField(blank=True, null=True, validators=[MaxLengthValidator(max_length=1024)])
     etymology = models.TextField(blank=True, null=True, validators=[MaxLengthValidator()])
     evolutions = models.ManyToManyField('self', through='Evolution', symmetrical=False, related_name='pre_evolutions', blank=True)
-    moveset = models.ManyToManyField(Move, through='MoveSet', symmetrical=False, related_name='monsters', blank=True)
+    moveset = models.ManyToManyField(Move, through='MoveSet', related_name='monsters', blank=True)
 
     objects = MonsterManager()
 
@@ -33,8 +33,14 @@ class Evolution(models.Model):
     from_monster = models.ForeignKey(Monster, on_delete=models.CASCADE, related_name='from_monster')
     to_monster = models.ForeignKey(Monster, on_delete=models.CASCADE, related_name='to_monster')
     method = models.CharField(max_length=255)
+    
+    class Meta:
+        indexes = [models.Index(fields=['from_monster', 'to_monster'])]
 
 class MoveSet(models.Model):
     monster = models.ForeignKey(Monster, on_delete=models.CASCADE, related_name='monster')
     move = models.ForeignKey(Move,on_delete=models.CASCADE, related_name='move')
     method = models.CharField(max_length=255)
+
+    class Meta:
+        indexes = [models.Index(fields=['monster', 'move'])]
