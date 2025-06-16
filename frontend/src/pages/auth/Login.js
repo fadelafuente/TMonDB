@@ -1,16 +1,15 @@
-import { login, loginAttempt } from '../actions/auth';
-import { handleSocialAuth } from '../functions/handlers';
-import { React } from "react";
+import { login, loginAttempt } from '../../actions/auth';
+import { handleSocialAuth } from '../../functions/handlers';
 import { InputGroup, Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { useNavigateOnAuth, useLoginAttempt, useFormData, usePassword } from '../hooks/hooks';
+import { useNavigateOnAuth, useLoginAttempt, useFormData, usePassword } from '../../hooks/hooks';
 
-import "../assets/styling/App.css";
-import '../assets/styling/forms.css';
+import "../../assets/styling/App.css";
+import '../../assets/styling/forms.css';
 
 function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
     const [formData, setFormData] = useFormData({

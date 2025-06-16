@@ -1,12 +1,12 @@
-import { resetLoginConfirm } from "../actions/auth";
-import React, { useState } from "react";
+import { resetLoginConfirm } from "../../actions/auth";
+import { useState } from "react";
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useFormData, usePassword, useRequestSent } from "../hooks/hooks";
+import { useFormData, usePassword, useRequestSent } from "../../hooks/hooks";
 
 function ResetPasswordConfirm({ resetLoginConfirm }) {
     const { uid, token } = useParams();

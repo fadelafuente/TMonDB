@@ -2,8 +2,8 @@ import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { Form } from 'react-router-dom';
-import { resendActivation } from '../actions/auth';
-import { useNavigateOnAuth, useFailedSocialAuth, useEmailFromLocation } from '../hooks/hooks';
+import { resendActivation } from '../../actions/auth';
+import { useNavigateOnAuth, useFailedSocialAuth, useEmailFromLocation } from '../../hooks/hooks';
 
 function VerifyEmail({ isAuthenticated, resendActivation }) {
     const email = useEmailFromLocation();

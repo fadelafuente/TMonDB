@@ -1,10 +1,10 @@
-import { updateDetails } from "../actions/auth";
-import React, { useState } from "react";
+import { updateDetails } from "../../actions/auth";
+import { useState } from "react";
 import { Alert, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
-import { useFormData, useNavigateNotAuth } from "../hooks/hooks";
+import { useFormData, useNavigateNotAuth } from "../../hooks/hooks";
 import { useNavigate } from "react-router-dom";
 
 function SetUsername({ isAuthenticated }) {

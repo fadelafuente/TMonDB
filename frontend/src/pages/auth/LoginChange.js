@@ -1,9 +1,9 @@
-import { setLoginByEmail } from "../actions/auth";
-import React, { useState } from "react";
+import { setLoginByEmail } from "../../actions/auth";
+import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
-import { useFormData, useRequestSent } from "../hooks/hooks";
+import { useFormData, useRequestSent } from "../../hooks/hooks";
 
 function LoginChange({ setLoginByEmail, reset_type="password" }) {
     const [requestSent, setRequestSent] = useState(false);

@@ -1,12 +1,12 @@
-import { verify } from '../actions/auth';
-import { React, useState } from "react";
+import { verify } from '../../actions/auth';
+import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import { useParams } from "react-router-dom";
-import { useNavigateOnVerify } from '../hooks/hooks';
+import { useNavigateOnVerify } from '../../hooks/hooks';
 
-import '../assets/styling/forms.css';
+import '../../assets/styling/forms.css';
 
 export async function action() {
     return null

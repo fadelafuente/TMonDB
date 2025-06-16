@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 
-import { useGetResourceById, useUpdateResource } from '../../hooks/hooks';
+import { useUpdateResource } from '../../hooks/hooks';
 import MonsterForm from '../Forms/MonsterForm';
 import LoadingCard from '../Cards/LoadingCard';
 import { FailedCard } from '../Cards/FailedCard';
+import { useGetResourceById } from '../../hooks/api/useGetResourceById';
 
 export default function UpdateMon() {
         const [monster] = useGetResourceById('monsters');

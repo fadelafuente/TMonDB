@@ -1,11 +1,11 @@
-import { resetLoginConfirm } from "../actions/auth";
-import React, { useState } from "react";
+import { resetLoginConfirm } from "../../actions/auth";
+import { useState } from "react";
 import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useFormData, useRequestSent } from "../hooks/hooks";
+import { useFormData, useRequestSent } from "../../hooks/hooks";
 
 function SetEmailConfirm({ resetLoginConfirm }) {
     const { uid, token } = useParams();

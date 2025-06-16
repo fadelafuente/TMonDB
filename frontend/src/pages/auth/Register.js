@@ -1,14 +1,13 @@
-import { register, registerAttempt } from '../actions/auth';
-import { React } from "react";
+import { register, registerAttempt } from '../../actions/auth';
 import { InputGroup, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { useNavigateOnAuth, useRequestAttempt, useRegisterAttempt, useFormData, usePassword } from '../hooks/hooks';
+import { useNavigateOnAuth, useRequestAttempt, useRegisterAttempt, useFormData, usePassword } from '../../hooks/hooks';
 
-import '../assets/styling/forms.css';
+import '../../assets/styling/forms.css';
 
 function Register({ register, isAuthenticated, errMessage, registerAttempt, accountCreated }) {
     const [showPass, setShowPass] = usePassword(false);

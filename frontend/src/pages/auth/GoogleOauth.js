@@ -1,19 +1,18 @@
-import { socialAuthenticate } from '../actions/auth';
-import React from 'react';
+import { socialAuthenticate } from '../../actions/auth';
 import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { Form, useNavigate } from 'react-router-dom';
-import { useNavigateOnAuth, useSocialAuth }from '../hooks/hooks';
+import { useSocialAuth, useNavigateOnAuth } from '../../hooks/hooks';
 
-function FacebookOauth({ socialAuthenticate, isAuthenticated }) {
+function GoogleOauth({ socialAuthenticate, isAuthenticated }) {
     const navigate = useNavigate();
-    useSocialAuth("facebook", socialAuthenticate);
+    useSocialAuth("google-oauth2", socialAuthenticate);
     useNavigateOnAuth(isAuthenticated);
 
     return (
         <div className="form-container">
-            <h2 className="form-title">Logging in with Facebook</h2>
+            <h2 className="form-title">Logging in with Google</h2>
             <Form className="form">
                 <FormText>
                     If you do not get redirected, go back to the login page.
@@ -34,4 +33,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, { socialAuthenticate })(FacebookOauth);
+export default connect(mapStateToProps, { socialAuthenticate })(GoogleOauth);
