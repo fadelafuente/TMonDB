@@ -19,8 +19,15 @@ class WorldSerializer(ModelWithArticleSerializer):
         indexes = [models.Index(fields=['name', 'description'])]
 
 class RetrieveWorldSerializer(ModelScrollWithArticleSerializer, WorldSerializer):
-    pass
+    properties = PropertySerializer(many=True, read_only=True)
 
 class WorldScrollSerializer(RetrieveWorldSerializer):
     class Meta(RetrieveWorldSerializer.Meta):
         fields = ['id', 'name', 'description', 'article']
+
+class WorldWithAliasesSerializer(WorldSerializer):
+    properties = PropertySerializer(many=True, read_only=True)
+
+    class Meta(WorldSerializer.Meta):
+        fields = ['id', 'name', 'move_alias', 'course_alias', 'evolution_alias', 'ability_alias', 'monster_alias', 'properties']
+        read_only_fields = ['properties']

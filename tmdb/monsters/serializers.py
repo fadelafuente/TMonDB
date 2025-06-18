@@ -5,6 +5,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from abilities.serializers import MinimumAbilitySerializer
 from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer, BaseListSerializer
+from worlds.serializers import WorldWithAliasesSerializer
 from .models import *
 from moves.serializers import MonsterMoveSerializer
 from typings.serializers import MonsterTypesSerializer
@@ -158,6 +159,7 @@ class MonsterSerializer(ModelWithArticleSerializer):
     def create(self, validated_data):
         abilities_data = validated_data.pop('abilities', None)
         types_data = validated_data.pop('types', None)
+        world_data = validated_data.pop('world', None)
 
         instance = super().create(validated_data)
         
@@ -165,6 +167,8 @@ class MonsterSerializer(ModelWithArticleSerializer):
             instance.abilities.set(abilities_data)
         if types_data:
             instance.types.set(types_data)
+        if world_data:
+            instance.world.set(world_data)
         
         return instance
     
@@ -225,9 +229,10 @@ class RetrieveMonsterSerializer(ModelScrollWithArticleSerializer, MonsterSeriali
     evolutions = serializers.SerializerMethodField()
     pre_evolutions = serializers.SerializerMethodField()
     moveset = serializers.SerializerMethodField()
+    world = WorldWithAliasesSerializer(read_only=True)
 
 class MonsterScrollSerializer(RetrieveMonsterSerializer):
     class Meta(RetrieveMonsterSerializer.Meta):
         fields = ['id', 'likes_count', 'reposts_count', 'comments_count', 'user_liked', 
                   'user_reposted', 'user_commented', 'article', 'name', 'description', 
-                  'species', 'types', 'is_current_user', 'avg_weight', 'avg_height']
+                  'species', 'types', 'is_current_user', 'avg_weight', 'avg_height', 'world']

@@ -5,6 +5,7 @@ from abilities.models import Ability
 from articles.models import Article, ArticleManager
 from articles.validators import MaxLengthValidator
 from moves.models import Move
+from worlds.models import World
 from typings.models import Type
 
 UserModel = get_user_model()
@@ -26,6 +27,7 @@ class Monster(models.Model):
     etymology = models.TextField(blank=True, null=True, validators=[MaxLengthValidator()])
     evolutions = models.ManyToManyField('self', through='Evolution', symmetrical=False, related_name='pre_evolutions', blank=True)
     moveset = models.ManyToManyField(Move, through='MoveSet', related_name='monsters', blank=True)
+    world = models.ForeignKey(World, related_name='monsters', blank=True, null=True, on_delete=models.CASCADE)
 
     objects = MonsterManager()
 

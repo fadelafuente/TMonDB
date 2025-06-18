@@ -138,7 +138,7 @@ class TestMonsters(APITestCase):
                         'name': self.types[0].name, 'defense_modifiers': []})], 'abilities': [OrderedDict({'id': 4, 'name': self.abilities[0].name, 
                         'effect': self.abilities[0].effect})], 'evolutions': [{'id': 2, 'name': 'Monster 2', 'method': 'Level 16'}], 
                         'pre_evolutions': [], 'moveset': [{'id': self.moves[0].id, 'name': self.moves[0].name, 'type': None, 
-                        'method': 'Level 20'}]}
+                        'method': 'Level 20'}], 'world': None}
 
         response = self.client.get(f'/api/monsters/{self.monster.id}/')
 
