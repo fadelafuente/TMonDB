@@ -7,7 +7,7 @@ import { DeletedCard } from './Cards/DeletedCard';
 import { FailedCard } from './Cards/FailedCard';
 import LoadingCard from './Cards/LoadingCard';
 import PostCard from './Cards/PostCard';
-import { useGetResourceById } from '../hooks/api/useGetResourceById';
+import { useGetResourceById } from '../hooks/api/use-get-resource-by-id';
 
 import '../assets/styling/content.css';
 import '../assets/styling/ViewPost.css';

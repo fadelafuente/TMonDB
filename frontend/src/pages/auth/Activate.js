@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from 'react-redux';
 import { useParams } from "react-router-dom";
-import { useNavigateOnVerify } from '../../hooks/hooks';
+import { useNavigateOnVerify } from '../../hooks/auth/helpers/use-navigate-on-verify';
 
 import '../../assets/styling/forms.css';
 

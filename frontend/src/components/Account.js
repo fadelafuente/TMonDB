@@ -6,7 +6,7 @@ import { useOutletContext } from 'react-router-dom';
 import DeleteModal from './Modals/DeleteModal';
 import ResetModal from './Modals/ResetModal';
 import SetUsernameNoRedirect from './SetUsernameNoRedirect';
-import { useNavigateNotAuth } from '../hooks/hooks';
+import { useNavigateNotAuth } from "../hooks/auth/helpers/use-navigate-not-auth";
 
 import '../assets/styling/forms.css';
 import '../assets/styling/Account.css';

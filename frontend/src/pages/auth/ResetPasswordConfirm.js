@@ -6,7 +6,9 @@ import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useFormData, usePassword, useRequestSent } from "../../hooks/hooks";
+import { useFormData } from "../../hooks/form/use-form-data";
+import { usePassword } from "../../hooks/auth/helpers/use-password";
+import { useRequestSent } from "../../hooks/auth/helpers/use-request-sent";
 
 function ResetPasswordConfirm({ resetLoginConfirm }) {
     const { uid, token } = useParams();

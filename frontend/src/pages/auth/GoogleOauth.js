@@ -3,7 +3,8 @@ import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { Form, useNavigate } from 'react-router-dom';
-import { useSocialAuth, useNavigateOnAuth } from '../../hooks/hooks';
+import { useNavigateOnAuth }from '../../hooks/auth/helpers/use-navigate-on-auth';
+import { useSocialAuth } from '../../hooks/auth/use-social-auth';
 
 function GoogleOauth({ socialAuthenticate, isAuthenticated }) {
     const navigate = useNavigate();

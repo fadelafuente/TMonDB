@@ -2,7 +2,8 @@ import { Modal } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { DiscardModal } from "./DiscardModal";
-import { useDiscardModal, useUpdateProfile } from "../../hooks/hooks";
+import { useDiscardModal } from "../../hooks/modal/use-discard-modal";
+import { useUpdateProfile } from "../../hooks/profile/use-update-profile";
 
 import "../../assets/styling/Modal.css";
 

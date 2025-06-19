@@ -5,7 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useFormData, useRequestSent } from "../../hooks/hooks";
+import { useFormData } from "../../hooks/form/use-form-data";
+import { useRequestSent } from "../../hooks/auth/helpers/use-request-sent";
 
 function SetEmailConfirm({ resetLoginConfirm }) {
     const { uid, token } = useParams();

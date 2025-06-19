@@ -4,7 +4,8 @@ import { Alert, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
-import { useFormData, useNavigateNotAuth } from "../hooks/hooks";
+import { useFormData } from "../hooks/form/use-form-data";
+import { useNavigateNotAuth } from "../hooks/auth/helpers/use-navigate-not-auth";
 
 import "../assets/styling/Modal.css";
 import "../assets/styling/forms.css";

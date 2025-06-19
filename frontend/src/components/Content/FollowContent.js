@@ -4,7 +4,7 @@ import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 
 import { BlockedCard } from '../Cards/BlockedCard';
 import FollowList from '../FollowList';
-import { useGetProfile } from '../../hooks/hooks';
+import { useGetProfile } from '../../hooks/profile/use-get-profile';
 
 import '../../assets/styling/PostCard.css';
 import '../../assets/styling/UserProfile.css';

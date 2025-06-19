@@ -16,8 +16,9 @@ import StatChart from './TablesAndCharts/StatChart';
 import WeaknessChart from './TablesAndCharts/WeaknessChart';
 import SocialInteractions from './UserInteractions/SocialInteractions';
 import { handleHeightConversion, handleKgToLbConversion, handleTimeDifference } from '../functions/handlers';
-import { useDeleteResource, useMiddleViewPort } from '../hooks/hooks';
-import { useGetResourceById } from '../hooks/api/useGetResourceById';
+import { useMiddleViewPort } from '../hooks/misc/use-middle-viewport';
+import { useDeleteResource } from '../hooks/api/use-delete-resource';
+import { useGetResourceById } from '../hooks/api/use-get-resource-by-id';
 
 import '../assets/styling/content.css';
 import '../assets/styling/UserProfile.css';

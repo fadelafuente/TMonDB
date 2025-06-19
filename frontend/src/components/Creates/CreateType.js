@@ -6,7 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 import TitleBar from '../Bars/TitleBar';
 import TypesTable from '../TablesAndCharts/TypesTable';
-import { useCurrentUserDetails, useNavigateNotAuth } from '../../hooks/hooks';
+import { useCurrentUserDetails } from '../../hooks/profile/use-current-user-details';
+import { useNavigateNotAuth } from "../../hooks/auth/helpers/use-navigate-not-auth";
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/types.css';

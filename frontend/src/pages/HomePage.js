@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-
 import TitleBar from '../components/Bars/TitleBar';
-import { useCurrentUserDetails } from '../hooks/hooks';
+import { useCurrentUserDetails } from '../hooks/profile/use-current-user-details';
 
 import '../assets/styling/content.css';
 import '../assets/styling/buttons.css';

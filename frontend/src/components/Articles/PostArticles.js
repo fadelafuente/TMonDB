@@ -5,7 +5,7 @@ import { FailedCard } from '../Cards/FailedCard';
 import LoadingCard from '../Cards/LoadingCard';
 import PostCard from '../Cards/PostCard';
 import { getAllResources } from '../../actions/api';
-import { usePagination } from '../../hooks/hooks';
+import { usePagination } from '../../hooks/articles/use-pagination';
 
 import '../../assets/styling/content.css';
 

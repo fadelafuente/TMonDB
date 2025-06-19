@@ -9,8 +9,10 @@ import CultureTab from './Content/CultureTab';
 import FeatureTab from './Content/FeatureTab';
 import GeographyTab from './Content/GeographyTab';
 import TriviaTab from './Content/TriviaTab';
-import { useDeleteResource, useMiddleViewPort } from '../hooks/hooks';
+import { useDeleteResource } from '../hooks/api/use-delete-resource';
+import { useMiddleViewPort } from '../hooks/misc/use-middle-viewport';
 import SocialInteractions from './UserInteractions/SocialInteractions';
+
 
 
 import '../assets/styling/content.css';

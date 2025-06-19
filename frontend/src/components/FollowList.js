@@ -1,6 +1,6 @@
-import { usePaginatedUserFollow } from "../hooks/hooks";
 import { FailedCard } from "./Cards/FailedCard";
 import FollowCard from "./Cards/FollowCard";
+import { usePaginatedUserFollow } from "../hooks/profile/use-paginated-user-follow";
 
 import "../assets/styling/content.css";
 

@@ -6,7 +6,10 @@ import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { useNavigateOnAuth, useLoginAttempt, useFormData, usePassword } from '../../hooks/hooks';
+import { useFormData } from '../../hooks/form/use-form-data';
+import { useLoginAttempt } from '../../hooks/auth/helpers/use-login-attempt';
+import { useNavigateOnAuth }from '../../hooks/auth/helpers/use-navigate-on-auth';
+import { usePassword } from "../../hooks/auth/helpers/use-password";
 
 import "../../assets/styling/App.css";
 import '../../assets/styling/forms.css';

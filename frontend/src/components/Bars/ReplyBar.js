@@ -1,9 +1,9 @@
 import { Button, InputGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { BsReply } from 'react-icons/bs';
-import { useCreateResource } from '../../hooks/hooks';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { useCreateResource } from '../../hooks/api/use-create-resource';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/ViewPost.css'

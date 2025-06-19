@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { Button, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { useGetProfile } from '../../hooks/hooks';
+import { useGetProfile } from '../../hooks/profile/use-get-profile';
 
 import '../../assets/styling/PostCard.css';
 import '../../assets/styling/UserProfile.css';

@@ -1,6 +1,6 @@
 import { Carousel } from "react-bootstrap";
 import { BsImages } from "react-icons/bs";
-import { useFilesUpload } from "../../hooks/hooks";
+import { useFilesUpload } from "../../hooks/misc/use-files-upload";
 
 export default function ImagesUpload() {
     const [selectedFiles, setSelectedFiles] = useFilesUpload();

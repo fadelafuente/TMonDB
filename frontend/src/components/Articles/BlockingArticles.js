@@ -5,7 +5,7 @@ import { getCurrentUsersBlockedList } from '../../actions/auth';
 import BlockingCard from '../Cards/BlockingCard';
 import { FailedCard } from '../Cards/FailedCard';
 import LoadingCard from '../Cards/LoadingCard';
-import { usePagination } from '../../hooks/hooks';
+import { usePagination } from '../../hooks/articles/use-pagination';
 
 import '../../assets/styling/content.css';
 

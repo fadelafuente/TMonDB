@@ -11,7 +11,9 @@ import LoadingCard from './Cards/LoadingCard';
 import { ViewBlockedUserCard } from './Cards/ViewingBlockedUserCard';
 import BlockModal from './Modals/BlockModal';
 import EditModal from './Modals/EditModal';
-import { useGetProfile, useMiddleViewPort, useTimedAlert } from '../hooks/hooks';
+import { useTimedAlert } from '../hooks/misc/use-timed-alert';
+import { useMiddleViewPort } from '../hooks/misc/use-middle-viewport';
+import { useGetProfile } from '../hooks/profile/use-get-profile';
 
 import '../assets/styling/PostCard.css';
 import '../assets/styling/UserProfile.css';

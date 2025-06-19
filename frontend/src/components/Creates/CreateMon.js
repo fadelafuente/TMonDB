@@ -1,6 +1,4 @@
-import React from 'react';
-
-import { useCreateResource } from '../../hooks/hooks';
+import { useCreateResource } from '../../hooks/api/use-create-resource';
 import MonsterForm from '../Forms/MonsterForm';
 
 export default function CreateMon() {

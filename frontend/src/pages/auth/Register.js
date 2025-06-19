@@ -5,7 +5,11 @@ import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { useNavigateOnAuth, useRequestAttempt, useRegisterAttempt, useFormData, usePassword } from '../../hooks/hooks';
+import { useFormData } from '../../hooks/form/use-form-data';
+import { useNavigateOnAuth }from '../../hooks/auth/helpers/use-navigate-on-auth';
+import { usePassword } from "../../hooks/auth/helpers/use-password";
+import { useRegisterAttempt } from '../../hooks/auth/helpers/use-register-attempt';
+import { useRequestAttempt } from '../../hooks/auth/helpers/use-request-attempt';
 
 import '../../assets/styling/forms.css';
 

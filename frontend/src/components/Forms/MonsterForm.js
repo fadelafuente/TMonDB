@@ -6,7 +6,9 @@ import { DiscardModal } from '../Modals/DiscardModal';
 import ImagesUpload from '../UserInteractions/ImagesUpload';
 import SearchMultiSelect from '../UserInteractions/SearchMultiSelect';
 import { capitalize } from '../../functions/handlers';
-import { useDiscardModal, useHeightConversions, useWeightConversions } from '../../hooks/hooks';
+import { useWeightConversions } from '../../hooks/conversions/use-weight-conversions';
+import { useHeightConversions } from '../../hooks/conversions/use-height-conversions';
+import { useDiscardModal } from '../../hooks/modal/use-discard-modal';
 
 export default function MonsterForm({ action, formData, resetFormData, setFormData }) {
     /* 

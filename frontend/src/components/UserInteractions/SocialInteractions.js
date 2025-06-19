@@ -1,6 +1,8 @@
 import { Col, Row, Dropdown, Alert, DropdownButton } from 'react-bootstrap';
 import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDotsFill } from 'react-icons/bs';
-import { useInteractions, useMiddleViewPort, useTimedAlert } from '../../hooks/hooks';
+import { useInteractions } from '../../hooks/articles/use-interactions';
+import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
+import { useTimedAlert } from '../../hooks/misc/use-timed-alert';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import CreatePost from '../Creates/CreatePost';

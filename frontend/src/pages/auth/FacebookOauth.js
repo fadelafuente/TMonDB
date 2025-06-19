@@ -3,7 +3,8 @@ import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { connect } from 'react-redux';
 import { Form, useNavigate } from 'react-router-dom';
-import { useNavigateOnAuth, useSocialAuth }from '../../hooks/hooks';
+import { useNavigateOnAuth }from '../../hooks/auth/helpers/use-navigate-on-auth';
+import { useSocialAuth } from '../../hooks/auth/use-social-auth';
 
 function FacebookOauth({ socialAuthenticate, isAuthenticated }) {
     const navigate = useNavigate();

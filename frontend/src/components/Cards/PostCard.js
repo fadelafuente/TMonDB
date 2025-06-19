@@ -9,7 +9,8 @@ import ImageGallery from '../ImageGallery';
 import BlockModal from '../Modals/BlockModal';
 import SocialInteractions from '../UserInteractions/SocialInteractions';
 import { handleTimeDifference } from '../../functions/handlers';
-import { useDeleteResource, useMiddleViewPort } from '../../hooks/hooks';
+import { useDeleteResource } from '../../hooks/api/use-delete-resource';
+import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
 
 import '../../assets/styling/PostCard.css';
 
