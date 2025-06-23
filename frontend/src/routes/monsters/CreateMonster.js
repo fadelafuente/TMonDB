@@ -1,5 +1,5 @@
 import { useCreateResource } from '../../hooks/api/use-create-resource';
-import MonsterForm from '../Forms/MonsterForm';
+import MonsterForm from '../../components/Forms/MonsterForm';
 
 export default function CreateMon() {
     const [formData, resetFormData, setFormData] = useCreateResource({

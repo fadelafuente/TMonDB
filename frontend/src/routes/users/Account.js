@@ -3,15 +3,15 @@ import { Button, Col, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
 
-import DeleteModal from './Modals/DeleteModal';
-import ResetModal from './Modals/ResetModal';
-import SetUsernameNoRedirect from './SetUsernameNoRedirect';
-import { useNavigateNotAuth } from "../hooks/auth/helpers/use-navigate-not-auth";
+import DeleteModal from '../../components/Modals/DeleteModal';
+import ResetModal from '../../components/Modals/ResetModal';
+import SetUsernameNoRedirect from '../../components/SetUsernameNoRedirect';
+import { useNavigateNotAuth } from "../../hooks/auth/helpers/use-navigate-not-auth";
 
-import '../assets/styling/forms.css';
-import '../assets/styling/Account.css';
-import '../assets/styling/PostCard.css';
-import '../assets/styling/Modal.css';
+import '../../assets/styling/forms.css';
+import '../../assets/styling/Account.css';
+import '../../assets/styling/PostCard.css';
+import '../../assets/styling/Modal.css';
 
 function Account({isAuthenticated}) {
     const { user } = useOutletContext();

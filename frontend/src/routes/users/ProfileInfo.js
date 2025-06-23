@@ -4,19 +4,19 @@ import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import PostArticles from './Articles/PostArticles';
-import MonsterArticles from './Articles/MonsterArticles';
-import { BlockedCard } from './Cards/BlockedCard';
-import LoadingCard from './Cards/LoadingCard';
-import { ViewBlockedUserCard } from './Cards/ViewingBlockedUserCard';
-import BlockModal from './Modals/BlockModal';
-import EditModal from './Modals/EditModal';
-import { useTimedAlert } from '../hooks/misc/use-timed-alert';
-import { useMiddleViewPort } from '../hooks/misc/use-middle-viewport';
-import { useGetProfile } from '../hooks/profile/use-get-profile';
+import PostArticles from '../../components/Articles/PostArticles';
+import MonsterArticles from '../../components/Articles/MonsterArticles';
+import { BlockedCard } from '../../components/Cards/BlockedCard';
+import LoadingCard from '../../components/Cards/LoadingCard';
+import { ViewBlockedUserCard } from '../../components/Cards/ViewingBlockedUserCard';
+import BlockModal from '../../components/Modals/BlockModal';
+import EditModal from '../../components/Modals/EditModal';
+import { useTimedAlert } from '../../hooks/misc/use-timed-alert';
+import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
+import { useGetProfile } from '../../hooks/profile/use-get-profile';
 
-import '../assets/styling/PostCard.css';
-import '../assets/styling/UserProfile.css';
+import '../../assets/styling/PostCard.css';
+import '../../assets/styling/UserProfile.css';
 
 function ProfileInfo({isAuthenticated}) {
     const { creator } = useParams();

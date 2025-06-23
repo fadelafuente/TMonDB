@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
-import MonsterForm from '../Forms/MonsterForm';
-import LoadingCard from '../Cards/LoadingCard';
-import { FailedCard } from '../Cards/FailedCard';
+import MonsterForm from '../../components/Forms/MonsterForm';
+import LoadingCard from '../../components/Cards/LoadingCard';
+import { FailedCard } from '../../components/Cards/FailedCard';
 import { useGetResourceById } from '../../hooks/api/use-get-resource-by-id';
 import { useUpdateResource } from '../../hooks/api/use-update-resource';
 
@@ -28,7 +28,7 @@ export default function UpdateMon() {
                 avg_weight: monster.avg_weight ? monster.avg_weight : '',
                 avg_height: monster.avg_height ? monster.avg_height : ''
             });
-        }, [monster])
+        }, [monster, setInitialData])
         
         if(monster && typeof monster === 'object') {
             return (

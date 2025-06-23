@@ -4,25 +4,25 @@ import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { useNavigate, useOutletContext } from 'react-router-dom';
 
-import PostArticles from './Articles/PostArticles';
-import ReplyBar from './Bars/ReplyBar';
-import { BlockedCard } from './Cards/BlockedCard';
-import { FailedCard } from './Cards/FailedCard';
-import LoadingCard from './Cards/LoadingCard';
-import EvoChains from './Content/EvoChains';
-import MovesTab from './Content/MovesTab';
-import BlockModal from './Modals/BlockModal';
-import StatChart from './TablesAndCharts/StatChart';
-import WeaknessChart from './TablesAndCharts/WeaknessChart';
-import SocialInteractions from './UserInteractions/SocialInteractions';
-import { handleHeightConversion, handleKgToLbConversion, handleTimeDifference } from '../functions/handlers';
-import { useMiddleViewPort } from '../hooks/misc/use-middle-viewport';
-import { useDeleteResource } from '../hooks/api/use-delete-resource';
-import { useGetResourceById } from '../hooks/api/use-get-resource-by-id';
+import PostArticles from '../../components/Articles/PostArticles';
+import ReplyBar from '../../components/Bars/ReplyBar';
+import { BlockedCard } from '../../components/Cards/BlockedCard';
+import { FailedCard } from '../../components/Cards/FailedCard';
+import LoadingCard from '../../components/Cards/LoadingCard';
+import EvoChains from '../../components/Content/EvoChains';
+import MovesTab from '../../components/Content/MovesTab';
+import BlockModal from '../../components/Modals/BlockModal';
+import StatChart from '../../components/TablesAndCharts/StatChart';
+import WeaknessChart from '../../components/TablesAndCharts/WeaknessChart';
+import SocialInteractions from '../../components/UserInteractions/SocialInteractions';
+import { handleHeightConversion, handleKgToLbConversion, handleTimeDifference } from '../../functions/handlers';
+import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
+import { useDeleteResource } from '../../hooks/api/use-delete-resource';
+import { useGetResourceById } from '../../hooks/api/use-get-resource-by-id';
 
-import '../assets/styling/content.css';
-import '../assets/styling/UserProfile.css';
-import '../assets/styling/ViewMon.css';
+import '../../assets/styling/content.css';
+import '../../assets/styling/UserProfile.css';
+import '../../assets/styling/ViewMon.css';
 
 function ViewMon({ isAuthenticated }) {
     const { query } = useOutletContext();
@@ -97,7 +97,10 @@ function ViewMon({ isAuthenticated }) {
                         </div>
                     :
                         monster.detail ? 
-                            <FailedCard />
+                            <div className='article-container'>
+                                <FailedCard type="Monster" />
+                            </div>
+                            
                         :
                             <div>
                                 <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={() => window.location.reload()} username={ monster ? monster.article.creator.username : null } />
