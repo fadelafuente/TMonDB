@@ -5,7 +5,7 @@ import { useOutletContext } from 'react-router-dom';
 
 import DeleteModal from '../../components/Modals/DeleteModal';
 import ResetModal from '../../components/Modals/ResetModal';
-import SetUsernameNoRedirect from '../../components/SetUsernameNoRedirect';
+import SetUsernameForm from '../../components/Forms/SetUsernameForm';
 import { useNavigateNotAuth } from "../../hooks/auth/helpers/use-navigate-not-auth";
 
 import '../../assets/styling/forms.css';
@@ -52,7 +52,7 @@ function Account({isAuthenticated}) {
                     <h5>Username</h5>
                     <div className='edit-username-container'>
                         { editUsername ? 
-                            <SetUsernameNoRedirect 
+                            <SetUsernameForm 
                                 handleEditUsername={ () => setEditUsername() } 
                                 handleUsername={ (name) => setName(name) } 
                             />

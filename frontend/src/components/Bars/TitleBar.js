@@ -4,7 +4,7 @@ import { BsPlusCircle, BsPersonCircle } from 'react-icons/bs';
 import { connect } from 'react-redux';
 
 import { logout } from '../../actions/auth';
-import CreatePost from '../Creates/CreatePost';
+import CreatePostModal from '../Modals/CreatePostModal';
 import SearchBar from './SearchBar';
 
 import '../../assets/styling/forms.css';
@@ -116,7 +116,7 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
                 <SearchBar setQuery={ setQuery } width={ width } />
                 { isAuthenticated ? authLinks() : guestLinks() }
             </Container>
-            <CreatePost show={show} setShow={() => setShow()} />
+            <CreatePostModal show={show} setShow={() => setShow()} />
         </Navbar>
     );
 

@@ -1,16 +1,16 @@
-import { updateDetails } from "../actions/auth";
+import { updateDetails } from "../../actions/auth";
 import React, { useState } from "react";
 import { Alert, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { connect } from "react-redux";
-import { useFormData } from "../hooks/form/use-form-data";
-import { useNavigateNotAuth } from "../hooks/auth/helpers/use-navigate-not-auth";
+import { useFormData } from "../../hooks/form/use-form-data";
+import { useNavigateNotAuth } from "../../hooks/auth/helpers/use-navigate-not-auth";
 
-import "../assets/styling/Modal.css";
-import "../assets/styling/forms.css";
+import "../../assets/styling/Modal.css";
+import "../../assets/styling/forms.css";
 
-function SetUsername({ isAuthenticated, handleEditUsername, handleUsername }) {
+function SetUsernameForm({ isAuthenticated, handleEditUsername, handleUsername }) {
     const [show, setShow] = useState(false);
     const [message, setMessage] = useState("");
     const [formData, setFormData] = useFormData({
@@ -84,4 +84,4 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, null)(SetUsername);
+export default connect(mapStateToProps, null)(SetUsernameForm);

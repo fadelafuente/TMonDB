@@ -2,11 +2,11 @@ import { Modal, Row, Col } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsImages } from 'react-icons/bs';
-import { DiscardModal } from '../Modals/DiscardModal';
+import { DiscardModal } from './DiscardModal';
 import { useCreateResource } from '../../hooks/api/use-create-resource';
 import { useDiscardModal } from '../../hooks/modal/use-discard-modal';
 
-export default function CreatePost({show, setShow, parent=null}) {
+export default function CreatePostModal({show, setShow, parent=null}) {
     const initialForm = {
         content: ''
     };

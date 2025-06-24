@@ -5,7 +5,7 @@ import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
 import { useTimedAlert } from '../../hooks/misc/use-timed-alert';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import CreatePost from '../Creates/CreatePost';
+import CreatePostModal from '../Modals/CreatePostModal';
 import { useState } from 'react';
 
 import '../../assets/styling/PostCard.css';
@@ -26,7 +26,7 @@ function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
 
     return (
         <>
-            <CreatePost show={show} setShow={obj ? () => setShow() : () => {}} parent={obj ? obj.article.id : null} />
+            <CreatePostModal show={show} setShow={obj ? () => setShow() : () => {}} parent={obj ? obj.article.id : null} />
             <Alert variant='success' className='copy-alert' show={showAlert}>
                 <Alert.Heading>Copied to clipboard.</Alert.Heading>
             </Alert>

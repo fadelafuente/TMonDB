@@ -4,21 +4,19 @@ import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
 
-import ReplyBar from './Bars/ReplyBar';
-import CultureTab from './Content/CultureTab';
-import FeatureTab from './Content/FeatureTab';
-import GeographyTab from './Content/GeographyTab';
-import TriviaTab from './Content/TriviaTab';
-import { useDeleteResource } from '../hooks/api/use-delete-resource';
-import { useMiddleViewPort } from '../hooks/misc/use-middle-viewport';
-import SocialInteractions from './UserInteractions/SocialInteractions';
+import ReplyBar from '../../components/Bars/ReplyBar';
+import CultureTab from '../../components/Content/CultureTab';
+import FeatureTab from '../../components/Content/FeatureTab';
+import GeographyTab from '../../components/Content/GeographyTab';
+import TriviaTab from '../../components/Content/TriviaTab';
+import { useDeleteResource } from '../../hooks/api/use-delete-resource';
+import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
+import SocialInteractions from '../../components/UserInteractions/SocialInteractions';
 
-
-
-import '../assets/styling/content.css';
-import '../assets/styling/UserProfile.css';
-import '../assets/styling/ViewMon.css';
-import '../assets/styling/buttons.css';
+import '../../assets/styling/content.css';
+import '../../assets/styling/UserProfile.css';
+import '../../assets/styling/ViewMon.css';
+import '../../assets/styling/buttons.css';
 
 function ViewRegion({ isAuthenticated }) {
     const { query } = useOutletContext();
