@@ -1,7 +1,10 @@
 from django.db import models
 
-from articles.models import Article
+from articles.models import Article, ArticleManager
 from articles.validators import MaxLengthValidator
+
+class WorldManager(ArticleManager):
+    pass
 
 class World(models.Model):
     name = models.CharField(max_length=50, unique=True, db_index=True)
@@ -13,3 +16,5 @@ class World(models.Model):
     monster_alias = models.CharField(max_length=20, blank=True, default='monster')
     ability_alias = models.CharField(max_length=20, blank=True, default='ability')
     level_cap = models.IntegerField(default=100, blank=True)
+
+    objects = WorldManager()
