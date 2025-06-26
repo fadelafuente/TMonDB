@@ -162,7 +162,9 @@ function ProfileInfo({isAuthenticated}) {
                         </div>
                     </div>
                 :
-                    <LoadingCard />
+                    <div className='article-container'>
+                        <LoadingCard />
+                    </div>
                 }
             </>
         );

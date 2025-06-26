@@ -23,7 +23,9 @@ export default function MonsterArticles({kwargs={}}) {
         <div className='col-gap-container'>
             {
                 loading ? 
-                    <LoadingCard />
+                    <div className='article-container'>
+                        <LoadingCard />
+                    </div>
                 :
                     monsters ? 
                         monsters.map((monster, index) => {

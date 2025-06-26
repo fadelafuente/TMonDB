@@ -43,6 +43,9 @@ function TitleBar({setQuery, logout, isAuthenticated, user }) {
         return (
             <Fragment>
                 <NavDropdown title={ <BsPlusCircle /> } id='nav-dropdown' className='rounded-circle' drop='down' align='end'>
+                    <NavDropdown.Item href='/worlds/create'>
+                        Create World
+                    </NavDropdown.Item>
                     <NavDropdown.Item href='#action/3.1'>
                         Create Region
                     </NavDropdown.Item>

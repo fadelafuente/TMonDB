@@ -35,7 +35,9 @@ export default function BlockingArticles({kwargs={}}) {
             }
             {
                 loading ? 
-                    <LoadingCard />
+                    <div className='article-container'>
+                        <LoadingCard />
+                    </div>
                 :
                     ''
             }

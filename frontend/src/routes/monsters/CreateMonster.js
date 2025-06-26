@@ -1,7 +1,10 @@
+import { connect } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 import { useCreateResource } from '../../hooks/api/use-create-resource';
 import MonsterForm from '../../components/Forms/MonsterForm';
+import SpinningLoader from '../../components/Loader/SpinningLoader';
 
-export default function CreateMon() {
+function CreateMon({ isAuthenticated }) {
     const [formData, resetFormData, setFormData] = useCreateResource({
         name: '',
         national_id: '',
@@ -11,6 +14,16 @@ export default function CreateMon() {
         avg_weight: '',
         avg_height: ''
     });
+
+    if(isAuthenticated === null) {
+        return <div className='loading-container'>
+            <SpinningLoader />
+        </div>
+    }
+
+    if (!isAuthenticated) {
+        return <Navigate to='/login' replace />;
+    }
     
     return (
         <>
@@ -18,3 +31,9 @@ export default function CreateMon() {
         </>
     );
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, null)(CreateMon);

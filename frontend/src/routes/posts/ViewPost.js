@@ -53,7 +53,9 @@ export default function ViewPost() {
               </div>
             </div>
       : 
-        <LoadingCard />
+        <div className='article-container'>
+            <LoadingCard />
+        </div>
       }
     </>
   )

@@ -3,7 +3,7 @@ import { updateResourceById } from '../../actions/api';
 import { useAdaptiveFormData } from '../form/use-adaptive-formdata';
 
 export function useUpdateResource(initialForm) {
-    const [formData, setFormData, setInitialData] = useAdaptiveFormData(initialForm);
+    const [formData, setFormData, setInitialForm] = useAdaptiveFormData(initialForm);
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -19,5 +19,5 @@ export function useUpdateResource(initialForm) {
         }
     }
 
-    return [formData, setFormData, handleUpdateResource, setInitialData];
+    return [formData, setFormData, handleUpdateResource, setInitialForm];
 }

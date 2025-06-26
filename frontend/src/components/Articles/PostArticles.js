@@ -23,7 +23,9 @@ export default function PostArticles({kwargs={}}) {
         <>
             {
                 loading ? 
-                    <LoadingCard />
+                    <div className='article-container'>
+                        <LoadingCard />
+                    </div>
                 :
                     posts ? 
                         posts.map((post, index) => {

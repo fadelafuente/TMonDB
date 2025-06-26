@@ -7,6 +7,7 @@ export function useGetResourceById(resource) {
     const { id } = useParams();
     const [obj, setObj] = useState('');
     const [parent, setParent] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getResourceById(resource, id).then((response) => {
@@ -24,7 +25,8 @@ export function useGetResourceById(resource) {
             }
         }).catch(e => {
         });
+        setLoading(false);
     }, [id, resource]);
 
-    return [obj, parent];
+    return [obj, parent, loading];
 }

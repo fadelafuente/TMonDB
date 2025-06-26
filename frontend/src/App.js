@@ -5,16 +5,6 @@ import Layout from './hocs/Layout';
 import store from './store';
 
 import PostArticles from './components/Articles/PostArticles';
-import HomePage from './routes/HomePage';
-import UpdateMon from './routes/monsters/UpdateMonster';
-import ViewMon from './routes/monsters/ViewMonster';
-import CreateMon from './routes/monsters/CreateMonster';
-import ViewPost from './routes/posts/ViewPost';
-import CreateType from './routes/types/CreateType';
-import BlockingArticles from './routes/users/BlockingArticles';
-import FollowContent from './routes/users/FollowContent';
-import ProfileInfo from './routes/users/ProfileInfo';
-import Account from './routes/users/Account';
 import Activate from './routes/auth/Activate';
 import FacebookOauth from './routes/auth/FacebookOauth';
 import GoogleOauth from './routes/auth/GoogleOauth';
@@ -26,8 +16,20 @@ import SetEmailConfirm from './routes/auth/SetEmailConfirm';
 import SetUsername from './routes/auth/SetUsername';
 import { SetUsernameConfirmation } from './routes/auth/SetUsernameConfirmation';
 import VerifyEmail from './routes/auth/VerifyEmail';
+import HomePage from './routes/HomePage';
+import UpdateMon from './routes/monsters/UpdateMonster';
+import ViewMon from './routes/monsters/ViewMonster';
+import CreateMon from './routes/monsters/CreateMonster';
+import ViewPost from './routes/posts/ViewPost';
+import CreateType from './routes/types/CreateType';
+import BlockingArticles from './routes/users/BlockingArticles';
+import FollowContent from './routes/users/FollowContent';
+import ProfileInfo from './routes/users/ProfileInfo';
+import Account from './routes/users/Account';
+import CreateWorld from './routes/worlds/CreateWorld';
 
 import './assets/styling/App.css';
+import ViewWorld from './routes/worlds/ViewWorld';
 
 export default function App() {  
   const router = createBrowserRouter(createRoutesFromElements(
@@ -60,12 +62,6 @@ export default function App() {
           <Route path=':id' element={ <ViewMon /> } />
         </Route>
 
-        <Route path=':creator'>
-          <Route path='' element= { <ProfileInfo /> } />
-          <Route path='follow' element={ <FollowContent /> } />
-          <Route path=':id' element={ <ViewPost /> } />
-        </Route>
-
         <Route path='regions'>
           {/* <Route path='' element= { <div className='article-container'><RegionArticles query={ query } /></div> } /> */}
         </Route>
@@ -73,6 +69,17 @@ export default function App() {
         <Route path='settings'>
           <Route path='account' element={ <Account /> } />
           <Route path='blocked' element={ <BlockingArticles /> } />
+        </Route>
+
+        <Route path='worlds'>
+          <Route path='create' element={ <CreateWorld /> } />
+          <Route path=':id' element={ <ViewWorld /> } />
+        </Route>
+
+        <Route path=':creator'>
+          <Route path='' element= { <ProfileInfo /> } />
+          <Route path='follow' element={ <FollowContent /> } />
+          <Route path=':id' element={ <ViewPost /> } />
         </Route>
       </Route>
     </Route>
@@ -88,7 +95,7 @@ export default function App() {
 const Root = () => {
   return <> 
     <Layout>
-      <div>
+      <div className='height-container'>
         <Outlet />
       </div>
     </Layout>

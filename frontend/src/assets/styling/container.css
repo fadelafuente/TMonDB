@@ -50,6 +50,14 @@ div.no-margins-container,
     display: none;
 }
 
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 50vh;
+}
+
 @media (max-width: 940px) {
     div.row-to-col-container {
         flex-direction: column;
