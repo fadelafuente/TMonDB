@@ -20,7 +20,7 @@ function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
     const navigate = useNavigate();
 
     function handleCopyLink(path) {
-        navigator.clipboard.writeText(`${process.env.REACT_APP_WEB_URL}/${path}`);
+        navigator.clipboard.writeText(window.location.href);
         setShowAlert(true);
     }
 

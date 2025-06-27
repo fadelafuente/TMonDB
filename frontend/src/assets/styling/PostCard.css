@@ -8,7 +8,7 @@ div.card-body {
     padding-top: 8px;
 }
 
-div.article-container {
+div.article-container, article.article-container {
     margin-left: 1em;
     margin-right: 1em;
 }

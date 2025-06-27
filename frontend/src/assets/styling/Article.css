@@ -1,0 +1,22 @@
+.article-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.article-header-top {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.article-name {
+  margin: 0;
+}
+
+.article-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5em;
+}

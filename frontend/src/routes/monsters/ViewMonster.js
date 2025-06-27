@@ -1,9 +1,8 @@
-import { Fragment, useState } from 'react';
-import { Col, Dropdown, DropdownButton, Row, Tab, Tabs } from 'react-bootstrap';
-import { BsThreeDots } from 'react-icons/bs';
-import { connect } from 'react-redux';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useState } from 'react';
+import { Tab, Tabs } from 'react-bootstrap';
+import { useOutletContext } from 'react-router-dom';
 
+import ArticleHeader from '../../components/ui/Article/ArticleHeader';
 import PostArticles from '../../components/Articles/PostArticles';
 import ReplyBar from '../../components/Bars/ReplyBar';
 import { BlockedCard } from '../../components/Cards/BlockedCard';
@@ -15,8 +14,7 @@ import BlockModal from '../../components/Modals/BlockModal';
 import StatChart from '../../components/TablesAndCharts/StatChart';
 import WeaknessChart from '../../components/TablesAndCharts/WeaknessChart';
 import SocialInteractions from '../../components/UserInteractions/SocialInteractions';
-import { handleHeightConversion, handleKgToLbConversion, handleTimeDifference } from '../../functions/handlers';
-import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
+import { handleHeightConversion, handleKgToLbConversion } from '../../functions/handlers';
 import { useDeleteResource } from '../../hooks/api/use-delete-resource';
 import { useGetResourceById } from '../../hooks/api/use-get-resource-by-id';
 
@@ -24,14 +22,12 @@ import '../../assets/styling/content.css';
 import '../../assets/styling/UserProfile.css';
 import '../../assets/styling/ViewMon.css';
 
-function ViewMon({ isAuthenticated }) {
+export default function ViewMon() {
     const { query } = useOutletContext();
      const [monster] = useGetResourceById('monsters');
     const [showBlock, setShowBlock] = useState(false);
-    const [aboveMid, setAboveMid] = useMiddleViewPort();
     const [isDeleted, setIsDeleted] = useDeleteResource(false);
     const [tab, setTab] = useState('stats');
-    const navigate = useNavigate();
 
     const levelMoves = [
         {method_value: 19, name: 'Fire Fang', type: 'Fire', power: 65},
@@ -52,28 +48,6 @@ function ViewMon({ isAuthenticated }) {
     ];
 
     const courseTotal = 140;
-
-    function handleMoreClick() {
-        return (
-            <Fragment>
-                { monster.is_current_user ? 
-                    <>
-                        <Dropdown.Item onClick={() => { setIsDeleted(monster.id) }}>
-                            Delete Monster
-                        </Dropdown.Item>
-                        <Dropdown.Item onClick={() => navigate(`update`)}>
-                            Update Monster
-                        </Dropdown.Item>
-                    </>
-                : 
-                    <Dropdown.Item onClick={() => setShowBlock(true) }>
-                        Block user
-                    </Dropdown.Item>
-                }
-            </Fragment>
-        )
-    }
-
 
     let [feet, inches] = ['???', '???']; 
     if(monster && monster.avg_height) {
@@ -104,37 +78,9 @@ function ViewMon({ isAuthenticated }) {
                         :
                             <div>
                                 <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={() => window.location.reload()} username={ monster ? monster.article.creator.username : null } />
-                                <div className='article-container'>
-                                    <Row className='view-name'>
-                                        { monster.name ? monster.name : '???' }
-                                    </Row>
-                                    <Row className='center-row-items view-creator'>
-                                        <Col>
-                                            <div className='creator-container'>
-                                                @{ monster.article && monster.article.creator ? monster.article.creator.username : '???' }
-                                            </div>
-                                        </Col>
-                                        <Col className='time-col' id='time-col'>
-                                            <Row className='center-row-items'>
-                                                <Col>
-                                                    { monster.article && monster.article.date_created ? handleTimeDifference(monster.article.date_created) : '???' }
-                                                </Col>
-                                                <Col className='more-col'>
-                                                    <div className='base-btn rounded-btn'>
-                                                        <DropdownButton
-                                                            className='base-btn rounded-btn'
-                                                            drop={ aboveMid ? 'up-centered' : 'down-centered' }
-                                                            onClick={e => setAboveMid(e)}
-                                                            disabled={ !isAuthenticated }
-                                                            variant='secondary'
-                                                            title={ <BsThreeDots /> }>
-                                                                { handleMoreClick() }
-                                                        </DropdownButton>
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        </Col>
-                                    </Row>
+                                <article className='article-container'>
+                                    <ArticleHeader data={ monster } type="Monster" setIsDeleted={ (d) => setIsDeleted(d) } setShowBlock={ (b) => setShowBlock(b) } />
+
                                     <div className='mon-info-details bottom-barrier'>
                                         <div className='mon-image-aspect-container'>
                                             <div className='mon-image-container'>
@@ -237,7 +183,7 @@ function ViewMon({ isAuthenticated }) {
                                     <div className='mon-interactions'>
                                         <SocialInteractions resource='monsters' obj={ monster } />
                                     </div>
-                                </div>
+                                </article>
                                 <div className='reply-container'>
                                     <ReplyBar parent={ monster && monster.article ? monster.article.id : null } />
                                 </div>
@@ -254,9 +200,3 @@ function ViewMon({ isAuthenticated }) {
         );
     }
 }
-
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(ViewMon);

@@ -23,50 +23,68 @@ import { useGetResourceById } from '../../hooks/api/use-get-resource-by-id';
 import '../../assets/styling/content.css';
 import '../../assets/styling/UserProfile.css';
 import '../../assets/styling/ViewMon.css';
+import '../../assets/styling/Banner.css';
+import '../../assets/styling/Article.css';
+import ArticleHeader from '../../components/ui/Article/ArticleHeader';
 
-function ViewMon({ isAuthenticated }) {
-    const { query } = useOutletContext();
-     const [world] = useGetResourceById('worlds');
-    const [showBlock, setShowBlock] = useState(false);
-    const [aboveMid, setAboveMid] = useMiddleViewPort();
-    const [isDeleted, setIsDeleted] = useDeleteResource(false);
-    const [tab, setTab] = useState('stats');
-    const navigate = useNavigate();
+function ViewWorld({ isAuthenticated }) {
+  const { query } = useOutletContext();
+  const [world] = useGetResourceById('worlds');
+  const [showBlock, setShowBlock] = useState(false);
+  const [isDeleted, setIsDeleted] = useDeleteResource(false);
+  const [tab, setTab] = useState('stats');
+  const navigate = useNavigate();
 
-    if(isDeleted) {
-        return <FailedCard />;
-    } else {
-        return (
-            <>
-                { world && typeof world === 'object' ?
-                    world.current_user_is_blocked ?
-                        <div className='article-container'>
-                            <BlockedCard creator={world.creator} />
-                        </div>
-                    :
-                        world.detail ? 
-                            <div className='article-container'>
-                                <FailedCard type="World" />
-                            </div>
-                            
-                        :
-                            <div>
-                                <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={() => window.location.reload()} username={ world ? world.article.creator.username : null } />
-                                <div className='article-container'>
-                                </div>
-                            </div>
-                :
-                    <div className='article-container'>
-                        <LoadingCard />
-                    </div>
-                }
-            </>
-        );
-    }
+  if(isDeleted) {
+    return <FailedCard />;
+  } else {
+    return (
+      <>
+        { world && typeof world === 'object' ?
+          world.current_user_is_blocked ?
+            <div className='article-container'>
+              <BlockedCard creator={world.creator} />
+            </div>
+          :
+            world.detail ? 
+              <div className='article-container'>
+                <FailedCard type="World" />
+              </div>
+            :
+              <div>
+                <BlockModal show={showBlock} setShow={setShowBlock} setBlocked={() => window.location.reload()} username={ world ? world.article.creator.username : null } />
+                
+                <div className='world-banner bottom-barrier'>
+                </div>
+                
+                <article className='article-container'>
+                  <ArticleHeader data={ world } type="World" setIsDeleted={ (d) => setIsDeleted(d) } setShowBlock={ (b) => setShowBlock(b) } />
+
+
+                  <div className='mon-interactions'>
+                    <SocialInteractions resource='worlds' obj={ world } />
+                  </div>
+                </article>
+
+                <div className='reply-container'>
+                  <ReplyBar parent={ world && world.article ? world.article.id : null } />
+                </div>
+                <div className='comments-container article-container'>
+                  <PostArticles query={ query } kwargs={ { parent: world.article ? world.article.id : null } } />
+                </div>
+              </div>
+        :
+          <div className='article-container'>
+            <LoadingCard />
+          </div>
+        }
+      </>
+    );
+  }
 }
 
 const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-export default connect(mapStateToProps, null)(ViewMon);
+export default connect(mapStateToProps, null)(ViewWorld);
