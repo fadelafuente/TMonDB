@@ -27,13 +27,12 @@ import '../../assets/styling/Banner.css';
 import '../../assets/styling/Article.css';
 import ArticleHeader from '../../components/ui/Article/ArticleHeader';
 
-function ViewWorld({ isAuthenticated }) {
+export default function ViewWorld() {
   const { query } = useOutletContext();
   const [world] = useGetResourceById('worlds');
   const [showBlock, setShowBlock] = useState(false);
   const [isDeleted, setIsDeleted] = useDeleteResource(false);
-  const [tab, setTab] = useState('stats');
-  const navigate = useNavigate();
+  const [tab, setTab] = useState('description');
 
   if(isDeleted) {
     return <FailedCard />;
@@ -60,6 +59,14 @@ function ViewWorld({ isAuthenticated }) {
                 <article className='article-container'>
                   <ArticleHeader data={ world } type="World" setIsDeleted={ (d) => setIsDeleted(d) } setShowBlock={ (b) => setShowBlock(b) } />
 
+                  <Tabs defaultActiveKey={ tab } activeKey={ tab } onSelect={(k) => setTab(k)} fill>
+                    <Tab title='Description' eventKey='description'>
+                      <p className='include-newlines'>{ world.description }</p>
+                    </Tab>
+                    <Tab title='Regions' eventKey='regions'>
+                      <p>Region</p>
+                    </Tab>
+                  </Tabs>
 
                   <div className='mon-interactions'>
                     <SocialInteractions resource='worlds' obj={ world } />
@@ -82,9 +89,3 @@ function ViewWorld({ isAuthenticated }) {
     );
   }
 }
-
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(ViewWorld);

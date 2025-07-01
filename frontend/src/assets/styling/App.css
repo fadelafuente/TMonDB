@@ -254,6 +254,10 @@ div.modal-body {
   padding: 1.25em;
 }
 
+.include-newlines {
+  white-space: pre-wrap;
+}
+
 div.outer-modal-footer {
   padding: 0.75em 1.25em 0.75em 1.25em !important;
 }

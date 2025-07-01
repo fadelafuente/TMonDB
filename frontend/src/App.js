@@ -27,9 +27,10 @@ import FollowContent from './routes/users/FollowContent';
 import ProfileInfo from './routes/users/ProfileInfo';
 import Account from './routes/users/Account';
 import CreateWorld from './routes/worlds/CreateWorld';
+import ViewWorld from './routes/worlds/ViewWorld';
+import UpdateWorld from './routes/worlds/UpdateWorld';
 
 import './assets/styling/App.css';
-import ViewWorld from './routes/worlds/ViewWorld';
 
 export default function App() {  
   const router = createBrowserRouter(createRoutesFromElements(
@@ -74,6 +75,7 @@ export default function App() {
         <Route path='worlds'>
           <Route path='create' element={ <CreateWorld /> } />
           <Route path=':id' element={ <ViewWorld /> } />
+          <Route path=':id/update' element={ <UpdateWorld /> } />
         </Route>
 
         <Route path=':creator'>
