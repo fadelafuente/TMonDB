@@ -3,6 +3,10 @@ import { Outlet, RouterProvider, createBrowserRouter, createRoutesFromElements, 
 
 import Layout from './hocs/Layout';
 import store from './store';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 
 import PostArticles from './components/Articles/PostArticles';
 import Activate from './routes/auth/Activate';
@@ -31,6 +35,8 @@ import ViewWorld from './routes/worlds/ViewWorld';
 import UpdateWorld from './routes/worlds/UpdateWorld';
 
 import './assets/styling/App.css';
+
+const queryClient = new QueryClient();
 
 export default function App() {  
   const router = createBrowserRouter(createRoutesFromElements(
@@ -89,7 +95,7 @@ export default function App() {
 
   return (
     <Provider store={ store }>
-      <RouterProvider router={router} />
+      <RouterProvider router={ router } />
     </Provider>
   );
 }
@@ -98,7 +104,9 @@ const Root = () => {
   return <> 
     <Layout>
       <div className='height-container'>
-        <Outlet />
+        <QueryClientProvider client={ queryClient }>
+          <Outlet />
+        </QueryClientProvider>
       </div>
     </Layout>
   </>

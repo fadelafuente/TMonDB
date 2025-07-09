@@ -1,18 +1,13 @@
 import axios from 'axios';
+import getApiHeaders from '../lib/api-config';
 
 axios.defaults.withCredentials = true;
 
 export async function createResource(resource, data) {
-    const access = localStorage.getItem('access');
-    let config = {};
-    
-    if(access) {
-        config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `JWT ${access}`
-            }
-        };
+    const headers = getApiHeaders();
+
+    const config = {
+        headers
     }
 
     const body = JSON.stringify(data);

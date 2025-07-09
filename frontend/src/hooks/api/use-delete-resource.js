@@ -1,17 +1,25 @@
-import { useState } from 'react';
+import {
+  useMutation,
+  useQueryClient
+} from '@tanstack/react-query';
+import { axiosInstance } from '../../lib/axios-config';
 
-import { deleteResourceById } from '../../actions/api';
+export function useDeleteResource(resource = 'posts') {
+  const queryClient = useQueryClient();
 
-export function useDeleteResource(initial) {
-    const [isDeleted, setIsDeleted] = useState(initial);
-
-    function handleDelete(resource, pid) {
-        deleteResourceById(resource, pid).then((response) => {
-            if(response && response.status === 204) {
-                setIsDeleted(true);
-            }
-        });
-    }
-
-    return [isDeleted, handleDelete];
+  return useMutation({
+    mutationFn: async (id) => {
+      await axiosInstance.delete(`api/${resource}/${id}/`);
+      return true;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [resource],
+      });
+    },
+    onError: (error) => {
+      console.error('Error deleting resource:', error.response || error.message || 'Unknown error');
+      return false;
+    },
+  });
 }

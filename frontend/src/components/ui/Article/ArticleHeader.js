@@ -9,7 +9,7 @@ import { useMiddleViewPort } from '../../../hooks/misc/use-middle-viewport';
 
 import '../../../assets/styling/Article.css';
 
-function ArticleHeader({ type, data, isAuthenticated, setIsDeleted, setShowBlock }) {
+function ArticleHeader({ type, data, isAuthenticated, setShowDelete, setShowBlock }) {
   const [aboveMid, setAboveMid] = useMiddleViewPort();
   const navigate = useNavigate();
 
@@ -18,15 +18,15 @@ function ArticleHeader({ type, data, isAuthenticated, setIsDeleted, setShowBlock
       <Fragment>
         { data.is_current_user ? 
           <>
-            <Dropdown.Item onClick={() => { setIsDeleted(data.id) }}>
+            <Dropdown.Item onClick={ () => setShowDelete(true) }>
               Delete { type }
             </Dropdown.Item>
-            <Dropdown.Item onClick={() => navigate(`update`)}>
+            <Dropdown.Item onClick={ () => navigate(`update`) }>
               Update { type }
             </Dropdown.Item>
           </>
         : 
-          <Dropdown.Item onClick={() => setShowBlock(true) }>
+          <Dropdown.Item onClick={ () => setShowBlock(true) }>
             Block user
           </Dropdown.Item>
         }
@@ -60,7 +60,7 @@ function ArticleHeader({ type, data, isAuthenticated, setIsDeleted, setShowBlock
 }
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, null)(ArticleHeader);
