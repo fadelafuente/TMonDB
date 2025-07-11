@@ -50,12 +50,12 @@ export default function ViewMon() {
 
   const courseTotal = 140;
 
-  let [feet, inches] = ['???', '???']; 
+  let [feet, inches] = ['???', '???'];
   if(monster && monster.avg_height) {
     [feet, inches] = handleHeightConversion(monster.avg_height);
   }
 
-  let lb = '???'; 
+  let lb = '???';
   if(monster && monster.avg_weight) {
     lb = handleKgToLbConversion(monster.avg_weight);
   }
@@ -68,18 +68,22 @@ export default function ViewMon() {
     );
   }
 
-  if(isDeleted) {
-    return <FailedCard />;
+  if(isDeleted || !monster) {
+    return (
+      <div className='article-container'>
+        <FailedCard />
+      </div>
+    );
   }
-    
+
   return (
     <>
       { monster.current_user_is_blocked ?
-          <div className='article-container'>
-            <BlockedCard creator={monster.creator} />
-          </div>
+        <div className='article-container'>
+          <BlockedCard creator={monster.creator} />
+        </div>
       :
-        monster.detail ? 
+        monster.detail ?
           <div className='article-container'>
             <FailedCard type='Monster' />
           </div>
@@ -92,7 +96,7 @@ export default function ViewMon() {
               <div className='mon-info-details bottom-barrier'>
                 <div className='mon-image-aspect-container'>
                     <div className='mon-image-container'>
-                            
+
                     </div>
                 </div>
                 <div className='mon-info-chart'>

@@ -8,10 +8,9 @@ import {
 import { axiosInstance } from '../../lib/axios-config';
 import { AxiosError } from 'axios';
 
-function useUpdateResourceHelper(resource = 'posts') {
+function useUpdateResourceHelper(resource = 'posts', id) {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { id } = useParams();
 
   return useMutation({
     mutationFn: async (body) => {
@@ -34,9 +33,9 @@ function useUpdateResourceHelper(resource = 'posts') {
   });
 }
 
-export function useUpdateResource(initialForm, resource = 'posts') {
-  const [formData, setFormData, setInitialForm] = useAdaptiveFormData(initialForm);  
-  const { mutate } = useUpdateResourceHelper(resource);
+export function useUpdateResource(initialForm, resource = 'posts', id) {
+  const [formData, setFormData, setInitialForm] = useAdaptiveFormData(initialForm);
+  const { mutate } = useUpdateResourceHelper(resource, id);
 
   function handleUpdateResource(e, data) {
     e.preventDefault();

@@ -19,7 +19,7 @@ function UpdateMon({ isAuthenticated }) {
     etymology: monster.etymology ? monster.etymology : '',
     avg_weight: monster.avg_weight ? monster.avg_weight : '',
     avg_height: monster.avg_height ? monster.avg_height : ''
-  }, 'monsters');
+  }, 'monsters', id);
 
   useEffect(() => {
     setInitialForm({
@@ -42,7 +42,7 @@ function UpdateMon({ isAuthenticated }) {
   if (!isAuthenticated) {
     return <Navigate to='/login' replace />;
   }
-  
+
   if(monster && typeof monster === 'object') {
     return (
       <>

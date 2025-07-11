@@ -22,7 +22,7 @@ export function useCreateResource(initialForm, resource = 'posts') {
   const queryClient = useQueryClient();
   const { mutate } = useCreateResourceHelper(resource);
 
-  function handleCreateResource(e, resource, data) {
+  function handleCreateResource(e, data) {
     e.preventDefault();
 
     if(data) {

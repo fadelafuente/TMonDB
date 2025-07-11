@@ -3,22 +3,17 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsImages } from 'react-icons/bs';
 import { DiscardModal } from './DiscardModal';
-import { useCreateResource } from '../../hooks/api/use-create-resource';
 import { useDiscardModal } from '../../hooks/modal/use-discard-modal';
 
-export default function CreatePostModal({show, setShow, parent=null}) {
-  const initialForm = {
-    content: ''
-  };
-
-  const [formData, resetFormData, setFormData] = useCreateResource(initialForm);
+export default function CreatePostModal({ show, setShow, parent=null, form }) {
+  const [formData, resetFormData, setFormData] = form;
   const [showDiscard, setShowDiscard] = useDiscardModal(formData, setShow);
-  
+
   const { content } = formData;
 
   return (
     <>
-      <Modal 
+      <Modal
         className='create-post'
         show={show}
       >
@@ -28,9 +23,9 @@ export default function CreatePostModal({show, setShow, parent=null}) {
         <Modal.Body>
           <Form>
             <Form.Group controlId='auto-resizing'>
-            <Form.Control 
+            <Form.Control
               as='textarea'
-              className='input-textarea' 
+              className='input-textarea'
               placeholder='howdy! What will you say?'
               value={ content }
               name='content'
@@ -46,15 +41,15 @@ export default function CreatePostModal({show, setShow, parent=null}) {
             </Row>
           </Col>
           <div className='row-gap-container right-justify-container no-margins-container'>
-            <Button 
-              className='base-btn' 
+            <Button
+              className='base-btn'
               id='discard-post-btn'
               onClick={ e => setShowDiscard(e) }
             >
               Close
             </Button>
             <Button className='base-btn' onClick={e => {
-              setFormData(e, 'posts', { content, parent });
+              setFormData(e, { content, parent });
               setShow(false);
             }}>
               Post

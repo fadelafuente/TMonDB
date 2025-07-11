@@ -6,11 +6,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { DeletedCard } from './DeletedCard';
 import ImageGallery from '../ImageGallery';
+import CreatePostModal from '../Modals/CreatePostModal';
 import DeleteResourceModal from '../Modals/DeleteResourceModal';
 import BlockModal from '../Modals/BlockModal';
 import SocialInteractions from '../UserInteractions/SocialInteractions';
 import { handleTimeDifference } from '../../functions/handlers';
 import { useDeleteResource } from '../../hooks/api/use-delete-resource';
+import { useUpdateResource } from '../../hooks/api/use-update-resource';
 import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
 
 import '../../assets/styling/PostCard.css';
@@ -22,6 +24,12 @@ function PostCard({ post, isAuthenticated }) {
   const [showDelete, setShowDelete] = useState(false);
   const { data: isDeleted, mutate: setIsDeleted } = useDeleteResource('posts');
   const [showUpdate, setShowUpdate] = useState(false);
+  const form = useUpdateResource({
+      content: post.content
+    },
+    'posts',
+    post.id
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,7 +46,7 @@ function PostCard({ post, isAuthenticated }) {
             <Dropdown.Item onClick={() => setShowDelete(true) }>
               Delete Post
             </Dropdown.Item>
-            <Dropdown.Item onClick={ () => {} }>
+            <Dropdown.Item onClick={ () => setShowUpdate(true) }>
               Update Post
             </Dropdown.Item>
           </>
@@ -70,6 +78,7 @@ function PostCard({ post, isAuthenticated }) {
       <>
         <BlockModal show={ showBlock } setShow={ setShowBlock } setBlocked={ setBlocked } username={ post ? post.article.creator.username : null } />
         <DeleteResourceModal show={ showDelete } setShow={ setShowDelete } handleDelete={ handleDelete } />
+        <CreatePostModal show={ showUpdate } setShow={ setShowUpdate } form={ form } parent={ post.parent } />
         <Card>
           <a href={ post.article.creator.username ?
               post ? `/${post.article.creator.username}/${post.id}` : `/deleted/${post.id}`
@@ -121,7 +130,7 @@ function PostCard({ post, isAuthenticated }) {
               { post ?
                 <Card.Text>
                   { post.content }
-                </Card.Text> 
+                </Card.Text>
               :
                 <Placeholder as={Card.Text} animation='wave'>
                   <Placeholder xs={ 7 } /> <Placeholder xs={ 4 } /> <Placeholder xs={ 4 } />{ ' ' }
