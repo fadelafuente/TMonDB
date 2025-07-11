@@ -1,23 +1,42 @@
 import { useNavigate } from 'react-router-dom';
 
-import { createResource } from '../../actions/api';
 import { useAdaptiveFormData } from '../form/use-adaptive-formdata';
+import {
+  useMutation,
+  useQueryClient
+} from '@tanstack/react-query';
+import { axiosInstance } from '../../lib/axios-config';
 
-export function useCreateResource(initialForm) {
+function useCreateResourceHelper(resource = 'posts') {
+  return useMutation({
+    mutationFn: async (body) => {
+      const response = await axiosInstance.post(`api/${resource}/`, body);
+      return response;
+    }
+  });
+}
+
+export function useCreateResource(initialForm, resource = 'posts') {
     const [formData, setFormData] = useAdaptiveFormData(initialForm);
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
+    const { mutate } = useCreateResourceHelper(resource);
 
     function handleCreateResource(e, resource, data) {
         e.preventDefault();
 
         if(data) {
-            createResource(resource, data).then(response => {
-                if(response && response.status === 201) {
+            mutate(data, {
+                onSuccess: (response) => {
+                    queryClient.invalidateQueries({ queryKey: [resource] });
                     if(resource === 'posts') {
                         navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
                     } else {
                         navigate(`/${resource}/${response.data['id']}`);
                     }
+                },
+                onError: (error) => {
+                    console.error('Error creating resource:', error.response || error.message || 'Unknown error');
                 }
             });
         }

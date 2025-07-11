@@ -1,11 +1,11 @@
 import PostCard from '../../components/Cards/PostCard';
-import { useGetResourceById } from '../../hooks/api/use-get-resource-by-id';
+import { useGetResourceParentById } from '../../hooks/api/use-get-resource-parent-by-id';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/ViewPost.css';
 
 export default function ParentCard({ post }) {
-  const { data: parent, isLoading } = useGetResourceById('posts', post.parent);
+  const { data: parent, isLoading } = useGetResourceParentById('posts', post.parent);
 
   if(isLoading || !parent) {
     return <></>;

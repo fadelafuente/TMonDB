@@ -21,7 +21,7 @@ function ReplyBar({isAuthenticated, parent}) {
         <Form className='reply-form' onSubmit={ isAuthenticated ? e => setFormData(e, 'posts', { content, parent }) : () => {navigate('/login')} }>
             <InputGroup>
                 <InputGroup.Text>
-                        <BsReply />
+                    <BsReply />
                 </InputGroup.Text>
                 <Form.Control 
                     type='text' 
