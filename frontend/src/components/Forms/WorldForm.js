@@ -115,16 +115,16 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
           </div>
 
           <div className='row-gap-container right-justify-container no-margins-container'>
-              <Button 
-                  className='base-btn' 
-                  id='discard-post-btn'
-                  onClick={ e => setShowDiscard(e, true) }
-              >
-                  Cancel
-              </Button>
-              <Button className='base-btn' onClick={e => setFormData(e, 'worlds', { name, description, move_alias, course_alias, evolution_alias, monster_alias, ability_alias, level_cap }) }>
-                 Submit
-              </Button>
+            <Button 
+              className='base-btn' 
+              id='discard-post-btn'
+              onClick={ e => setShowDiscard(e, true) }
+            >
+              Cancel
+            </Button>
+            <Button className='base-btn' onClick={e => setFormData(e, { name, description, move_alias, course_alias, evolution_alias, monster_alias, ability_alias, level_cap }) }>
+              Submit
+            </Button>
           </div>
           <div className='section-bottom-barrier'></div>
         </Form>

@@ -17,7 +17,7 @@ function UpdateWorld({ isAuthenticated }) {
     monster_alias: world.monster_alias || '',
     ability_alias: world.ability_alias || '',
     level_cap: world.level_cap || 100
-  });
+  }, 'worlds');
 
   if(isLoading || isAuthenticated === null) {
     return <div className='loading-container'>

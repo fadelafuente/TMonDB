@@ -19,7 +19,7 @@ function UpdateMon({ isAuthenticated }) {
     etymology: monster.etymology ? monster.etymology : '',
     avg_weight: monster.avg_weight ? monster.avg_weight : '',
     avg_height: monster.avg_height ? monster.avg_height : ''
-  });
+  }, 'monsters');
 
   useEffect(() => {
     setInitialForm({

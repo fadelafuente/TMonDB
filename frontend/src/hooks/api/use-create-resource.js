@@ -17,30 +17,31 @@ function useCreateResourceHelper(resource = 'posts') {
 }
 
 export function useCreateResource(initialForm, resource = 'posts') {
-    const [formData, setFormData] = useAdaptiveFormData(initialForm);
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
-    const { mutate } = useCreateResourceHelper(resource);
+  const [formData, setFormData] = useAdaptiveFormData(initialForm);
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { mutate } = useCreateResourceHelper(resource);
 
-    function handleCreateResource(e, resource, data) {
-        e.preventDefault();
+  function handleCreateResource(e, resource, data) {
+    e.preventDefault();
 
-        if(data) {
-            mutate(data, {
-                onSuccess: (response) => {
-                    queryClient.invalidateQueries({ queryKey: [resource] });
-                    if(resource === 'posts') {
-                        navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
-                    } else {
-                        navigate(`/${resource}/${response.data['id']}`);
-                    }
-                },
-                onError: (error) => {
-                    console.error('Error creating resource:', error.response || error.message || 'Unknown error');
-                }
-            });
+    if(data) {
+      mutate(data, {
+        onSuccess: (response) => {
+          queryClient.invalidateQueries({ queryKey: [resource] });
+          queryClient.refetchQueries();
+          if(resource === 'posts') {
+            navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
+          } else {
+            navigate(`/${resource}/${response.data['id']}`);
+          }
+        },
+        onError: (error) => {
+          console.error('Error creating resource:', error.response || error.message || 'Unknown error');
         }
+      });
     }
+  }
 
-    return [formData, setFormData, handleCreateResource];
+  return [formData, setFormData, handleCreateResource];
 }

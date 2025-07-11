@@ -21,6 +21,7 @@ function PostCard({ post, isAuthenticated }) {
   const [aboveMid, setAboveMid] = useMiddleViewPort();
   const [showDelete, setShowDelete] = useState(false);
   const { data: isDeleted, mutate: setIsDeleted } = useDeleteResource('posts');
+  const [showUpdate, setShowUpdate] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,9 +34,14 @@ function PostCard({ post, isAuthenticated }) {
     return (
       <Fragment>
         { post.is_current_user ?
-          <Dropdown.Item onClick={() => { setShowDelete(true) }}>
-            Delete Post
-          </Dropdown.Item>
+          <>
+            <Dropdown.Item onClick={() => setShowDelete(true) }>
+              Delete Post
+            </Dropdown.Item>
+            <Dropdown.Item onClick={ () => {} }>
+              Update Post
+            </Dropdown.Item>
+          </>
         :
           <Dropdown.Item onClick={() => setShowBlock(true) }>
             Block user

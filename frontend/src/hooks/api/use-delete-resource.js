@@ -13,9 +13,8 @@ export function useDeleteResource(resource = 'posts') {
       return true;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [resource],
-      });
+      queryClient.invalidateQueries({ queryKey: [resource] });
+      queryClient.refetchQueries();
     },
     onError: (error) => {
       console.error('Error deleting resource:', error.response || error.message || 'Unknown error');
