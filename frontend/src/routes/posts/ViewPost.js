@@ -1,4 +1,4 @@
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import PostArticles from '../../components/Articles/PostArticles';
 import ReplyBar from '../../components/Bars/ReplyBar';
@@ -14,7 +14,6 @@ import '../../assets/styling/ViewPost.css';
 import ParentCard from '../../components/Cards/ParentCard';
 
 export default function ViewPost() {
-  const { query } = useOutletContext();
   const { id } = useParams();
   const { data: post, isLoading } = useGetResourceById('posts', id);
 
@@ -59,7 +58,7 @@ export default function ViewPost() {
             <ReplyBar parent={ post.article.id } />
           </div>
           <div className='comments-container article-container'>
-            <PostArticles query={ query } kwargs={{ parent: post.article.id }} />
+            <PostArticles kwargs={{ parent: post.article.id }} />
           </div>
         </div>
       }

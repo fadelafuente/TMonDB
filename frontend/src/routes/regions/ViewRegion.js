@@ -2,7 +2,6 @@ import { Fragment, useState } from 'react';
 import { Col, NavDropdown, Row, Tab, Tabs } from 'react-bootstrap';
 import { BsThreeDots } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { useOutletContext } from 'react-router-dom';
 
 import ReplyBar from '../../components/Bars/ReplyBar';
 import CultureTab from '../../components/Content/CultureTab';
@@ -19,7 +18,6 @@ import '../../assets/styling/ViewMon.css';
 import '../../assets/styling/buttons.css';
 
 function ViewRegion({ isAuthenticated }) {
-  const { query } = useOutletContext();
   const [region, setRegion] = useState({});
   const [showBlock, setShowBlock] = useState(false);
   const [aboveMid, setAboveMid] = useMiddleViewPort();
@@ -109,7 +107,7 @@ function ViewRegion({ isAuthenticated }) {
           <ReplyBar parent={ region && region.article ? region.article.id : null } />
         </div>
         <div className='comments-container article-container'>
-          {/* <PostArticles query={ query } kwargs={ {parent: region.article.id} } /> */}
+          {/* <PostArticles kwargs={ {parent: region.article.id} } /> */}
         </div>
       </div>
     </>

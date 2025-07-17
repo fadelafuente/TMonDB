@@ -1,5 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { updateResourceById } from '../../actions/api';
+import { useNavigate } from 'react-router-dom';
 import { useAdaptiveFormData } from '../form/use-adaptive-formdata';
 import {
   useMutation,

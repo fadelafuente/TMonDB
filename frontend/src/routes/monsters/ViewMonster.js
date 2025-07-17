@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import ArticleHeader from '../../components/ui/Article/ArticleHeader';
 import PostArticles from '../../components/Articles/PostArticles';
@@ -23,7 +23,6 @@ import '../../assets/styling/UserProfile.css';
 import '../../assets/styling/ViewMon.css';
 
 export default function ViewMon() {
-  const { query } = useOutletContext();
   const { id } = useParams();
   const { data: monster, isLoading } = useGetResourceById('monsters', id);
   const [showBlock, setShowBlock] = useState(false);
@@ -204,7 +203,7 @@ export default function ViewMon() {
               <ReplyBar parent={ monster && monster.article ? monster.article.id : null } />
             </div>
             <div className='comments-container article-container'>
-              <PostArticles query={ query } kwargs={ { parent: monster.article ? monster.article.id : null } } />
+              <PostArticles kwargs={ { parent: monster.article ? monster.article.id : null } } />
             </div>
           </div>
       }

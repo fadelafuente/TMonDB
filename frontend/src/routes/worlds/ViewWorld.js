@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
-import { useOutletContext, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import PostArticles from '../../components/Articles/PostArticles';
 import ReplyBar from '../../components/Bars/ReplyBar';
@@ -21,7 +21,6 @@ import '../../assets/styling/Banner.css';
 import '../../assets/styling/Article.css';
 
 export default function ViewWorld() {
-  const { query } = useOutletContext();
   const { id } = useParams();
   const { data: world, isLoading } = useGetResourceById('worlds', id);
   const [showBlock, setShowBlock] = useState(false);
@@ -91,7 +90,7 @@ export default function ViewWorld() {
                 <ReplyBar parent={ world && world.article ? world.article.id : null } />
               </div>
               <div className='comments-container article-container'>
-                <PostArticles query={ query } kwargs={ { parent: world.article ? world.article.id : null } } />
+                <PostArticles kwargs={ { parent: world.article ? world.article.id : null } } />
               </div>
             </div>
         }
