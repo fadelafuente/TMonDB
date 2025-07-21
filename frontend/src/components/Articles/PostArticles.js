@@ -14,33 +14,37 @@ export default function PostArticles({kwargs={}}) {
   const queryResult = useGetResource('posts', kwargs, query);
   const { data: posts, ref: lastPost, isFetching: loading, isFetchingNextPage } = useInfiniteScoll({ queryResult }, query, 'posts');
 
+  if(loading && !isFetchingNextPage) {
+    return (
+      <div className='article-container'>
+        <LoadingCard />
+      </div>
+    );
+  }
+
+  if(!posts || !posts?.pages || (posts.pages.length === 1 && posts.pages[0] === null)) {
+    return <FailedCard />;
+  }
+
   return (
     <>
       {
-        loading && !isFetchingNextPage ? 
-          <div className='article-container'>
-            <LoadingCard />
-          </div>
-        :
-          posts && posts?.pages ? 
-            posts.pages.map((page, index) => (
-              page ?
-                <Fragment key={ `page-${ index }` }>
-                  { 
-                    page['results'].map((post, index) => {
-                      if(page['results'].length === index + 1) {
-                        return <div key={ `post-${ post.id }` } ref={lastPost}><PostCard post={post} /></div>
-                      } else {
-                        return <div key={ `post-${ post.id }` }><PostCard post={post} /></div>
-                      }
-                    })
+        posts.pages.map((page, index) => (
+          page ?
+            <Fragment key={ `page-${ index }` }>
+              { 
+                page['results'].map((post, index) => {
+                  if(page['results'].length === index + 1) {
+                    return <div key={ `post-${ post.id }` } ref={lastPost}><PostCard post={post} /></div>
+                  } else {
+                    return <div key={ `post-${ post.id }` }><PostCard post={post} /></div>
                   }
-                </Fragment>
-              : 
-                <div key={ `page-${ index }` }></div>
-            ))
-          :
-            <FailedCard />
+                })
+              }
+            </Fragment>
+          : 
+            <div key={ `page-${ index }` }></div>
+        ))
       }
     </>
   )
