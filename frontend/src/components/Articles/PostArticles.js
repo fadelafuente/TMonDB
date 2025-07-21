@@ -23,22 +23,24 @@ export default function PostArticles({kwargs={}}) {
           </div>
         :
           posts && posts?.pages ? 
-            posts.pages.map((page) => (
-              <Fragment key={page.next}>
-                {
-                  page['results'].map((post, index) => {
-                    if(page['results'].length === index + 1) {
-                      return <div key={post.id} ref={lastPost}><PostCard post={post} /></div>
-                    } else {
-                      return <div key={post.id}><PostCard post={post} /></div>
-                    }
-                  })
-                }
-              </Fragment>
-            )
-          )
-      :
-        <FailedCard />
+            posts.pages.map((page, index) => (
+              page ?
+                <Fragment key={ `page-${ index }` }>
+                  { 
+                    page['results'].map((post, index) => {
+                      if(page['results'].length === index + 1) {
+                        return <div key={ `post-${ post.id }` } ref={lastPost}><PostCard post={post} /></div>
+                      } else {
+                        return <div key={ `post-${ post.id }` }><PostCard post={post} /></div>
+                      }
+                    })
+                  }
+                </Fragment>
+              : 
+                <div key={ `page-${ index }` }></div>
+            ))
+          :
+            <FailedCard />
       }
     </>
   )
