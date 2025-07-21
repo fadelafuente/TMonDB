@@ -1,14 +1,14 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { axiosInstance } from '../../lib/axios-config';
 
-export function useFollowList(username, follow_type, query) {
+export function useBlockList(query) {
   return useInfiniteQuery({
-    queryKey: [follow_type, username],
+    queryKey: ['block'],
     queryFn: async ({ pageParam }) => {
       try {
         const queryString = query ? `&search=${query}` : '';
 
-        const response = await axiosInstance.get(`/auth/users/${username}/${follow_type}/?page=${pageParam}${queryString}`);
+        const response = await axiosInstance.get(`/auth/users/blocking/?page=${pageParam}${queryString}`);
         return response.data;
       } catch (error) {
         console.error('Error fetching resource:', error);

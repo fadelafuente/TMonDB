@@ -26,13 +26,13 @@ export default function FollowList({username, follow_type, query}) {
     <>
       {   
         users.pages.map((page, index) => (
-          <Fragment key={ `page-${ index }` }>
+          <Fragment key={ `page-${index}` }>
             {
               page['results'].map((user, index) => {
                 if(users.length === index + 1) {
-                  return <div key={user.id} ref={lastUser}><FollowCard user={user} /></div>
+                  return <div key={ `${follow_type}-${user.id}` } ref={ lastUser }><FollowCard user={ user } /></div>
                 } else {
-                  return <div key={user.id}><FollowCard user={user} /></div>
+                  return <div key={ `${follow_type}-${user.id}` }><FollowCard user={ user } /></div>
                 }
               })
             }

@@ -29,13 +29,13 @@ export default function PostArticles({kwargs={}}) {
       {
         posts.pages.map((page, index) => (
           page ?
-            <Fragment key={ `page-${ index }` }>
+            <Fragment key={ `page-${index}` }>
               { 
                 page['results'].map((post, index) => {
                   if(page['results'].length === index + 1) {
-                    return <div key={ `post-${ post.id }` } ref={lastPost}><PostCard post={post} /></div>
+                    return <div key={ `post-${post.id}` } ref={ lastPost }><PostCard post={ post } /></div>
                   } else {
-                    return <div key={ `post-${ post.id }` }><PostCard post={post} /></div>
+                    return <div key={ `post-${post.id}` }><PostCard post={ post } /></div>
                   }
                 })
               }

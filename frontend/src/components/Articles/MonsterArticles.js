@@ -1,43 +1,46 @@
-import { useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
 import { FailedCard } from '../Cards/FailedCard';
 import LoadingCard from '../Cards/LoadingCard';
 import MonsterCard from '../Cards/MonsterCard';
-import { getAllResources } from '../../actions/api';
-import { usePagination } from '../../hooks/articles/use-pagination';
+import { useGetResource } from '../../hooks/api/use-get-resource';
+import useInfiniteScoll from '../../hooks/articles/use-infinite-scroll';
 
 import '../../assets/styling/content.css';
 
 export default function MonsterArticles({kwargs={}}) {
-    const { query } = useOutletContext();
-    const [loading, setLoading] = useState(true);
-    const [monsters, lastMonster] = usePagination(query, getAllResources, 'monsters', kwargs);
+  const { query } = useOutletContext();
+  const queryResult = useGetResource('monsters', kwargs, query);
+  const { data: monsters, ref: lastMonster, isFetching: loading, isFetchingNextPage } = useInfiniteScoll({ queryResult }, query, 'monsters');
 
-    useEffect(() => {
-       setLoading(true);
-       if(monsters) setLoading(false); 
-    }, [monsters]);
-
+  if(loading && !isFetchingNextPage) {
     return (
-        <div className='col-gap-container'>
+      <LoadingCard />
+    );
+  }
+
+  if(!monsters || !monsters?.pages || (monsters.pages.length === 1 && monsters.pages[0] === null)) {
+    return <FailedCard />;
+  }
+
+  return (
+    <div className='col-gap-container'>
+      {
+        monsters.pages.map((page, index) => (
+          <Fragment key={ `page-${ index }` }>
             {
-                loading ? 
-                    <div className='article-container'>
-                        <LoadingCard />
-                    </div>
-                :
-                    monsters ? 
-                        monsters.map((monster, index) => {
-                            if(monsters.length === index + 1) {
-                                return <div className='mon-article' key={monster.id} ref={lastMonster}><MonsterCard monster={monster} /></div>
-                            } else {
-                                return <div className='mon-article' key={monster.id}><MonsterCard monster={monster} /></div>
-                            }
-                        }) 
-                    :
-                        <FailedCard />
+              page['results'].map((monster, index) => {
+                if(monsters.length === index + 1) {
+                  return <div className='mon-article' key={ `monster-${monster.id}` } ref={ lastMonster }><MonsterCard monster={ monster } /></div>
+                } else {
+                  return <div className='mon-article' key={ `monster-${monster.id}` }><MonsterCard monster={ monster } /></div>
+                }
+              })
             }
-        </div>
-    )
+          </Fragment>
+        ))
+      }
+    </div>
+  )
 }

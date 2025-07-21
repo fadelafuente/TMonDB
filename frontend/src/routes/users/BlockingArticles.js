@@ -1,46 +1,46 @@
-import { useEffect, useState } from 'react';
+import { Fragment } from 'react';
 import { useOutletContext } from 'react-router-dom';
 
-import { getCurrentUsersBlockedList } from '../../actions/auth';
 import BlockingCard from '../../components/Cards/BlockingCard';
 import { FailedCard } from '../../components/Cards/FailedCard';
 import LoadingCard from '../../components/Cards/LoadingCard';
-import { usePagination } from '../../hooks/articles/use-pagination';
+import useInfiniteScoll from '../../hooks/articles/use-infinite-scroll';
+import { useBlockList } from '../../hooks/profile/use-block-list';
 
 import '../../assets/styling/content.css';
 
-export default function BlockingArticles({kwargs={}}) {
+export default function BlockingArticles() {
     const { query } = useOutletContext();
-    const [loading, setLoading] = useState(true);
-    const [blocks, lastBlock] = usePagination(query, getCurrentUsersBlockedList, 'users', kwargs);
+    const queryResult = useBlockList(query);
+    const { data: blocks, ref: lastBlock, isFetching: loading, isFetchingNextPage } = useInfiniteScoll({ queryResult }, query, 'block');
 
-    useEffect(() => {
-       setLoading(true);
-       if(blocks) setLoading(false); 
-    }, [blocks]);
+    if(loading && !isFetchingNextPage) {
+      return (
+        <LoadingCard />
+      );
+    }
+  
+    if(!blocks || !blocks?.pages || (blocks.pages.length === 1 && blocks.pages[0] === null)) {
+      return <FailedCard />;
+    }
 
-    return (
-        <>
-            {   
-                blocks && !loading ? 
-                    blocks.map((user, index) => {
-                        if(blocks.length === index + 1) {
-                            return <div key={user.id} ref={lastBlock}><BlockingCard user={user} /></div>
-                        } else {
-                            return <div key={user.id}><BlockingCard user={user} /></div>
-                        }
-                    })
-                :
-                    <FailedCard />
-            }
+  return (
+    <>
+      {   
+        blocks.pages.map((page, index) => (
+          <Fragment key={ `page-${ index }` }>
             {
-                loading ? 
-                    <div className='article-container'>
-                        <LoadingCard />
-                    </div>
-                :
-                    ''
+              page['results'].map((user, index) => {
+                if(blocks.length === index + 1) {
+                  return <div key={ `blocked-${user.id}` } ref={ lastBlock }><BlockingCard user={ user } /></div>
+                } else {
+                  return <div key={ `blocked-${user.id}` }><BlockingCard user={ user } /></div>
+                }
+              })
             }
-        </>
-    )
+          </Fragment>
+        ))
+      }
+    </>
+  )
 }
