@@ -12,9 +12,18 @@ import { useState } from 'react';
 import '../../assets/styling/PostCard.css';
 
 function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
-  const [liked, likes, setLike] = useInteractions(obj ? obj.likes_count : 0, obj ? obj.user_liked : 0);
-  const [reposted, reposts, setRepost] = useInteractions(obj ? obj.reposts_count : 0, obj ? obj.user_reposted : 0);
-  const [commented, comments] = useInteractions(obj ? obj.comments_count : 0, obj ? obj.user_commented : 0);
+  const initialData = { 
+    id: obj ? obj.id : null, 
+    likes_count: obj ? obj.likes_count : 0, 
+    reposts_count: obj ? obj.reposts_count : 0, 
+    comments_count: obj ? obj.comments_count : 0, 
+    is_current_user: obj ? obj.is_current_user : false, 
+    user_liked: obj ? obj.user_liked : false, 
+    user_reposted: obj ? obj.user_reposted : false, 
+    user_commented: obj ? obj.user_commented : false
+  };
+  const [liked, likes, setLike] = useInteractions(initialData.likes_count, initialData.user_liked, resource);
+  const [reposted, reposts, setRepost] = useInteractions(initialData.reposts_count, initialData.user_reposted, resource);
   const [aboveMid, setAboveMid] = useMiddleViewPort();
   const [showAlert, setShowAlert] = useTimedAlert(false);
   const [show, setShow] = useState(false);
@@ -41,18 +50,18 @@ function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
           <button className='svg-btn' onClick={
             isAuthenticated ?
               obj ?
-                commented ? () => {} : () => setShow(true)
+                initialData.user_commented ? () => {} : () => setShow(true)
               :
                 () => {}
             : () => navigate('/login')
           }>
             <Row>
-              <Col className={commented ? 'interaction-icon interacted' : 'interaction-icon'}>
-                { commented ? <BsChatRightDotsFill /> : <BsChatRightDots /> }
+              <Col className={initialData.user_commented ? 'interaction-icon interacted' : 'interaction-icon'}>
+                { initialData.user_commented ? <BsChatRightDotsFill /> : <BsChatRightDots /> }
               </Col>
               <Col className='interaction-nums'>
                 <span>
-                  { comments }
+                  { initialData.comments_count }
                 </span>
               </Col>
             </Row>
@@ -62,7 +71,7 @@ function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
           <button className='svg-btn' name='repost' onClick={
             isAuthenticated ?
               obj ?
-                e => setRepost(e, resource, obj.id)
+                e => setRepost(e, obj.id)
               :
                 () => {}
             :
@@ -84,7 +93,7 @@ function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
           <button className='svg-btn' name='like' onClick={
             isAuthenticated ?
               obj ?
-                e => setLike(e, resource, obj.id)
+                e => setLike( e, obj.id)
               :
                 () => {}
             :

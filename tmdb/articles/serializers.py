@@ -36,13 +36,13 @@ class ModelWithArticleSerializer(serializers.ModelSerializer):
         return result
     
 class ModelScrollWithArticleSerializer(serializers.ModelSerializer):
-    likes_count = serializers.IntegerField()
-    reposts_count = serializers.IntegerField()
-    comments_count = serializers.IntegerField()
-    is_current_user = serializers.BooleanField()
-    user_liked = serializers.BooleanField()
-    user_reposted = serializers.BooleanField()
-    user_commented = serializers.BooleanField()
+    likes_count = serializers.IntegerField(default=0)
+    reposts_count = serializers.IntegerField(default=0)
+    comments_count = serializers.IntegerField(default=0)
+    is_current_user = serializers.BooleanField(default=False)
+    user_liked = serializers.BooleanField(default=False)
+    user_reposted = serializers.BooleanField(default=False)
+    user_commented = serializers.BooleanField(default=False)
     article = ArticleCreatorSerializer()
 
 class BaseListSerializer(serializers.ListSerializer):

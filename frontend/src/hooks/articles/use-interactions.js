@@ -1,20 +1,22 @@
 import { useState } from 'react';
 
-import { updateResourceById } from '../../actions/api';
+import { useUpdateInteraction } from '../api/use-update-interaction';
 
-export function useInteractions(initial_interaction, user_interacted) {
-    const [interaction, setInteraction] = useState(initial_interaction);
-    const [interacted, setInteracted] = useState(user_interacted);
+export function useInteractions(initial_interaction, user_interacted, resource = 'posts') {
+  const [interaction, setInteraction] = useState(initial_interaction);
+  const [interacted, setInteracted] = useState(user_interacted);
+  const { mutate } = useUpdateInteraction(resource);
 
-    function handleUpdateInteractions(e, resource, pid) {
-        updateResourceById(resource, pid, {}, e.currentTarget.name).then((response) => {
-            if(response && response.status === 200) {
-                let change = interacted ? -1 : 1;
-                setInteraction(interaction + change);
-                setInteracted((prev) => !prev);
-            }
-        });
-    }
+  function handleUpdateInteractions(e, id) {
+    const interaction_type = e.currentTarget.name;
+    mutate({ interaction_type, id }, {
+      onSuccess: () => {
+        let change = interacted ? -1 : 1;
+        setInteraction(interaction + change);
+        setInteracted((prev) => !prev);
+      },
+    });
+  }
 
-    return [interacted, interaction, handleUpdateInteractions];
+  return [interacted, interaction, handleUpdateInteractions];
 }
