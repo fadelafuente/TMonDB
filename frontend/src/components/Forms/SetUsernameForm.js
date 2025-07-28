@@ -1,40 +1,39 @@
-import { updateDetails } from "../../actions/auth";
-import React, { useState } from "react";
+import { updateDetails } from '../../actions/auth';
+import { useState } from 'react';
 import { Alert, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { connect } from "react-redux";
-import { useFormData } from "../../hooks/form/use-form-data";
-import { useNavigateNotAuth } from "../../hooks/auth/helpers/use-navigate-not-auth";
+import { useFormData } from '../../hooks/form/use-form-data';
+import { useNavigateNotAuth } from '../../hooks/auth/helpers/use-navigate-not-auth';
 
-import "../../assets/styling/Modal.css";
-import "../../assets/styling/forms.css";
+import '../../assets/styling/Modal.css';
+import '../../assets/styling/forms.css';
 
-function SetUsernameForm({ isAuthenticated, handleEditUsername, handleUsername }) {
+export default function SetUsernameForm({ handleEditUsername, handleUsername }) {
     const [show, setShow] = useState(false);
-    const [message, setMessage] = useState("");
+    const [message, setMessage] = useState('');
     const [formData, setFormData] = useFormData({
         username: ''    
     });
-    useNavigateNotAuth(isAuthenticated);
+    useNavigateNotAuth();
 
     const { username } = formData;
 
     function onSubmit(e) {
         e.preventDefault();
         if(username.length < 5) {
-            setMessage("The username needs to be atleast 5 characters.");
+            setMessage('The username needs to be atleast 5 characters.');
             setShow(true);
         } else {
             updateDetails({username}).then((response) => {
-                let message = "";
+                let message = '';
                 if(response && response.status === 200) {
-                    message = "Username successfully updated";
+                    message = 'Username successfully updated';
                     setShow(true);
-                    handleUsername(response.data["username"]);
+                    handleUsername(response.data['username']);
                     handleEditUsername(false);
                 } else {
-                    message = "Username is either invalid or already taken.";
+                    message = 'Username is either invalid or already taken.';
                 }
 
                 setMessage(message);
@@ -45,32 +44,32 @@ function SetUsernameForm({ isAuthenticated, handleEditUsername, handleUsername }
 
     return (
         <>
-            <Alert show={ show } variant="warning" dismissible onClose={ () => setShow(false) }>
-                { message ? message : "The username is not valid." }
+            <Alert show={ show } variant='warning' dismissible onClose={ () => setShow(false) }>
+                { message ? message : 'The username is not valid.' }
             </Alert>
             <div>
-                <Form className="form set-username-no-redirect" onSubmit={ e=> { onSubmit(e) } }>
-                    <Form.Group controlId="username-input" className="form-group">
+                <Form className='form set-username-no-redirect' onSubmit={ e=> { onSubmit(e) } }>
+                    <Form.Group controlId='username-input' className='form-group'>
                         <Form.Text>Your username can contain uppercase letters, 
                             lowercase letters, numbers, and must be atleast 5 characters.<br/></Form.Text>
                         <InputGroup>
                             <Form.Control
-                                type="text" 
-                                placeholder="New username" 
-                                name="username"
+                                type='text' 
+                                placeholder='New username' 
+                                name='username'
                                 value={ username }
                                 onChange={ e => setFormData(e) }
-                                pattern="[a-zA-Z0-9]*"
+                                pattern='[a-zA-Z0-9]*'
                                 required
                                 maxLength={20}
                             />
                         </InputGroup>
                     </Form.Group>
-                    <div className="row-gap-container align-right">
-                        <Button className="base-btn" onClick={ () => { handleEditUsername(false) } }>
+                    <div className='row-gap-container align-right'>
+                        <Button className='base-btn' onClick={ () => { handleEditUsername(false) } }>
                             Cancel
                         </Button>
-                        <Button className="base-btn" variant="primary" type="submit">
+                        <Button className='base-btn' variant='primary' type='submit'>
                             Submit
                         </Button>
                     </div>
@@ -79,9 +78,3 @@ function SetUsernameForm({ isAuthenticated, handleEditUsername, handleUsername }
         </>
     )
 }
-
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(SetUsernameForm);

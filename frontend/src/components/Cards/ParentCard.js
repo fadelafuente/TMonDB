@@ -1,5 +1,5 @@
 import PostCard from '../../components/Cards/PostCard';
-import { useGetResourceParentById } from '../../hooks/api/use-get-resource-parent-by-id';
+import { useGetResourceParentById } from '../../hooks/features/api/use-get-resource-parent-by-id';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/ViewPost.css';

@@ -11,8 +11,8 @@ import BlockModal from '../../components/Modals/BlockModal';
 import ArticleHeader from '../../components/ui/Article/ArticleHeader';
 import DeleteResourceModal from '../../components/Modals/DeleteResourceModal';
 import SocialInteractions from '../../components/UserInteractions/SocialInteractions';
-import { useDeleteResource } from '../../hooks/api/use-delete-resource';
-import { useGetResourceById } from '../../hooks/api/use-get-resource-by-id';
+import { useDeleteResource } from '../../hooks/features/api/use-delete-resource';
+import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/UserProfile.css';

@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
-export function useNavigateNotAuth(isAuthenticated) {
+export function useNavigateNotAuth() {
+    const { isAuthenticated } = useOutletContext();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(isAuthenticated === false) {
+        if(!isAuthenticated) {
             return navigate('/login');
         }
         // eslint-disable-next-line

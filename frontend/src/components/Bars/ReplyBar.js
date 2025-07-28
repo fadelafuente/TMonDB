@@ -3,15 +3,17 @@ import Form from 'react-bootstrap/Form';
 import { BsReply } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { useCreateResource } from '../../hooks/api/use-create-resource';
+import { useCreateResource } from '../../hooks/features/api/use-create-resource';
+import { useAuth } from '../../hooks/features/auth/use-auth';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/ViewPost.css'
 
-function ReplyBar({isAuthenticated, parent}) {
+export default function ReplyBar({ parent }) {
   const initialForm = {
     content: ''
   };
+  const { data: isAuthenticated } = useAuth();
   const [formData, resetFormData, setFormData] = useCreateResource(initialForm);
   const navigate = useNavigate();
 
@@ -46,9 +48,3 @@ function ReplyBar({isAuthenticated, parent}) {
     </Form>
   );
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(ReplyBar);

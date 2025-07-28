@@ -1,10 +1,9 @@
-import { connect } from 'react-redux';
-import { Navigate } from 'react-router-dom';
-import { useCreateResource } from '../../hooks/api/use-create-resource';
+import { Navigate, useOutletContext } from 'react-router-dom';
+import { useCreateResource } from '../../hooks/features/api/use-create-resource';
 import WorldForm from '../../components/Forms/WorldForm';
-import SpinningLoader from '../../components/Loader/SpinningLoader';
 
-function CreateWorld({ isAuthenticated }) {
+export default function CreateWorld() {
+  const { isAuthenticated } = useOutletContext();
   const [formData, resetFormData, setFormData] = useCreateResource({
     name: '',
     description: '',
@@ -15,12 +14,6 @@ function CreateWorld({ isAuthenticated }) {
     ability_alias: '',
     level_cap: 100
   });
-
-  if(isAuthenticated === null) {
-      return <div className='loading-container'>
-          <SpinningLoader />
-      </div>
-  }
 
   if (!isAuthenticated) {
     return <Navigate to='/login' replace />;
@@ -35,9 +28,3 @@ function CreateWorld({ isAuthenticated }) {
     </>
   );
 }
-
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(CreateWorld);

@@ -1,17 +1,17 @@
 import { Fragment } from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { BsThreeDots } from 'react-icons/bs';
-import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import { handleTimeDifference } from '../../../functions/handlers';
 import { useMiddleViewPort } from '../../../hooks/misc/use-middle-viewport';
 
 import '../../../assets/styling/Article.css';
 
-function ArticleHeader({ type, data, isAuthenticated, setShowDelete, setShowBlock }) {
+export default function ArticleHeader({ type, data, setShowDelete, setShowBlock }) {
   const [aboveMid, setAboveMid] = useMiddleViewPort();
   const navigate = useNavigate();
+  const { isAuthenticated } = useOutletContext();
 
   function handleMoreClick() {
     return (
@@ -58,9 +58,3 @@ function ArticleHeader({ type, data, isAuthenticated, setShowDelete, setShowBloc
     </header>
   );
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(ArticleHeader);

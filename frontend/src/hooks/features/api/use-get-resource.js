@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { axiosInstance } from '../../lib/axios-config';
+import { axiosInstance } from '../../../lib/axios-config';
 
 export function useGetResource(resource, kwargs = {}, query) {
   return useInfiniteQuery({

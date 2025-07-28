@@ -7,17 +7,19 @@ import { DeletedCard } from '../../components/Cards/DeletedCard';
 import { FailedCard } from '../../components/Cards/FailedCard';
 import LoadingCard from '../../components/Cards/LoadingCard';
 import PostCard from '../../components/Cards/PostCard';
-import { useGetResourceById } from '../../hooks/api/use-get-resource-by-id';
+import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
+import ParentCard from '../../components/Cards/ParentCard';
+import { useAuth } from '../../hooks/features/auth/use-auth';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/ViewPost.css';
-import ParentCard from '../../components/Cards/ParentCard';
 
 export default function ViewPost() {
   const { id } = useParams();
   const { data: post, isLoading } = useGetResourceById('posts', id);
+  const { data: isAuthenticated, isLoading: authLoading } = useAuth();
 
-  if(isLoading) {
+  if(isLoading || authLoading) {
     return (
       <div className='article-container'>
         <LoadingCard />
@@ -54,9 +56,14 @@ export default function ViewPost() {
           <div className='article-container'>
             <PostCard post={ post } />
           </div>
-          <div className='reply-container'>
-            <ReplyBar parent={ post.article.id } />
-          </div>
+            {
+              isAuthenticated ?
+                <div className='reply-container'>
+                  <ReplyBar parent={ post.article.id } />
+                </div>
+              :
+                <div className='no-reply-container'></div>
+            }
           <div className='comments-container article-container'>
             <PostArticles kwargs={{ parent: post.article.id }} />
           </div>

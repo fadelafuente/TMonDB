@@ -5,7 +5,7 @@ import { FailedCard } from '../Cards/FailedCard';
 import LoadingCard from '../Cards/LoadingCard';
 import PostCard from '../Cards/PostCard';
 import useInfiniteScoll from '../../hooks/articles/use-infinite-scroll';
-import { useGetResource } from '../../hooks/api/use-get-resource';
+import { useGetResource } from '../../hooks/features/api/use-get-resource';
 
 import '../../assets/styling/content.css';
 
@@ -16,7 +16,9 @@ export default function PostArticles({kwargs={}}) {
 
   if(loading && !isFetchingNextPage) {
     return (
-      <LoadingCard />
+      <div className='loading-article-container'>
+        <LoadingCard />
+      </div>
     );
   }
 

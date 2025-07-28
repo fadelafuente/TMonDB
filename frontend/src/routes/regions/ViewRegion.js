@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react';
 import { Col, NavDropdown, Row, Tab, Tabs } from 'react-bootstrap';
 import { BsThreeDots } from 'react-icons/bs';
-import { connect } from 'react-redux';
+import { useOutletContext } from 'react-router-dom';
 
 import ReplyBar from '../../components/Bars/ReplyBar';
 import CultureTab from '../../components/Content/CultureTab';
@@ -17,7 +17,8 @@ import '../../assets/styling/UserProfile.css';
 import '../../assets/styling/ViewMon.css';
 import '../../assets/styling/buttons.css';
 
-function ViewRegion({ isAuthenticated }) {
+export default function ViewRegion() {
+  const { isAuthenticated } = useOutletContext();
   const [region, setRegion] = useState({});
   const [showBlock, setShowBlock] = useState(false);
   const [aboveMid, setAboveMid] = useMiddleViewPort();
@@ -113,9 +114,3 @@ function ViewRegion({ isAuthenticated }) {
     </>
   )
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(ViewRegion);

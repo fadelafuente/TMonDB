@@ -2,7 +2,7 @@ import {
   useMutation,
   useQueryClient
 } from '@tanstack/react-query';
-import { axiosInstance } from '../../lib/axios-config';
+import { axiosInstance } from '../../../lib/axios-config';
 import { AxiosError } from 'axios';
 
 export function useUpdateInteraction(resource = 'posts') {

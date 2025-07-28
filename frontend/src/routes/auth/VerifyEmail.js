@@ -7,16 +7,16 @@ import { useEmailFromLocation } from '../../hooks/auth/helpers/use-email-from-lo
 import { useNavigateOnAuth }from '../../hooks/auth/helpers/use-navigate-on-auth';
 import { useFailedSocialAuth } from '../../hooks/auth/helpers/use-failed-social-auth';
 
-function VerifyEmail({ isAuthenticated, resendActivation }) {
+function VerifyEmail({ resendActivation }) {
     const email = useEmailFromLocation();
-    useNavigateOnAuth(isAuthenticated);
+    useNavigateOnAuth();
     useFailedSocialAuth(email);
 
     return (
-        <div className="form-container verify-container">
-            <h2 className="form-title">Please verify your email</h2>
-            <Form className="form">
-                <FormText id="centered-text">
+        <div className='form-container verify-container'>
+            <h2 className='form-title'>Please verify your email</h2>
+            <Form className='form'>
+                <FormText id='centered-text'>
                     An email was sent to 
                     <p>
                         <strong>
@@ -26,7 +26,7 @@ function VerifyEmail({ isAuthenticated, resendActivation }) {
                     Click on the link to verify your email and activate your account.
                 </FormText>
                 <Button 
-                    type="submit"
+                    type='submit'
                     onClick={ () => resendActivation(email) }
                 >
                     Resend Activation Email
@@ -36,8 +36,4 @@ function VerifyEmail({ isAuthenticated, resendActivation }) {
     );
 };
 
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, { resendActivation })(VerifyEmail);
+export default connect(null, { resendActivation })(VerifyEmail);

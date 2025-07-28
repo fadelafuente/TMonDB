@@ -51,7 +51,6 @@ function DeleteResourceModal({show, setShow, label, handleDelete}) {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
 });
 
 export default connect(mapStateToProps, { logout })(DeleteResourceModal);

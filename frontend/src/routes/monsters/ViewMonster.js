@@ -15,8 +15,9 @@ import StatChart from '../../components/TablesAndCharts/StatChart';
 import WeaknessChart from '../../components/TablesAndCharts/WeaknessChart';
 import SocialInteractions from '../../components/UserInteractions/SocialInteractions';
 import { handleHeightConversion, handleKgToLbConversion } from '../../functions/handlers';
-import { useDeleteResource } from '../../hooks/api/use-delete-resource';
-import { useGetResourceById } from '../../hooks/api/use-get-resource-by-id';
+import { useDeleteResource } from '../../hooks/features/api/use-delete-resource';
+import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
+import { useAuth } from '../../hooks/features/auth/use-auth';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/UserProfile.css';
@@ -28,6 +29,7 @@ export default function ViewMon() {
   const [showBlock, setShowBlock] = useState(false);
   const { data: isDeleted, mutate: setIsDeleted } = useDeleteResource('monsters');
   const [tab, setTab] = useState('stats');
+  const { data: isAuthenticated, isLoading: authLoading } = useAuth();
 
   const levelMoves = [
     {method_value: 19, name: 'Fire Fang', type: 'Fire', power: 65},
@@ -59,7 +61,7 @@ export default function ViewMon() {
     lb = handleKgToLbConversion(monster.avg_weight);
   }
 
-  if(isLoading) {
+  if(isLoading || authLoading) {
     return (
       <div className='article-container'>
         <LoadingCard />
@@ -199,9 +201,14 @@ export default function ViewMon() {
                 <SocialInteractions resource='monsters' obj={ monster } />
               </div>
             </article>
-            <div className='reply-container'>
-              <ReplyBar parent={ monster && monster.article ? monster.article.id : null } />
-            </div>
+            {
+              isAuthenticated ?
+                <div className='reply-container'>
+                  <ReplyBar parent={ monster && monster.article ? monster.article.id : null } />
+                </div>
+              :
+                <div className='no-reply-container'></div>
+            }
             <div className='comments-container article-container'>
               <PostArticles kwargs={ { parent: monster.article ? monster.article.id : null } } />
             </div>

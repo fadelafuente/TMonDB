@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useOutletContext, useParams } from 'react-router-dom';
 import WorldForm from '../../components/Forms/WorldForm';
 import SpinningLoader from '../../components/Loader/SpinningLoader';
-import { useUpdateResource } from '../../hooks/api/use-update-resource';
-import { useGetResourceById } from '../../hooks/api/use-get-resource-by-id';
+import { useUpdateResource } from '../../hooks/features/api/use-update-resource';
+import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
 
-function UpdateWorld({ isAuthenticated }) {
+export default function UpdateWorld() {
   const { id } = useParams();
+  const { isAuthenticated } = useOutletContext();
   const { data: world, isLoading } = useGetResourceById('worlds', id);
   const [formData, resetFormData, setFormData, setInitialForm] = useUpdateResource({
     name: world.name ||'',
@@ -19,7 +20,7 @@ function UpdateWorld({ isAuthenticated }) {
     level_cap: world.level_cap || 100
   }, 'worlds', id);
 
-  if(isLoading || isAuthenticated === null) {
+  if(isLoading) {
     return <div className='loading-container'>
       <SpinningLoader />
     </div>
@@ -38,9 +39,3 @@ function UpdateWorld({ isAuthenticated }) {
     </>
   );
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(UpdateWorld);

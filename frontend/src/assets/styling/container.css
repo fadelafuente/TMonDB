@@ -29,6 +29,10 @@ div.no-margins-container,
     width: 100%;
 }
 
+.max-height-container {
+    height: 100%;
+}
+
 .input-textarea-container {
     background-color: var(--input-box-color);
     border-radius: 0.375em;
@@ -56,6 +60,13 @@ div.no-margins-container,
     align-items: center;
     width: 100%;
     height: 50vh;
+}
+
+.loading-article-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 @media (max-width: 940px) {

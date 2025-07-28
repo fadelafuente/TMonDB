@@ -16,7 +16,9 @@ export default function BlockingArticles() {
 
     if(loading && !isFetchingNextPage) {
       return (
-        <LoadingCard />
+        <div className='loading-article-container'>
+          <LoadingCard />
+        </div>
       );
     }
   

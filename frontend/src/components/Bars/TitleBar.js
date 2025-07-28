@@ -5,20 +5,21 @@ import { connect } from 'react-redux';
 
 import { logout } from '../../actions/auth';
 import CreatePostModal from '../Modals/CreatePostModal';
-import { useCreateResource } from '../../hooks/api/use-create-resource';
+import { useCreateResource } from '../../hooks/features/api/use-create-resource';
 import SearchBar from './SearchBar';
 
 import '../../assets/styling/forms.css';
 import '../../assets/styling/App.css';
+import { useAuth } from '../../hooks/features/auth/use-auth';
 
-function TitleBar({setQuery, logout, isAuthenticated, user }) {
+export default function TitleBar({setQuery, user }) {
   const [show, setShow] = useState(false);
   const [width, setWidth] = useState(window.innerWidth <= 700);
+  const { data: isAuthenticated, isLoading } = useAuth();
   const initialForm = {
     content: ''
   };
-
-const form = useCreateResource(initialForm);
+  const form = useCreateResource(initialForm);
 
   useEffect(() => {
     function handleResize() {
@@ -129,9 +130,3 @@ const form = useCreateResource(initialForm);
     </Navbar>
   );
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, { logout })(TitleBar);

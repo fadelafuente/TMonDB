@@ -1,8 +1,7 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Col, Placeholder, Row, Card, Dropdown, DropdownButton } from 'react-bootstrap';
 import { BsThreeDots } from 'react-icons/bs';
-import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import { DeletedCard } from './DeletedCard';
 import ImageGallery from '../ImageGallery';
@@ -11,18 +10,19 @@ import DeleteResourceModal from '../Modals/DeleteResourceModal';
 import BlockModal from '../Modals/BlockModal';
 import SocialInteractions from '../UserInteractions/SocialInteractions';
 import { handleTimeDifference } from '../../functions/handlers';
-import { useDeleteResource } from '../../hooks/api/use-delete-resource';
-import { useUpdateResource } from '../../hooks/api/use-update-resource';
+import { useDeleteResource } from '../../hooks/features/api/use-delete-resource';
+import { useUpdateResource } from '../../hooks/features/api/use-update-resource';
 import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
 
 import '../../assets/styling/PostCard.css';
 
-function PostCard({ post, isAuthenticated }) {
+export default function PostCard({ post }) {
   const [showBlock, setShowBlock] = useState(false);
   const [blocked, setBlocked] = useState(false);
   const [aboveMid, setAboveMid] = useMiddleViewPort();
   const [showDelete, setShowDelete] = useState(false);
   const { data: isDeleted, mutate: setIsDeleted } = useDeleteResource('posts');
+  const { isAuthenticated } = useOutletContext();
   const [showUpdate, setShowUpdate] = useState(false);
   const form = useUpdateResource({
       content: post.content
@@ -147,9 +147,3 @@ function PostCard({ post, isAuthenticated }) {
     );
   }
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(PostCard);

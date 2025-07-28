@@ -1,26 +1,23 @@
-import { React, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import { useOutletContext } from 'react-router-dom';
 
 import DeleteModal from '../../components/Modals/DeleteModal';
 import ResetModal from '../../components/Modals/ResetModal';
 import SetUsernameForm from '../../components/Forms/SetUsernameForm';
-import { useNavigateNotAuth } from "../../hooks/auth/helpers/use-navigate-not-auth";
 
 import '../../assets/styling/forms.css';
 import '../../assets/styling/Account.css';
 import '../../assets/styling/PostCard.css';
 import '../../assets/styling/Modal.css';
 
-function Account({isAuthenticated}) {
+export default function Account() {
     const { user } = useOutletContext();
     const [show, setShow] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [resetItem, setResetItem] = useState('');
     const [editUsername, setEditUsername] = useState(false);
     const [name, setName] = useState(user ? user.username : '');
-    useNavigateNotAuth(isAuthenticated);
 
     useEffect(() => {
         if(user && name === '')
@@ -97,9 +94,3 @@ function Account({isAuthenticated}) {
         </>
     )
 }
-
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(Account);

@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 
-import { useAdaptiveFormData } from '../form/use-adaptive-formdata';
+import { useAdaptiveFormData } from '../../form/use-adaptive-formdata';
 import {
   useMutation,
   useQueryClient
 } from '@tanstack/react-query';
-import { axiosInstance } from '../../lib/axios-config';
+import { axiosInstance } from '../../../lib/axios-config';
 
 function useCreateResourceHelper(resource = 'posts') {
   return useMutation({

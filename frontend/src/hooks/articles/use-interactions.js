@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useUpdateInteraction } from '../api/use-update-interaction';
+import { useUpdateInteraction } from '../features/api/use-update-interaction';
 
 export function useInteractions(initial_interaction, user_interacted, resource = 'posts') {
   const [interaction, setInteraction] = useState(initial_interaction);

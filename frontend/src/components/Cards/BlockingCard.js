@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { Button, Col } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import BlockModal, { UnBlockModal } from '../Modals/BlockModal';
 
 import '../../assets/styling/PostCard.css';
 
-function BlockingCard({ user, isAuthenticated }) {
+export default function BlockingCard({ user }) {
     const [blocked, setBlocked] = useState(true);
     const [show, setShow] = useState(false);
     const navigate = useNavigate();
@@ -33,7 +32,7 @@ function BlockingCard({ user, isAuthenticated }) {
                     <Col className='align-right'>
                         <Button 
                             className='base-btn reverse-base-btn right-most-btn' 
-                            onClick={ isAuthenticated && user ? () => setShow(true) : () => navigate('/login') }
+                            onClick={ user ? () => setShow(true) : () => navigate('/login') }
                         >
                             { blocked ? 'unblock' : 'block' } 
                         </Button>
@@ -43,8 +42,3 @@ function BlockingCard({ user, isAuthenticated }) {
         </>
     )
 }
-
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated});
-
-export default connect(mapStateToProps, null)(BlockingCard);

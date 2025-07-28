@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { BsArrowLeft, BsDashCircle, BsPlusCircle } from 'react-icons/bs';
-import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 
 import TitleBar from '../../components/Bars/TitleBar';
 import TypesTable from '../../components/TablesAndCharts/TypesTable';
 import { useCurrentUserDetails } from '../../hooks/profile/use-current-user-details';
-import { useNavigateNotAuth } from "../../hooks/auth/helpers/use-navigate-not-auth";
+import { useNavigateNotAuth } from '../../hooks/auth/helpers/use-navigate-not-auth';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/types.css';
 
-function CreateType({ isAuthenticated }) {
+export default function CreateType() {
+  const { isAuthenticated } = useOutletContext();
   const [user] = useCurrentUserDetails(isAuthenticated);
   const navigate = useNavigate();
   const [types, setTypes] = useState([]);
   const [newType, setNewType] = useState('');
-  useNavigateNotAuth(isAuthenticated);
+  useNavigateNotAuth();
 
   function addType(t) {
     if(types.length >= 20 || !t)
@@ -91,9 +91,3 @@ function CreateType({ isAuthenticated }) {
     </>
   )
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(CreateType);

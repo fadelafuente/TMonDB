@@ -2,16 +2,15 @@ import { Col, Row, Dropdown, Alert, DropdownButton } from 'react-bootstrap';
 import { BsShare, BsHeart, BsRepeat, BsChatRightDots, BsHeartFill, BsChatRightDotsFill } from 'react-icons/bs';
 import { useInteractions } from '../../hooks/articles/use-interactions';
 import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
-import { useCreateResource } from '../../hooks/api/use-create-resource';
+import { useCreateResource } from '../../hooks/features/api/use-create-resource';
 import { useTimedAlert } from '../../hooks/misc/use-timed-alert';
-import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import CreatePostModal from '../Modals/CreatePostModal';
 import { useState } from 'react';
 
 import '../../assets/styling/PostCard.css';
 
-function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
+export default function SocialInteractions({ resource=null, obj=null }) {
   const initialData = { 
     id: obj ? obj.id : null, 
     likes_count: obj ? obj.likes_count : 0, 
@@ -22,6 +21,7 @@ function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
     user_reposted: obj ? obj.user_reposted : false, 
     user_commented: obj ? obj.user_commented : false
   };
+  const { isAuthenticated } = useOutletContext();
   const [liked, likes, setLike] = useInteractions(initialData.likes_count, initialData.user_liked, resource);
   const [reposted, reposts, setRepost] = useInteractions(initialData.reposts_count, initialData.user_reposted, resource);
   const [aboveMid, setAboveMid] = useMiddleViewPort();
@@ -126,9 +126,3 @@ function SocialInteractions({ resource=null, obj=null, isAuthenticated }) {
     </>
   );
 }
-
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
-
-export default connect(mapStateToProps, null)(SocialInteractions);
