@@ -10,7 +10,7 @@ export function useUpdateInteraction(resource = 'posts') {
 
   return useMutation({
     mutationFn: async ({ interaction_type, id }) => {
-      const response = await axiosInstance.patch(`api/${resource}/${id}/${interaction_type}/`, {});
+      const response = await axiosInstance.patch(`/api/${resource}/${id}/${interaction_type}/`, {});
       return response.data;
     },
     onSuccess: (response) => {

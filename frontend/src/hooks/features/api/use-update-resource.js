@@ -13,7 +13,7 @@ function useUpdateResourceHelper(resource = 'posts', id) {
 
   return useMutation({
     mutationFn: async (body) => {
-      const response = await axiosInstance.patch(`api/${resource}/${id}/`, body);
+      const response = await axiosInstance.patch(`/api/${resource}/${id}/`, body);
       return response;
     },
     onSuccess: (response) => {

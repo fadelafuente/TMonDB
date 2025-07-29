@@ -9,7 +9,7 @@ export function useDeleteResource(resource = 'posts') {
 
   return useMutation({
     mutationFn: async (id) => {
-      await axiosInstance.delete(`api/${resource}/${id}/`);
+      await axiosInstance.delete(`/api/${resource}/${id}/`);
       return true;
     },
     onSuccess: () => {

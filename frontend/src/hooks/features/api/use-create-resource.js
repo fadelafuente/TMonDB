@@ -10,7 +10,7 @@ import { axiosInstance } from '../../../lib/axios-config';
 function useCreateResourceHelper(resource = 'posts') {
   return useMutation({
     mutationFn: async (body) => {
-      const response = await axiosInstance.post(`api/${resource}/`, body);
+      const response = await axiosInstance.post(`/api/${resource}/`, body);
       return response;
     }
   });

@@ -12,7 +12,7 @@ import '../../assets/styling/PostCard.css';
 import '../../assets/styling/Modal.css';
 
 export default function Account() {
-    const { user } = useOutletContext();
+    const { user } = null;
     const [show, setShow] = useState(false);
     const [showDelete, setShowDelete] = useState(false);
     const [resetItem, setResetItem] = useState('');
