@@ -2,14 +2,6 @@ import axios from 'axios';
 import { 
     LOGIN_SUCCESS, 
     LOGIN_FAIL,
-    REGISTER_SUCCESS,
-    REGISTER_FAIL,
-    ACTIVATION_SUCCESS,
-    ACTIVATION_FAIL,
-    LOAD_USER_SUCCESS, 
-    LOAD_USER_FAIL,
-    AUTHENTICATED_SUCCESS,
-    AUTHENTICATED_FAIL,
     LOGOUT,
     RESET_SUCCESS,
     RESET_FAIL,
@@ -88,28 +80,6 @@ export const logout = () => async dispatch => {
     dispatch({
         type: LOGOUT
     });
-}
-
-export const verify = (uid, token) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-
-    const body = JSON.stringify({ uid, token });
-
-    try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/activation/`, body, config);
-
-        dispatch({
-            type: ACTIVATION_SUCCESS
-        });
-    } catch (err) {
-        dispatch({
-            type: ACTIVATION_FAIL
-        });
-    }
 }
 
 export const setLoginByEmail = (email, reset_type) => async dispatch => {

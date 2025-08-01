@@ -1,27 +1,22 @@
-import { verify } from '../../actions/auth';
-import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { connect } from 'react-redux';
 import { useParams } from "react-router-dom";
-import { useNavigateOnVerify } from '../../hooks/auth/helpers/use-navigate-on-verify';
 
 import '../../assets/styling/forms.css';
+import { useActivation } from '../../hooks/features/auth/use-activation';
 
 export async function action() {
     return null
 }
 
-function Activate({ verify }) {
+export default function Activate() {
     const { uid, token } = useParams();
-    const [verified, setVerified] = useState(false);
-    useNavigateOnVerify(verified);
+    const { mutate: verify } = useActivation();
 
     function verify_account(e) {
         e.preventDefault();
 
-        verify(uid, token);
-        setVerified(true);
+        verify({ uid, token });
     }
 
     return (
@@ -35,5 +30,3 @@ function Activate({ verify }) {
         </div>
     )
 }
-
-export default connect(null, { verify })(Activate);
