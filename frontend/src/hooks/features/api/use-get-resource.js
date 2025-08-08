@@ -1,5 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { axiosInstance } from '../../../lib/axios-config';
+import getApiHeaders from '../../../lib/api-config';
 
 export function useGetResource(resource, kwargs = {}, query) {
   return useInfiniteQuery({
@@ -11,7 +12,8 @@ export function useGetResource(resource, kwargs = {}, query) {
           queryString ? queryString += `&search=${query}` : queryString = `search=${query}`;
         }
 
-        const response = await axiosInstance.get(`/api/${resource}/?page=${pageParam}${queryString ? `&${queryString}` : ''}`);
+        const config = { headers: getApiHeaders() };
+        const response = await axiosInstance.get(`/api/${resource}/?page=${pageParam}${queryString ? `&${queryString}` : ''}`, config);
         return response.data;
       } catch (error) {
         console.error('Error fetching resource:', error);

@@ -3,13 +3,15 @@ import {
   useQueryClient
 } from '@tanstack/react-query';
 import { axiosInstance } from '../../../lib/axios-config';
+import getApiHeaders from '../../../lib/api-config';
 
 export function useDeleteResource(resource = 'posts') {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (id) => {
-      await axiosInstance.delete(`/api/${resource}/${id}/`);
+      const config = { headers: getApiHeaders() };
+      await axiosInstance.delete(`/api/${resource}/${id}/`, config);
       return true;
     },
     onSuccess: () => {

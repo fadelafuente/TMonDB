@@ -1,16 +1,17 @@
 import { useNavigate } from 'react-router-dom';
-
-import { useAdaptiveFormData } from '../../form/use-adaptive-formdata';
 import {
   useMutation,
   useQueryClient
 } from '@tanstack/react-query';
+import { useAdaptiveFormData } from '../../form/use-adaptive-formdata';
 import { axiosInstance } from '../../../lib/axios-config';
+import getApiHeaders from '../../../lib/api-config';
 
 function useCreateResourceHelper(resource = 'posts') {
   return useMutation({
     mutationFn: async (body) => {
-      const response = await axiosInstance.post(`/api/${resource}/`, body);
+      const config = { headers: getApiHeaders() };
+      const response = await axiosInstance.post(`/api/${resource}/`, body, config);
       return response;
     }
   });

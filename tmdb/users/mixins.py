@@ -83,3 +83,10 @@ class ListLikesMixin:
             data = {'likes': post_response.data, 'likes_count': len(post_response.data['results'])}
  
         return Response(data)
+    
+class LogoutMixin:
+    @action(detail=False, methods=['post'])
+    def logout(self, request, *args, **kwargs):
+        response = Response(status=status.HTTP_200_OK, data={'message': 'Logged out successfully.'})
+        response.delete_cookie('signature')
+        return response

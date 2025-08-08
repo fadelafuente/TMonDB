@@ -1,21 +1,20 @@
-import { React, Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { BsPlusCircle, BsPersonCircle } from 'react-icons/bs';
-import { connect } from 'react-redux';
 
+import SearchBar from './SearchBar';
 import { logout } from '../../actions/auth';
 import CreatePostModal from '../Modals/CreatePostModal';
 import { useCreateResource } from '../../hooks/features/api/use-create-resource';
-import SearchBar from './SearchBar';
+import { useAuth } from '../../hooks/features/auth/use-auth';
 
 import '../../assets/styling/forms.css';
 import '../../assets/styling/App.css';
-import { useAuth } from '../../hooks/features/auth/use-auth';
 
 export default function TitleBar({setQuery, user }) {
   const [show, setShow] = useState(false);
   const [width, setWidth] = useState(window.innerWidth <= 700);
-  const { data: isAuthenticated, isLoading } = useAuth();
+  const { data: isAuthenticated } = useAuth();
   const initialForm = {
     content: ''
   };

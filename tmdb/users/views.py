@@ -60,7 +60,7 @@ class CustomProviderAuthView(social_views.ProviderAuthView):
         return _post(response)
     
 class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin, 
-                        ListFollowersMixin, UpdateBlockingMixin, ListBlockingMixin, ListLikesMixin):
+                        ListFollowersMixin, UpdateBlockingMixin, ListBlockingMixin, ListLikesMixin, LogoutMixin):
     filter_backends = (filters.OrderingFilter, filters.SearchFilter)
     ordering_fields = ('id', 'username')
     ordering = ('username')
@@ -71,7 +71,7 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin,
         if self.action in ['follow', 'block']:
             return (IsAuthenticated(), IsNotCurrentUser())
         elif self.action in ['blocking']:
-            return (IsAuthenticated(), IsCurrentUser())
+            return (IsAuthenticated(), IsCurrentUser(), 'logout')
         elif self.action in ['following', 'retrieve', 'followers', 'likes']:
             return (AllowAny(),)
         return super().get_permissions()

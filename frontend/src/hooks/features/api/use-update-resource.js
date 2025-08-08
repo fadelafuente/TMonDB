@@ -6,6 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { axiosInstance } from '../../../lib/axios-config';
 import { AxiosError } from 'axios';
+import getApiHeaders from '../../../lib/api-config';
 
 function useUpdateResourceHelper(resource = 'posts', id) {
   const navigate = useNavigate();
@@ -13,7 +14,8 @@ function useUpdateResourceHelper(resource = 'posts', id) {
 
   return useMutation({
     mutationFn: async (body) => {
-      const response = await axiosInstance.patch(`/api/${resource}/${id}/`, body);
+      const config = { headers: getApiHeaders() };
+      const response = await axiosInstance.patch(`/api/${resource}/${id}/`, body, config);
       return response;
     },
     onSuccess: (response) => {

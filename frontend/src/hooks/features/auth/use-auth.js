@@ -17,7 +17,6 @@ export function useAuth() {
         return true;
       } catch (error) {
         localStorage.removeItem('access');
-        localStorage.removeItem('refresh');
         console.error('Error verifying authentication token: ', error);
         return false;
       }

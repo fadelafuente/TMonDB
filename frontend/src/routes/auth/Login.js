@@ -1,119 +1,144 @@
-import { login, loginAttempt } from '../../actions/auth';
+import { loginAttempt } from '../../actions/auth';
 import { handleSocialAuth } from '../../functions/handlers';
-import { InputGroup, Modal } from "react-bootstrap";
+import { InputGroup, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+
+import LoadingCard from '../../components/Cards/LoadingCard';
 import { useFormData } from '../../hooks/form/use-form-data';
 import { useLoginAttempt } from '../../hooks/auth/helpers/use-login-attempt';
-import { useNavigateOnAuth }from '../../hooks/auth/helpers/use-navigate-on-auth';
-import { usePassword } from "../../hooks/auth/helpers/use-password";
+import { useNavigateOnAuth } from '../../hooks/auth/helpers/use-navigate-on-auth';
+import { usePassword } from '../../hooks/auth/helpers/use-password';
+import { useLogin } from '../../hooks/features/auth/use-login';
+import { useAuth } from '../../hooks/features/auth/use-auth';
 
-import "../../assets/styling/App.css";
+import '../../assets/styling/App.css';
 import '../../assets/styling/forms.css';
 
-function Login({ login, isAuthenticated, loginFailed, loginAttempt }) {
-    const [formData, setFormData] = useFormData({
-        email: '',
-        password: ''
-    });
-    const [show, setShow] = useLoginAttempt(loginFailed, isAuthenticated, loginAttempt);
-    const { email, password } = formData;
-    const [showPass, setShowPass] = usePassword(false);
-    useNavigateOnAuth(isAuthenticated);
+function Login({ loginFailed, loginAttempt }) {
+  const { data: isAuthenticated, isLoading } = useAuth();
+  const [formData, setFormData] = useFormData({
+    email: '',
+    password: '',
+  });
+  const [show, setShow] = useLoginAttempt(
+    loginFailed,
+    isAuthenticated,
+    loginAttempt
+  );
+  const { email, password } = formData;
+  const [showPass, setShowPass] = usePassword(false);
+  const { mutate: login } = useLogin();
+  useNavigateOnAuth(isAuthenticated);
 
-    function onSubmit(e) {
-        e.preventDefault();
+  function onSubmit(e) {
+    e.preventDefault();
 
-        login(email, password);
-    }
+    login({ email, password });
+  }
 
+  if(isLoading) {
     return (
-        <div className="form-container">
-            <Modal
-                backdrop="static"
-                keyboard={ false }
-                show={ show }
-                onHide={ () => setShow() }
-                id="error-modal"
+      <div className='loading-container'>
+        <LoadingCard />
+      </div>
+    );
+  }
+
+  return (
+    <div className='form-container'>
+      <Modal
+        backdrop='static'
+        keyboard={ false }
+        show={ show }
+        onHide={ () => setShow() }
+        id='error-modal'
+      >
+        <Modal.Header closeButton closeVariant='white'>
+          <Modal.Title>Invalid Field</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Either the email or password is incorrect.</Modal.Body>
+      </Modal>
+      <h2 className='form-title'>Login</h2>
+      <Form className='form' onSubmit={ (e) => onSubmit(e) }>
+        <Form.Group controlId='formEmail' className='form-group'>
+          <Form.Control
+            type='email'
+            placeholder='Email'
+            name='email'
+            value={email}
+            onChange={ (e) => setFormData(e) }
+            required
+          />
+        </Form.Group>
+        <Form.Group controlId='login-password' className='form-group'>
+          <InputGroup>
+            <Form.Control
+              type='password'
+              placeholder='Password'
+              name='password'
+              value={ password }
+              onChange={ (e) => setFormData(e) }
+              minLength='8'
+              required
+            />
+            <InputGroup.Text
+              onClick={ () => setShowPass('login-password') }
+              id='password-toggle'
             >
-                <Modal.Header closeButton closeVariant="white">
-                <Modal.Title>Invalid Field</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    Either the email or password is incorrect.
-                </Modal.Body>
-            </Modal>
-            <h2 className="form-title">Login</h2>
-            <Form className="form" onSubmit={ e=> onSubmit(e) }>
-                <Form.Group controlId="formEmail" className="form-group">
-                    <Form.Control
-                        type="email" 
-                        placeholder="Email" 
-                        name="email"
-                        value={ email }
-                        onChange={ e => setFormData(e) }
-                        required
-                    />
-                </Form.Group>
-                <Form.Group controlId="login-password" className="form-group">
-                    <InputGroup>
-                        <Form.Control
-                            type="password" 
-                            placeholder="Password"
-                            name="password"
-                            value={ password }
-                            onChange={ e => setFormData(e) }
-                            minLength="8"
-                            required 
-                        />
-                        <InputGroup.Text 
-                            onClick={ () => setShowPass("login-password") }
-                            id="password-toggle"
-                        >
-                            { showPass ? <BsEyeFill /> : <BsEyeSlash /> }
-                        </InputGroup.Text>
-                    </InputGroup>
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                    Login
-                </Button>
-                <Form.Text>
-                    Don't have an account? <Link to="/register">register here</Link>
-                </Form.Text>
-                <Form.Text>
-                    Forgot password? <Link to="/reset_password">reset password here</Link>
-                </Form.Text>
-                <hr className="break-line" />
-                <Form.Text className="or-social-auth">
-                    OR
-                </Form.Text>
-            </Form>
-            <div className="social-oauth-container">
-                <Button 
-                    className="google-button social-btn"
-                    type="submit"
-                    onClick={ e => handleSocialAuth(e, "google-oauth2", `${process.env.REACT_APP_WEB_URL}/google-oauth`) }
-                >
-                    Login with Google
-                </Button>
-                <Button 
-                    className="facebook-button social-btn"
-                    type="submit"
-                    onClick={ e => handleSocialAuth(e, "facebook", `${process.env.REACT_APP_WEB_URL}/facebook-oauth`) }
-                >
-                    Login with Facebook
-                </Button>
-            </div>
-        </div>
-    )
+              { showPass ? <BsEyeFill /> : <BsEyeSlash /> }
+            </InputGroup.Text>
+          </InputGroup>
+        </Form.Group>
+        <Button variant='primary' type='submit'>
+          Login
+        </Button>
+        <Form.Text>
+          Don't have an account? <Link to='/register'>register here</Link>
+        </Form.Text>
+        <Form.Text>
+          Forgot password? <Link to='/reset_password'>reset password here</Link>
+        </Form.Text>
+        <hr className='break-line' />
+        <Form.Text className='or-social-auth'>OR</Form.Text>
+      </Form>
+      <div className='social-oauth-container'>
+        <Button
+          className='google-button social-btn'
+          type='submit'
+          onClick={(e) =>
+            handleSocialAuth(
+              e,
+              'google-oauth2',
+              `${process.env.REACT_APP_WEB_URL}/google-oauth`
+            )
+          }
+        >
+          Login with Google
+        </Button>
+        <Button
+          className='facebook-button social-btn'
+          type='submit'
+          onClick={(e) =>
+            handleSocialAuth(
+              e,
+              'facebook',
+              `${process.env.REACT_APP_WEB_URL}/facebook-oauth`
+            )
+          }
+        >
+          Login with Facebook
+        </Button>
+      </div>
+    </div>
+  );
 }
 
-const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated,
-    loginFailed: state.auth.loginFailed
+const mapStateToProps = (state) => ({
+  loginFailed: state.auth.loginFailed,
 });
 
-export default connect(mapStateToProps, { login, loginAttempt })(Login);
+export default connect(mapStateToProps, { loginAttempt })(Login);
