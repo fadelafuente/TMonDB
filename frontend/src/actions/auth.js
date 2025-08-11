@@ -1,8 +1,5 @@
 import axios from 'axios';
 import { 
-    LOGIN_SUCCESS, 
-    LOGIN_FAIL,
-    LOGOUT,
     RESET_SUCCESS,
     RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
@@ -50,36 +47,6 @@ export const socialAuthenticate = (state, code, provider) => async dispatch => {
             type: SOCIAL_AUTH_FAIL
         });
     }
-}
-
-export const login = (email, password) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-
-    const body = JSON.stringify({ email, password });
-
-    try {
-        const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/create/`, body, config);
-
-        dispatch({
-            type: LOGIN_SUCCESS,
-            payload: res.data
-        });
-
-    } catch (err) {
-        dispatch({
-            type: LOGIN_FAIL
-        });
-    }
-}
-
-export const logout = () => async dispatch => {
-    dispatch({
-        type: LOGOUT
-    });
 }
 
 export const setLoginByEmail = (email, reset_type) => async dispatch => {

@@ -5,12 +5,11 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import LoadingCard from '../../components/Cards/LoadingCard';
 import { useFormData } from '../../hooks/form/use-form-data';
 import { useLoginAttempt } from '../../hooks/auth/helpers/use-login-attempt';
-import { useNavigateOnAuth } from '../../hooks/auth/helpers/use-navigate-on-auth';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
 import { useLogin } from '../../hooks/features/auth/use-login';
 import { useAuth } from '../../hooks/features/auth/use-auth';
@@ -32,7 +31,6 @@ function Login({ loginFailed, loginAttempt }) {
   const { email, password } = formData;
   const [showPass, setShowPass] = usePassword(false);
   const { mutate: login } = useLogin();
-  useNavigateOnAuth(isAuthenticated);
 
   function onSubmit(e) {
     e.preventDefault();
@@ -46,6 +44,10 @@ function Login({ loginFailed, loginAttempt }) {
         <LoadingCard />
       </div>
     );
+  }
+
+  if(isAuthenticated) {
+    return <Navigate to='/' replace={ true } />;
   }
 
   return (

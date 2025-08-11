@@ -1,17 +1,12 @@
-import { Modal, InputGroup, Alert } from 'react-bootstrap';
+import { Modal, Alert } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import { BsExclamationCircle, BsEyeFill, BsEyeSlash } from 'react-icons/bs';
+import { BsExclamationCircle } from 'react-icons/bs';
 import { useTimedAlert } from '../../hooks/misc/use-timed-alert';
-import { usePassword } from '../../hooks/auth/helpers/use-password';
-import { useFormData } from '../../hooks/form/use-form-data';
-import { deleteUser, logout } from '../../actions/auth';
-import { connect } from 'react-redux';
 import { useState } from 'react';
 
 import '../../assets/styling/Modal.css';
 
-function DeleteResourceModal({show, setShow, label, handleDelete}) {
+export default function DeleteResourceModal({show, setShow, label, handleDelete}) {
   const [showAlert, setShowAlert] = useTimedAlert(false);
   const [message, setMessage] = useState('');
   
@@ -49,8 +44,3 @@ function DeleteResourceModal({show, setShow, label, handleDelete}) {
     </>
   )
 }
-
-const mapStateToProps = state => ({
-});
-
-export default connect(mapStateToProps, { logout })(DeleteResourceModal);

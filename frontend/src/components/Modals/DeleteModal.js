@@ -1,17 +1,18 @@
+import { useState } from 'react';
 import { Modal, InputGroup, Alert } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsExclamationCircle, BsEyeFill, BsEyeSlash } from 'react-icons/bs';
+
+import { deleteUser } from '../../actions/auth';
 import { useTimedAlert } from '../../hooks/misc/use-timed-alert';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
 import { useFormData } from '../../hooks/form/use-form-data';
-import { deleteUser, logout } from '../../actions/auth';
-import { connect } from 'react-redux';
-import { useState } from 'react';
+import { useLogout } from '../../hooks/features/auth/use-logout';
 
 import '../../assets/styling/Modal.css';
 
-function DeleteModal({show, setShow}) {
+export default function DeleteModal({show, setShow}) {
     const initialForm = {
         current_password: ''
     };
@@ -20,6 +21,7 @@ function DeleteModal({show, setShow}) {
     const [showPass, setShowPass] = usePassword(false);
     const [showAlert, setShowAlert] = useTimedAlert(false);
     const [message, setMessage] = useState('');
+    const { mutate: logout } = useLogout();
     
     const { current_password } = formData;
 
@@ -97,5 +99,3 @@ function DeleteModal({show, setShow}) {
         </>
     )
 }
-
-export default connect(null, { logout })(DeleteModal);

@@ -2,12 +2,11 @@ import { InputGroup, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import LoadingCard from '../../components/Cards/LoadingCard';
 import { useFormData } from '../../hooks/form/use-form-data';
 import SpinningLoader from '../../components/Loader/SpinningLoader';
-import { useNavigateOnAuth } from '../../hooks/auth/helpers/use-navigate-on-auth';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
 import { useRegisterAttempt } from '../../hooks/auth/helpers/use-register-attempt';
 import { useRegister } from '../../hooks/features/auth/use-register';
@@ -20,7 +19,6 @@ export default function Register() {
   const [showPass, setShowPass] = usePassword(false);
   const { data: isAuthenticated, isLoading } = useAuth();
   const [showPassRe, setShowPassRe] = usePassword(false);
-  useNavigateOnAuth(isAuthenticated);
   const [show, setShow, message, setMessage] = useRegisterAttempt();
   const navigate = useNavigate();
   const [formData, setFormData] = useFormData({
@@ -63,6 +61,10 @@ export default function Register() {
         <LoadingCard />
       </div>
     );
+  }
+
+  if(isAuthenticated) {
+    return <Navigate to='/' replace={ true } />;
   }
 
   return (

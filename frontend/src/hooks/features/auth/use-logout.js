@@ -1,11 +1,16 @@
 import { AxiosError } from 'axios';
 import {
-  useMutation
+  useMutation,
+  useQueryClient
 } from '@tanstack/react-query';
 import { axiosInstance } from '../../../lib/axios-config';
 import getApiHeaders from '../../../lib/api-config';
+import { useNavigate } from 'react-router-dom';
 
 export function useLogout() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async () => {
       const config = { headers: getApiHeaders() };
@@ -14,6 +19,8 @@ export function useLogout() {
     },
     onSuccess: () => {
       localStorage.removeItem('access');
+      queryClient.invalidateQueries({ queryKey: ['auth'] });
+      navigate('/');
     },
     onError: (error) => {
       if(error instanceof AxiosError) {

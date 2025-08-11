@@ -3,10 +3,10 @@ import { Container, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap'
 import { BsPlusCircle, BsPersonCircle } from 'react-icons/bs';
 
 import SearchBar from './SearchBar';
-import { logout } from '../../actions/auth';
 import CreatePostModal from '../Modals/CreatePostModal';
 import { useCreateResource } from '../../hooks/features/api/use-create-resource';
 import { useAuth } from '../../hooks/features/auth/use-auth';
+import { LogoutModal } from '../Modals/LogoutModal';
 
 import '../../assets/styling/forms.css';
 import '../../assets/styling/App.css';
@@ -15,6 +15,7 @@ export default function TitleBar({setQuery, user }) {
   const [show, setShow] = useState(false);
   const [width, setWidth] = useState(window.innerWidth <= 700);
   const { data: isAuthenticated } = useAuth();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const initialForm = {
     content: ''
   };
@@ -81,7 +82,7 @@ export default function TitleBar({setQuery, user }) {
           <NavDropdown.Item href='/settings/account'>
             Settings
           </NavDropdown.Item>
-          <NavDropdown.Item href='/' onClick={ () => logout() }>
+          <NavDropdown.Item href='#' onClick={ () => setShowLogoutModal(true) }>
             Logout
           </NavDropdown.Item>
         </NavDropdown>
@@ -126,6 +127,7 @@ export default function TitleBar({setQuery, user }) {
         { isAuthenticated ? authLinks() : guestLinks() }
       </Container>
       <CreatePostModal show={ show } setShow={ () => setShow() } form={ form } />
+      <LogoutModal show={ showLogoutModal } setShow={ setShowLogoutModal } />
     </Navbar>
   );
 }
