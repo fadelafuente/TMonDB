@@ -3,12 +3,18 @@ import { axiosInstance } from '../../../lib/axios-config';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 
-export function useLogin() {
+export function useSocialLogin() {
   const navigate = useNavigate();
 
   return useMutation({
-    mutationFn: async (body) => {
-      const response = await axiosInstance.post('/auth/jwt/create/', body);
+    mutationFn: async ({ state, code, provider }) => {
+      const details = {
+        'state': state,
+        'code': code
+      };
+      const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
+
+      const response = await axiosInstance.post(`/auth/o/${provider}/?${body}`);
       return response.data;
     },
     onSuccess: (data) => {
@@ -18,7 +24,7 @@ export function useLogin() {
     onError: (error) => {
       localStorage.removeItem('access');
       if(error instanceof AxiosError) {
-        console.error('Error logging in: ', error.response?.data || 'Failed to log user in.');
+        console.error('Error Logging in: ', error.response?.data || 'Failed to log user in.');
         return null;
       }
     }

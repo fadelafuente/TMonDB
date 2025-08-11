@@ -12,7 +12,7 @@ export function useRegister() {
     },
     onError: (error) => {
       if(error instanceof AxiosError) {
-        console.error('Error creating resource: ', error.response?.data || 'Failed to update resource.');
+        console.error('Error registering user: ', error.response?.data || 'Failed to register user.');
         return error.response?.data;
       }
     }

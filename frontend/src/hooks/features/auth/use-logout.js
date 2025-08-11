@@ -24,7 +24,7 @@ export function useLogout() {
     },
     onError: (error) => {
       if(error instanceof AxiosError) {
-        console.error('Error creating resource: ', error.response?.data || 'Failed to update resource.');
+        console.error('Error logging out: ', error.response?.data || 'Failed to log user out.');
         return error.response?.data;
       }
     }
