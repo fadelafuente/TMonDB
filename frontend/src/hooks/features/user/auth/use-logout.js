@@ -3,8 +3,8 @@ import {
   useMutation,
   useQueryClient
 } from '@tanstack/react-query';
-import { axiosInstance } from '../../../lib/axios-config';
-import getApiHeaders from '../../../lib/api-config';
+import { axiosInstance } from '../../../../lib/axios-config';
+import getApiHeaders from '../../../../lib/api-config';
 import { useNavigate } from 'react-router-dom';
 
 export function useLogout() {

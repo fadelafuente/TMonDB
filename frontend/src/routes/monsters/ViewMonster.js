@@ -17,7 +17,7 @@ import SocialInteractions from '../../components/UserInteractions/SocialInteract
 import { handleHeightConversion, handleKgToLbConversion } from '../../functions/handlers';
 import { useDeleteResource } from '../../hooks/features/api/use-delete-resource';
 import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
-import { useAuth } from '../../hooks/features/auth/use-auth';
+import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/UserProfile.css';

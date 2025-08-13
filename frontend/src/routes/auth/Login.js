@@ -11,8 +11,8 @@ import LoadingCard from '../../components/Cards/LoadingCard';
 import { useFormData } from '../../hooks/form/use-form-data';
 import { useLoginAttempt } from '../../hooks/auth/helpers/use-login-attempt';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
-import { useLogin } from '../../hooks/features/auth/use-login';
-import { useAuth } from '../../hooks/features/auth/use-auth';
+import { useLogin } from '../../hooks/features/user/auth/use-login';
+import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
 import '../../assets/styling/App.css';
 import '../../assets/styling/forms.css';

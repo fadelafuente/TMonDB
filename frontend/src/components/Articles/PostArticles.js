@@ -16,7 +16,7 @@ export default function PostArticles({kwargs={}}) {
 
   if(loading && !isFetchingNextPage) {
     return (
-      <div className='loading-article-container'>
+      <div className='loading-container'>
         <LoadingCard />
       </div>
     );

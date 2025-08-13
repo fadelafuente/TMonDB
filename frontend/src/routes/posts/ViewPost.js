@@ -9,7 +9,7 @@ import LoadingCard from '../../components/Cards/LoadingCard';
 import PostCard from '../../components/Cards/PostCard';
 import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
 import ParentCard from '../../components/Cards/ParentCard';
-import { useAuth } from '../../hooks/features/auth/use-auth';
+import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/ViewPost.css';
@@ -21,7 +21,7 @@ export default function ViewPost() {
 
   if(isLoading || authLoading) {
     return (
-      <div className='article-container'>
+      <div className='loading-container'>
         <LoadingCard />
       </div>
     );

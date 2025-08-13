@@ -1,6 +1,6 @@
 import { Modal, Row } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
-import { useLogout } from "../../hooks/features/auth/use-logout";
+import { useLogout } from "../../hooks/features/user/auth/use-logout";
 
 export function LogoutModal({show, setShow}) {
   const { mutate: logout } = useLogout();

@@ -8,7 +8,7 @@ import { deleteUser } from '../../actions/auth';
 import { useTimedAlert } from '../../hooks/misc/use-timed-alert';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
 import { useFormData } from '../../hooks/form/use-form-data';
-import { useLogout } from '../../hooks/features/auth/use-logout';
+import { useLogout } from '../../hooks/features/user/auth/use-logout';
 
 import '../../assets/styling/Modal.css';
 

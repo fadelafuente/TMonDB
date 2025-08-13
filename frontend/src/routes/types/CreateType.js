@@ -1,23 +1,23 @@
 import { useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { BsArrowLeft, BsDashCircle, BsPlusCircle } from 'react-icons/bs';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import TitleBar from '../../components/Bars/TitleBar';
+import LoadingCard from '../../components/Cards/LoadingCard';
 import TypesTable from '../../components/TablesAndCharts/TypesTable';
-import { useCurrentUserDetails } from '../../hooks/profile/use-current-user-details';
-import { useNavigateNotAuth } from '../../hooks/auth/helpers/use-navigate-not-auth';
+import { useGetUser } from '../../hooks/features/user/use-get-user';
+import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/types.css';
 
 export default function CreateType() {
-  const { isAuthenticated } = useOutletContext();
-  const [user] = useCurrentUserDetails(isAuthenticated);
+  const { data: user, isLoading } = useGetUser();
   const navigate = useNavigate();
   const [types, setTypes] = useState([]);
   const [newType, setNewType] = useState('');
-  useNavigateNotAuth();
+  const { data: isAuthenticated, isLoading: authLoading } = useAuth();
 
   function addType(t) {
     if(types.length >= 20 || !t)
@@ -32,10 +32,22 @@ export default function CreateType() {
     setTypes(removed);
   }
 
+  if(isLoading || authLoading) {
+    return (
+      <div className='loading-container'>
+        <LoadingCard />
+      </div>
+    );
+  }
+
+  if(!isAuthenticated) {
+    return <Navigate to='/login' replace={ true } />;
+  }
+
   return (
     <>
       <div className='navbar-container'>
-        <TitleBar setQuery={() => {}} user={user} />
+        <TitleBar setQuery={ () => {} } user={ user } />
       </div>
       <div className='content-container center-content'>
         <div id='content-center' className='content-center'>
@@ -81,7 +93,7 @@ export default function CreateType() {
               >
                 Cancel
               </Button>
-              <Button className='base-btn' onClick={e => {}}>
+              <Button className='base-btn' onClick={ e => {} }>
                 Create
               </Button>
             </Card.Footer>

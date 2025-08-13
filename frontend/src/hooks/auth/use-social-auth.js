@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useSocialLogin } from '../features/auth/use-social-login';
+import { useSocialLogin } from '../features/user/auth/use-social-login';
 
 export function useSocialAuth(provider) {
   const location = useLocation();

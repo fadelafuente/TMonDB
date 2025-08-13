@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import TitleBar from '../components/Bars/TitleBar';
 import LoadingCard from '../components/Cards/LoadingCard';
-import { useCurrentUserDetails } from '../hooks/profile/use-current-user-details';
-import { useAuth } from '../hooks/features/auth/use-auth';
+import { useAuth } from '../hooks/features/user/auth/use-auth';
+import { useGetUser } from '../hooks/features/user/use-get-user';
 
 import '../assets/styling/content.css';
 import '../assets/styling/buttons.css';
@@ -12,10 +12,10 @@ import '../assets/styling/container.css';
 export default function HomePage() {
 	const [query, setQuery] = useState('');
 	const { data: isAuthenticated, isLoading } = useAuth();
-	const [user] = useCurrentUserDetails(isAuthenticated);
+	const { data: user, isLoading: userLoading } = useGetUser();
 	const location = useLocation();
 
-	if(isLoading) {
+	if(isLoading || userLoading) {
 		return (
 			<div className='loading-container'>
 				<LoadingCard />

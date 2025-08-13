@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { axiosInstance } from '../../../lib/axios-config';
+import { axiosInstance } from '../../../../lib/axios-config';
 import { useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
 

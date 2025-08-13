@@ -2,9 +2,8 @@ import { Button, InputGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { BsReply } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { useCreateResource } from '../../hooks/features/api/use-create-resource';
-import { useAuth } from '../../hooks/features/auth/use-auth';
+import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/ViewPost.css'

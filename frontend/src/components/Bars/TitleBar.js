@@ -5,7 +5,7 @@ import { BsPlusCircle, BsPersonCircle } from 'react-icons/bs';
 import SearchBar from './SearchBar';
 import CreatePostModal from '../Modals/CreatePostModal';
 import { useCreateResource } from '../../hooks/features/api/use-create-resource';
-import { useAuth } from '../../hooks/features/auth/use-auth';
+import { useAuth } from '../../hooks/features/user/auth/use-auth';
 import { LogoutModal } from '../Modals/LogoutModal';
 
 import '../../assets/styling/forms.css';

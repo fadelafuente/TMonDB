@@ -1,7 +1,7 @@
 import {
   useMutation
 } from '@tanstack/react-query';
-import { axiosInstance } from '../../../lib/axios-config';
+import { axiosInstance } from '../../../../lib/axios-config';
 import { AxiosError } from 'axios';
 
 export function useRegister() {

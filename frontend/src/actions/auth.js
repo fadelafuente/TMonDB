@@ -1,11 +1,7 @@
 import axios from 'axios';
 import { 
-    RESET_SUCCESS,
-    RESET_FAIL,
     PASSWORD_RESET_CONFIRM_SUCCESS,
     PASSWORD_RESET_CONFIRM_FAIL,
-    SOCIAL_AUTH_SUCCESS,
-    SOCIAL_AUTH_FAIL,
     LOGIN_ATTEMPT,
     REGISTER_ATTEMPT,
     ACTIVATION_RESENT_SUCCESS,
@@ -13,63 +9,6 @@ import {
 } from './types';
 
 axios.defaults.withCredentials = true;
-
-export const socialAuthenticate = (state, code, provider) => async dispatch => {
-    if(state && code && !localStorage.getItem('access')) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        };
-
-        const details = {
-            'state': state,
-            'code': code
-        };
-
-        const body = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
-
-        try {
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/o/${provider}/?${body}`, config);
-
-            dispatch({
-                type: SOCIAL_AUTH_SUCCESS,
-                payload: res.data
-            });
-
-        } catch(err) {
-            dispatch({
-                type: SOCIAL_AUTH_FAIL
-            });
-        }
-    } else {
-        dispatch({
-            type: SOCIAL_AUTH_FAIL
-        });
-    }
-}
-
-export const setLoginByEmail = (email, reset_type) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-
-    const body = JSON.stringify({ email });
-
-    try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_${reset_type}/`, body, config);
-
-        dispatch({
-            type: RESET_SUCCESS
-        });
-    } catch(err) {
-        dispatch({
-            type: RESET_FAIL
-        });
-    }
-}
 
 export const resetLoginConfirm = (uid, token, kwargs={}, reset_type='password') => async dispatch => {
     const config = {

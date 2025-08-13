@@ -9,8 +9,8 @@ import { useFormData } from '../../hooks/form/use-form-data';
 import SpinningLoader from '../../components/Loader/SpinningLoader';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
 import { useRegisterAttempt } from '../../hooks/auth/helpers/use-register-attempt';
-import { useRegister } from '../../hooks/features/auth/use-register';
-import { useAuth } from '../../hooks/features/auth/use-auth';
+import { useRegister } from '../../hooks/features/user/auth/use-register';
+import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
 import '../../assets/styling/forms.css';
 
