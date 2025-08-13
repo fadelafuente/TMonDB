@@ -5,11 +5,12 @@ import {
 } from '@tanstack/react-query';
 import { axiosInstance } from '../../../../lib/axios-config';
 import getApiHeaders from '../../../../lib/api-config';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export function useLogout() {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const location = useLocation();
 
   return useMutation({
     mutationFn: async () => {
@@ -20,7 +21,7 @@ export function useLogout() {
     onSuccess: () => {
       localStorage.removeItem('access');
       queryClient.invalidateQueries({ queryKey: ['auth'] });
-      navigate('/');
+      location.pathname === '/' ? navigate(0) : navigate('/');
     },
     onError: (error) => {
       if(error instanceof AxiosError) {

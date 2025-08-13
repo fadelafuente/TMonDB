@@ -71,8 +71,8 @@ class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin,
         if self.action in ['follow', 'block']:
             return (IsAuthenticated(), IsNotCurrentUser())
         elif self.action in ['blocking']:
-            return (IsAuthenticated(), IsCurrentUser(), 'logout')
-        elif self.action in ['following', 'retrieve', 'followers', 'likes']:
+            return (IsAuthenticated(), IsCurrentUser())
+        elif self.action in ['following', 'retrieve', 'followers', 'likes', 'logout']:
             return (AllowAny(),)
         return super().get_permissions()
         
