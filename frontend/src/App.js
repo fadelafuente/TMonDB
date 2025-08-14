@@ -1,8 +1,6 @@
-import { Provider } from 'react-redux';
 import { Outlet, RouterProvider, createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
 
 import Layout from './hocs/Layout';
-import store from './store';
 import {
   QueryClient,
   QueryClientProvider,
@@ -94,9 +92,7 @@ export default function App() {
   ))
 
   return (
-    <Provider store={ store }>
-      <RouterProvider router={ router } />
-    </Provider>
+    <RouterProvider router={ router } />
   );
 }
 

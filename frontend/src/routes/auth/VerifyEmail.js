@@ -1,39 +1,54 @@
-import { FormText } from 'react-bootstrap';
+import { useState } from 'react';
+import { FormText, Toast } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import { connect } from 'react-redux';
 import { Form } from 'react-router-dom';
-import { resendActivation } from '../../actions/auth';
+
+import Toaster from '../../components/Toaster';
 import { useEmailFromLocation } from '../../hooks/auth/helpers/use-email-from-location';
-import { useNavigateOnAuth }from '../../hooks/auth/helpers/use-navigate-on-auth';
 import { useFailedSocialAuth } from '../../hooks/auth/helpers/use-failed-social-auth';
+import { useResendActivation } from '../../hooks/features/user/auth/use-resend-activation';
 
-function VerifyEmail({ resendActivation }) {
-    const email = useEmailFromLocation();
-    useNavigateOnAuth();
-    useFailedSocialAuth(email);
+export default function VerifyEmail() {
+  const email = useEmailFromLocation();
+  useFailedSocialAuth( email );
+  const { mutate: resendActivation } = useResendActivation();
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState('');
 
-    return (
-        <div className='form-container verify-container'>
-            <h2 className='form-title'>Please verify your email</h2>
-            <Form className='form'>
-                <FormText id='centered-text'>
-                    An email was sent to 
-                    <p>
-                        <strong>
-                            { email }
-                        </strong>
-                    </p>
-                    Click on the link to verify your email and activate your account.
-                </FormText>
-                <Button 
-                    type='submit'
-                    onClick={ () => resendActivation(email) }
-                >
-                    Resend Activation Email
-                </Button>
-            </Form>
-        </div>
-    );
-};
+  function handleSubmit() {
+    resendActivation({ email }, {
+      onSuccess: () => {
+        setMessage('Activation email resent successfully. If you do not see it, check your spam folder and that the email is correct.');
+        setShow(true);
+      },
+      onError: () => {
+        setMessage('Failed to resend activation email.');
+        setShow(true);
+      }
+    });
+  }
 
-export default connect(null, { resendActivation })(VerifyEmail);
+  return (
+    <div className='form-container verify-container'>
+      <Toaster
+        show={ show }
+        onClose={ () => setShow(false) }
+        message={ message }
+        title='Activation Email'
+      />
+      <h2 className='form-title'>Please verify your email</h2>
+      <Form className='form'>
+        <FormText id='centered-text'>
+          An email was sent to
+          <p>
+            <strong>{ email }</strong>
+          </p>
+          Click on the link to verify your email and activate your account.
+        </FormText>
+        <Button type='submit' onClick={ handleSubmit }>
+          Resend Activation Email
+        </Button>
+      </Form>
+    </div>
+  );
+}

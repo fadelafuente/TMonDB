@@ -1,32 +1,5 @@
 import axios from 'axios';
-import { 
-    ACTIVATION_RESENT_SUCCESS,
-    ACTIVATION_RESENT_FAIL
-} from './types';
-
 axios.defaults.withCredentials = true;
-
-export const resendActivation = (email) => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-
-    const body = JSON.stringify({ email });
-
-    try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/resend_activation/`, body, config);
-
-        dispatch({
-            type: ACTIVATION_RESENT_SUCCESS
-        });
-    } catch(err) {
-        dispatch({
-            type: ACTIVATION_RESENT_FAIL
-        });
-    }
-}
 
 export async function updateDetails(kwargs) {
     const config = {
