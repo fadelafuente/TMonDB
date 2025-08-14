@@ -1,15 +1,14 @@
-import { loginAttempt } from '../../actions/auth';
+import { useState } from 'react';
 import { handleSocialAuth } from '../../functions/handlers';
-import { InputGroup, Modal } from 'react-bootstrap';
+import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
-import { connect } from 'react-redux';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 import LoadingCard from '../../components/Cards/LoadingCard';
+import Toaster from '../../components/Toaster';
 import { useFormData } from '../../hooks/form/use-form-data';
-import { useLoginAttempt } from '../../hooks/auth/helpers/use-login-attempt';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
 import { useLogin } from '../../hooks/features/user/auth/use-login';
 import { useAuth } from '../../hooks/features/user/auth/use-auth';
@@ -17,17 +16,13 @@ import { useAuth } from '../../hooks/features/user/auth/use-auth';
 import '../../assets/styling/App.css';
 import '../../assets/styling/forms.css';
 
-function Login({ loginFailed, loginAttempt }) {
+export default function Login() {
   const { data: isAuthenticated, isLoading } = useAuth();
   const [formData, setFormData] = useFormData({
     email: '',
     password: '',
   });
-  const [show, setShow] = useLoginAttempt(
-    loginFailed,
-    isAuthenticated,
-    loginAttempt
-  );
+  const [ show, setShow ] = useState(false);
   const { email, password } = formData;
   const [showPass, setShowPass] = usePassword(false);
   const { mutate: login } = useLogin();
@@ -35,7 +30,11 @@ function Login({ loginFailed, loginAttempt }) {
   function onSubmit(e) {
     e.preventDefault();
 
-    login({ email, password });
+    login({ email, password }, {
+      onError: () => {
+        setShow(true);
+      }
+    });
   }
 
   if(isLoading) {
@@ -52,18 +51,13 @@ function Login({ loginFailed, loginAttempt }) {
 
   return (
     <div className='form-container'>
-      <Modal
-        backdrop='static'
-        keyboard={ false }
-        show={ show }
-        onHide={ () => setShow() }
-        id='error-modal'
-      >
-        <Modal.Header closeButton closeVariant='white'>
-          <Modal.Title>Invalid Field</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Either the email or password is incorrect.</Modal.Body>
-      </Modal>
+      <Toaster 
+        show={ show } 
+        onClose={ () => setShow(false) } 
+        message='Either the email or password is incorrect.' 
+        bg='danger'
+        title='Failed to log in'
+      />
       <h2 className='form-title'>Login</h2>
       <Form className='form' onSubmit={ (e) => onSubmit(e) }>
         <Form.Group controlId='formEmail' className='form-group'>
@@ -138,9 +132,3 @@ function Login({ loginFailed, loginAttempt }) {
     </div>
   );
 }
-
-const mapStateToProps = (state) => ({
-  loginFailed: state.auth.loginFailed,
-});
-
-export default connect(mapStateToProps, { loginAttempt })(Login);

@@ -1,14 +1,15 @@
-import { InputGroup, Modal } from 'react-bootstrap';
+import { useState } from 'react';
+import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 import LoadingCard from '../../components/Cards/LoadingCard';
+import Toaster from '../../components/Toaster';
 import { useFormData } from '../../hooks/form/use-form-data';
 import SpinningLoader from '../../components/Loader/SpinningLoader';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
-import { useRegisterAttempt } from '../../hooks/auth/helpers/use-register-attempt';
 import { useRegister } from '../../hooks/features/user/auth/use-register';
 import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
@@ -19,7 +20,8 @@ export default function Register() {
   const [showPass, setShowPass] = usePassword(false);
   const { data: isAuthenticated, isLoading } = useAuth();
   const [showPassRe, setShowPassRe] = usePassword(false);
-  const [show, setShow, message, setMessage] = useRegisterAttempt();
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const [formData, setFormData] = useFormData({
     first_name: '',
@@ -32,6 +34,22 @@ export default function Register() {
 
   const { first_name, last_name, username, email, password, re_password } =
     formData;
+
+  function handleErrorMessage(response) {
+    if (typeof response == 'string') {
+      const element = new DOMParser()
+        .parseFromString(response, 'text/html')
+        .getElementsByClassName('exception_value');
+      const err_message = element[0].innerHTML.replace(/['']+/g, '');
+      setMessage(err_message);
+    } else if (typeof response == 'object') {
+      const responseValues = Object.values(response);
+      const err_message = responseValues[0];
+      setMessage(err_message);
+    } else {
+      setMessage('');
+    }
+  }
 
   function onSubmit(e) {
     e.preventDefault();
@@ -49,7 +67,8 @@ export default function Register() {
           navigate('/verify', { state: { email } });
         },
         onError: (error) => {
-          setMessage(error?.response?.data || 'Failed to register.');
+          handleErrorMessage(error?.response?.data || 'Failed to register.');
+          setShow(true);
         }
       });
     }
@@ -69,25 +88,13 @@ export default function Register() {
 
   return (
     <div className='form-container'>
-      <Modal
-        backdrop='static'
-        keyboard={ false }
-        show={ show }
-        onHide={ () => setShow() }
-        id='error-modal'
-      >
-        <Modal.Header closeButton closeVariant='white'>
-          <Modal.Title>Invalid Field</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {message ? (
-            <p>{ message }</p>
-          ) : (
-            <p>Either the email or password is incorrect.</p>
-          )}
-        </Modal.Body>
-      </Modal>
-
+      <Toaster 
+        show={ show } 
+        onClose={ () => setShow(false) } 
+        message={ message }
+        bg='danger'
+        title='Failed to register'
+      />
       <h2 className='form-title'>Create a New Account</h2>
       <Form className='Form' onSubmit={ (e) => onSubmit(e) }>
         <Form.Group className='form-group'>

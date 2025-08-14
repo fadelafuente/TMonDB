@@ -1,58 +1,10 @@
 import axios from 'axios';
 import { 
-    PASSWORD_RESET_CONFIRM_SUCCESS,
-    PASSWORD_RESET_CONFIRM_FAIL,
-    LOGIN_ATTEMPT,
-    REGISTER_ATTEMPT,
     ACTIVATION_RESENT_SUCCESS,
     ACTIVATION_RESENT_FAIL
 } from './types';
 
 axios.defaults.withCredentials = true;
-
-export const resetLoginConfirm = (uid, token, kwargs={}, reset_type='password') => async dispatch => {
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-
-    const body = JSON.stringify({ uid, token, ...kwargs });
-
-    try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/auth/users/reset_${reset_type}_confirm/`, body, config);
-
-        dispatch({
-            type: PASSWORD_RESET_CONFIRM_SUCCESS
-        });
-    } catch(err) {
-        dispatch({
-            type: PASSWORD_RESET_CONFIRM_FAIL
-        });
-    }
-}
-
-// Reset login attempt back to false
-export const loginAttempt = () => dispatch => {
-    try {
-        dispatch({
-            type: LOGIN_ATTEMPT
-        });
-    }
-    catch(err) {
-
-    }
-}
-
-export const registerAttempt = () => dispatch => {
-    try {
-        dispatch({
-            type: REGISTER_ATTEMPT
-        });
-    } catch(err) {
-
-    }
-}
 
 export const resendActivation = (email) => async dispatch => {
     const config = {
@@ -108,24 +60,6 @@ export async function getUserProfile(username) {
         return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/${username}/`, config);
     } catch(err) {
         return null;
-    }
-}
-
-export async function getCurrentUserDetails() {
-    const access = localStorage.getItem('access');  
-    if(access) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `JWT ${access}`
-            }
-        };
-
-        try {
-            return await axios.get(`${process.env.REACT_APP_API_URL}/auth/users/me/`, config);
-        } catch(err) {
-            return null;
-        }
     }
 }
 
