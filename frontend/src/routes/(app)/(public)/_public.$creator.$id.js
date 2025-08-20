@@ -1,25 +1,24 @@
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 
-import PostArticles from '../../components/Articles/PostArticles';
-import ReplyBar from '../../components/Bars/ReplyBar';
-import { BlockedCard } from '../../components/Cards/BlockedCard';
-import { DeletedCard } from '../../components/Cards/DeletedCard';
-import { FailedCard } from '../../components/Cards/FailedCard';
-import LoadingCard from '../../components/Cards/LoadingCard';
-import PostCard from '../../components/Cards/PostCard';
-import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
-import ParentCard from '../../components/Cards/ParentCard';
-import { useAuth } from '../../hooks/features/user/auth/use-auth';
+import PostArticles from '../../../components/Articles/PostArticles';
+import ReplyBar from '../../../components/Bars/ReplyBar';
+import { BlockedCard } from '../../../components/Cards/BlockedCard';
+import { DeletedCard } from '../../../components/Cards/DeletedCard';
+import { FailedCard } from '../../../components/Cards/FailedCard';
+import LoadingCard from '../../../components/Cards/LoadingCard';
+import PostCard from '../../../components/Cards/PostCard';
+import { useGetResourceById } from '../../../hooks/features/api/use-get-resource-by-id';
+import ParentCard from '../../../components/Cards/ParentCard';
 
-import '../../assets/styling/content.css';
-import '../../assets/styling/ViewPost.css';
+import '../../../assets/styling/content.css';
+import '../../../assets/styling/ViewPost.css';
 
-export default function ViewPost() {
+export default function ViewPostComponent() {
   const { id } = useParams();
   const { data: post, isLoading } = useGetResourceById('posts', id);
-  const { data: isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated } = useOutletContext();
 
-  if(isLoading || authLoading) {
+  if(isLoading) {
     return (
       <div className='loading-container'>
         <LoadingCard />

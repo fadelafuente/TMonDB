@@ -11,21 +11,21 @@ import {
 import { BsThreeDots } from 'react-icons/bs';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 
-import PostArticles from '../../components/Articles/PostArticles';
-import MonsterArticles from '../../components/Articles/MonsterArticles';
-import { BlockedCard } from '../../components/Cards/BlockedCard';
-import LoadingCard from '../../components/Cards/LoadingCard';
-import { ViewBlockedUserCard } from '../../components/Cards/ViewingBlockedUserCard';
-import BlockModal from '../../components/Modals/BlockModal';
-import EditModal from '../../components/Modals/EditModal';
-import { useTimedAlert } from '../../hooks/misc/use-timed-alert';
-import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
-import { useGetProfile } from '../../hooks/profile/use-get-profile';
+import PostArticles from '../../../components/Articles/PostArticles';
+import MonsterArticles from '../../../components/Articles/MonsterArticles';
+import { BlockedCard } from '../../../components/Cards/BlockedCard';
+import LoadingCard from '../../../components/Cards/LoadingCard';
+import { ViewBlockedUserCard } from '../../../components/Cards/ViewingBlockedUserCard';
+import BlockModal from '../../../components/Modals/BlockModal';
+import EditModal from '../../../components/Modals/EditModal';
+import { useTimedAlert } from '../../../hooks/misc/use-timed-alert';
+import { useMiddleViewPort } from '../../../hooks/misc/use-middle-viewport';
+import { useGetProfile } from '../../../hooks/profile/use-get-profile';
 
-import '../../assets/styling/PostCard.css';
-import '../../assets/styling/UserProfile.css';
+import '../../../assets/styling/PostCard.css';
+import '../../../assets/styling/UserProfile.css';
 
-export default function ProfileInfo() {
+export default function ProfileComponent() {
   const { creator } = useParams();
   const { isAuthenticated } = useOutletContext();
   const [aboveMid, setAboveMid] = useMiddleViewPort();
@@ -40,6 +40,7 @@ export default function ProfileInfo() {
     setShowAlert(true);
   }
 
+  console.log('profile', isAuthenticated);
   if (profile && profile.user_blocks) {
     return (
       <div className='article-container'>

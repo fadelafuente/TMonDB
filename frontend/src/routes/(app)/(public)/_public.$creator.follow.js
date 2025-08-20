@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 import { useLocation, useOutletContext, useParams } from 'react-router-dom';
 
-import { BlockedCard } from '../../components/Cards/BlockedCard';
-import FollowList from '../../components/FollowList';
-import { useGetProfile } from '../../hooks/profile/use-get-profile';
+import { BlockedCard } from '../../../components/Cards/BlockedCard';
+import FollowList from '../../../components/FollowList';
+import { useGetProfile } from '../../../hooks/profile/use-get-profile';
 
-import '../../assets/styling/PostCard.css';
-import '../../assets/styling/UserProfile.css';
+import '../../../assets/styling/PostCard.css';
+import '../../../assets/styling/UserProfile.css';
 
-export default function FollowContent() {
+export default function FollowComponent() {
   const { query } = useOutletContext();
   const { state } = useLocation();
   const { initial_type } = state;

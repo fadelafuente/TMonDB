@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormText, Toast } from 'react-bootstrap';
+import { FormText } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import { Form } from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import { useEmailFromLocation } from '../../hooks/auth/helpers/use-email-from-lo
 import { useFailedSocialAuth } from '../../hooks/auth/helpers/use-failed-social-auth';
 import { useResendActivation } from '../../hooks/features/user/auth/use-resend-activation';
 
-export default function VerifyEmail() {
+export default function VerifyEmailComponent() {
   const email = useEmailFromLocation();
   useFailedSocialAuth( email );
   const { mutate: resendActivation } = useResendActivation();

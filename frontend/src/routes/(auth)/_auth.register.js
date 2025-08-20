@@ -3,22 +3,19 @@ import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-import LoadingCard from '../../components/Cards/LoadingCard';
 import Toaster from '../../components/Toaster';
 import { useFormData } from '../../hooks/form/use-form-data';
 import SpinningLoader from '../../components/Loader/SpinningLoader';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
 import { useRegister } from '../../hooks/features/user/auth/use-register';
-import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
 import '../../assets/styling/forms.css';
 
-export default function Register() {
+export default function RegisterComponent() {
   const { mutate: register, isPending } = useRegister();
   const [showPass, setShowPass] = usePassword(false);
-  const { data: isAuthenticated, isLoading } = useAuth();
   const [showPassRe, setShowPassRe] = usePassword(false);
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState('');
@@ -72,18 +69,6 @@ export default function Register() {
         }
       });
     }
-  }
-
-  if(isLoading) {
-    return (
-      <div className='loading-container'>
-        <LoadingCard />
-      </div>
-    );
-  }
-
-  if(isAuthenticated) {
-    return <Navigate to='/' replace={ true } />;
   }
 
   return (

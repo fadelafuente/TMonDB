@@ -4,7 +4,7 @@ import { Form, useNavigate } from 'react-router-dom';
 import { useNavigateOnAuth } from '../../hooks/auth/helpers/use-navigate-on-auth';
 import { useSocialAuth } from '../../hooks/auth/use-social-auth';
 
-export default function FacebookOauth() {
+export default function FacebookOauthComponent() {
   const navigate = useNavigate();
   useSocialAuth('facebook');
   useNavigateOnAuth();

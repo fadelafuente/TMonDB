@@ -4,20 +4,17 @@ import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import LoadingCard from '../../components/Cards/LoadingCard';
 import Toaster from '../../components/Toaster';
 import { useFormData } from '../../hooks/form/use-form-data';
 import { usePassword } from '../../hooks/auth/helpers/use-password';
 import { useLogin } from '../../hooks/features/user/auth/use-login';
-import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
 import '../../assets/styling/App.css';
 import '../../assets/styling/forms.css';
 
-export default function Login() {
-  const { data: isAuthenticated, isLoading } = useAuth();
+export default function LoginComponent() {
   const [formData, setFormData] = useFormData({
     email: '',
     password: '',
@@ -35,18 +32,6 @@ export default function Login() {
         setShow(true);
       }
     });
-  }
-
-  if(isLoading) {
-    return (
-      <div className='loading-container'>
-        <LoadingCard />
-      </div>
-    );
-  }
-
-  if(isAuthenticated) {
-    return <Navigate to='/' replace={ true } />;
   }
 
   return (
@@ -96,7 +81,7 @@ export default function Login() {
           Don't have an account? <Link to='/register'>register here</Link>
         </Form.Text>
         <Form.Text>
-          Forgot password? <Link to='/reset_password'>reset password here</Link>
+          Forgot password? <Link to='/reset-password'>reset password here</Link>
         </Form.Text>
         <hr className='break-line' />
         <Form.Text className='or-social-auth'>OR</Form.Text>

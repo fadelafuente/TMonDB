@@ -1,19 +1,17 @@
-import { updateDetails } from '../../actions/auth';
+import { updateDetails } from '../../../actions/auth';
 import { useState } from 'react';
 import { Alert, InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useFormData } from '../../hooks/form/use-form-data';
-import { useNavigateNotAuth } from '../../hooks/auth/helpers/use-navigate-not-auth';
+import { useFormData } from '../../../hooks/form/use-form-data';
 import { useNavigate } from 'react-router-dom';
 
-export default function SetUsername() {
+export default function ResetUsernameComponent() {
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState('');
   const [formData, setFormData] = useFormData({
     username: '',
   });
-  useNavigateNotAuth();
   const navigate = useNavigate();
 
   const { username } = formData;

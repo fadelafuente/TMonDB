@@ -4,12 +4,12 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { BsEyeSlash, BsEyeFill } from 'react-icons/bs';
 import { useParams } from 'react-router-dom';
-import { useFormData } from '../../hooks/form/use-form-data';
-import { usePassword } from '../../hooks/auth/helpers/use-password';
-import { useRequestSent } from '../../hooks/auth/helpers/use-request-sent';
-import { useResetLoginConfirm } from '../../hooks/features/user/auth/use-reset-login-confirm';
+import { useFormData } from '../../../hooks/form/use-form-data';
+import { usePassword } from '../../../hooks/auth/helpers/use-password';
+import { useRequestSent } from '../../../hooks/auth/helpers/use-request-sent';
+import { useResetLoginConfirm } from '../../../hooks/features/user/auth/use-reset-login-confirm';
 
-export default function ResetPasswordConfirm() {
+export default function ResetPasswordConfirmComponent() {
   const { uid, token } = useParams();
   const [requestSent, setRequestSent] = useState(false);
   const [showPass, setShowPass] = usePassword(false);

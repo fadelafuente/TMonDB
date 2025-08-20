@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useFormData } from '../../hooks/form/use-form-data';
-import { useRequestSent } from '../../hooks/auth/helpers/use-request-sent';
-import { useResetLogin } from '../../hooks/features/user/auth/use-reset-login';
+import { useFormData } from '../../../hooks/form/use-form-data';
+import { useRequestSent } from '../../../hooks/auth/helpers/use-request-sent';
+import { useResetLogin } from '../../../hooks/features/user/auth/use-reset-login';
 
-export default function LoginChange({ reset_type = 'password' }) {
+export default function ResetEmailComponent({ reset_type = 'email' }) {
   const [requestSent, setRequestSent] = useState(false);
   const { mutate: resetLogin } = useResetLogin();
   const [formData, setFormData] = useFormData({

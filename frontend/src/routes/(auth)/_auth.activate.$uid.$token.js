@@ -10,7 +10,7 @@ export async function action() {
   return null;
 }
 
-export default function Activate() {
+export default function ActivateComponent() {
   const { uid, token } = useParams();
   const { mutate: verify } = useActivation();
 

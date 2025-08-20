@@ -3,11 +3,11 @@ import { InputGroup } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { useParams } from 'react-router-dom';
-import { useFormData } from '../../hooks/form/use-form-data';
-import { useRequestSent } from '../../hooks/auth/helpers/use-request-sent';
-import { useResetLoginConfirm } from '../../hooks/features/user/auth/use-reset-login-confirm';
+import { useFormData } from '../../../hooks/form/use-form-data';
+import { useRequestSent } from '../../../hooks/auth/helpers/use-request-sent';
+import { useResetLoginConfirm } from '../../../hooks/features/user/auth/use-reset-login-confirm';
 
-export default function SetEmailConfirm() {
+export default function ResetEmailConfirmComponent() {
   const { uid, token } = useParams();
   const [requestSent, setRequestSent] = useState(false);
   const [formData, setFormData] = useFormData({

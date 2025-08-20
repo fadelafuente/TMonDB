@@ -6,59 +6,62 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query';
 
-import PostArticles from './components/Articles/PostArticles';
-import Activate from './routes/auth/Activate';
-import FacebookOauth from './routes/auth/FacebookOauth';
-import GoogleOauth from './routes/auth/GoogleOauth';
-import Login from './routes/auth/Login';
-import LoginChange from './routes/auth/LoginChange';
-import Register from './routes/auth/Register';
-import ResetPasswordConfirm from './routes/auth/ResetPasswordConfirm';
-import SetEmailConfirm from './routes/auth/SetEmailConfirm';
-import SetUsername from './routes/auth/SetUsername';
-import { SetUsernameConfirmation } from './routes/auth/SetUsernameConfirmation';
-import VerifyEmail from './routes/auth/VerifyEmail';
-import HomePage from './routes/HomePage';
+import { Index } from './routes/(app)/_app.index.js';
+
+import AuthComponent from './routes/(auth)/_auth';
+import ActivateComponent from './routes/(auth)/_auth.activate.$uid.$token.js';
+import FacebookOauthComponent from './routes/(auth)/_auth.facebook-oauth.js';
+import GoogleOauthComponent from './routes/(auth)/_auth.google-oauth.js';
+import LoginComponent from './routes/(auth)/_auth.login.js';
+import RegisterComponent from './routes/(auth)/_auth.register.js';
+import VerifyEmailComponent from './routes/(auth)/_auth.verify.js';
+
+import { Reset } from './routes/reset/reset.js';
+import PrivateResetComponent from './routes/reset/(private)/_private.js';
+import ResetEmailComponent from './routes/reset/(private)/_private.email.js';
+import ResetEmailConfirmComponent from './routes/reset/(private)/_private.email.reset.confirm.$uid.$token.js';
+import ResetUsernameComponent from './routes/reset/(private)/_private.username.js';
+import { ResetUsernameConfirmComponent } from './routes/reset/(private)/_private.username.reset.confirm.js';
+import PublicResetComponent from './routes/reset/(public)/_public.js';
+import ResetPasswordComponent from './routes/reset/(public)/_public.password.js';
+import ResetPasswordConfirmComponent from './routes/reset/(public)/_public.password.reset.confirm.$uid.$token.js';
+
+
 import UpdateMon from './routes/monsters/UpdateMonster';
 import ViewMon from './routes/monsters/ViewMonster';
 import CreateMon from './routes/monsters/CreateMonster';
-import ViewPost from './routes/posts/ViewPost';
 import CreateType from './routes/types/CreateType';
 import BlockingArticles from './routes/users/BlockingArticles';
-import FollowContent from './routes/users/FollowContent';
-import ProfileInfo from './routes/users/ProfileInfo';
 import Account from './routes/users/Account';
 import CreateWorld from './routes/worlds/CreateWorld';
 import ViewWorld from './routes/worlds/ViewWorld';
 import UpdateWorld from './routes/worlds/UpdateWorld';
 
 import './assets/styling/App.css';
+import AppComponent from './routes/(app)/_app.js';
+import PrivateAppComponent from './routes/(app)/(private)/_private.js';
+import PublicAppComponent from './routes/(app)/(public)/_public.js';
+import ProfileComponent from './routes/(app)/(public)/_public.$creator.js';
+import ViewPostComponent from './routes/(app)/(public)/_public.$creator.$id.js';
+import FollowComponent from './routes/(app)/(public)/_public.$creator.follow.js';
 
 const queryClient = new QueryClient();
 
 export default function App() {  
   const router = createBrowserRouter(createRoutesFromElements(
     <Route path='/' element={ <Root /> } >
-      {/* Public Routes */}
-      <Route path='register' element={ <Register /> } />
-      <Route path='login' element={ <Login /> } />
-      <Route path='verify' element={ <VerifyEmail/> } />
-      <Route path='google-oauth' element={ <GoogleOauth /> } />
-      <Route path='facebook-oauth' element={ <FacebookOauth /> } />
-      
-      {/* Authenticated Routes */}
-      <Route path='activate/:uid/:token' element={ <Activate /> } />
-      <Route path='reset_password' element={ <LoginChange /> } />
-      <Route path='password/reset/confirm/:uid/:token' element={ <ResetPasswordConfirm /> } />
-      <Route path='reset_email' element={ <LoginChange reset_type='email' /> } />
-      <Route path='email/reset/confirm/:uid/:token' element={ <SetEmailConfirm /> } />
-      <Route path='set_username' element={ <SetUsername /> } />
-      <Route path='username/reset/confirm' element={ <SetUsernameConfirmation /> } />
-      <Route path='types' element= { <CreateType /> } />
-
       {/* API Routes */}
-      <Route path='' element={ <HomePage /> } >
-        <Route path='' element= { <div className='article-container'><PostArticles /></div> } />
+      <Route path='' element={ <AppComponent /> } >
+        <Route path='' element= { <Index /> } />
+
+        <Route path='' element={ <PrivateAppComponent /> }>
+        </Route>
+
+        <Route path='' element={ <PublicAppComponent /> }>
+          <Route path=':creator' element={ <ProfileComponent /> } />
+          <Route path=':creator/:id' element={ <ViewPostComponent /> } />
+          <Route path=':creator/follow' element={ <FollowComponent /> } />
+        </Route>
 
         <Route path='monsters'>
           {/* <Route path='' element= { <div className='article-container'><MonArticles query={ query } /></div> } /> */}
@@ -82,10 +85,33 @@ export default function App() {
           <Route path=':id/update' element={ <UpdateWorld /> } />
         </Route>
 
-        <Route path=':creator'>
-          <Route path='' element= { <ProfileInfo /> } />
-          <Route path='follow' element={ <FollowContent /> } />
-          <Route path=':id' element={ <ViewPost /> } />
+        <Route path='types'>
+          <Route path='create' element= { <CreateType /> } />
+        </Route>
+      </Route>
+
+      {/* Auth Routes */}
+      <Route path='' element={ <AuthComponent /> }>
+        <Route path='register' element={ <RegisterComponent /> } />
+        <Route path='login' element={ <LoginComponent /> } />
+        <Route path='verify' element={ <VerifyEmailComponent/> } />
+        <Route path='google-oauth' element={ <GoogleOauthComponent /> } />
+        <Route path='facebook-oauth' element={ <FacebookOauthComponent /> } />        
+        <Route path='activate/:uid/:token' element={ <ActivateComponent /> } />
+      </Route>
+
+      {/* Reset Password/Username/Email Routes */}
+      <Route path='reset' element={ <Reset /> }>
+        <Route path='' element={ <PrivateResetComponent /> }>
+          <Route path='email' element={ <ResetEmailComponent /> } />
+          <Route path='email/confirm/:uid/:token' element={ <ResetEmailConfirmComponent /> } />
+          <Route path='username' element={ <ResetUsernameComponent /> } />
+          <Route path='username/confirm' element={ <ResetUsernameConfirmComponent /> } />
+        </Route>
+
+        <Route path='' element={ <PublicResetComponent /> }>
+          <Route path='password' element={ <ResetPasswordComponent /> } />
+          <Route path='password/confirm/:uid/:token' element={ <ResetPasswordConfirmComponent /> } />
         </Route>
       </Route>
     </Route>

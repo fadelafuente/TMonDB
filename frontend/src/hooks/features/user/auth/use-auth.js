@@ -13,7 +13,7 @@ export function useAuth() {
         };
         const body = JSON.stringify({ token: localStorage.getItem('access') });
 
-        const response = await axiosInstance.post('/auth/jwt/verify/', body, config);
+        await axiosInstance.post('/auth/jwt/verify/', body, config);
         return true;
       } catch (error) {
         localStorage.removeItem('access');
