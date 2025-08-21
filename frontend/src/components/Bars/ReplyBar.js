@@ -1,9 +1,8 @@
 import { Button, InputGroup } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import { BsReply } from 'react-icons/bs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useCreateResource } from '../../hooks/features/api/use-create-resource';
-import { useAuth } from '../../hooks/features/user/auth/use-auth';
 
 import '../../assets/styling/content.css';
 import '../../assets/styling/ViewPost.css'
@@ -12,7 +11,7 @@ export default function ReplyBar({ parent }) {
   const initialForm = {
     content: ''
   };
-  const { data: isAuthenticated } = useAuth();
+  const { isAuthenticated } = useOutletContext();
   const [formData, resetFormData, setFormData] = useCreateResource(initialForm);
   const navigate = useNavigate();
 

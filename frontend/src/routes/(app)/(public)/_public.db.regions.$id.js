@@ -3,21 +3,21 @@ import { Col, NavDropdown, Row, Tab, Tabs } from 'react-bootstrap';
 import { BsThreeDots } from 'react-icons/bs';
 import { useOutletContext } from 'react-router-dom';
 
-import ReplyBar from '../../components/Bars/ReplyBar';
-import CultureTab from '../../components/Content/CultureTab';
-import FeatureTab from '../../components/Content/FeatureTab';
-import GeographyTab from '../../components/Content/GeographyTab';
-import TriviaTab from '../../components/Content/TriviaTab';
-import { useDeleteResource } from '../../hooks/api/use-delete-resource';
-import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
-import SocialInteractions from '../../components/UserInteractions/SocialInteractions';
+import ReplyBar from '../../../components/Bars/ReplyBar';
+import CultureTab from '../../../components/Content/CultureTab';
+import FeatureTab from '../../../components/Content/FeatureTab';
+import GeographyTab from '../../../components/Content/GeographyTab';
+import TriviaTab from '../../../components/Content/TriviaTab';
+import { useDeleteResource } from '../../../hooks/features/api/use-delete-resource';
+import { useMiddleViewPort } from '../../../hooks/misc/use-middle-viewport';
+import SocialInteractions from '../../../components/UserInteractions/SocialInteractions';
 
-import '../../assets/styling/content.css';
-import '../../assets/styling/UserProfile.css';
-import '../../assets/styling/ViewMon.css';
-import '../../assets/styling/buttons.css';
+import '../../../assets/styling/content.css';
+import '../../../assets/styling/UserProfile.css';
+import '../../../assets/styling/ViewMon.css';
+import '../../../assets/styling/buttons.css';
 
-export default function ViewRegion() {
+export default function ViewRegionComponent() {
   const { isAuthenticated } = useOutletContext();
   const [region, setRegion] = useState({});
   const [showBlock, setShowBlock] = useState(false);
@@ -75,7 +75,7 @@ export default function ViewRegion() {
           </Row>
           <div className='bottom-barrier view-info-details'>
             <div className='view-img-container bottom-barrier'>
-              <img src={ require('../assets/images/missing-img.png') } className='view-image' />
+              <img src={ require('../../../assets/images/missing-img.png') } className='view-image' />
             </div>
             <div view-desc>
               <p>

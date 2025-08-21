@@ -26,7 +26,7 @@ export default function AppComponent() {
   return (
     <>
       <div className='navbar-container'>
-        <TitleBar setQuery={ (value) => setQuery(value) } user={ user } />
+        <TitleBar setQuery={ (value) => setQuery(value) } user={ user } isAuthenticated={ isAuthenticated } />
       </div>
       <div className='content-container center-content'>
         <div className='aside-container left-aside' id='left-container'>

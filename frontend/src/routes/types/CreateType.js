@@ -47,7 +47,7 @@ export default function CreateType() {
   return (
     <>
       <div className='navbar-container'>
-        <TitleBar setQuery={ () => {} } user={ user } />
+        <TitleBar setQuery={ () => {} } user={ user } isAuthenticated={ isAuthenticated } />
       </div>
       <div className='content-container center-content'>
         <div id='content-center' className='content-center'>

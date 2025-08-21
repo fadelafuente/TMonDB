@@ -1,35 +1,34 @@
 import { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useOutletContext, useParams } from 'react-router-dom';
 
-import ArticleHeader from '../../components/ui/Article/ArticleHeader';
-import PostArticles from '../../components/Articles/PostArticles';
-import ReplyBar from '../../components/Bars/ReplyBar';
-import { BlockedCard } from '../../components/Cards/BlockedCard';
-import { FailedCard } from '../../components/Cards/FailedCard';
-import LoadingCard from '../../components/Cards/LoadingCard';
-import EvoChains from '../../components/Content/EvoChains';
-import MovesTab from '../../components/Content/MovesTab';
-import BlockModal from '../../components/Modals/BlockModal';
-import StatChart from '../../components/TablesAndCharts/StatChart';
-import WeaknessChart from '../../components/TablesAndCharts/WeaknessChart';
-import SocialInteractions from '../../components/UserInteractions/SocialInteractions';
-import { handleHeightConversion, handleKgToLbConversion } from '../../functions/handlers';
-import { useDeleteResource } from '../../hooks/features/api/use-delete-resource';
-import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
-import { useAuth } from '../../hooks/features/user/auth/use-auth';
+import ArticleHeader from '../../../components/ui/Article/ArticleHeader';
+import PostArticles from '../../../components/Articles/PostArticles';
+import ReplyBar from '../../../components/Bars/ReplyBar';
+import { BlockedCard } from '../../../components/Cards/BlockedCard';
+import { FailedCard } from '../../../components/Cards/FailedCard';
+import LoadingCard from '../../../components/Cards/LoadingCard';
+import EvoChains from '../../../components/Content/EvoChains';
+import MovesTab from '../../../components/Content/MovesTab';
+import BlockModal from '../../../components/Modals/BlockModal';
+import StatChart from '../../../components/TablesAndCharts/StatChart';
+import WeaknessChart from '../../../components/TablesAndCharts/WeaknessChart';
+import SocialInteractions from '../../../components/UserInteractions/SocialInteractions';
+import { handleHeightConversion, handleKgToLbConversion } from '../../../functions/handlers';
+import { useDeleteResource } from '../../../hooks/features/api/use-delete-resource';
+import { useGetResourceById } from '../../../hooks/features/api/use-get-resource-by-id';
 
-import '../../assets/styling/content.css';
-import '../../assets/styling/UserProfile.css';
-import '../../assets/styling/ViewMon.css';
+import '../../../assets/styling/content.css';
+import '../../../assets/styling/UserProfile.css';
+import '../../../assets/styling/ViewMon.css';
 
-export default function ViewMon() {
+export default function ViewMonsterComponent() {
   const { id } = useParams();
   const { data: monster, isLoading } = useGetResourceById('monsters', id);
   const [showBlock, setShowBlock] = useState(false);
   const { data: isDeleted, mutate: setIsDeleted } = useDeleteResource('monsters');
   const [tab, setTab] = useState('stats');
-  const { data: isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated } = useOutletContext();
 
   const levelMoves = [
     {method_value: 19, name: 'Fire Fang', type: 'Fire', power: 65},
@@ -61,7 +60,7 @@ export default function ViewMon() {
     lb = handleKgToLbConversion(monster.avg_weight);
   }
 
-  if(isLoading || authLoading) {
+  if(isLoading) {
     return (
       <div className='article-container'>
         <LoadingCard />

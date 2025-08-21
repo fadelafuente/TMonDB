@@ -6,12 +6,17 @@ export function useAuth() {
     queryKey: ['auth'],
     queryFn: async () => {
       try {
+        const token = localStorage.getItem('access');
+        if (!token) {
+          return false;
+        }
+        
         const config = {
           headers: {
             'Content-Type': 'application/json',
           }
         };
-        const body = JSON.stringify({ token: localStorage.getItem('access') });
+        const body = JSON.stringify({ token });
 
         await axiosInstance.post('/auth/jwt/verify/', body, config);
         return true;

@@ -28,13 +28,11 @@ import ResetPasswordConfirmComponent from './routes/reset/(public)/_public.passw
 
 
 import UpdateMon from './routes/monsters/UpdateMonster';
-import ViewMon from './routes/monsters/ViewMonster';
 import CreateMon from './routes/monsters/CreateMonster';
 import CreateType from './routes/types/CreateType';
 import BlockingArticles from './routes/users/BlockingArticles';
 import Account from './routes/users/Account';
 import CreateWorld from './routes/worlds/CreateWorld';
-import ViewWorld from './routes/worlds/ViewWorld';
 import UpdateWorld from './routes/worlds/UpdateWorld';
 
 import './assets/styling/App.css';
@@ -44,6 +42,9 @@ import PublicAppComponent from './routes/(app)/(public)/_public.js';
 import ProfileComponent from './routes/(app)/(public)/_public.$creator.js';
 import ViewPostComponent from './routes/(app)/(public)/_public.$creator.$id.js';
 import FollowComponent from './routes/(app)/(public)/_public.$creator.follow.js';
+import ViewMonsterComponent from './routes/(app)/(public)/_public.db.monsters.$id.js';
+import ViewWorldComponent from './routes/(app)/(public)/_public.db.worlds.$id.js';
+import ViewRegionComponent from './routes/(app)/(public)/_public.db.regions.$id.js';
 
 const queryClient = new QueryClient();
 
@@ -61,17 +62,16 @@ export default function App() {
           <Route path=':creator' element={ <ProfileComponent /> } />
           <Route path=':creator/:id' element={ <ViewPostComponent /> } />
           <Route path=':creator/follow' element={ <FollowComponent /> } />
+
+          <Route path='db/monsters/:id' element={ <ViewMonsterComponent /> } />
+          <Route path='db/worlds/:id' element={ <ViewWorldComponent /> } />
+          <Route path='db/regions/:id' element={ <ViewRegionComponent /> } />
         </Route>
 
-        <Route path='monsters'>
+        <Route path='db/monsters'>
           {/* <Route path='' element= { <div className='article-container'><MonArticles query={ query } /></div> } /> */}
           <Route path='create' element={ <CreateMon /> } />
           <Route path=':id/update' element={ <UpdateMon /> } />
-          <Route path=':id' element={ <ViewMon /> } />
-        </Route>
-
-        <Route path='regions'>
-          {/* <Route path='' element= { <div className='article-container'><RegionArticles query={ query } /></div> } /> */}
         </Route>
 
         <Route path='settings'>
@@ -81,7 +81,6 @@ export default function App() {
 
         <Route path='worlds'>
           <Route path='create' element={ <CreateWorld /> } />
-          <Route path=':id' element={ <ViewWorld /> } />
           <Route path=':id/update' element={ <UpdateWorld /> } />
         </Route>
 

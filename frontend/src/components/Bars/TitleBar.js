@@ -5,16 +5,14 @@ import { BsPlusCircle, BsPersonCircle } from 'react-icons/bs';
 import SearchBar from './SearchBar';
 import CreatePostModal from '../Modals/CreatePostModal';
 import { useCreateResource } from '../../hooks/features/api/use-create-resource';
-import { useAuth } from '../../hooks/features/user/auth/use-auth';
 import { LogoutModal } from '../Modals/LogoutModal';
 
 import '../../assets/styling/forms.css';
 import '../../assets/styling/App.css';
 
-export default function TitleBar({setQuery, user }) {
+export default function TitleBar({setQuery, user, isAuthenticated }) {
   const [show, setShow] = useState(false);
   const [width, setWidth] = useState(window.innerWidth <= 700);
-  const { data: isAuthenticated } = useAuth();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const initialForm = {
     content: ''
