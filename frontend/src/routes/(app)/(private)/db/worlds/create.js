@@ -1,9 +1,7 @@
-import { Navigate, useOutletContext } from 'react-router-dom';
-import { useCreateResource } from '../../hooks/features/api/use-create-resource';
-import WorldForm from '../../components/Forms/WorldForm';
+import { useCreateResource } from '../../../../../hooks/features/api/use-create-resource';
+import WorldForm from '../../../../../components/Forms/WorldForm';
 
-export default function CreateWorld() {
-  const { isAuthenticated } = useOutletContext();
+export default function CreateWorldComponent() {
   const [formData, resetFormData, setFormData] = useCreateResource({
     name: '',
     description: '',
@@ -14,10 +12,6 @@ export default function CreateWorld() {
     ability_alias: '',
     level_cap: 100
   });
-
-  if (!isAuthenticated) {
-    return <Navigate to='/login' replace />;
-  }
   
   return (
     <>

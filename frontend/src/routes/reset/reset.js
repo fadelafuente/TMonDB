@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 
-export function Reset() {
+export function ResetComponent() {
   return (
     <div className='reset-container'>
       <Outlet />

@@ -34,7 +34,7 @@ export function useCreateResource(initialForm, resource = 'posts') {
           if(resource === 'posts') {
             navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
           } else {
-            navigate(`/${resource}/${response.data['id']}`);
+            navigate(`/db/${resource}/${response.data['id']}`);
           }
         },
         onError: (error) => {

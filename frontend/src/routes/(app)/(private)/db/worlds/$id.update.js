@@ -1,13 +1,11 @@
-import { connect } from 'react-redux';
-import { Navigate, useOutletContext, useParams } from 'react-router-dom';
-import WorldForm from '../../components/Forms/WorldForm';
-import SpinningLoader from '../../components/Loader/SpinningLoader';
-import { useUpdateResource } from '../../hooks/features/api/use-update-resource';
-import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
+import { useParams } from 'react-router-dom';
+import WorldForm from '../../../../../components/Forms/WorldForm';
+import SpinningLoader from '../../../../../components/Loader/SpinningLoader';
+import { useUpdateResource } from '../../../../../hooks/features/api/use-update-resource';
+import { useGetResourceById } from '../../../../../hooks/features/api/use-get-resource-by-id';
 
-export default function UpdateWorld() {
+export default function UpdateWorldComponent() {
   const { id } = useParams();
-  const { isAuthenticated } = useOutletContext();
   const { data: world, isLoading } = useGetResourceById('worlds', id);
   const [formData, resetFormData, setFormData, setInitialForm] = useUpdateResource({
     name: world.name ||'',
@@ -24,10 +22,6 @@ export default function UpdateWorld() {
     return <div className='loading-container'>
       <SpinningLoader />
     </div>
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to='/login' replace />;
   }
 
   return (

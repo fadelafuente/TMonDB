@@ -48,16 +48,16 @@ export default function TitleBar({setQuery, user, isAuthenticated }) {
     return (
       <Fragment>
         <NavDropdown title={ <BsPlusCircle /> } id='nav-dropdown' className='rounded-circle' drop='down' align='end'>
-          <NavDropdown.Item href='/worlds/create'>
+          <NavDropdown.Item href='/db/worlds/create'>
             Create World
           </NavDropdown.Item>
           <NavDropdown.Item href='#action/3.1'>
             Create Region
           </NavDropdown.Item>
-          <NavDropdown.Item href={ user ? '/monsters/create' : '/' }>
+          <NavDropdown.Item href={ user ? '/db/monsters/create' : '/' }>
             Create Monster
           </NavDropdown.Item>
-          <NavDropdown.Item href='/types'>
+          <NavDropdown.Item href='/db/types/create'>
             Create Type
           </NavDropdown.Item>
           <NavDropdown.Item href='#action/3.2'>

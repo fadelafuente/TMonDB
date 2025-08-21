@@ -1,19 +1,18 @@
 import { useEffect, useState } from 'react';
 import { Button, Col, Row } from 'react-bootstrap';
+import { useOutletContext } from 'react-router-dom';
 
-import DeleteModal from '../../components/Modals/DeleteModal';
-import ResetModal from '../../components/Modals/ResetModal';
-import SetUsernameForm from '../../components/Forms/SetUsernameForm';
-import { useGetUser } from '../../hooks/features/user/use-get-user';
-import LoadingCard from '../../components/Cards/LoadingCard';
+import DeleteModal from '../../../../components/Modals/DeleteModal';
+import ResetModal from '../../../../components/Modals/ResetModal';
+import SetUsernameForm from '../../../../components/Forms/SetUsernameForm';
 
-import '../../assets/styling/forms.css';
-import '../../assets/styling/Account.css';
-import '../../assets/styling/PostCard.css';
-import '../../assets/styling/Modal.css';
+import '../../../../assets/styling/forms.css';
+import '../../../../assets/styling/Account.css';
+import '../../../../assets/styling/PostCard.css';
+import '../../../../assets/styling/Modal.css';
 
-export default function Account() {
-  const { data: user, isLoading } = useGetUser();
+export default function AccountComponent() {
+  const { user } = useOutletContext();
   const [show, setShow] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [resetItem, setResetItem] = useState('');
@@ -24,14 +23,6 @@ export default function Account() {
     if (user && name === '') 
       setName(user.username);
   }, [user, name]);
-
-  if(isLoading) {
-    return (
-      <div className='loading-container'>
-        <LoadingCard />
-      </div>
-    );
-  }
 
   return (
     <>

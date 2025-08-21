@@ -1,23 +1,17 @@
 import { useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { BsArrowLeft, BsDashCircle, BsPlusCircle } from 'react-icons/bs';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import TitleBar from '../../components/Bars/TitleBar';
-import LoadingCard from '../../components/Cards/LoadingCard';
-import TypesTable from '../../components/TablesAndCharts/TypesTable';
-import { useGetUser } from '../../hooks/features/user/use-get-user';
-import { useAuth } from '../../hooks/features/user/auth/use-auth';
+import TypesTable from '../../../../../components/TablesAndCharts/TypesTable';
 
-import '../../assets/styling/content.css';
-import '../../assets/styling/types.css';
+import '../../../../../assets/styling/content.css';
+import '../../../../../assets/styling/types.css';
 
-export default function CreateType() {
-  const { data: user, isLoading } = useGetUser();
+export default function CreateTypeComponent() {
   const navigate = useNavigate();
   const [types, setTypes] = useState([]);
   const [newType, setNewType] = useState('');
-  const { data: isAuthenticated, isLoading: authLoading } = useAuth();
 
   function addType(t) {
     if(types.length >= 20 || !t)
@@ -32,24 +26,9 @@ export default function CreateType() {
     setTypes(removed);
   }
 
-  if(isLoading || authLoading) {
-    return (
-      <div className='loading-container'>
-        <LoadingCard />
-      </div>
-    );
-  }
-
-  if(!isAuthenticated) {
-    return <Navigate to='/login' replace={ true } />;
-  }
-
   return (
     <>
-      <div className='navbar-container'>
-        <TitleBar setQuery={ () => {} } user={ user } isAuthenticated={ isAuthenticated } />
-      </div>
-      <div className='content-container center-content'>
+      <div className='article-container content-container center-content'>
         <div id='content-center' className='content-center'>
           <Card>
             <Card.Header>

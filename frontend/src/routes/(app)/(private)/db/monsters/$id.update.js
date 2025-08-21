@@ -1,16 +1,14 @@
 import { useEffect } from 'react';
-import { connect } from 'react-redux';
-import { Navigate, useOutletContext, useParams } from 'react-router-dom';
-import MonsterForm from '../../components/Forms/MonsterForm';
-import LoadingCard from '../../components/Cards/LoadingCard';
-import { FailedCard } from '../../components/Cards/FailedCard';
-import { useGetResourceById } from '../../hooks/features/api/use-get-resource-by-id';
-import { useUpdateResource } from '../../hooks/features/api/use-update-resource';
-import SpinningLoader from '../../components/Loader/SpinningLoader';
+import { useParams } from 'react-router-dom';
+import MonsterForm from '../../../../../components/Forms/MonsterForm';
+import LoadingCard from '../../../../../components/Cards/LoadingCard';
+import { FailedCard } from '../../../../../components/Cards/FailedCard';
+import { useGetResourceById } from '../../../../../hooks/features/api/use-get-resource-by-id';
+import { useUpdateResource } from '../../../../../hooks/features/api/use-update-resource';
+import SpinningLoader from '../../../../../components/Loader/SpinningLoader';
 
-export default function UpdateMon() {
+export default function UpdateMonsterComponent() {
   const { id } = useParams();
-  const { isAuthenticated } = useOutletContext();
   const { data: monster, isLoading: loading } = useGetResourceById('monsters', id);
   const [formData, resetFormData, setFormData, setInitialForm] = useUpdateResource({
     name: monster?.name ? monster.name : '',
@@ -32,11 +30,7 @@ export default function UpdateMon() {
       avg_weight: monster?.avg_weight ? monster.avg_weight : '',
       avg_height: monster?.avg_height ? monster.avg_height : ''
     });
-  }, [monster, setInitialForm, isAuthenticated])
-
-  if (!isAuthenticated) {
-    return <Navigate to='/login' replace />;
-  }
+  }, [monster, setInitialForm])
 
   if(loading) {
     return <div className='loading-container'>

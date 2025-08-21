@@ -22,7 +22,11 @@ function useUpdateResourceHelper(resource = 'posts', id) {
       if(response && response.status === 200) {
         queryClient.invalidateQueries({ queryKey: [resource, id] });
         queryClient.refetchQueries();
-        navigate(`/${resource}/${response.data['id']}`);
+        if(resource === 'posts') {
+            navigate(`/${response.data['article']['creator']['username']}/${response.data['id']}`);
+          } else {
+            navigate(`/db/${resource}/${response.data['id']}`);
+          }
       }
     },
     onError: (error) => {

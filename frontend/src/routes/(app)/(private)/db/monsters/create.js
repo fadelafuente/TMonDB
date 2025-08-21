@@ -1,9 +1,7 @@
-import { Navigate, useOutletContext } from 'react-router-dom';
-import { useCreateResource } from '../../hooks/features/api/use-create-resource';
-import MonsterForm from '../../components/Forms/MonsterForm';
+import { useCreateResource } from '../../../../../hooks/features/api/use-create-resource';
+import MonsterForm from '../../../../../components/Forms/MonsterForm';
 
-export default function CreateMon() {
-  const { isAuthenticated } = useOutletContext();
+export default function CreateMonsterComponent() {
   const [formData, resetFormData, setFormData] = useCreateResource({
     name: '',
     national_id: '',
@@ -13,10 +11,6 @@ export default function CreateMon() {
     avg_weight: '',
     avg_height: '',
   });
-
-  if (!isAuthenticated) {
-    return <Navigate to='/login' replace />;
-  }
 
   return (
     <>
