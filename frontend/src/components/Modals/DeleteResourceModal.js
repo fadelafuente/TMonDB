@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import '../../assets/styling/Modal.css';
 
-export default function DeleteResourceModal({show, setShow, label, handleDelete}) {
+export default function DeleteResourceModal({ show, setShow, label, handleDelete }) {
   const [showAlert, setShowAlert] = useTimedAlert(false);
   const [message, setMessage] = useState('');
   

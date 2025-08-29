@@ -1,5 +1,5 @@
 div.card {
-    margin-bottom: 1em;
+    width: 100%;
     background-color: var(--background-content-color);
     color: var(--text-color);
 }

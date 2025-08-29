@@ -1,9 +1,9 @@
-import PostArticles from '../../components/Articles/PostArticles';
+import InfiniteResourceScroll from '../../components/InfiniteScrolls/InfiniteResourceScroll';
 
 export function Index() {
   return (
     <div className='article-container'>
-      <PostArticles />
+      <InfiniteResourceScroll />
     </div>
   );
 }

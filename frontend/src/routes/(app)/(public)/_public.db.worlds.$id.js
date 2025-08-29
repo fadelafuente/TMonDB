@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
-import PostArticles from '../../../components/Articles/PostArticles';
+import InfiniteResourceScroll from '../../../components/InfiniteScrolls/InfiniteResourceScroll';
 import ReplyBar from '../../../components/Bars/ReplyBar';
 import { BlockedCard } from '../../../components/Cards/BlockedCard';
 import { FailedCard } from '../../../components/Cards/FailedCard';
@@ -109,7 +109,7 @@ export default function ViewWorldComponent() {
               />
             </div>
             <div className='comments-container article-container'>
-              <PostArticles
+              <InfiniteResourceScroll
                 kwargs={{ parent: world.article ? world.article.id : null }}
               />
             </div>

@@ -11,10 +11,10 @@ import {
 import { BsThreeDots } from 'react-icons/bs';
 import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
 
-import PostArticles from '../../../components/Articles/PostArticles';
-import MonsterArticles from '../../../components/Articles/MonsterArticles';
+import InfiniteResourceScroll from '../../../components/InfiniteScrolls/InfiniteResourceScroll';
 import { BlockedCard } from '../../../components/Cards/BlockedCard';
 import LoadingCard from '../../../components/Cards/LoadingCard';
+import MonsterCard from '../../../components/Cards/MonsterCard';
 import { ViewBlockedUserCard } from '../../../components/Cards/ViewingBlockedUserCard';
 import BlockModal from '../../../components/Modals/BlockModal';
 import EditModal from '../../../components/Modals/EditModal';
@@ -40,7 +40,6 @@ export default function ProfileComponent() {
     setShowAlert(true);
   }
 
-  console.log('profile', isAuthenticated);
   if (profile && profile.user_blocks) {
     return (
       <div className='article-container'>
@@ -192,14 +191,14 @@ export default function ProfileComponent() {
                     {profile && profile.current_user_is_blocked ? (
                       <BlockedCard creator={profile.username} />
                     ) : (
-                      <PostArticles kwargs={{ username: creator }} />
+                      <InfiniteResourceScroll kwargs={{ username: creator }} />
                     )}
                   </Tab>
                   <Tab eventKey='replies' title='Replies'>
                     {profile && profile.current_user_is_blocked ? (
                       <BlockedCard creator={profile.username} />
                     ) : (
-                      <PostArticles
+                      <InfiniteResourceScroll
                         kwargs={{ username: creator, is_reply: true }}
                       />
                     )}
@@ -208,7 +207,7 @@ export default function ProfileComponent() {
                     {profile && profile.current_user_is_blocked ? (
                       <BlockedCard creator={profile.username} />
                     ) : (
-                      <MonsterArticles kwargs={{}} />
+                      <InfiniteResourceScroll type='monsters' Card={ MonsterCard } />
                     )}
                   </Tab>
                   <Tab eventKey='regions' title='Regions'>

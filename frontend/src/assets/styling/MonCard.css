@@ -27,6 +27,11 @@
     font-size: calc(max(0.75rem, min(1.2vw, 1rem)));
 }
 
+div.card-outer-div {
+    background-color: transparent;
+    border: none;
+}
+
 div.card-inner-background {
     position: absolute;
     top: 0;

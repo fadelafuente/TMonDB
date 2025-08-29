@@ -10,7 +10,7 @@ export default function CreateMonsterComponent() {
     etymology: '',
     avg_weight: '',
     avg_height: '',
-  });
+  }, 'monsters');
 
   return (
     <>

@@ -1,6 +1,6 @@
 import { useOutletContext, useParams } from 'react-router-dom';
 
-import PostArticles from '../../../components/Articles/PostArticles';
+import InfiniteResourceScroll from '../../../components/InfiniteScrolls/InfiniteResourceScroll';
 import ReplyBar from '../../../components/Bars/ReplyBar';
 import { BlockedCard } from '../../../components/Cards/BlockedCard';
 import { DeletedCard } from '../../../components/Cards/DeletedCard';
@@ -64,7 +64,7 @@ export default function ViewPostComponent() {
                 <div className='no-reply-container'></div>
             }
           <div className='comments-container article-container'>
-            <PostArticles kwargs={{ parent: post.article.id }} />
+            <InfiniteResourceScroll kwargs={{ parent: post.article.id }} />
           </div>
         </div>
       }

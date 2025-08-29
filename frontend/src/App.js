@@ -17,6 +17,7 @@ import ViewPostComponent from './routes/(app)/(public)/_public.$creator.$id.js';
 import FollowComponent from './routes/(app)/(public)/_public.$creator.follow.js';
 import ViewMonsterComponent from './routes/(app)/(public)/_public.db.monsters.$id.js';
 import ViewWorldComponent from './routes/(app)/(public)/_public.db.worlds.$id.js';
+import { WorldsComponent } from './routes/(app)/(public)/_public.db.worlds.js';
 import ViewRegionComponent from './routes/(app)/(public)/_public.db.regions.$id.js';
 
 import PrivateAppComponent from './routes/(app)/(private)/_private.js';
@@ -87,6 +88,7 @@ export default function App() {
 
           <Route path='db/monsters/:id' element={ <ViewMonsterComponent /> } />
           <Route path='db/worlds/:id' element={ <ViewWorldComponent /> } />
+          <Route path='db/worlds' element={ <WorldsComponent /> } />
           <Route path='db/regions/:id' element={ <ViewRegionComponent /> } />
         </Route>
       </Route>

@@ -3,7 +3,7 @@ import { Tab, Tabs } from 'react-bootstrap';
 import { useOutletContext, useParams } from 'react-router-dom';
 
 import ArticleHeader from '../../../components/ui/Article/ArticleHeader';
-import PostArticles from '../../../components/Articles/PostArticles';
+import InfiniteResourceScroll from '../../../components/InfiniteScrolls/InfiniteResourceScroll';
 import ReplyBar from '../../../components/Bars/ReplyBar';
 import { BlockedCard } from '../../../components/Cards/BlockedCard';
 import { FailedCard } from '../../../components/Cards/FailedCard';
@@ -209,7 +209,7 @@ export default function ViewMonsterComponent() {
                 <div className='no-reply-container'></div>
             }
             <div className='comments-container article-container'>
-              <PostArticles kwargs={ { parent: monster.article ? monster.article.id : null } } />
+              <InfiniteResourceScroll kwargs={ { parent: monster.article ? monster.article.id : null } } />
             </div>
           </div>
       }
