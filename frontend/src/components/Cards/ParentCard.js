@@ -13,7 +13,7 @@ export default function ParentCard({ post }) {
 
   return (
     <div className='parent-container article-container'>
-      <PostCard post={ parent } />
+      <PostCard data={ parent } />
     </div>
   )
 }

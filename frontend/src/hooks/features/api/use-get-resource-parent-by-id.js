@@ -4,7 +4,7 @@ import getApiHeaders from '../../../lib/api-config';
 
 export function useGetResourceParentById(resource, id) {
   return useQuery({
-    queryKey: [resource, id],
+    queryKey: [resource, id, 'parent'],
     queryFn: async () => {
       try {
         const config = { headers: getApiHeaders() };

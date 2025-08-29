@@ -3,13 +3,13 @@ import { useOutletContext } from 'react-router-dom';
 
 import { FailedCard } from '../Cards/FailedCard';
 import LoadingCard from '../Cards/LoadingCard';
-import PostCard from '../Cards/PostCard';
+import BaseCard from '../Cards/BaseCard';
 import useInfiniteScoll from '../../hooks/articles/use-infinite-scroll';
 import { useGetResource } from '../../hooks/features/api/use-get-resource';
 
 import '../../assets/styling/content.css';
 
-export default function InfiniteResourceScroll({ kwargs={}, type='posts', Card=PostCard }) {
+export default function InfiniteResourceScroll({ kwargs={}, type='posts', Card=BaseCard, label='Post' }) {
   const { query } = useOutletContext();
   const queryResult = useGetResource(type, kwargs, query);
   const { data: resources, ref: lastResource, isFetching: loading, isFetchingNextPage } = useInfiniteScoll({ queryResult }, query, type);
@@ -34,9 +34,17 @@ export default function InfiniteResourceScroll({ kwargs={}, type='posts', Card=P
             { 
               page['results'].map((resource, index) => {
                 if(page['results'].length === index + 1) {
-                  return <div className='card card-outer-div' key={ `post-${resource.id}` } ref={ lastResource }>{ <Card data={ resource } /> }</div>
+                  return (
+                    <div className='card card-outer-div' key={ `post-${resource.id}` } ref={ lastResource }>
+                      { <Card data={ resource } type={ type } label={ label } /> }
+                    </div>
+                  )
                 } else {
-                  return <div className='card card-outer-div' key={ `post-${resource.id}` }>{ <Card data={ resource } /> }</div>
+                  return (
+                    <div className='card card-outer-div' key={ `post-${resource.id}` }>
+                      { <Card data={ resource } type={ type } label={ label } /> }
+                    </div>
+                  )
                 }
               })
             }

@@ -15,10 +15,10 @@ import PublicAppComponent from './routes/(app)/(public)/_public.js';
 import ProfileComponent from './routes/(app)/(public)/_public.$creator.js';
 import ViewPostComponent from './routes/(app)/(public)/_public.$creator.$id.js';
 import FollowComponent from './routes/(app)/(public)/_public.$creator.follow.js';
-import ViewMonsterComponent from './routes/(app)/(public)/_public.db.monsters.$id.js';
-import ViewWorldComponent from './routes/(app)/(public)/_public.db.worlds.$id.js';
-import { WorldsComponent } from './routes/(app)/(public)/_public.db.worlds.js';
-import ViewRegionComponent from './routes/(app)/(public)/_public.db.regions.$id.js';
+import ViewMonsterComponent from './routes/(app)/(public)/db/monsters/$id.js';
+import ViewWorldComponent from './routes/(app)/(public)/db/worlds/$id.js';
+import { WorldsComponent } from './routes/(app)/(public)/db/worlds/index.js';
+import ViewRegionComponent from './routes/(app)/(public)/db/regions/$id.js';
 
 import PrivateAppComponent from './routes/(app)/(private)/_private.js';
 import CreateMonsterComponent from './routes/(app)/(private)/db/monsters/create.js';
@@ -86,10 +86,20 @@ export default function App() {
           <Route path=':creator/:id' element={ <ViewPostComponent /> } />
           <Route path=':creator/follow' element={ <FollowComponent /> } />
 
-          <Route path='db/monsters/:id' element={ <ViewMonsterComponent /> } />
-          <Route path='db/worlds/:id' element={ <ViewWorldComponent /> } />
-          <Route path='db/worlds' element={ <WorldsComponent /> } />
-          <Route path='db/regions/:id' element={ <ViewRegionComponent /> } />
+          <Route path='db'>
+            <Route path='monsters'>
+              <Route path=':id' element={ <ViewMonsterComponent /> } />
+            </Route>
+
+            <Route path='regions'>
+              <Route path=':id' element={ <ViewRegionComponent /> } />
+            </Route>
+
+            <Route path='worlds'>
+              <Route path='' element={ <WorldsComponent /> } />
+              <Route path=':id' element={ <ViewWorldComponent /> } />
+            </Route>
+          </Route>
         </Route>
       </Route>
 

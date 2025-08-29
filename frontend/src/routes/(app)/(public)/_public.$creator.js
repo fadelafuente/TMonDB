@@ -15,6 +15,7 @@ import InfiniteResourceScroll from '../../../components/InfiniteScrolls/Infinite
 import { BlockedCard } from '../../../components/Cards/BlockedCard';
 import LoadingCard from '../../../components/Cards/LoadingCard';
 import MonsterCard from '../../../components/Cards/MonsterCard';
+import PostCard from '../../../components/Cards/PostCard';
 import { ViewBlockedUserCard } from '../../../components/Cards/ViewingBlockedUserCard';
 import BlockModal from '../../../components/Modals/BlockModal';
 import EditModal from '../../../components/Modals/EditModal';
@@ -191,7 +192,7 @@ export default function ProfileComponent() {
                     {profile && profile.current_user_is_blocked ? (
                       <BlockedCard creator={profile.username} />
                     ) : (
-                      <InfiniteResourceScroll kwargs={{ username: creator }} />
+                      <InfiniteResourceScroll kwargs={{ username: creator }} Card={ PostCard } />
                     )}
                   </Tab>
                   <Tab eventKey='replies' title='Replies'>
@@ -200,6 +201,7 @@ export default function ProfileComponent() {
                     ) : (
                       <InfiniteResourceScroll
                         kwargs={{ username: creator, is_reply: true }}
+                        Card={ PostCard }
                       />
                     )}
                   </Tab>
@@ -207,7 +209,7 @@ export default function ProfileComponent() {
                     {profile && profile.current_user_is_blocked ? (
                       <BlockedCard creator={profile.username} />
                     ) : (
-                      <InfiniteResourceScroll type='monsters' Card={ MonsterCard } />
+                      <InfiniteResourceScroll type='monsters' Card={ MonsterCard } label='Monster' />
                     )}
                   </Tab>
                   <Tab eventKey='regions' title='Regions'>
@@ -222,7 +224,7 @@ export default function ProfileComponent() {
             </div>
           </div>
         ) : (
-          <div className='article-container'>
+          <div className='loading-container'>
             <LoadingCard />
           </div>
         )}

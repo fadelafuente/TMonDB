@@ -6,19 +6,19 @@ import BaseCard from './BaseCard';
 
 import '../../assets/styling/PostCard.css';
 
-export default function PostCard({ data }) {
+export default function PostCard({ data, type='posts', label='Post' }) {
   const [showUpdate, setShowUpdate] = useState(false);
   const form = useUpdateResource({
       content: data.content
     },
-    'posts',
+    type,
     data.id
   );
 
   return (
     <>
       <CreatePostModal show={ showUpdate } setShow={ setShowUpdate } form={ form } parent={ data.parent } />
-      <BaseCard data={ data } type='posts' onUpdate={ () => setShowUpdate(true) } />
+      <BaseCard data={ data } type={ type } onUpdate={ () => setShowUpdate(true) } label={ label } />
     </>
   );
 }

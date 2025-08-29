@@ -37,6 +37,7 @@ export default function AppComponent() {
               <Link to='/'>Trending</Link>
               <Link to='/'>Monsters</Link>
               <Link to='/'>Regions</Link>
+              <Link to='/db/worlds'>Worlds</Link>
               { user ? <Link to={ `/${user.username}` }>Account</Link> : '' }
             </div>
           </div>

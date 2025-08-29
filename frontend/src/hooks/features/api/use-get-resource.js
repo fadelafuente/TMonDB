@@ -4,7 +4,7 @@ import getApiHeaders from '../../../lib/api-config';
 
 export function useGetResource(resource, kwargs = {}, query) {
   return useInfiniteQuery({
-    queryKey: [resource],
+    queryKey: [resource, kwargs],
     queryFn: async ({ pageParam }) => {
       try {
         let queryString = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');

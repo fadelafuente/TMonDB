@@ -53,7 +53,7 @@ export default function ViewPostComponent() {
               <></>
           }
           <div className='article-container'>
-            <PostCard post={ post } />
+            <PostCard data={ post } />
           </div>
             {
               isAuthenticated ?
@@ -64,7 +64,7 @@ export default function ViewPostComponent() {
                 <div className='no-reply-container'></div>
             }
           <div className='comments-container article-container'>
-            <InfiniteResourceScroll kwargs={{ parent: post.article.id }} />
+            <InfiniteResourceScroll kwargs={{ parent: post.article.id }} Card={ PostCard } />
           </div>
         </div>
       }

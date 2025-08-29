@@ -37,7 +37,7 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
             <Dropdown.Item onClick={() => setShowDelete(true) }>
               Delete { label }
             </Dropdown.Item>
-            <Dropdown.Item onClick={ onUpdate }>
+            <Dropdown.Item onClick={ onUpdate ? onUpdate : () => navigate(`/db/${type}/${data.id}/update`) }>
               Update { label }
             </Dropdown.Item>
           </>
@@ -52,6 +52,7 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
 
   function handleNavigate(e) {
     e.preventDefault();
+    e.stopPropagation();
     navigate(`/${data.article.creator.username}`);
   }
 
@@ -62,6 +63,19 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
     });
   }
 
+  function handleCardNavigate(e) {
+    e.preventDefault();
+    if(data && data.article) {
+      if(type === 'posts') {
+        navigate(`/${data.article.creator.username}/${data.id}`);
+      } else {
+        navigate(`/db/${type}/${data.id}`);
+      }
+    } else {
+      navigate(`/`);
+    }
+  }
+
   if(isDeleted) {
     return <DeletedCard />;
   } else {
@@ -70,12 +84,9 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
         <BlockModal show={ showBlock } setShow={ setShowBlock } setBlocked={ setBlocked } username={ data ? data.article.creator.username : null } />
         <DeleteResourceModal show={ showDelete } setShow={ setShowDelete } handleDelete={ handleDelete } label={ label.toLowerCase() } />
         <Card>
-          <a href={ data.article.creator.username ?
-              data ? `/${data.article.creator.username}/${data.id}` : `/deleted/${data.id}`
-            :
-              '/'
-            }
+          <div 
             className='obj-link'
+            onClick={ e => handleCardNavigate(e) }
           >
             <Card.Body>
               <Card.Title>
@@ -119,16 +130,16 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
 
               { data ?
                 <Card.Text>
-                  { data.content }
+                  { data.content ? data.content : data.description ? data.description : 'Records not available, more research is required.' }
                 </Card.Text>
               :
-                <Placeholder as={Card.Text} animation='wave'>
+                <Placeholder as={ Card.Text } animation='wave'>
                   <Placeholder xs={ 7 } /> <Placeholder xs={ 4 } /> <Placeholder xs={ 4 } />{ ' ' }
                   <Placeholder xs={ 6 } /> <Placeholder xs={ 8 } />
                 </Placeholder>
               }
             </Card.Body>
-          </a>
+          </div>
           <Card.Footer className='no-select'>
             <SocialInteractions resource={ type } obj={ data } />
           </Card.Footer>

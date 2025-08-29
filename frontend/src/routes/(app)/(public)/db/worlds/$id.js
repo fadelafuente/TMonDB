@@ -2,23 +2,24 @@ import { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
-import InfiniteResourceScroll from '../../../components/InfiniteScrolls/InfiniteResourceScroll';
-import ReplyBar from '../../../components/Bars/ReplyBar';
-import { BlockedCard } from '../../../components/Cards/BlockedCard';
-import { FailedCard } from '../../../components/Cards/FailedCard';
-import LoadingCard from '../../../components/Cards/LoadingCard';
-import BlockModal from '../../../components/Modals/BlockModal';
-import ArticleHeader from '../../../components/ui/Article/ArticleHeader';
-import DeleteResourceModal from '../../../components/Modals/DeleteResourceModal';
-import SocialInteractions from '../../../components/UserInteractions/SocialInteractions';
-import { useDeleteResource } from '../../../hooks/features/api/use-delete-resource';
-import { useGetResourceById } from '../../../hooks/features/api/use-get-resource-by-id';
+import InfiniteResourceScroll from '../../../../../components/InfiniteScrolls/InfiniteResourceScroll';
+import ReplyBar from '../../../../../components/Bars/ReplyBar';
+import { BlockedCard } from '../../../../../components/Cards/BlockedCard';
+import { FailedCard } from '../../../../../components/Cards/FailedCard';
+import LoadingCard from '../../../../../components/Cards/LoadingCard';
+import PostCard from '../../../../../components/Cards/PostCard';
+import BlockModal from '../../../../../components/Modals/BlockModal';
+import ArticleHeader from '../../../../../components/ui/Article/ArticleHeader';
+import DeleteResourceModal from '../../../../../components/Modals/DeleteResourceModal';
+import SocialInteractions from '../../../../../components/UserInteractions/SocialInteractions';
+import { useDeleteResource } from '../../../../../hooks/features/api/use-delete-resource';
+import { useGetResourceById } from '../../../../../hooks/features/api/use-get-resource-by-id';
 
-import '../../../assets/styling/content.css';
-import '../../../assets/styling/UserProfile.css';
-import '../../../assets/styling/ViewMon.css';
-import '../../../assets/styling/Banner.css';
-import '../../../assets/styling/Article.css';
+import '../../../../../assets/styling/content.css';
+import '../../../../../assets/styling/UserProfile.css';
+import '../../../../../assets/styling/ViewMon.css';
+import '../../../../../assets/styling/Banner.css';
+import '../../../../../assets/styling/Article.css';
 
 export default function ViewWorldComponent() {
   const { id } = useParams();
@@ -111,6 +112,7 @@ export default function ViewWorldComponent() {
             <div className='comments-container article-container'>
               <InfiniteResourceScroll
                 kwargs={{ parent: world.article ? world.article.id : null }}
+                Card={ PostCard }
               />
             </div>
           </div>
