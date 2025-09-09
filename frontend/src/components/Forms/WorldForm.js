@@ -1,4 +1,4 @@
-import { Button, Form, FloatingLabel, FormControl } from "react-bootstrap";
+import { Button, Form, FloatingLabel, FormControl } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { DiscardModal } from '../Modals/DiscardModal';
 import { useDiscardModal } from '../../hooks/modal/use-discard-modal';

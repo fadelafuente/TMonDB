@@ -1,21 +1,17 @@
-import { useFormData } from './use-form-data';
+import { useEffect } from "react";
+import { useFormData } from "./use-form-data";
 
 export function useAdaptiveFormData(initialForm) {
-    const [formData, setFormData, setInitialData] = useFormData(initialForm);
+  const [formData, setFormData, setInitialData] = useFormData(initialForm);
 
-    function handleFormData(e, resetPost=false) {
-        if(e.target.id === 'auto-resizing') {
-            const textarea = e.target;
+  useEffect(() => {
+    const textarea = document.getElementById('auto-resizing');
 
-            function autoResize() {
-                this.style.height = 'auto';
-                this.style.height = this.scrollHeight + 'px';
-            }
-
-            textarea.addEventListener('input', autoResize, false);
-        }
-        setFormData(e, resetPost);
+    if(textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
     }
+  }, [formData]);
 
-    return [formData, handleFormData, setInitialData];
+  return [formData, setFormData, setInitialData];
 }
