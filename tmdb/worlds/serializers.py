@@ -23,7 +23,8 @@ class RetrieveWorldSerializer(ModelScrollWithArticleSerializer, WorldSerializer)
 
 class WorldScrollSerializer(RetrieveWorldSerializer):
     class Meta(RetrieveWorldSerializer.Meta):
-        fields = ['id', 'name', 'description', 'article']
+        fields = ['id', 'name', 'description', 'article', 'likes_count', 'reposts_count', 'comments_count', 'user_liked', 
+                  'user_reposted', 'user_commented', 'is_current_user']
 
 class WorldWithAliasesSerializer(WorldSerializer):
     properties = PropertySerializer(many=True, read_only=True)
