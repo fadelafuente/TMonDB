@@ -34,15 +34,24 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
       <Fragment>
         { data.is_current_user ?
           <>
-            <Dropdown.Item onClick={() => setShowDelete(true) }>
+            <Dropdown.Item 
+              onClick={() => setShowDelete(true) }
+              as={ 'button' }
+            >
               Delete { label }
             </Dropdown.Item>
-            <Dropdown.Item onClick={ onUpdate ? onUpdate : () => navigate(`/db/${type}/${data.id}/update`) }>
+            <Dropdown.Item 
+              onClick={ onUpdate ? onUpdate : () => navigate(`/db/${type}/${data.id}/update`) }
+              as={ 'button' }
+            >
               Update { label }
             </Dropdown.Item>
           </>
         :
-          <Dropdown.Item onClick={() => setShowBlock(true) }>
+          <Dropdown.Item 
+            onClick={() => setShowBlock(true) }
+            as={ 'button' }
+          >
             Block user
           </Dropdown.Item>
         }
@@ -63,19 +72,6 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
     });
   }
 
-  function handleCardNavigate(e) {
-    e.preventDefault();
-    if(data && data.article) {
-      if(type === 'posts') {
-        navigate(`/${data.article.creator.username}/${data.id}`);
-      } else {
-        navigate(`/db/${type}/${data.id}`);
-      }
-    } else {
-      navigate(`/`);
-    }
-  }
-
   if(isDeleted) {
     return <DeletedCard />;
   } else {
@@ -84,9 +80,16 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
         <BlockModal show={ showBlock } setShow={ setShowBlock } setBlocked={ setBlocked } username={ data ? data.article.creator.username : null } />
         <DeleteResourceModal show={ showDelete } setShow={ setShowDelete } handleDelete={ handleDelete } label={ label.toLowerCase() } />
         <Card>
-          <div 
+          <a 
             className='obj-link'
-            onClick={ e => handleCardNavigate(e) }
+            href={ 
+              type === 'posts' && data && data.article ? 
+                `/${data.article.creator.username}/${data.id}` 
+              : 
+                data && data.article ? 
+                  `/db/${type}/${data.id}` 
+                : '/' 
+            }
           >
             <Card.Body>
               <Card.Title>
@@ -139,7 +142,7 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
                 </Placeholder>
               }
             </Card.Body>
-          </div>
+          </a>
           <Card.Footer className='no-select'>
             <SocialInteractions resource={ type } obj={ data } />
           </Card.Footer>

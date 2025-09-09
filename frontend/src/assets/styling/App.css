@@ -218,20 +218,20 @@ div.dropdown-menu {
   border: none;
 }
 
-a.dropdown-item {
+a.dropdown-item, button.dropdown-item {
   color: var(--placeholder-text-color);
 }
 
-a.dropdown-item:focus {
+a.dropdown-item:focus, button.dropdown-item:focus {
   background-color: var(--background-content-color);
 }
 
-a.dropdown-item:hover {
+a.dropdown-item:hover, button.dropdown-item:hover {
   color: var(--background-content-color);
   background-color: var(--accent-color);
 }
 
-a.dropdown-item:active {
+a.dropdown-item:active, button.dropdown-item:active {
   color: var(--background-content-color);
   background-color: var(--accent-secondary-color);
 }
