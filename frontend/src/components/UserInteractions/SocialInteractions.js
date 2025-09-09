@@ -35,8 +35,13 @@ export default function SocialInteractions({ resource=null, obj=null }) {
   const form = useCreateResource(initialForm);
 
   function handleCopyLink() {
-    navigator.clipboard.writeText(window.location.href);
-    setShowAlert(true);
+    if(resource === 'posts' && obj && obj.article) {
+      navigator.clipboard.writeText(`${window.location.origin}/${obj.article.creator.username}/${obj.id}`);
+      setShowAlert(true);
+    } else if(resource && obj) {
+      navigator.clipboard.writeText(`${window.location.origin}/db/${resource}/${obj.id}`);
+      setShowAlert(true);
+    }
   }
 
   return (
