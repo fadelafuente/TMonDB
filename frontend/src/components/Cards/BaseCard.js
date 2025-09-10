@@ -14,7 +14,7 @@ import { useMiddleViewPort } from '../../hooks/misc/use-middle-viewport';
 
 import '../../assets/styling/PostCard.css';
 
-export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, label='Post' }) {
+export default function BaseCard({ data={}, type='posts', onUpdate=null, label='Post' }) {
   const [showBlock, setShowBlock] = useState(false);
   const [blocked, setBlocked] = useState(false);
   const [aboveMid, setAboveMid] = useMiddleViewPort();
@@ -132,7 +132,7 @@ export default function BaseCard({ data={}, type='posts', onUpdate=() => {}, lab
               </div>
 
               { data ?
-                <Card.Text>
+                <Card.Text className='include-newlines'>
                   { data.content ? data.content : data.description ? data.description : 'Records not available, more research is required.' }
                 </Card.Text>
               :

@@ -113,6 +113,7 @@ export default function TitleBar({setQuery, user, isAuthenticated }) {
               <Nav.Link href='#home'>Trending</Nav.Link>
               <Nav.Link href='#link'>Monsters</Nav.Link>
               <Nav.Link href='#link'>Regions</Nav.Link>
+              <Nav.Link href='/db/worlds'>Worlds</Nav.Link>
               { isAuthenticated && user ?
                 <Nav.Link href={ `/${user.username}` }>Account</Nav.Link>
               :

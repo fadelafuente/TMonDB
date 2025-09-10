@@ -177,7 +177,7 @@ export default function ViewMonsterComponent() {
                 <div className='mon-desc-tag'>
                   Description
                 </div>
-                <p>
+                <p className='include-newlines'>
                   { monster.description ? monster.description : 'Data not found. Stay safe out there, researchers.' }
                 </p>
               </div>
