@@ -11,7 +11,7 @@ export function useSocialAuth(provider) {
     const state = values.has('state') ? values.get('state') : null;
     const code = values.has('code') ? values.get('code') : null;
 
-    if (state && code) {
+    if(state && code) {
       socialAuthenticate({ state, code, provider });
     }
   }, [provider, location, socialAuthenticate]);

@@ -8,7 +8,7 @@ export function useGetResource(resource, kwargs = {}, query) {
     queryFn: async ({ pageParam }) => {
       try {
         let queryString = Object.keys(kwargs).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(kwargs[key])).join('&');
-        if (query) {
+        if(query) {
           queryString ? queryString += `&search=${query}` : queryString = `search=${query}`;
         }
 
@@ -22,14 +22,14 @@ export function useGetResource(resource, kwargs = {}, query) {
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
-      if (lastPage && lastPage.next) {
+      if(lastPage && lastPage.next) {
         const url = new URL(lastPage.next);
         return Number(url.searchParams.get('page')) || null;
       }
       return null;
     },
     getPreviousPageParam: (firstPage) => {
-      if (firstPage && firstPage.previous) {
+      if(firstPage && firstPage.previous) {
         const url = new URL(firstPage.previous);
         return Number(url.searchParams.get('page')) || null;
       }

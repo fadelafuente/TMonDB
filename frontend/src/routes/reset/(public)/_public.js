@@ -5,7 +5,7 @@ import { useAuth } from "../../../hooks/features/user/auth/use-auth";
 export default function PublicResetComponent() {
   const { data: isAuthenticated, isloading } = useAuth();
 
-  if (isloading) {
+  if(isloading) {
     return (
       <div className='loading-container'>
         <LoadingCard />

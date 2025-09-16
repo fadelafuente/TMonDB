@@ -24,7 +24,7 @@ export default function useInfiniteScoll({ queryResult }, query, resource) {
   }, [query, resource, queryClient]);
 
   useEffect(() => {
-    if (inView && hasNextPage) {
+    if(inView && hasNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);

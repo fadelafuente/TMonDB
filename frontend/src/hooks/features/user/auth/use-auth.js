@@ -7,7 +7,7 @@ export function useAuth() {
     queryFn: async () => {
       try {
         const token = localStorage.getItem('access');
-        if (!token) {
+        if(!token) {
           return false;
         }
         

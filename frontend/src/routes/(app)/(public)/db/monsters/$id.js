@@ -12,6 +12,7 @@ import PostCard from '../../../../../components/Cards/PostCard';
 import EvoChains from '../../../../../components/Content/EvoChains';
 import MovesTab from '../../../../../components/Content/MovesTab';
 import BlockModal from '../../../../../components/Modals/BlockModal';
+import DeleteResourceModal from '../../../../../components/Modals/DeleteResourceModal';
 import StatChart from '../../../../../components/TablesAndCharts/StatChart';
 import WeaknessChart from '../../../../../components/TablesAndCharts/WeaknessChart';
 import SocialInteractions from '../../../../../components/UserInteractions/SocialInteractions';
@@ -27,6 +28,7 @@ export default function ViewMonsterComponent() {
   const { id } = useParams();
   const { data: monster, isLoading } = useGetResourceById('monsters', id);
   const [showBlock, setShowBlock] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
   const { data: isDeleted, mutate: setIsDeleted } = useDeleteResource('monsters');
   const [tab, setTab] = useState('stats');
   const { isAuthenticated } = useOutletContext();
@@ -51,6 +53,13 @@ export default function ViewMonsterComponent() {
 
   const courseTotal = 140;
 
+  function handleDelete() {
+    setShowDelete(() => {
+      setIsDeleted(monster.id);
+      return false;
+    });
+  }
+
   let [feet, inches] = ['???', '???'];
   if(monster && monster.avg_height) {
     [feet, inches] = handleHeightConversion(monster.avg_height);
@@ -72,7 +81,7 @@ export default function ViewMonsterComponent() {
   if(isDeleted || !monster) {
     return (
       <div className='article-container'>
-        <FailedCard />
+        <FailedCard type='Monster' />
       </div>
     );
   }
@@ -90,9 +99,20 @@ export default function ViewMonsterComponent() {
           </div>
         :
           <div>
+            <DeleteResourceModal
+              show={ showDelete }
+              setShow={ setShowDelete }
+              handleDelete={ handleDelete }
+              label='monster'
+            />
             <BlockModal show={ showBlock } setShow={ setShowBlock } setBlocked={ () => window.location.reload() } username={ monster ? monster.article.creator.username : null } />
             <article className='article-container'>
-              <ArticleHeader data={ monster } type='Monster' setIsDeleted={ (d) => setIsDeleted(d) } setShowBlock={ (b) => setShowBlock(b) } />
+              <ArticleHeader
+                data={ monster }
+                type='Monster'
+                setShowDelete={ (d) => setShowDelete(d) }
+                setShowBlock={ (b) => setShowBlock(b) }
+              />
 
               <div className='mon-info-details bottom-barrier'>
                 <div className='mon-image-aspect-container'>

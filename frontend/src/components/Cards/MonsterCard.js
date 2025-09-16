@@ -19,12 +19,12 @@ export default function MonsterCard({ data = null }) {
   const navigate = useNavigate();
 
   let [feet, inches] = ['???', '???'];
-  if (data && data.avg_height) {
+  if(data && data.avg_height) {
     [feet, inches] = handleHeightConversion(data.avg_height);
   }
 
   let lb = '???';
-  if (data && data.avg_weight) {
+  if(data && data.avg_weight) {
     lb = handleKgToLbConversion(data.avg_weight);
   }
 

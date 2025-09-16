@@ -11,7 +11,7 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
 
   function handleLevelCap(e, setFormData) {
     const value = e.target.value;
-    if (value === '') {
+    if(value === '') {
       setFormData({ target: { name: 'level_cap', value: 0 } });
     }
 

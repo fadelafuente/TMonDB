@@ -33,13 +33,13 @@ export default function RegisterComponent() {
     formData;
 
   function handleErrorMessage(response) {
-    if (typeof response == 'string') {
+    if(typeof response == 'string') {
       const element = new DOMParser()
         .parseFromString(response, 'text/html')
         .getElementsByClassName('exception_value');
       const err_message = element[0].innerHTML.replace(/['']+/g, '');
       setMessage(err_message);
-    } else if (typeof response == 'object') {
+    } else if(typeof response == 'object') {
       const responseValues = Object.values(response);
       const err_message = responseValues[0];
       setMessage(err_message);

@@ -18,13 +18,13 @@ export default function ResetUsernameComponent() {
 
   function onSubmit(e) {
     e.preventDefault();
-    if (username.length < 5) {
+    if(username.length < 5) {
       setMessage('The username needs to be atleast 5 characters.');
       setShow(true);
     } else {
       updateDetails({ username }).then((response) => {
         let message = '';
-        if (response && response.status === 200) {
+        if(response && response.status === 200) {
           message = 'Username successfully updated';
           setShow(true);
           navigate('/username/reset/confirm', {

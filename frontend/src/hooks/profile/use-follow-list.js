@@ -17,14 +17,14 @@ export function useFollowList(username, follow_type, query) {
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
-      if (lastPage && lastPage.next) {
+      if(lastPage && lastPage.next) {
         const url = new URL(lastPage.next);
         return Number(url.searchParams.get('page')) || null;
       }
       return null;
     },
     getPreviousPageParam: (firstPage) => {
-      if (firstPage && firstPage.previous) {
+      if(firstPage && firstPage.previous) {
         const url = new URL(firstPage.previous);
         return Number(url.searchParams.get('page')) || null;
       }

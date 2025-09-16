@@ -41,7 +41,7 @@ export default function ProfileComponent() {
     setShowAlert(true);
   }
 
-  if (profile && profile.user_blocks) {
+  if(profile && profile.user_blocks) {
     return (
       <div className='article-container'>
         <ViewBlockedUserCard creator={creator} />

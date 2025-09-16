@@ -36,7 +36,7 @@ export default function ViewWorldComponent() {
     });
   }
 
-  if (isLoading) {
+  if(isLoading) {
     return (
       <div className='article-container'>
         <LoadingCard />
@@ -44,7 +44,7 @@ export default function ViewWorldComponent() {
     );
   }
 
-  if (isDeleted) {
+  if(isDeleted) {
     return (
       <div className='article-container'>
         <FailedCard type='World' />

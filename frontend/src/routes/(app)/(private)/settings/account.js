@@ -20,7 +20,7 @@ export default function AccountComponent() {
   const [name, setName] = useState(user ? user.username : '');
 
   useEffect(() => {
-    if (user && name === '') 
+    if(user && name === '') 
       setName(user.username);
   }, [user, name]);
 

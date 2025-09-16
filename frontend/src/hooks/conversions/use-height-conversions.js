@@ -11,7 +11,7 @@ export function useHeightConversions(initialFt, initialIn) {
             const feet = value === '' ? 0 : parseInt(value);
             if(feet <= 32) {
                 const m = handleHeightConversion(feet, heightIn ? parseFloat(heightIn) : 0);
-                if (m <= 999.9) {
+                if(m <= 999.9) {
                     setHeightFt(feet > 0 ? feet : '');
                     const mInput = document.getElementById('average-height-input');
                     mInput.value = m;
@@ -27,7 +27,7 @@ export function useHeightConversions(initialFt, initialIn) {
             const inches = value === '' ? 0 : value;
             if(inches < 12) {
                 const m = handleHeightConversion(heightFt ? parseInt(heightFt) : 0, inches);
-                if (m <= 999.9) {
+                if(m <= 999.9) {
                     setHeightIn(inches > 0 ? inches : '');
                     const mInput = document.getElementById('average-height-input');
                     mInput.value = m;

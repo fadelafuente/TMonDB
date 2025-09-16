@@ -24,7 +24,7 @@ export function handleValidation(pw) {
   const numbers = /[0-9]/;
   const specialCharacters = /[^\w\s]/;
 
-  if (lowerCaseLetters.test(pw)) {
+  if(lowerCaseLetters.test(pw)) {
     lowercase.classList.remove('invalid');
     lowercase.classList.add('valid');
   } else {
@@ -32,7 +32,7 @@ export function handleValidation(pw) {
     lowercase.classList.add('invalid');
   }
 
-  if (upperCaseLetters.test(pw)) {
+  if(upperCaseLetters.test(pw)) {
     uppercase.classList.remove('invalid');
     uppercase.classList.add('valid');
   } else {
@@ -40,7 +40,7 @@ export function handleValidation(pw) {
     uppercase.classList.add('invalid');
   }
 
-  if (numbers.test(pw)) {
+  if(numbers.test(pw)) {
     number.classList.remove('invalid');
     number.classList.add('valid');
   } else {
@@ -48,7 +48,7 @@ export function handleValidation(pw) {
     number.classList.add('invalid');
   }
 
-  if (specialCharacters.test(pw)) {
+  if(specialCharacters.test(pw)) {
     special.classList.remove('invalid');
     special.classList.add('valid');
   } else {
@@ -56,7 +56,7 @@ export function handleValidation(pw) {
     special.classList.add('invalid');
   }
 
-  if (pw.length >= 8 && pw.length <= 20) {
+  if(pw.length >= 8 && pw.length <= 20) {
     length.classList.remove('invalid');
     length.classList.add('valid');
   } else {
@@ -75,15 +75,15 @@ export function handleTimeDifference(date_created) {
   const months = Math.floor(days / 31);
   const years = Math.floor(months / 12);
 
-  if (years > 0) {
+  if(years > 0) {
     return years + 'y';
-  } else if (months > 0) {
+  } else if(months > 0) {
     return months + 'M';
-  } else if (days > 0) {
+  } else if(days > 0) {
     return days + 'd';
-  } else if (hours > 0) {
+  } else if(hours > 0) {
     return hours + 'h';
-  } else if (minutes > 0) {
+  } else if(minutes > 0) {
     return minutes + 'm';
   } else {
     return '<1m';
@@ -91,7 +91,7 @@ export function handleTimeDifference(date_created) {
 }
 
 export function handleGallery(gallery) {
-  if (gallery == null) {
+  if(gallery == null) {
     const image_gallery = document.getElementById('image-gallery');
     image_gallery.innerHTML = '';
     return;
@@ -116,14 +116,14 @@ export function handleGallery(gallery) {
 }
 
 export function handleDuplicatesInArray(source, result) {
-  if (!source) return [];
+  if(!source) return [];
   let id_set = new Set(
     result.map((item) => {
       return item.id;
     })
   );
   source.forEach((item) => {
-    if (!id_set.has(item.id)) {
+    if(!id_set.has(item.id)) {
       id_set.add(item.id);
       result.push(item);
     }
@@ -133,7 +133,7 @@ export function handleDuplicatesInArray(source, result) {
 }
 
 export function handleHeightConversion(h1, h2 = null) {
-  if (h2 != null) {
+  if(h2 != null) {
     const m = 0.0254 * (h1 * 12 + parseFloat(h2));
 
     return m.toFixed(1);
