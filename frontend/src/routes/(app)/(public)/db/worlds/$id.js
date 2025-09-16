@@ -57,6 +57,7 @@ export default function ViewWorldComponent() {
           show={ showDelete }
           setShow={ setShowDelete }
           handleDelete={ handleDelete }
+          label="world"
         />
         {world.current_user_is_blocked ? (
           <div className='article-container'>
