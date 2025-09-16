@@ -17,8 +17,8 @@ import StatChart from '../../../../../components/TablesAndCharts/StatChart';
 import WeaknessChart from '../../../../../components/TablesAndCharts/WeaknessChart';
 import SocialInteractions from '../../../../../components/UserInteractions/SocialInteractions';
 import { handleHeightConversion, handleKgToLbConversion } from '../../../../../functions/handlers';
-import { useDeleteResource } from '../../../../../hooks/features/api/use-delete-resource';
 import { useGetResourceById } from '../../../../../hooks/features/api/use-get-resource-by-id';
+import { useDeleteResourceModal } from '../../../../../hooks/modal/use-delete-resource-modal';
 
 import '../../../../../assets/styling/content.css';
 import '../../../../../assets/styling/UserProfile.css';
@@ -28,8 +28,7 @@ export default function ViewMonsterComponent() {
   const { id } = useParams();
   const { data: monster, isLoading } = useGetResourceById('monsters', id);
   const [showBlock, setShowBlock] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const { data: isDeleted, mutate: setIsDeleted } = useDeleteResource('monsters');
+  const { openDeleteModal, isDeleted, setOpenDeleteModal, handleDeleteResource} = useDeleteResourceModal('monsters', monster);
   const [tab, setTab] = useState('stats');
   const { isAuthenticated } = useOutletContext();
 
@@ -52,13 +51,6 @@ export default function ViewMonsterComponent() {
   ];
 
   const courseTotal = 140;
-
-  function handleDelete() {
-    setShowDelete(() => {
-      setIsDeleted(monster.id);
-      return false;
-    });
-  }
 
   let [feet, inches] = ['???', '???'];
   if(monster && monster.avg_height) {
@@ -100,9 +92,9 @@ export default function ViewMonsterComponent() {
         :
           <div>
             <DeleteResourceModal
-              show={ showDelete }
-              setShow={ setShowDelete }
-              handleDelete={ handleDelete }
+              show={ openDeleteModal }
+              setShow={ setOpenDeleteModal }
+              handleDelete={ handleDeleteResource }
               label='monster'
             />
             <BlockModal show={ showBlock } setShow={ setShowBlock } setBlocked={ () => window.location.reload() } username={ monster ? monster.article.creator.username : null } />
@@ -110,7 +102,7 @@ export default function ViewMonsterComponent() {
               <ArticleHeader
                 data={ monster }
                 type='Monster'
-                setShowDelete={ (d) => setShowDelete(d) }
+                setShowDelete={ (d) => setOpenDeleteModal(d) }
                 setShowBlock={ (b) => setShowBlock(b) }
               />
 

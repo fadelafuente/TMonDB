@@ -12,8 +12,8 @@ import BlockModal from '../../../../../components/Modals/BlockModal';
 import ArticleHeader from '../../../../../components/ui/Article/ArticleHeader';
 import DeleteResourceModal from '../../../../../components/Modals/DeleteResourceModal';
 import SocialInteractions from '../../../../../components/UserInteractions/SocialInteractions';
-import { useDeleteResource } from '../../../../../hooks/features/api/use-delete-resource';
 import { useGetResourceById } from '../../../../../hooks/features/api/use-get-resource-by-id';
+import { useDeleteResourceModal } from '../../../../../hooks/modal/use-delete-resource-modal';
 
 import '../../../../../assets/styling/content.css';
 import '../../../../../assets/styling/UserProfile.css';
@@ -25,16 +25,8 @@ export default function ViewWorldComponent() {
   const { id } = useParams();
   const { data: world, isLoading } = useGetResourceById('worlds', id);
   const [showBlock, setShowBlock] = useState(false);
-  const [showDelete, setShowDelete] = useState(false);
-  const { data: isDeleted, mutate: setIsDeleted } = useDeleteResource('worlds');
+  const { openDeleteModal, isDeleted, setOpenDeleteModal, handleDeleteResource} = useDeleteResourceModal('worlds', world);
   const [tab, setTab] = useState('description');
-
-  function handleDelete() {
-    setShowDelete(() => {
-      setIsDeleted(world.id);
-      return false;
-    });
-  }
 
   if(isLoading) {
     return (
@@ -54,9 +46,9 @@ export default function ViewWorldComponent() {
     return (
       <>
         <DeleteResourceModal
-          show={ showDelete }
-          setShow={ setShowDelete }
-          handleDelete={ handleDelete }
+          show={ openDeleteModal }
+          setShow={ setOpenDeleteModal }
+          handleDelete={ handleDeleteResource }
           label='world'
         />
         {world.current_user_is_blocked ? (
@@ -82,7 +74,7 @@ export default function ViewWorldComponent() {
               <ArticleHeader
                 data={ world }
                 type='World'
-                setShowDelete={ (d) => setShowDelete(d) }
+                setShowDelete={ (d) => setOpenDeleteModal(d) }
                 setShowBlock={ (b) => setShowBlock(b) }
               />
 
