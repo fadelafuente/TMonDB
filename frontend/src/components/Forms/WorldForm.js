@@ -23,7 +23,12 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
 
   return (
     <>
-      <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} resetFormData={resetFormData} />
+      <DiscardModal
+        setShowDiscard={ setShowDiscard }
+        showDiscard={ showDiscard }
+        resetFormData={ resetFormData }
+        discard_type='world'
+      />
       <div className='article-container bottom-barrier'>
         <Form>
           <FloatingLabel controlId='floatingInput' label='Name*' className='mb-3'>

@@ -26,11 +26,14 @@ export default function DeleteResourceModal({ show, setShow, label, handleDelete
           </div>
         </div>
       </Alert>
-      <Modal className='reset-modal' backdrop='static' backdropClassName='modal-backdrop' show={show} centered>
+      <Modal backdrop='static' backdropClassName='modal-backdrop' show={show} centered>
         <Modal.Header>
-          Are you sure you want to delete your { label }? This action cannot be undone.
+          Are you sure you want to delete your { label }?
         </Modal.Header>
-        <Modal.Footer className='row-gap-container'>
+        <Modal.Body>
+          This will permanently delete your { label }. This action cannot be undone.
+        </Modal.Body>
+        <Modal.Footer className='row-gap-container outer-modal-footer'>
           <Button className='base-btn' onClick={ () => {setShow(false) } }>Nevermind</Button>
           <Button 
             className='base-btn delete-btn' 

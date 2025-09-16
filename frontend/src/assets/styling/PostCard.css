@@ -124,6 +124,7 @@ div.discard-post {
 }
 
 div.modal-header {
+    padding: 1.25em 1.25em 0em 1.25em;
     border-bottom: 2px solid var(--background-content-color);
 }
 

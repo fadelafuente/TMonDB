@@ -85,7 +85,12 @@ export default function MonsterForm({ action, formData, resetFormData, setFormDa
 
   return (
     <>
-      <DiscardModal setShowDiscard={setShowDiscard} showDiscard={showDiscard} resetFormData={resetFormData} />
+      <DiscardModal
+        setShowDiscard={ setShowDiscard }
+        showDiscard={ showDiscard }
+        resetFormData={ resetFormData }
+        discard_type='monster'
+      />
       <div className='article-container'>
         <Form>
           <div className='bottom-barrier'><h2>{ capitalize(action) } Monster</h2></div>
