@@ -21,6 +21,7 @@ from django.views.generic import TemplateView
 from abilities.views import TMonDBAbilityViewset
 from monsters.views import TMonDBMonsterViewset
 from moves.views import TMonDBMoveViewset
+from regions.views import TMonDBRegionViewset
 from posts.views import PostViewSet
 from typings.views import TMonDBTypeViewset
 from users.views import TMonDBUserViewset, CustomTokenCreateView, CustomProviderAuthView, CustomTokenVerifyView
@@ -34,6 +35,7 @@ api_router.register(r'monsters', TMonDBMonsterViewset, basename='Monster')
 api_router.register(r'types', TMonDBTypeViewset, basename='Type')
 api_router.register(r'abilities', TMonDBAbilityViewset, basename='Ability')
 api_router.register(r'moves', TMonDBMoveViewset, basename='Move')
+api_router.register(r'regions', TMonDBRegionViewset, basename='Region')
 api_router.register(r'worlds', TMonDBWorldViewset, basename='World')
 
 auth_router = DefaultRouter()

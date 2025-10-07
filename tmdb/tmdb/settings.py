@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'posts',
     'typings',
     'users',
+    'regions',
     'worlds'
 ]
 

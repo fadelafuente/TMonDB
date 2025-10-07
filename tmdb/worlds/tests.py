@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 import json
@@ -7,7 +6,6 @@ from rest_framework.test import APITestCase
 from abilities.models import Ability
 from articles.models import Article
 from monsters.models import Monster
-from moves.models import Move
 from typings.models import Type
 
 AppUser = get_user_model()
