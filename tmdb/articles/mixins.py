@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 class LikeModelMixin:
     @action(detail=True, methods=['patch'])
-    def like(self, request, *args, **kwargs):
+    def likes(self, request, *args, **kwargs):
         instance = self.get_object()
         user = request.user
 
@@ -18,7 +18,7 @@ class LikeModelMixin:
     
 class RepostModelMixin:
     @action(detail=True, methods=['patch'])
-    def repost(self, request, *args, **kwargs):
+    def reposts(self, request, *args, **kwargs):
         instance = self.get_object()
         user = request.user
 

@@ -22,8 +22,8 @@ export default function SocialInteractions({ resource=null, obj=null }) {
     user_commented: obj ? obj.user_commented : false
   };
   const { isAuthenticated } = useOutletContext();
-  const [liked, likes, setLike] = useInteractions(initialData.likes_count, initialData.user_liked, resource);
-  const [reposted, reposts, setRepost] = useInteractions(initialData.reposts_count, initialData.user_reposted, resource);
+  const [liked, likes, setLikes] = useInteractions(initialData.likes_count, initialData.user_liked, resource);
+  const [reposted, reposts, setReposts] = useInteractions(initialData.reposts_count, initialData.user_reposted, resource);
   const [aboveMid, setAboveMid] = useMiddleViewPort();
   const [showAlert, setShowAlert] = useTimedAlert(false);
   const [show, setShow] = useState(false);
@@ -73,10 +73,10 @@ export default function SocialInteractions({ resource=null, obj=null }) {
           </button>
         </Col>
         <Col>
-          <button className='svg-btn' name='repost' onClick={
+          <button className='svg-btn' name='reposts' onClick={
             isAuthenticated ?
               obj ?
-                e => setRepost(e, obj.id)
+                e => setReposts(e, obj.id)
               :
                 () => {}
             :
@@ -95,10 +95,10 @@ export default function SocialInteractions({ resource=null, obj=null }) {
           </button>
         </Col>
         <Col>
-          <button className='svg-btn' name='like' onClick={
+          <button className='svg-btn' name='likes' onClick={
             isAuthenticated ?
               obj ?
-                e => setLike( e, obj.id)
+                e => setLikes( e, obj.id)
               :
                 () => {}
             :

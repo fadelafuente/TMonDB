@@ -219,7 +219,7 @@ class TestPosts(APITestCase):
         self.client.force_authenticate(user=self.user2)
 
         response1 = self.client.get(f'/api/posts/{self.post.id}/')
-        response2 = self.client.patch(f'/api/posts/{self.post.id}/like/')
+        response2 = self.client.patch(f'/api/posts/{self.post.id}/likes/')
         response3 = self.client.get(f'/api/posts/{self.post.id}/')
         
         self.assertEqual(response2.status_code, 200)
@@ -227,7 +227,7 @@ class TestPosts(APITestCase):
         self.assertTrue(response3.data['user_liked'])
 
     def test_liked_by_unauthenticated_user(self):
-        response = self.client.patch(f'/api/posts/{self.post.id}/like/')
+        response = self.client.patch(f'/api/posts/{self.post.id}/likes/')
         
         self.assertEqual(response.status_code, 401)
 
@@ -235,7 +235,7 @@ class TestPosts(APITestCase):
         self.client.force_authenticate(user=self.user2)
 
         response1 = self.client.get(f'/api/posts/{self.post.id}/')
-        response2 = self.client.patch(f'/api/posts/{self.post.id}/repost/')
+        response2 = self.client.patch(f'/api/posts/{self.post.id}/reposts/')
         response3 = self.client.get(f'/api/posts/{self.post.id}/')
         
         self.assertEqual(response2.status_code, 200)
@@ -243,7 +243,7 @@ class TestPosts(APITestCase):
         self.assertTrue(response3.data['user_reposted'])
 
     def test_reposted_by_unauthenticated_user(self):
-        response = self.client.patch(f'/api/posts/{self.post.id}/repost/')
+        response = self.client.patch(f'/api/posts/{self.post.id}/reposts/')
         
         self.assertEqual(response.status_code, 401)
     
@@ -294,7 +294,7 @@ class TestPosts(APITestCase):
     def test_get_likes(self):
         self.client.force_authenticate(user=self.user1)
 
-        self.client.patch(f'/api/posts/{self.post.id}/like/')
+        self.client.patch(f'/api/posts/{self.post.id}/likes/')
         
         response = self.client.get(f'/auth/users/{self.user1.username}/likes/')
 

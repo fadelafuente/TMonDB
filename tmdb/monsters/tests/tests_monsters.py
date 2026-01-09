@@ -158,7 +158,7 @@ class TestMonsters(APITestCase):
         self.client.force_authenticate(user=self.user)
 
         response1 = self.client.get(f'/api/monsters/{self.monster.id}/')
-        response2 = self.client.patch(f'/api/monsters/{self.monster.id}/like/')
+        response2 = self.client.patch(f'/api/monsters/{self.monster.id}/likes/')
         response3 = self.client.get(f'/api/monsters/{self.monster.id}/')
         
         self.assertEqual(response2.status_code, 200)
