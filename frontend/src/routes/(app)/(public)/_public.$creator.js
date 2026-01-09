@@ -205,6 +205,13 @@ export default function ProfileComponent() {
                       />
                     )}
                   </Tab>
+                  <Tab eventKey='worlds' title='Worlds'>
+                    {profile && profile.current_user_is_blocked ? (
+                      <BlockedCard creator={profile.username} />
+                    ) : (
+                      <InfiniteResourceScroll type='worlds' label='World' />
+                    )}
+                  </Tab>
                   <Tab eventKey='monsters' title='Monsters'>
                     {profile && profile.current_user_is_blocked ? (
                       <BlockedCard creator={profile.username} />
