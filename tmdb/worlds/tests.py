@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 import json
@@ -7,12 +6,12 @@ from rest_framework.test import APITestCase
 from abilities.models import Ability
 from articles.models import Article
 from monsters.models import Monster
-from moves.models import Move
+from worlds.models import World
 from typings.models import Type
 
 AppUser = get_user_model()
 
-class TestMonsters(APITestCase):
+class TestWorlds(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = AppUser.objects.create_user(email='testemail@domain.com', 
@@ -47,7 +46,12 @@ class TestMonsters(APITestCase):
             article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
             Monster.objects.create(name=f'Monster {index}', article=article)
 
-    def test_create_monster(self):
+        article = Article.objects.create(creator=cls.user, date_created=cls.test_start_time)
+        World.objects.create(article=article, name='Pokemon', description='Pokemon fell off!')
+        article = Article.objects.create(creator=cls.user2, date_created=cls.test_start_time)
+        World.objects.create(article=article, name='Monster Sanctuary', description='Monster Sanctuary was more fun than Pokemon.')
+
+    def test_create_world(self):
         self.client.force_authenticate(user=self.user)
 
         data = {'name': 'Temtem', 'description': 'Temtem is a massively multiplayer creature-collection adventure created by Crema and published by Humble Games.',
@@ -56,3 +60,14 @@ class TestMonsters(APITestCase):
         response = self.client.post('/api/worlds/', data=json.dumps(data), content_type='application/json')
         
         self.assertEqual(response.status_code, 201)
+
+    def test_get_worlds(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get('/api/worlds/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_users_worlds_with_reply_param(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get(f'/api/worlds/?reply=only_aliases&username={self.user.username}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['count'], 1)

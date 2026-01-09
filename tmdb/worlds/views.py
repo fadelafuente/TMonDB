@@ -2,7 +2,7 @@ from django.db import transaction
 
 from articles.views import BaseArticleViewSet
 from .models import World
-from .serializers import WorldSerializer, RetrieveWorldSerializer, WorldScrollSerializer, PropertySerializer
+from .serializers import WorldSerializer, RetrieveWorldSerializer, WorldScrollSerializer, PropertySerializer, WorldOnlyAliasesSerializer
         
 class TMonDBWorldViewset(BaseArticleViewSet):
     serializer_class = WorldSerializer
@@ -13,6 +13,8 @@ class TMonDBWorldViewset(BaseArticleViewSet):
 
     def get_serializer_class(self):
         if self.action in ['list']:
+            reply = self.request.query_params.get('reply', None)
+            if reply == 'only_aliases': return WorldOnlyAliasesSerializer
             return WorldScrollSerializer
         if self.action in ['retrieve']:
             return RetrieveWorldSerializer

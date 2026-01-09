@@ -32,3 +32,8 @@ class WorldWithAliasesSerializer(WorldSerializer):
     class Meta(WorldSerializer.Meta):
         fields = ['id', 'name', 'move_alias', 'course_alias', 'evolution_alias', 'ability_alias', 'monster_alias', 'properties']
         read_only_fields = ['properties']
+
+class WorldOnlyAliasesSerializer(serializers.ModelSerializer):
+    class Meta(WorldSerializer.Meta):
+        model=World
+        fields = ['id', 'name', 'move_alias', 'course_alias', 'evolution_alias', 'ability_alias', 'monster_alias']
