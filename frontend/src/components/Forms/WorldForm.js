@@ -1,10 +1,16 @@
-import { Button, Form, FloatingLabel, FormControl } from 'react-bootstrap';
+import { useState } from 'react';
+import { Button, Form, FloatingLabel, FormControl, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { DiscardModal } from '../Modals/DiscardModal';
 import { useDiscardModal } from '../../hooks/modal/use-discard-modal';
+import { BsDashCircle, BsPlusCircle } from 'react-icons/bs';
+import { handleAbbreviations } from '../../functions/handlers';
 
 export default function WorldForm({ formData, resetFormData, setFormData }) {
   const [showDiscard, setShowDiscard] = useDiscardModal(formData, (b) => navigate('/'));
+  const [properties, setProperties] = useState([]);
+  const [newProperty, setNewProperty] = useState('');
+  const [newAbbreviation, setNewAbbreviation] = useState('');
   const navigate = useNavigate();
 
   const { name, description, move_alias, course_alias, evolution_alias, monster_alias, ability_alias, level_cap } = formData;
@@ -16,9 +22,28 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
     }
 
     const cap = parseInt(value);
-    if(!isNaN(cap) || cap < 1) {
+    if(!isNaN(cap) || cap >= 1) {
       setFormData({ target: { name: 'level_cap', value: cap } });
     }
+  }
+
+  function handleAddProperties(e, p, a) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if(properties.length >= 10 || !p) {
+      return;
+    }
+    if(properties.findIndex(o => o['name'] === p) === -1) {
+      setProperties([...properties, { name: p, abbreviation: a }]);
+    }
+    setNewProperty('');
+    setNewAbbreviation('');
+  }
+
+  function handleDeleteProperty(r) {
+    const filtered = [...properties].filter((p) => p !== r);
+    setProperties(filtered);
   }
 
   return (
@@ -119,6 +144,40 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
             </div>
           </div>
 
+          <div className='bottom-barrier left-justify-container'>
+            <div className='col-container left-justify-container mb-1'>
+              <label className='col-label'>Move Properties ({properties.length}/10)</label>
+              <small>Examples: Accuracy, Critical Hit Chance, Cooldown, etc.</small>
+            </div>
+            <div className='type-row'>
+              <input className='type-input' 
+                onChange={ e => { setNewProperty(e.target.value); setNewAbbreviation(handleAbbreviations(e.target.value)); }} 
+                value={ newProperty }
+              />
+              <input className='type-input' onChange={ e => setNewAbbreviation(e.target.value) } value={ newAbbreviation } />
+              <button className='svg-btn svg-resize-btn' onClick={ (e) => handleAddProperties(e, newProperty, newAbbreviation) }>
+                <BsPlusCircle />
+              </button>
+            </div>
+            <hr />
+            {
+              Array.from(properties, property => (
+                <div className='form-list-container' key={ `property-${property.name}` }>
+                  <div className='form-list-name'>
+                    { property.name }
+                  </div>
+                  <div className='form-list-abbreviation'>
+                    { property.abbreviation }
+                  </div>
+                  <button className='svg-btn svg-resize-btn remove-btn' onClick={ () => handleDeleteProperty(property) }>
+                    <BsDashCircle />
+                  </button>
+                </div>
+              ))
+            }
+          </div>
+          { properties.length > 0 ? <hr /> : <></> }
+
           <div className='row-gap-container right-justify-container no-margins-container'>
             <Button 
               className='base-btn' 
@@ -127,7 +186,7 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
             >
               Cancel
             </Button>
-            <Button className='base-btn' onClick={e => setFormData(e, { name, description, move_alias, course_alias, evolution_alias, monster_alias, ability_alias, level_cap }) }>
+            <Button className='base-btn' onClick={e => setFormData(e, { name, description, move_alias, course_alias, evolution_alias, monster_alias, ability_alias, level_cap, properties }) }>
               Submit
             </Button>
           </div>

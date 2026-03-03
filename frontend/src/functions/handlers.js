@@ -171,3 +171,28 @@ export function handleLeadingZeroes(nid, monster_count) {
 
   return result + nid;
 }
+
+export function handleAbbreviations(word) {
+  let common_abbreviations = {
+    'health points': 'HP',
+    'health': 'HP',
+    'attack' : 'ATK',
+    'special attack': 'SPATK',
+    'defense': 'DEF',
+    'special defense': 'SPDEF',
+    'speed': 'SPD',
+    'cooldown': 'CD',
+    'crit rate': 'CR',
+    'crit damage': 'CDMG',
+    'stamina': 'STA',
+    'accuracy': 'ACC',
+    'power points': 'PP'
+  }
+
+  if(typeof word != 'string') return '';
+  
+  if(word.toLowerCase() in common_abbreviations)
+    return common_abbreviations[word.toLowerCase()];
+  else
+    return word.substring(0, 3).toUpperCase();
+}

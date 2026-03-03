@@ -1,11 +1,18 @@
+.row-container, 
+.col-container,
 .row-gap-container, 
 .col-gap-container,
 .row-to-col-container {
     display: flex;
     flex-direction: row;
-    gap: 1.25em;
     align-items: center;
     width: 100%;
+}
+
+.row-gap-container, 
+.col-gap-container,
+.row-to-col-container {
+    gap: 1.25em;
 }
 
 .left-justify-container {
@@ -21,7 +28,8 @@ div.no-margins-container,
     margin: 0;
 }
 
-.col-gap-container {
+.col-gap-container,
+.col-container {
     flex-direction: column;
 }
 

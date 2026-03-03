@@ -45,7 +45,7 @@ export default function CreateTypeComponent() {
               <div className='type-list'>
                 {
                   Array.from(types, type => (
-                    <div className='type-row'>
+                    <div className='type-row' key={ `type-${type}` }>
                       <div className='type-name'>
                         {type}
                       </div>

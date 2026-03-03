@@ -265,3 +265,8 @@ div.outer-modal-footer {
 div.top-border {
   border-top: 0.0625em solid var(--input-box-color);
 }
+
+small {
+  font-size: .8em !important;
+  color: var(--placeholder-text-color);
+}
