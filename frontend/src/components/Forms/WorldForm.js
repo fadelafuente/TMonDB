@@ -8,12 +8,11 @@ import { handleAbbreviations } from '../../functions/handlers';
 
 export default function WorldForm({ formData, resetFormData, setFormData }) {
   const [showDiscard, setShowDiscard] = useDiscardModal(formData, (b) => navigate('/'));
-  const [properties, setProperties] = useState([]);
   const [newProperty, setNewProperty] = useState('');
   const [newAbbreviation, setNewAbbreviation] = useState('');
   const navigate = useNavigate();
 
-  const { name, description, move_alias, course_alias, evolution_alias, monster_alias, ability_alias, level_cap } = formData;
+  const { name, description, move_alias, course_alias, evolution_alias, monster_alias, ability_alias, level_cap, properties } = formData;
 
   function handleLevelCap(e, setFormData) {
     const value = e.target.value;
@@ -27,15 +26,22 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
     }
   }
 
-  function handleAddProperties(e, p, a) {
+  function handleAddProperties(e) {
     e.preventDefault();
     e.stopPropagation();
     
-    if(properties.length >= 10 || !p) {
+    if(properties.length >= 10 || !newProperty) {
       return;
     }
-    if(properties.findIndex(o => o['name'] === p) === -1) {
-      setProperties([...properties, { name: p, abbreviation: a }]);
+    if(properties.findIndex(o => o['name'] === newProperty) === -1) {
+      resetFormData(
+        {
+          target: {
+            name: 'properties',
+            value: [...properties, { name: newProperty, abbreviation: newAbbreviation }]
+          }
+        }
+      );
     }
     setNewProperty('');
     setNewAbbreviation('');
@@ -43,7 +49,7 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
 
   function handleDeleteProperty(r) {
     const filtered = [...properties].filter((p) => p !== r);
-    setProperties(filtered);
+    resetFormData({target: {name: 'properties', value: filtered}});
   }
 
   return (
@@ -146,7 +152,7 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
 
           <div className='bottom-barrier left-justify-container'>
             <div className='col-container left-justify-container mb-1'>
-              <label className='col-label'>Move Properties ({properties.length}/10)</label>
+              <label className='col-label'>Move Properties ({ properties.length }/10)</label>
               <small>Examples: Accuracy, Critical Hit Chance, Cooldown, etc.</small>
             </div>
             <div className='type-row'>
@@ -155,14 +161,14 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
                 value={ newProperty }
               />
               <input className='type-input' onChange={ e => setNewAbbreviation(e.target.value) } value={ newAbbreviation } />
-              <button className='svg-btn svg-resize-btn' onClick={ (e) => handleAddProperties(e, newProperty, newAbbreviation) }>
+              <button className='svg-btn svg-resize-btn' onClick={ (e) => handleAddProperties(e) }>
                 <BsPlusCircle />
               </button>
             </div>
             <hr />
             {
               Array.from(properties, property => (
-                <div className='form-list-container' key={ `property-${property.name}` }>
+                <div className='form-list-container' key={ `property-${ property.name }` }>
                   <div className='form-list-name'>
                     { property.name }
                   </div>

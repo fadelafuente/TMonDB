@@ -10,7 +10,8 @@ export default function CreateWorldComponent() {
     evolution_alias: '',
     monster_alias: '',
     ability_alias: '',
-    level_cap: 100
+    level_cap: 100,
+    properties: []
   }, 'worlds');
   
   return (

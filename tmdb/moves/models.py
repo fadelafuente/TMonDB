@@ -24,7 +24,7 @@ class Move(models.Model):
 
 class Property(models.Model):
     name = models.CharField(max_length=20)
-    abbreviation = models.CharField(max_length=10)
+    abbreviation = models.CharField(max_length=10, null=True, blank=True)
     world = models.ForeignKey(World, related_name='properties', on_delete=models.CASCADE)
 
 class MoveProperty(models.Model):
