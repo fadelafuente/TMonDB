@@ -9,7 +9,8 @@ from .models import *
 from .permissions import *
 from .serializers import *
 
-class TMonDBTypeViewset(viewsets.ModelViewSet, BulkUpdateOrCreateMixin):
+class TMonDBTypeViewset(viewsets.ModelViewSet, TypeBulkUpdateOrCreateMixin):
+    model = Type
     serializer_class = TypeSerializer
     permission_classes = [IsAuthenticated]
     authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES

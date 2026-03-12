@@ -2,9 +2,11 @@ from django.db import transaction
 
 from articles.views import BaseArticleViewSet
 from .models import World
-from .serializers import WorldSerializer, RetrieveWorldSerializer, WorldScrollSerializer, PropertySerializer, WorldOnlyAliasesSerializer
+from .mixins import WorldBulkUpdateOrCreateMixin
+from moves.models import Property
+from .serializers import WorldSerializer, RetrieveWorldSerializer, WorldScrollSerializer, WorldOnlyAliasesSerializer
         
-class TMonDBWorldViewset(BaseArticleViewSet):
+class TMonDBWorldViewset(BaseArticleViewSet, WorldBulkUpdateOrCreateMixin):
     serializer_class = WorldSerializer
     ordering_fields = ('id', 'name')
     ordering = ('name')
@@ -25,12 +27,23 @@ class TMonDBWorldViewset(BaseArticleViewSet):
         properties_data = request.data.pop('properties', None)
         response = super().create(request, *args, **kwargs)
 
-        if properties_data and response.status_code == 201:
-            properties_data = [{**property, 'world': response.data['id']} for property in properties_data]
+        if response.status_code == 201:
+            for property in properties_data:
+                property['world'] = response.data['id']
+            update_properties_serializer, create_properties_serializer = self.bulk_update_or_create_helper(Property, properties_data) 
+            response.data['properties'] = update_properties_serializer.data + create_properties_serializer.data
 
-            serializer = PropertySerializer(data=properties_data, many=True, context={'request': request})
-            serializer.is_valid(raise_exception=True)
-            self.perform_create(serializer)
-            response.data['properties'] = serializer.data
+        return response
+    
+    @transaction.atomic
+    def update(self, request, *args, **kwargs):
+        properties_data = request.data.pop('properties', None)
+        response = super().update(request, *args, **kwargs)
 
+        if response.status_code == 200:
+            for property in properties_data:
+                property['world'] = response.data['id']
+            update_properties_serializer, create_properties_serializer = self.bulk_update_or_create_helper(Property, properties_data) 
+            response.data['properties'] = update_properties_serializer.data + create_properties_serializer.data
+        
         return response

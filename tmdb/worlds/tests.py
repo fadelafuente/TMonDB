@@ -56,10 +56,11 @@ class TestWorlds(APITestCase):
 
         data = {'name': 'Temtem', 'description': 'Temtem is a massively multiplayer creature-collection adventure created by Crema and published by Humble Games.',
                 'monster_alias': 'Temtem', 'course_alias': 'Technique Course', 'move_alias': 'Technique', 'ability_alias': 'Trait',
-                'properties': [{'name': 'Class'}, {'name': 'STA Cost'}, {'name': 'Priority'}, {'name': 'Hold'}]}
+                'properties': [{'name': 'Class'}, {'name': 'STA Cost'}, {'name': 'Priority'}, {'name': 'Hold'}, {'name': 'Cooldown'}]}
         response = self.client.post('/api/worlds/', data=json.dumps(data), content_type='application/json')
-        
+        get_response = self.client.get(f'/api/worlds/3/')
         self.assertEqual(response.status_code, 201)
+        self.assertNotEqual(len(get_response.data['properties']), 0)
 
     def test_get_worlds(self):
         self.client.force_authenticate(user=self.user)
@@ -71,3 +72,15 @@ class TestWorlds(APITestCase):
         response = self.client.get(f'/api/worlds/?reply=only_aliases&username={self.user.username}')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data['count'], 1)
+
+    def test_update_world_with_new_properties(self):
+        self.client.force_authenticate(user=self.user2)
+
+        data = {'description': 'Temtem is a massively multiplayer creature-collection adventure created by Crema and published by Humble Games.',
+                'monster_alias': 'Monster', 'move_alias': 'Skills', 'ability_alias': 'Passive',
+                'properties': [{'name': 'Mana Cost', 'abbreviation': 'MC'}]}
+        response = self.client.patch('/api/worlds/2/', data=json.dumps(data), content_type='application/json')
+        get_response = self.client.get(f'/api/worlds/2/')
+       
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(len(get_response.data['properties']), 0)

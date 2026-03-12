@@ -1,14 +1,28 @@
 from django.db import models
 from rest_framework import serializers
 
-from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer
+from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer, BaseListSerializer
 from .models import World
 from moves.models import Property
+
+class PropertyListSerializer(BaseListSerializer):
+    class Meta(BaseListSerializer.Meta):
+        model = Property
+    
+    def get_data_key(self, data):
+        return data['id']
+    
+    def get_serializer(self):
+        return PropertyListSerializer
 
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
         fields = '__all__'
+
+class PropertyUpdateSerializer(PropertySerializer):
+    class Meta(PropertySerializer.Meta):
+        list_serializer_class = PropertyListSerializer
 
 class WorldSerializer(ModelWithArticleSerializer):
     model = World
@@ -20,6 +34,8 @@ class WorldSerializer(ModelWithArticleSerializer):
 
 class RetrieveWorldSerializer(ModelScrollWithArticleSerializer, WorldSerializer):
     properties = PropertySerializer(many=True, read_only=True)
+    class Meta(WorldSerializer.Meta):
+        read_only_fields=['properties']
 
 class WorldScrollSerializer(RetrieveWorldSerializer):
     class Meta(RetrieveWorldSerializer.Meta):
