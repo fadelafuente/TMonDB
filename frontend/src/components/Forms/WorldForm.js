@@ -10,9 +10,11 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
   const [showDiscard, setShowDiscard] = useDiscardModal(formData, (b) => navigate('/'));
   const [newProperty, setNewProperty] = useState('');
   const [newAbbreviation, setNewAbbreviation] = useState('');
+  const [newStat, setNewStat] = useState('');
+  const [newStatAbbreviation, setNewStatAbbreviation] = useState('');
   const navigate = useNavigate();
 
-  const { name, description, move_alias, course_alias, evolution_alias, monster_alias, ability_alias, level_cap, properties } = formData;
+  const { name, description, move_alias, course_alias, evolution_alias, monster_alias, ability_alias, level_cap, properties, stats } = formData;
 
   function handleLevelCap(e, setFormData) {
     const value = e.target.value;
@@ -50,6 +52,32 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
   function handleDeleteProperty(r) {
     const filtered = [...properties].filter((p) => p !== r);
     resetFormData({target: {name: 'properties', value: filtered}});
+  }
+
+    function handleAddStat(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if(stats.length >= 10 || !newStat) {
+      return;
+    }
+    if(stats.findIndex(o => o['name'] === newStat) === -1) {
+      resetFormData(
+        {
+          target: {
+            name: 'stats',
+            value: [...stats, { name: newStat, abbreviation: newStatAbbreviation }]
+          }
+        }
+      );
+    }
+    setNewStat('');
+    setNewStatAbbreviation('');
+  }
+
+  function handleDeleteFromList(r, items, name) {
+    const filtered = [...items].filter((s) => s !== r);
+    resetFormData({target: {name: name, value: filtered}});
   }
 
   return (
@@ -152,15 +180,74 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
 
           <div className='bottom-barrier left-justify-container'>
             <div className='col-container left-justify-container mb-1'>
+              <label className='col-label'>Monster Stats ({ stats.length }/10)</label>
+              <small>Examples: Health, Speed, Defense, Special Defense, etc.</small>
+            </div>
+            <div className='type-row'>
+              <FloatingLabel controlId='floatingInput' label='Name' className='form-floating-label'>
+                <FormControl 
+                  type='text'
+                  placeholder=''
+                  name='stat'
+                  value={ newStat }
+                  onChange={ e => { setNewStat(e.target.value); setNewStatAbbreviation(handleAbbreviations(e.target.value)); }}
+                />
+              </FloatingLabel>
+              <FloatingLabel controlId='floatingInput' label='Abbreviation' className='form-floating-label'>
+                <FormControl 
+                  type='text'
+                  placeholder=''
+                  name='statAbbreviation'
+                  value={ newStatAbbreviation }
+                  onChange={ e => setNewStatAbbreviation(e.target.value) }
+                />
+              </FloatingLabel>
+              <button className='svg-btn svg-resize-btn' onClick={ (e) => handleAddStat(e) }>
+                <BsPlusCircle />
+              </button>
+            </div>
+            <hr />
+            {
+              Array.from(stats, stat => (
+                <div className='form-list-container' key={ `stats-${ stat.name }` }>
+                  <div className='form-list-name'>
+                    { stat.name }
+                  </div>
+                  <div className='form-list-abbreviation'>
+                    { stat.abbreviation }
+                  </div>
+                  <button className='svg-btn svg-resize-btn remove-btn' onClick={ () => handleDeleteFromList(stat, stats, 'stats') }>
+                    <BsDashCircle />
+                  </button>
+                </div>
+              ))
+            }
+          </div>
+
+          <div className='bottom-barrier left-justify-container'>
+            <div className='col-container left-justify-container mb-1'>
               <label className='col-label'>Move Properties ({ properties.length }/10)</label>
               <small>Examples: Accuracy, Critical Hit Chance, Cooldown, etc.</small>
             </div>
             <div className='type-row'>
-              <input className='type-input' 
-                onChange={ e => { setNewProperty(e.target.value); setNewAbbreviation(handleAbbreviations(e.target.value)); }} 
-                value={ newProperty }
-              />
-              <input className='type-input' onChange={ e => setNewAbbreviation(e.target.value) } value={ newAbbreviation } />
+              <FloatingLabel controlId='floatingInput' label='Name' className='form-floating-label'>
+                <FormControl 
+                  type='text'
+                  placeholder=''
+                  name='property'
+                  value={ newProperty }
+                  onChange={ e => { setNewProperty(e.target.value); setNewAbbreviation(handleAbbreviations(e.target.value)); }}
+                />
+              </FloatingLabel>
+              <FloatingLabel controlId='floatingInput' label='Abbreviation' className='form-floating-label'>
+                <FormControl 
+                  type='text'
+                  placeholder=''
+                  name='abbreviation'
+                  value={ newAbbreviation }
+                  onChange={ e => setNewAbbreviation(e.target.value) }
+                />
+              </FloatingLabel>
               <button className='svg-btn svg-resize-btn' onClick={ (e) => handleAddProperties(e) }>
                 <BsPlusCircle />
               </button>
@@ -182,6 +269,7 @@ export default function WorldForm({ formData, resetFormData, setFormData }) {
               ))
             }
           </div>
+
           { properties.length > 0 ? <hr /> : <></> }
 
           <div className='row-gap-container right-justify-container no-margins-container'>

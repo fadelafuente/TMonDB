@@ -14,7 +14,8 @@ function UpdateWorldInnerComponent({ world, id }) {
     monster_alias: world?.monster_alias || '',
     ability_alias: world?.ability_alias || '',
     level_cap: world?.level_cap || 100,
-    properties: world?.properties || []
+    properties: world?.properties || [],
+    stats: world?.stats || []
   }, 'worlds', id);
 
   return (
