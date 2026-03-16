@@ -27,11 +27,7 @@ class TMonDBWorldViewset(BaseArticleViewSet, WorldBulkUpdateOrCreateMixin):
         properties_data = request.data.pop('properties', None)
         response = super().create(request, *args, **kwargs)
 
-        if response.status_code == 201:
-            for property in properties_data:
-                property['world'] = response.data['id']
-            update_properties_serializer, create_properties_serializer = self.bulk_update_or_create_helper(Property, properties_data) 
-            response.data['properties'] = update_properties_serializer.data + create_properties_serializer.data
+        self.update_or_create_extra_info(response, 201, properties_data=properties_data)
 
         return response
     
@@ -40,10 +36,16 @@ class TMonDBWorldViewset(BaseArticleViewSet, WorldBulkUpdateOrCreateMixin):
         properties_data = request.data.pop('properties', None)
         response = super().update(request, *args, **kwargs)
 
-        if response.status_code == 200:
+        self.update_or_create_extra_info(response, 200, properties_data=properties_data)
+        
+        return response
+    
+    def update_or_create_extra_info(self, response, expected_status_code, **kwargs):
+        if response.status_code != expected_status_code: return
+        
+        if 'properties_data' in kwargs:
+            properties_data = kwargs['properties_data']
             for property in properties_data:
                 property['world'] = response.data['id']
             update_properties_serializer, create_properties_serializer = self.bulk_update_or_create_helper(Property, properties_data) 
             response.data['properties'] = update_properties_serializer.data + create_properties_serializer.data
-        
-        return response
