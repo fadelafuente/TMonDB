@@ -84,3 +84,32 @@ class TestWorlds(APITestCase):
        
         self.assertEqual(response.status_code, 200)
         self.assertNotEqual(len(get_response.data['properties']), 0)
+
+    def test_update_world_with_new_stats(self):
+        self.client.force_authenticate(user=self.user2)
+
+        data = {'description': 'Temtem is a massively multiplayer creature-collection adventure created by Crema and published by Humble Games.',
+                'monster_alias': 'Monster', 'move_alias': 'Skills', 'ability_alias': 'Passive',
+                'stats': [{'name': 'Health', 'abbreviation': 'HP', 'world': 2}, {'name': 'Attack', 'abbreviation': 'ATK', 'world': 2}]}
+        response = self.client.patch('/api/worlds/2/', data=json.dumps(data), content_type='application/json')
+        get_response = self.client.get(f'/api/worlds/2/')
+       
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(get_response.data['stats']), 2)
+
+    def test_update_world_with_new_stats(self):
+        self.client.force_authenticate(user=self.user2)
+
+        data = {'description': 'Temtem is a massively multiplayer creature-collection adventure created by Crema and published by Humble Games.',
+                'monster_alias': 'Monster', 'move_alias': 'Skills', 'ability_alias': 'Passive',
+                'stats': [{'name': 'Health', 'abbreviation': 'HP', 'world': 2}, {'name': 'Attack', 'abbreviation': 'ATK', 'world': 2}, {'name': 'Special Attack', 'abbreviation': 'SPATK', 'world': 2}]}
+        response = self.client.patch('/api/worlds/2/', data=json.dumps(data), content_type='application/json')
+
+        data = {'description': 'Temtem is a massively multiplayer creature-collection adventure created by Crema and published by Humble Games.',
+                'monster_alias': 'Monster', 'move_alias': 'Skills', 'ability_alias': 'Passive',
+                'stats': [{'id': 1, 'name': 'Health', 'abbreviation': 'HP', 'world': 2}, {'name': 'Attack', 'abbreviation': 'ATK', 'world': 2}]}
+        response = self.client.patch('/api/worlds/2/', data=json.dumps(data), content_type='application/json')
+        get_response = self.client.get(f'/api/worlds/2/')
+       
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(get_response.data['stats']), 2)

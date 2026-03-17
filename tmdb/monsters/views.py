@@ -1,11 +1,12 @@
 from django.db import transaction
 
 from articles.views import BaseArticleViewSet
+from articles.mixins import UpdateExtraTablesMixin
 from .models import Monster, Evolution, MoveSet
 from .permissions import IsCreator
 from .serializers import MonsterSerializer, MonsterScrollSerializer, RetrieveMonsterSerializer, EvolutionSerializer, MoveSetSerializer
         
-class TMonDBMonsterViewset(BaseArticleViewSet):
+class TMonDBMonsterViewset(BaseArticleViewSet, UpdateExtraTablesMixin):
     serializer_class = MonsterSerializer
     ordering_fields = ('id', 'name', 'national_id')
     ordering = ('id')
@@ -59,22 +60,3 @@ class TMonDBMonsterViewset(BaseArticleViewSet):
             response.data['moveset'] = serializer.data
 
         return response
-    
-    def perform_update_helper(self, request, data, **kwargs):
-        serializer_class = kwargs.pop('serializer_class', None)
-        instance = self.get_objects(**kwargs)
-        serializer = serializer_class(instance, data=data, many=True, partial=True, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-        return serializer
-    
-    def get_objects(self, **kwargs):
-        obj_model = kwargs.pop('obj_model', None)
-        if obj_model:
-            instance = obj_model.objects.filter(**kwargs)
-
-            for obj in instance:
-                self.check_object_permissions(self.request, obj)
-            
-            return instance
-        return None

@@ -36,10 +36,3 @@ class TypeBulkUpdateOrCreateMixin(BulkUpdateOrCreateMixin):
         if obj_model is self.model:
             return self.get_serializer(instance, data=data, many=True, partial=True)
         return ModifierUpdateSerializer(instance, data=data, many=True, partial=True)
-    
-    def get_bulk_instance(self, data):
-        modifier_ids = []
-        for item in data:
-            if 'id' in item:
-                modifier_ids.append(item['id'])
-        return TypeModifier.objects.all().filter(id__in=modifier_ids)

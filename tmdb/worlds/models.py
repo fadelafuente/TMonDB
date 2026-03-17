@@ -18,3 +18,11 @@ class World(models.Model):
     level_cap = models.IntegerField(default=100, blank=True)
 
     objects = WorldManager()
+
+class Stat(models.Model):
+    name = models.CharField(max_length=20)
+    abbreviation = models.CharField(max_length=10, null=True, blank=True)
+    world = models.ForeignKey(World, related_name='stats', on_delete=models.CASCADE)
+
+    class Meta:
+        indexes = [models.Index(fields=['name', 'world'])]

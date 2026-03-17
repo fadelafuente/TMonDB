@@ -35,7 +35,6 @@ class BulkUpdateOrCreateMixin:
     '''
         The following methods need to be overwritten for this bulk update mixin to work properly:
         - bulk_update
-        - get_bulk_instance
         - get_bulk_update_serializer
         - get_bulk_create_serializer
     '''
@@ -54,7 +53,7 @@ class BulkUpdateOrCreateMixin:
         if obj_model is self.model:
             instance = self.filter_queryset(self.get_queryset())
         else: 
-            instance = self.get_bulk_instance(data)
+            instance = self.get_bulk_instance(obj_model, data)
 
         for obj in instance:
             self.check_object_permissions(self.request, obj)
@@ -103,11 +102,35 @@ class BulkUpdateOrCreateMixin:
         
         return create_list, update_list
     
-    def get_bulk_instance(self, data):
-        pass
+    def get_bulk_instance(self, obj_model, data):
+        ids = []
+        for item in data:
+            if 'id' in item:
+                ids.append(item['id'])
+        return obj_model.objects.all().filter(id__in=ids)
 
     def get_bulk_update_serializer(self, obj_model, instance, data):
         pass
 
     def get_bulk_create_serializer(self, obj_model, data):
         pass
+
+class UpdateExtraTablesMixin:
+    def perform_update_helper(self, request, data, **kwargs):
+        serializer_class = kwargs.pop('serializer_class', None)
+        instance = self.get_objects(**kwargs)
+        serializer = serializer_class(instance, data=data, many=True, partial=True, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return serializer
+    
+    def get_objects(self, **kwargs):
+        obj_model = kwargs.pop('obj_model', None)
+        if obj_model:
+            instance = obj_model.objects.filter(**kwargs)
+
+            for obj in instance:
+                self.check_object_permissions(self.request, obj)
+            
+            return instance
+        return None

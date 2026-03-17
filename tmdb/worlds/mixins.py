@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from articles.mixins import BulkUpdateOrCreateMixin
 from .models import *
 from moves.models import Property
-from .serializers import WorldSerializer, PropertyUpdateSerializer, PropertySerializer
+from .serializers import WorldSerializer, PropertyUpdateSerializer, PropertySerializer, StatSerializer, StatUpdateSerializer
 
 class WorldBulkUpdateOrCreateMixin(BulkUpdateOrCreateMixin):
     @transaction.atomic
@@ -31,16 +31,13 @@ class WorldBulkUpdateOrCreateMixin(BulkUpdateOrCreateMixin):
     def get_bulk_create_serializer(self, obj_model, data):
         if obj_model is self.model:
             return WorldSerializer(data=data, many=True)
+        if obj_model is Stat:
+            return StatSerializer(data=data, many=True)
         return PropertySerializer(data=data, many=True)
     
     def get_bulk_update_serializer(self, obj_model, instance, data):
         if obj_model is self.model:
             return self.get_serializer(instance, data=data, many=True, partial=True)
+        if obj_model is Stat:
+            return StatUpdateSerializer(instance, data=data, many=True, partial=True)
         return PropertyUpdateSerializer(instance, data=data, many=True, partial=True)
-    
-    def get_bulk_instance(self, data):
-        property_ids = []
-        for item in data:
-            if 'id' in item:
-                property_ids.append(item['id'])
-        return Property.objects.all().filter(id__in=property_ids)
