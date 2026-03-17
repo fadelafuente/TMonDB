@@ -78,7 +78,7 @@ class TestWorlds(APITestCase):
 
         data = {'description': 'Temtem is a massively multiplayer creature-collection adventure created by Crema and published by Humble Games.',
                 'monster_alias': 'Monster', 'move_alias': 'Skills', 'ability_alias': 'Passive',
-                'properties': [{'name': 'Mana Cost', 'abbreviation': 'MC'}]}
+                'properties': [{'name': 'Mana Cost', 'abbreviation': 'MC', 'world': 2}]}
         response = self.client.patch('/api/worlds/2/', data=json.dumps(data), content_type='application/json')
         get_response = self.client.get(f'/api/worlds/2/')
        

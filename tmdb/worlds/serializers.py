@@ -10,16 +10,30 @@ class PropertyListSerializer(BaseListSerializer):
     class Meta(BaseListSerializer.Meta):
         model = Property
     
-    def get_data_key(self, data):
-        return data['id']
+    def to_internal_value(self, data):
+        return super(BaseListSerializer, self).to_internal_value(data)
     
-    def get_serializer(self):
-        return PropertyListSerializer
+    def get_mappings(self, instance, validated_data):
+        obj_mapping = {f'{obj.name}&{obj.abbreviation}&{obj.world}': obj for obj in instance}
+        data_mapping = {}
+        for item in validated_data:
+            if 'name' in item and 'abbreviation' in item and 'world' in item:
+                data_mapping[f'{item['name']}&{item['abbreviation']}&{item['world']}'] = item
+
+        return obj_mapping, data_mapping
 
 class PropertySerializer(serializers.ModelSerializer):
     class Meta:
         model = Property
         fields = '__all__'
+        list_serializer_class = PropertyListSerializer
+    
+    def validate_world(self, world):
+        request = self.context.get('request', None)
+        if request and request.user != world.article.creator:
+            raise PermissionDenied('Can only use a world created by the user for stats.')
+        
+        return world
 
 class PropertyUpdateSerializer(PropertySerializer):
     class Meta(PropertySerializer.Meta):

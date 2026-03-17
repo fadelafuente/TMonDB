@@ -6,7 +6,7 @@ from .models import World, Stat
 from .mixins import WorldBulkUpdateOrCreateMixin
 from .permissions import IsCreator
 from moves.models import Property
-from .serializers import WorldSerializer, RetrieveWorldSerializer, WorldScrollSerializer, WorldOnlyAliasesSerializer, StatSerializer
+from .serializers import WorldSerializer, RetrieveWorldSerializer, WorldScrollSerializer, WorldOnlyAliasesSerializer, StatSerializer, PropertySerializer
         
 class TMonDBWorldViewset(BaseArticleViewSet, WorldBulkUpdateOrCreateMixin, UpdateExtraTablesMixin):
     serializer_class = WorldSerializer
@@ -41,11 +41,14 @@ class TMonDBWorldViewset(BaseArticleViewSet, WorldBulkUpdateOrCreateMixin, Updat
         stats_data = request.data.pop('stats', None)
         response = super().update(request, *args, **kwargs)
 
-        self.update_or_create_extra_info(response, 200, properties_data=properties_data)
+        if response.status_code == 200:
+            if properties_data:
+                serializer = self.perform_update_helper(request, properties_data, world=self.kwargs['pk'], obj_model=Property, serializer_class=PropertySerializer)
+                response.data['properties'] = serializer.data
 
-        if stats_data and response.status_code == 200:
-            serializer = self.perform_update_helper(request, stats_data, world=self.kwargs['pk'], obj_model=Stat, serializer_class=StatSerializer)
-            response.data['stats'] = serializer.data
+            if stats_data:
+                serializer = self.perform_update_helper(request, stats_data, world=self.kwargs['pk'], obj_model=Stat, serializer_class=StatSerializer)
+                response.data['stats'] = serializer.data
         
         return response
     
