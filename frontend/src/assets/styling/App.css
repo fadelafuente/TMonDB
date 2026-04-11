@@ -28,18 +28,6 @@
   padding-right: 10px;
 }
 
-.dropdown-button {
-  color: #232323 !important;
-  border-radius: 50% !important;
-  padding: 10px !important;
-  border: none !important;
-  background-color: var(--accent-color) !important;
-}
-
-.dropdown-button:hover {
-  color: #000000 !important;
-}
-
 .dropdown-content {
   background-color: #232323 !important;
   min-width: 160px;
@@ -62,6 +50,14 @@
 
 .dropdown-toggle::after {
   display: none !important; 
+}
+
+div.dropdown-menu:active {
+  z-index: 10001;
+}
+
+button.btn.show {
+  background-color: transparent;
 }
 
 .appBar {
@@ -98,11 +94,6 @@
   margin-top: 20px;
   width: 60%;
   border-radius: 10px;
-}
-
-.typing {
-  display: flex;
-  direction: row;
 }
 
 .App-logo {
@@ -154,6 +145,8 @@
   position: fixed;
   top: 0;
   border-bottom: 1px solid var(--input-box-color);
+  background-color: var(--background-color);
+  z-index: 9998;
 }
 
 #nav-dropdown {
@@ -162,12 +155,10 @@
   padding: 0;
   display: flex;
   justify-content: center;
-  width: 32px;
-  height: 32px;
   border: 0px;
   background-color: var(--background-color);
   color: var(--text-color);
-  font-size: 32px;
+  font-size: 2em;
 }
 
 div.container {
@@ -223,23 +214,24 @@ button.btn-close:focus {
 
 div.dropdown-menu {
   background-color: var(--background-content-color);
+  box-shadow: 0em 0em 1em var(--background-color);
   border: none;
 }
 
-a.dropdown-item {
+a.dropdown-item, button.dropdown-item {
   color: var(--placeholder-text-color);
 }
 
-a.dropdown-item:focus {
+a.dropdown-item:focus, button.dropdown-item:focus {
   background-color: var(--background-content-color);
 }
 
-a.dropdown-item:hover {
+a.dropdown-item:hover, button.dropdown-item:hover {
   color: var(--background-content-color);
   background-color: var(--accent-color);
 }
 
-a.dropdown-item:active {
+a.dropdown-item:active, button.dropdown-item:active {
   color: var(--background-content-color);
   background-color: var(--accent-secondary-color);
 }
@@ -248,9 +240,33 @@ div.input-group {
   min-width: 150px;
 }
 
-/*  Modal Styling */
+.top-padding {
+  padding-top: 0.75em;
+}
 
+/*  Modal Styling */
 div.modal-content {
   background-color: var(--background-content-color);
   color: var(--text-color);
+}
+
+div.modal-body {
+  padding: 1.25em;
+}
+
+.include-newlines {
+  white-space: pre-wrap;
+}
+
+div.outer-modal-footer {
+  padding: 0em 1.25em 1.25em 1em !important;
+}
+
+div.top-border {
+  border-top: 0.0625em solid var(--input-box-color);
+}
+
+small {
+  font-size: .8em !important;
+  color: var(--placeholder-text-color);
 }

@@ -1,5 +1,5 @@
 div.card {
-    margin-bottom: 12px;
+    width: 100%;
     background-color: var(--background-content-color);
     color: var(--text-color);
 }
@@ -8,12 +8,12 @@ div.card-body {
     padding-top: 8px;
 }
 
-div.article-container {
-    margin-left: 20px;
-    margin-right: 20px;
+div.article-container, article.article-container {
+    margin-left: 1em;
+    margin-right: 1em;
 }
 
-.post-link {
+.obj-link {
     all: unset;
     cursor: pointer;
 }
@@ -35,39 +35,28 @@ div.article-container {
 div.center-row-items {
     display: flex;
     align-items: center;
+    font-size: 1em;
+    gap: 0.375em;
 }
 
 div.col {
     display: flex;
 }
 
-div.creator-container > a {
-    all: unset;
-}
-
-div.creator-container > a:hover {
-    text-decoration: underline;
-}
-
 div.time-col {
     justify-content: right;
 }
 
-div.more-col {
-    padding-left: 0px;
-}
-
-div.more-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+button.link-as-button, button.link-as-button:disabled {
+    all: unset;
+    cursor: pointer;
     display: flex;
-    justify-content: center;
+    align-items: center;
 }
 
-div.more-btn:hover {
-    color: var(--accent-color);
-    background-color: var(--background-color);
+button.link-as-button:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 /* interaction row */
@@ -75,51 +64,13 @@ div.interactions-row {
     margin: 0;
 }
 
-div.interaction-btn {
-    margin: 0;
-    padding: 0 4px;
-    width: 100%;
-}
-
-button.svg-btn {
-    all: unset;
-    color: var(--placeholder-text-color);
-}
-
-button.svg-btn:hover {
-    all: unset;
-    color: var(--accent-color);
-    cursor: pointer;
-}
-
-button.svg-btn:active {
-    background-color: var(--background-content-color) !important;
-    color: var(--accent-secondary-color) !important;
-}
-
-div.inner-btn-div {
-    margin: 0;
-}
-
-div.interaction-nums {
-    padding: 0;
-    font-size: 15px;
-}
-
 div.interaction-icon {
-    padding: 0 6px  0 0;
-    display: grid;
+    display: flex;
     align-items: center;
 }
 
 div.interacted {
     color: var(--accent-color);
-}
-
-div.share-btn {
-    max-width: 20px;
-    width: 100%;
-    padding: 0;
 }
 
 /* create post */
@@ -140,7 +91,7 @@ div.modal-content {
 }
 
 textarea.input-textarea, textarea.input-textarea:focus {
-    background-color: var(--background-color);
+    background-color: transparent;
     color: var(--text-color);
     resize: none;
     overflow: hidden;
@@ -167,60 +118,28 @@ textarea.input-textarea::placeholder {
     user-select: none;
 }
 
-/* media-btn */
-button.media-btn, button.media-btn:hover {
-    height: 24px;
-    width: 24px;
-    display: flex;   
-    font-size: 24px;
-}
-
-/* post and close buttons */
-button.rounded-btn {
-    border-radius: 20px;
-    width: 100%;
-    max-width: 80px;
-    min-width: 60px;
-    background-color: var(--background-color);
-    color: var(--placeholder-text-color);
-    border: none;
-    font-weight: bold;
-}
-
-button.rounded-btn:hover {
-    background-color: var(--button-hover-color);
-    color: var(--accent-color);
-}
-
-button.rounded-btn:active {
-    background-color: var(--background-content-color) !important;
-    color: var(--accent-secondary-color) !important;
-    opacity: 80%;
-}
-
-button.close-btn {
-    margin-right: 20px;
-}
-
 /* Create Post Modal Styling */
 div.discard-post {
     text-align: center;
 }
 
 div.modal-header {
+    padding: 1.25em 1.25em 0em 1.25em;
     border-bottom: 2px solid var(--background-content-color);
+}
+
+div.modal-header-no-border {
+    border-bottom: 0px;
 }
 
 div.modal-footer {
     border-top: 2px solid var(--background-content-color);
+    margin: 0 !important;
+    flex-wrap: nowrap;
 }
 
 div.modal-backdrop {
     z-index: 1055;
-}
-
-div.modal-footer {
-    padding: 4px 12px;
 }
 
 div.copy-alert {
@@ -241,11 +160,40 @@ div.copy-alert {
     min-width: 250px; 
 }
 
-div.deleted-icon {
-    text-align: center;
-    font-size: 10vh;
+div.delete-alert {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 88px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 1055;
+    background-color: var(--accent-color);
+    color: var(--background-color);
+    border: none;
+    font-weight: bold;
+    height: 60px;
+    max-width: 30vw;
+    min-width: 250px; 
 }
 
-div.deleted-text {
+div.deleted-icon, div.centered-icon {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+div.deleted-icon {
+    font-size: 5em;
+}
+
+p.centered-card-text, h4.centered-card-text, div.centered-card-content {
     text-align: center;
+    margin: 0 auto;
+}
+
+div.spinner {
+    width: 2em;
+    height: 2em;
 }

@@ -1,0 +1,201 @@
+div.mon-info-details {
+    width: 100%;
+    height: 100%;
+    /* background-color: green; */
+    display: flex;
+    flex-direction: row;
+}
+
+div.view-creator {
+    position: relative;
+    bottom: 0.75em;
+}
+
+div.view-name {
+    font-size: 1.5em;
+}
+
+div.mon-image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 4%;
+    background-color: blue;
+}
+
+div.mon-image-aspect-container {
+    width: 85%;
+    padding-top: max(100px, 42.5%);
+    position: relative; /* If you want text inside of it */
+    border-radius: 4%;
+    background-color: var(--accent-secondary-color-transparent);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.mon-info-chart {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-left: 1em;
+}
+
+.mon-detail {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.mon-detail-tag {
+    text-wrap: nowrap;
+}
+
+div.mon-detail-data {
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+
+div.mon-abilities {
+    display: flex;
+    flex-direction: column;
+}
+
+div.mon-abilities > a,
+.text-align-right {
+    text-align: right;
+}
+
+div.mon-desc-tag {
+    font-size: 1.25em;
+}
+
+.bottom-barrier {
+    margin-bottom: 1em;
+}
+
+div.top-barrier,
+.top-barrier {
+    margin-top: 0.5em;
+}
+
+.section-bottom-barrier { 
+    margin-bottom: 2em;
+}
+
+div.general-table {
+    width: 100%;
+    overflow-x: scroll;
+}
+
+div.general-table > table {
+    width: 100%;
+}
+
+.general-table-cell-spacing,
+.general-table-data-spacing {
+    padding: 0.3125em;
+    text-align: center;
+    border: 0.0625em solid var(--placeholder-text-color);
+    background-color: var(--background-content-color);
+}
+
+.general-table-data-spacing {
+    background-color: transparent;
+    padding: 0.3125em;
+}
+
+.weakness-ultra {
+    background-color: var(--ultraeffective-color);
+}
+
+.weakness-super {
+    background-color: var(--supereffective-color);
+}
+
+.weakness-effective {
+    background-color: var(--effective-color);
+}
+
+.weakness-sub {
+    background-color: var(--subeffective-color);
+}
+
+.weakness-nominally {
+    background-color: var(--nominallyeffective-color);
+}
+
+.weakness-noeffect {
+    background-color: var(--no-effect-color);
+}
+
+.stat-header {
+    padding-right: 1em;
+}
+
+.stat-number {
+    padding-right: 0.5em;
+    text-align: right;
+}
+
+.stat-bar {
+    width: 100%;
+    height: 1em;
+    border-radius: 0.25em;
+}
+
+.view-info-details {
+    overflow: auto;
+}
+
+.view-image {
+    max-width: 100%;
+    max-height: 37vw;
+    height: auto;
+    object-position: 50% 50%;
+}
+
+.view-img-container {
+    align-content: center;
+    text-align: center;
+}
+
+@media(width <= 900px) {
+    div.mon-image-aspect-container {
+        width: 100%;
+        margin-bottom: 1em;
+        padding-top: max(100px, 75%);
+
+    }
+
+    div.mon-info-details {
+        flex-direction: column;
+    }
+
+    .mon-info-chart {
+        padding-left: 0;
+    }
+
+    .view-image {
+        max-height: 37vw;
+    }
+}
+
+@media(width <= 700px) {
+    .view-image {
+        max-height: 83vw;
+    }
+}
+
+@media(width <= 500px) {
+    .view-image {
+        max-height: 100vw;
+    }
+}

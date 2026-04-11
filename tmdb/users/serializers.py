@@ -1,61 +1,96 @@
-from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
+from djoser.serializers import UserCreateSerializer, UserSerializer as BaseSerializer, UserCreatePasswordRetypeSerializer
+import re
 from rest_framework import serializers
-from django.contrib.auth import get_user_model, authenticate
-from djoser.serializers import UserCreateSerializer, UserSerializer as BaseSerializer
 
 UserModel = get_user_model()
 
-# class UserRegisterSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = UserModel
-#         fields = '__all__'
-
-#     def create(self, clean_data):
-#         user_object = UserModel.objects.create_user(email=clean_data['email'],
-#                                                     password=clean_data['password'])
-#         user_object.username = clean_data['username']
-#         user_object.save()
-#         return user_object
-
-# class UserLoginSerializer(serializers.Serializer):
-#     email = serializers.EmailField()
-#     password = serializers.CharField()
-
-#     def check_user(self, clean_data):
-#         user = authenticate(username=clean_data['email'], password=clean_data['password'])
-#         if not user:
-#             raise ValidationError('User not found')
-#         return user
-
-class UserCreateSerializer(UserCreateSerializer):
-    class Meta(UserCreateSerializer.Meta):
-        model = UserModel
-        fields = "__all__"
+class CreateAppUserSerializer(UserCreatePasswordRetypeSerializer):
+    def validate_username(self, username):
+        if not username:
+            raise serializers.ValidationError('A username is required.')
+        if not username.isalnum():
+            raise serializers.ValidationError('Username has one or more illegal characters, please only use alphanumeric characters.')
+        return username
+    
+    def validate_password_helper(self, password):
+        if isinstance(password, str):
+            regex = re.compile('[@_!#$%^&*()<>?/|}{~:]')
+            missing_requirements = []
+            if len(password) < 8:
+                missing_requirements.append('at least 8 characters')
+            if len(password) > 20:
+                missing_requirements.append('at most 20 characters')
+            if not any(ele.isupper() for ele in password):
+                missing_requirements.append('at least 1 uppercase')
+            if not any(ele.islower() for ele in password):
+                missing_requirements.append('at least 1 lowercase')
+            if not any(ele.isdigit() for ele in password):
+                missing_requirements.append('at least 1 number')
+            if(regex.search(password) == None):
+                missing_requirements.append('at least 1 special character')
+            
+            if missing_requirements:
+                message = 'Password is missing the following requirements: ' + ', '.join(requirement for requirement in missing_requirements) + '.'
+                raise serializers.ValidationError({'password': [message]})
+            
+    def validate(self, attrs):
+        password = attrs.get("password")
+        self.validate_password_helper(password=password)
+        return super().validate(attrs)
 
 class UserSerializer(BaseSerializer):
-    class Meta(BaseSerializer.Meta):
+    def validate_username(self, username):
+        if not username:
+            raise serializers.ValidationError('A username is required.')
+        if not username.isalnum():
+            raise serializers.ValidationError('Username has one or more illegal characters, please only use alphanumeric characters.')
+        return username
+    
+    def validate_password(self, password):
+        if password:
+            regex = re.compile('[@_!#$%^&*()<>?/|}{~:]')
+            missing_requirements = []
+            if len(password) < 8:
+                missing_requirements.append('at least 8 characters')
+            if len(password) > 20:
+                missing_requirements.append('at most 20 characters')
+            if not any(ele.isupper() for ele in password):
+                missing_requirements.append('at least 1 uppercase')
+            if not any(ele.islower() for ele in password):
+                missing_requirements.append('at least 1 lowercase')
+            if not any(ele.isdigit() for ele in password):
+                missing_requirements.append('at least 1 number')
+            if(regex.search(password) == None):
+                missing_requirements.append('at least 1 special character')
+            
+            if missing_requirements:
+                message = 'Password is missing: ' + ', '.join(requirement for requirement in missing_requirements) + '.'
+                raise serializers.ValidationError(message)
+        
+    class Meta(UserCreateSerializer.Meta):
         model = UserModel
-        fields = ('id', 'username', 'bio')
+        fields = '__all__'
 
-class CurrentUserSerializer(BaseSerializer):
-    class Meta(BaseSerializer.Meta):
-        model = UserModel
+class CreatorSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        fields = ('id', 'username')
+
+class CurrentUserSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
         fields = ('id', 'username', 'email')
 
 class FollowSerializer(UserSerializer):
+    user_follows = serializers.BooleanField(default=False)
+    current_user = serializers.BooleanField(default=False)
+
     class Meta(UserSerializer.Meta):
-        model = UserModel
-        fields = ('id',)
+        fields = ('id', 'username', 'bio', 'user_follows', 'current_user')
 
-class FollowingSerializer(BaseSerializer):
-    class Meta(BaseSerializer.Meta):
-        model = UserModel
-        fields = ('id', 'following')
-
-class ProfileSerializer(UserSerializer):
+class ProfileSerializer(FollowSerializer):
     following_count = serializers.IntegerField()
     followers_count = serializers.IntegerField()
+    user_blocks = serializers.BooleanField(default=False)
 
     class Meta(UserSerializer.Meta):
-        model = UserModel
-        fields = ('id', 'username', 'bio', 'following_count', 'followers_count', 'following', 'followers')
+        fields = ('id', 'username', 'bio', 'following_count', 'followers_count', 'user_follows', 'current_user', 'user_blocks')

@@ -1,0 +1,276 @@
+.mon-article {
+    width: 100%;
+    padding: 0 5rem;
+}
+
+.card-background {
+    margin: 0 auto;
+    width: 100%;
+    min-width: 300px;
+    max-width: 650px;
+    height: 100%;
+    min-height: 420px;
+    max-height: 910px;
+    border-radius: 2%;
+    background-color: var(--accent-secondary-color-transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-outer-background {
+    min-width: 18.875rem;
+    padding-top: max(26.25rem, 139%);
+    position: relative; /* If you want text inside of it */
+    border-radius: 3.4286%;
+    background-color: var(--accent-secondary-color-transparent);
+    font-size: calc(max(0.75rem, min(1.2vw, 1rem)));
+}
+
+div.card-outer-div {
+    background-color: transparent;
+    border: none;
+}
+
+div.card-inner-background {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    padding: 4%;
+    border-radius: none;
+}
+
+div.inner-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+}
+
+div.monster-creator-container {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    flex-basis: auto;
+}
+
+div.creator-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.monster-text-emphasis {
+    font-size: calc(max(1rem, min(1.5vw, 1.25rem)));
+    font-weight: bold;
+}
+
+.type-container {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.monster-type-icon {
+    width: calc(max(1.7rem, min(2.4vw, 2.25rem)));
+    height: calc(max(1.7rem, min(2.4vw, 2.25rem)));
+    background-color: green;
+    border-radius: 50%;
+}
+
+div.mon-card-body {
+    padding-top: 0;
+}
+
+.card-inner {
+    height: 520px;
+    width: 360px;
+    background-color: var(--accent-color);
+    position: relative;
+    color: white;
+    border-radius: 1%;
+}
+
+div.mon-card-header {
+    padding: 0.1875rem 1rem;
+}
+
+div.name-and-time {
+    margin: 0;
+}
+
+.image-aspect-container {
+    margin: 0 auto;
+    width: 100%;
+    padding-top: max(10.25rem, 70%);
+    position: relative; /* If you want text inside of it */
+    background-color: var(--accent-secondary-color-transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.1875rem solid var(--accent-secondary-color-transparent);
+    box-shadow: 0 0 0.5rem 0.1875rem var(--shadow-color);
+}
+
+div.col {
+    padding: 0;
+}
+
+div.right-col {
+    display: flex;
+    justify-content: right;
+}
+
+div.row {
+    margin: 0;
+}
+
+div.image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    background-color: blue;
+}
+
+div.image-container > img {
+    padding: 0;
+}
+
+div.monster-outer-misc-container {
+    padding: 0;
+}
+
+div.monster-inner-misc-container {
+    padding: 0;
+    font-size: calc(max(0.5625rem, min(0.9vw, 0.75rem)));
+    background-image: linear-gradient(to right, var(--accent-secondary-color), var(--accent-color), var(--accent-secondary-color));
+    opacity: 80%;
+    color: var(--background-color);
+    padding: 0.125rem;
+    font-weight: bold;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+}
+
+div.species-container {
+    flex-basis: auto;
+}
+
+hr.content-separator {
+    margin: var(--bs-gutter-y) 0;
+}
+
+div.content-text > p {
+    max-height: 100px;
+    max-width: 100%;
+    padding: 0;
+    display: -webkit-box;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;  /* Number of lines displayed before it truncate */
+    overflow: hidden;
+    line-height: 1.2;
+    font-size: 1em;
+    margin: 0;
+}
+
+div.content-text > h3 {
+    font-size: 1.2em;
+    padding: 4px 0;
+    margin: 0;
+}
+
+a.links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1em;
+    border-radius: 50%;
+    height: 2.5em;
+    width: 2.5em;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+a.links:hover {
+    cursor: pointer;
+}
+
+div.description {
+    max-width: 100%;
+    height: calc(96% - 41.2px);
+    padding: 0;
+}
+
+div.description > span {
+    font-size: 1em;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+
+div.interaction-nums {
+    height: 100%;
+    padding-left: 0.375em;
+    text-align: center;
+}
+
+div.interaction-nums > span {
+    font-size: small;
+    display: block;
+}
+
+div.evo-card {
+    width: 100%;
+    padding-top: 0.625em;
+    padding-bottom: 0.625em;
+    border-bottom: 0.0625em solid var(--input-box-color);
+}
+
+div.evo-card > p {
+    margin: 0;
+}
+
+div.evo-card:hover {
+    padding-left: 1.25em;
+    background-color: var(--accent-color);
+    color: var(--background-color);
+}
+
+div.rounded-icon {
+    display: flex;
+    background-color: var(--accent-color);
+    width: 2em;
+    height: 2em;
+    min-width: 2em;
+    max-width: 2em;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (width <= 820px) {
+    .mon-article { 
+        padding: 0 2rem;
+    }
+}
+
+@media (width <= 530px) {
+    .mon-article { 
+        padding: 0;
+    }
+}

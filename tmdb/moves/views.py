@@ -1,25 +1,17 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
-from .models import *
-from .serializer import *
-from rest_framework.response import Response
+from articles.views import BaseArticleViewSet
+from .models import Move
+from .serializers import MoveSerializer, MoveScrollSerializer, RetrieveMoveSerializer
+        
+class TMonDBMoveViewset(BaseArticleViewSet):
+    serializer_class = MoveSerializer
+    ordering_fields = ('id', 'name')
+    ordering = ('name')
+    search_fields = ['name', 'description', 'article__creator__username']
+    model = Move
 
-class MoveView(APIView):
-    def get(self, request):
-        output = [{"name": output.name,
-                    "description": output.description,
-                    "damage": output.damage,
-                    "accuracy": output.accuracy,
-                    "priority": output.priority,
-                    "use_limit": output.use_limit,
-                    "category": output.category,
-                    "contact": output.contact
-                }
-                   for output in Move.objects.all()]
-        return Response(output)
-
-    def post(self, request):
-        serializer = MoveSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
+    def get_serializer_class(self):
+        if self.action in ['list']:
+            return MoveScrollSerializer
+        if self.action in ['retrieve']:
+            return RetrieveMoveSerializer
+        return self.serializer_class

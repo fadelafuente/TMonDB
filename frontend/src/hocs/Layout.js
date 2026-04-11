@@ -1,18 +1,8 @@
-import { React, useEffect } from "react";
-import { connect } from "react-redux";
-import { checkAuthenticated, loadUser } from "../actions/auth";
+export default function Layout({ children }) {
 
-function Layout({ checkAuthenticated, loadUser, children }) {
-    useEffect(() => {
-        checkAuthenticated();
-        loadUser();
-    }, [checkAuthenticated, loadUser]);
-
-    return (
-        <div>
-            { children }
-        </div>
-    )
+  return (
+    <div>
+      { children }
+    </div>
+  )
 }
-
-export default connect(null, { checkAuthenticated, loadUser })(Layout);

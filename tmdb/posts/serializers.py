@@ -1,23 +1,22 @@
 from django.core.exceptions import ValidationError
-from django.db import IntegrityError, transaction
-from rest_framework import serializers
 
+from articles.serializers import ModelWithArticleSerializer, ModelScrollWithArticleSerializer
 from .models import Post
 
-MAX_POST_LENGTH = 240
+MAX_POST_LENGTH = 300
 
-class PostSerializer(serializers.ModelSerializer):
+class PostSerializer(ModelWithArticleSerializer):
+    model = Post
+    
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = '__all__'
 
     def check_content(self):
-        content = self.validated_data.get("content")
+        content = self.validated_data.get('content')
 
-        # TODO: this check could be moved to frontend to reduce # of
-        #       requests to the backend 
         if content and len(content) > MAX_POST_LENGTH:
-            raise ValidationError("This post is too long")
+            raise ValidationError(f'Content length too long: {len(content)} characters. Content should have a max of {MAX_POST_LENGTH} characters.')
     
     def is_valid(self, *, raise_exception=False):
         if super().is_valid(raise_exception=raise_exception):
@@ -25,15 +24,5 @@ class PostSerializer(serializers.ModelSerializer):
             return True
         return False
     
-class PostScrollSerializer(PostSerializer):
-    likes_count = serializers.IntegerField()
-    reposts_count = serializers.IntegerField()
-    comments_count = serializers.IntegerField()
-
-    class Meta:
-        model = Post
-        fields = ["id", "content", "posted_date", "who_liked", 
-                  "who_reposted", "comments_count", 
-                  "likes_count", "reposts_count", "image", "creator", 
-                  "comments", "parent", "is_reply", "parent_deleted"]
-
+class PostScrollSerializer(ModelScrollWithArticleSerializer, PostSerializer):
+    pass      

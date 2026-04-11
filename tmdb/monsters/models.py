@@ -1,15 +1,48 @@
-from django.db import models
-from typings.models import Type
 from django.contrib.auth import get_user_model
+from django.db import models
+
+from abilities.models import Ability
+from articles.models import Article, ArticleManager
+from articles.validators import MaxLengthValidator
+from moves.models import Move
+from worlds.models import World
+from typings.models import Type
 
 UserModel = get_user_model()
 
-# Create your models here.
+class MonsterManager(ArticleManager):
+    pass
+
 class Monster(models.Model):
-    name = models.CharField(max_length=30)
-    species = models.CharField(max_length=100)
-    abilities = models.CharField(max_length=30)
-    types = models.ManyToManyField(Type, related_name="regions")
-    # author = models.ForeignKey(UserModel, on_delete=models.CASCADE, related_name="monsters")
+    name = models.CharField(max_length=30, unique=True)
+    article = models.OneToOneField(Article, related_name='monster', on_delete=models.CASCADE, null=True, blank=True)
+    national_id = models.IntegerField(null=True, blank=True)
+    species = models.CharField(max_length=100, null=True, blank=True)
+    avg_weight = models.DecimalField(null=True, blank=True, max_digits=4, decimal_places=1)
+    avg_height = models.DecimalField(null=True, blank=True, max_digits=4, decimal_places=1)
+    types = models.ManyToManyField(Type, related_name='monsters', blank=True)
+    abilities = models.ManyToManyField(Ability, related_name='monsters', blank=True)
+    hidden_ability = models.ForeignKey(Ability, related_name='hidden_monsters', null=True, blank=True, on_delete=models.SET_NULL)
+    description = models.TextField(blank=True, null=True, validators=[MaxLengthValidator(max_length=1024)])
+    etymology = models.TextField(blank=True, null=True, validators=[MaxLengthValidator()])
+    evolutions = models.ManyToManyField('self', through='Evolution', symmetrical=False, related_name='pre_evolutions', blank=True)
+    moveset = models.ManyToManyField(Move, through='MoveSet', related_name='monsters', blank=True)
+    world = models.ForeignKey(World, related_name='monsters', blank=True, null=True, on_delete=models.CASCADE)
 
+    objects = MonsterManager()
 
+class Evolution(models.Model):
+    from_monster = models.ForeignKey(Monster, on_delete=models.CASCADE, related_name='from_monster')
+    to_monster = models.ForeignKey(Monster, on_delete=models.CASCADE, related_name='to_monster')
+    method = models.CharField(max_length=255)
+    
+    class Meta:
+        indexes = [models.Index(fields=['from_monster', 'to_monster'])]
+
+class MoveSet(models.Model):
+    monster = models.ForeignKey(Monster, on_delete=models.CASCADE, related_name='monster')
+    move = models.ForeignKey(Move,on_delete=models.CASCADE, related_name='move')
+    method = models.CharField(max_length=255)
+
+    class Meta:
+        indexes = [models.Index(fields=['monster', 'move'])]

@@ -1,24 +1,34 @@
-from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.db import models
+from django.db.models import Count, Case, When, Q
 from django.utils import timezone
 
-# Create your models here.
-class AppUserManager(BaseUserManager):
-    def create_user(self, email, password=None, **kwargs):
-        if not email:
-            raise ValueError("An email is required.")
-        
-        email = self.normalize_email(email)
+from articles.validators import MaxLengthValidator
 
-        # if username is provided by user, create a random one?
-        # if username is None:
-        #   username = generateRandomUsername()
-        # check if username already exists
-        if("username" not in kwargs):
-            raise KeyError("Username was not passed.")
-        if AppUser.objects.filter(username=kwargs["username"]).exists():
-           raise ValueError("Username already exists.")
+def add_annotations(queryset, user):
+    queryset = queryset.annotate(following_count=Count('following'),
+                followers_count=Count('followers'))
+    
+    if user.is_authenticated:
+        queryset = queryset.annotate(user_follows=Count(Q(followers=user)),
+                user_blocks=Count(Q(blocked=user)),
+                current_user=Case(When(id=user.id, then=1), default=0))
+        
+    return queryset
+
+class AppUserManager(BaseUserManager):
+    def get_annotated_queryset(self, user, **kwargs):
+        queryset = super().get_queryset().filter(**kwargs)
+        
+        if user.is_authenticated:
+            queryset = queryset.exclude(id__in=list(user.blocked.values_list('id', 
+                        flat=True)))
+
+        return add_annotations(queryset, user)
+
+    def create_user(self, email, password=None, **kwargs):        
+        email = self.normalize_email(email)
 
         user = self.model(email=email, **kwargs)
         user.set_password(password)
@@ -27,9 +37,9 @@ class AppUserManager(BaseUserManager):
 
     def create_superuser(self, email, password=None, **kwargs):
         if not email:
-            raise ValueError("An email is required.")
+            raise ValueError('An email is required.')
         if not password:
-            raise ValueError("A password is required")
+            raise ValueError('A password is required')
         user = self.create_user(email, password, **kwargs)
         user.is_superuser = True
         user.save()
@@ -37,9 +47,10 @@ class AppUserManager(BaseUserManager):
     
 class AppUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True)
-    username =  models.CharField(max_length=50, unique=True, blank=True)
-    bio = models.TextField(default="This is where my bio would go, if I wrote one!", blank=True)
-    following = models.ManyToManyField("self", symmetrical=False, related_name="followers", blank=True)
+    username =  models.CharField(max_length=35, unique=True, blank=True, db_index=True)
+    bio = models.TextField(default='This is where my bio would go, if I wrote one!', blank=True, validators=[MaxLengthValidator()])
+    following = models.ManyToManyField('self', symmetrical=False, related_name='followers', blank=True)
+    blocking = models.ManyToManyField('self', symmetrical=False, related_name='blocked', blank=True)
     date_joined = models.DateTimeField(default=timezone.now, blank=True)
 
     # Considering removing:
@@ -47,9 +58,9 @@ class AppUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=255)
 
     # considering adding:
-    # banner = models.ImageField(upload_to="", default="", null=True)
-    # profile_picture = models.ImageField(upload_to="", default="", null=True)
-    # people_you_may_know = models.ManyToManyField("self")
+    # banner = models.ImageField(upload_to='', default='', null=True)
+    # profile_picture = models.ImageField(upload_to='', default='', null=True)
+    # people_you_may_know = models.ManyToManyField('self')
 
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

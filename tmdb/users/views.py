@@ -1,30 +1,34 @@
+from django.contrib.auth import get_user_model
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+from djoser.conf import settings
+from djoser.social import views as social_views
+from djoser.views import UserViewSet
+from rest_framework import status, filters
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt import views
-from djoser.social import views as social_views
-from djoser.views import UserViewSet
-from rest_framework.decorators import action
-from rest_framework import status
-from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated, AllowAny
+
+from .mixins import *
+from.permissions import *
 from .serializers import *
-from django.db.models import Count
 
 AppUser = get_user_model()
 
 def _post(response):
     # if the response did not return an access token, returns response
-    if "access" not in response.data:
+    if 'access' not in response.data:
         return response
     
     # split access token into two parts, header.payload, and signature.
-    access = response.data["access"]
-    access, signature = access.rsplit(".", 1)
-    data = {"access": access}
+    access = response.data['access']
+    access, signature = access.rsplit('.', 1)
+    data = {'access': access}
 
     # create a new response without the refresh token and with the signature as a cookie.
     new_response = Response(data=data, status=response.status_code)
-    new_response.set_cookie(key="signature", value=signature, httponly=True)
+    new_response.set_cookie(key='signature', value=signature, httponly=True)
     
     return new_response
 
@@ -35,18 +39,18 @@ class CustomTokenCreateView(views.TokenObtainPairView):
     
 class CustomTokenVerifyView(views.TokenVerifyView):
     def post(self, request: Request, *args, **kwargs) -> Response:
-        token = request.data["token"]
+        token = request.data['token']
         if token is None:
-            raise KeyError("No access token provided.")
+            raise KeyError('No access token provided.')
 
         # check if signature is in cookies before appending to token
-        signature = request.COOKIES.get("signature", None)
+        signature = request.COOKIES.get('signature', None)
         if signature is None:
-            raise KeyError("No signature provided.")
+            raise KeyError('No signature provided.')
 
         # update token and send post request
-        token += "." + signature
-        request.data["token"] = token
+        token += '.' + signature
+        request.data['token'] = token
         return super().post(request, *args, **kwargs)
     
 
@@ -55,113 +59,76 @@ class CustomProviderAuthView(social_views.ProviderAuthView):
         response = super().post(request, *args, **kwargs)
         return _post(response)
     
-class TMonDBUserViewset(UserViewSet):
-    queryset = AppUser.objects.all().annotate(following_count=Count("following", distinct=True),
-                                            followers_count=Count("followers", distinct=True))
+class TMonDBUserViewset(UserViewSet, UpdateFollowingMixin, ListFollowingMixin, 
+                        ListFollowersMixin, UpdateBlockingMixin, ListBlockingMixin, ListLikesMixin, LogoutMixin):
+    filter_backends = (filters.OrderingFilter, filters.SearchFilter)
+    ordering_fields = ('id', 'username')
+    ordering = ('username')
+    search_fields = ('username', 'bio')
+    lookup_field = 'username'
+
     def get_permissions(self):
-        if self.action == "follow":
-            return (IsAuthenticated(),)
-        elif self.action in ["following", "record"]:
+        if self.action in ['follow', 'block']:
+            return (IsAuthenticated(), IsNotCurrentUser())
+        elif self.action in ['blocking']:
+            return (IsAuthenticated(), IsCurrentUser())
+        elif self.action in ['following', 'retrieve', 'followers', 'likes', 'logout']:
             return (AllowAny(),)
         return super().get_permissions()
-    
+        
     def get_serializer_class(self):
-        if self.action == "follow":
+        if self.action == "create":
+            if settings.USER_CREATE_PASSWORD_RETYPE:
+                return CreateAppUserSerializer
+        if self.action in ['following', 'followers']:
             return FollowSerializer
-        elif self.action == "following":
-            return FollowingSerializer
-        elif self.action == "record":
-            return ProfileSerializer
-        elif self.action == "me" and self.request.method == "GET":
+        elif self.action == 'me' and self.request.method == 'GET':
             return CurrentUserSerializer
+        elif self.action in ['list', 'retrieve']:
+            return ProfileSerializer
+        elif self.action in ['blocking']:
+            return CreatorSerializer
         return super().get_serializer_class()
     
     def get_queryset(self):
-        queryset = super().get_queryset()
-        username = self.request.query_params.get("username")
+        kwargs = {}
+        for key, value in self.request.query_params.items():
+            if key not in ['page', 'search']:
+                kwargs[key] = value
 
-        if username is not None:
-            try:
-                queryset = queryset.filter(username=username)
-            except:
-                queryset = AppUser.objects.none()
-
-        return queryset
+        return AppUser.objects.get_annotated_queryset(self.request.user, **kwargs).all()
     
-    def get_extra_information(self, request, user):
-        # initialize booleans
-        try:
-            user["user_follows"] = False
+    def lookup_object(self):
+        queryset = self.get_queryset()
+     
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
 
-            current_user = request.user
-            if current_user.is_authenticated:
-                user["user_follows"] = current_user.id in user["followers"]
-        except:
-            try:
-                user.user_follows = False
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = get_object_or_404(queryset, **filter_kwargs)
 
-                current_user = request.user
-                if current_user.is_authenticated:
-                    user.user_follows = current_user.id in user.followers
-            except:
-                pass
+        self.check_object_permissions(self.request, obj)
+
+        return obj
+        
+    def _get_paginated_response(self, queryset):
+        return self._get_paginated_response_from_serializer_class(queryset, self.get_serializer_class())
+    
+    def _get_paginated_response_from_serializer_class(self, queryset, serializer_class):
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        
+        serializer = serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
     def retrieve(self, request, *args, **kwargs):
-        response = super().retrieve(request, *args, **kwargs)
-
-        self.get_extra_information(request, response.data)
-        return response
-    
-    def list(self, request, *args, **kwargs):
-        response = super().list(request, *args, **kwargs)
-
-        for user in response.data["results"]:
-            self.get_extra_information(request, user)
-        
-        return response
-
-    @action(detail=False, methods=['patch'])
-    def follow(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        
-        uid = request.data["id"]
-        if(uid == None):
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={"message": "A user id was not given"})
-        
-        follower = self.request.user
         try:
-            followee = AppUser.objects.get(id=uid)
-        except:
-            return Response(status=status.HTTP_404_NOT_FOUND, data={"message": "User could not be found"})
-        
-        following = follower.following.filter(id=followee.id)
-        if following:
-            follower.following.remove(followee)
-        else:
-            follower.following.add(followee)
-
-        follower.save()
-
-        return Response(status=status.HTTP_200_OK)
-    
-    # Retrieve ONLY the users the current user is following
-    # This way, future components can retrieve just the following list
-    # and not the entire user profile again.
-    @action(detail=True, methods=['get'])
-    def following(self, request, id=None):
-        return self.retrieve(request, id=id)
-    
-    @action(detail=False, methods=['get'])
-    def record(self, request):
-        username = self.request.query_params.get("username")
-        response = self.list(request, username=username)
-
-        if response.status_code == 200:
-            try:
-                response.data = response.data["results"][0]
-            except:
-                response.data = {}
-            response.data["current_user"] = request.user.id == response.data["id"]
-
-        return response
+            return super().retrieve(request, *args, **kwargs)
+        except Http404:
+            # differentiate between a delete and a block
+            username = kwargs['username']
+            user = AppUser.objects.filter(username=username)
+            if user.exists():
+                return Response(status=status.HTTP_403_FORBIDDEN, data={'current_user_is_blocked': True, 'creator': username})
+            return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': f'User not found'})

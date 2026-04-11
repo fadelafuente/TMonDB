@@ -1,0 +1,54 @@
+from django.contrib.auth import get_user_model
+from django.http import Http404
+from rest_framework import viewsets, filters, status
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.settings import api_settings
+
+from .mixins import *
+from .permissions import IsCreator
+
+AppUser = get_user_model()
+
+class BaseArticleViewSet(LikeModelMixin, RepostModelMixin, viewsets.ModelViewSet):
+    permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
+    authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
+    filter_backends = (filters.OrderingFilter, filters.SearchFilter)
+    model = None
+    creator_permissions = IsCreator
+       
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+             return [permission() for permission in [AllowAny]]
+        if self.action in ['destroy', 'update', 'partial_update']:
+             return [permission() for permission in [IsAuthenticated, self.creator_permissions]]
+        return super().get_permissions()
+    
+    def get_queryset(self):
+        kwargs = self.get_kwargs()
+        return self.model.objects.get_annotated_queryset(self.request.user, **kwargs).all()
+    
+    def get_kwargs(self):
+        kwargs = {}
+        username = self.request.query_params.get('username')
+
+        if username:
+            kwargs['article__creator__username'] = username
+        
+        return kwargs
+    
+    def create(self, request, *args, **kwargs):    
+        creator = request.user        
+        request.data['article'] = {'creator': creator.id}
+
+        return super().create(request, *args, **kwargs)
+    
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            return super().retrieve(request, *args, **kwargs)
+        except Http404:
+            # differentiate between a delete and a block
+            model = self.model.objects.filter(id=kwargs['pk'])
+            if model.exists():
+                return Response(status=status.HTTP_403_FORBIDDEN, data={'current_user_is_blocked': True, 'creator': model.first().article.creator.username})
+            return Response(status=status.HTTP_404_NOT_FOUND, data={'detail': f'Post not found.'})

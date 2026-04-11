@@ -1,0 +1,73 @@
+import { useOutletContext, useParams } from 'react-router-dom';
+
+import InfiniteResourceScroll from '../../../components/InfiniteScrolls/InfiniteResourceScroll';
+import ReplyBar from '../../../components/Bars/ReplyBar';
+import { BlockedCard } from '../../../components/Cards/BlockedCard';
+import { DeletedCard } from '../../../components/Cards/DeletedCard';
+import { FailedCard } from '../../../components/Cards/FailedCard';
+import LoadingCard from '../../../components/Cards/LoadingCard';
+import PostCard from '../../../components/Cards/PostCard';
+import { useGetResourceById } from '../../../hooks/features/api/use-get-resource-by-id';
+import ParentCard from '../../../components/Cards/ParentCard';
+
+import '../../../assets/styling/content.css';
+import '../../../assets/styling/ViewPost.css';
+
+export default function ViewPostComponent() {
+  const { id } = useParams();
+  const { data: post, isLoading } = useGetResourceById('posts', id);
+  const { isAuthenticated } = useOutletContext();
+
+  if(isLoading) {
+    return (
+      <div className='loading-container'>
+        <LoadingCard />
+      </div>
+    );
+  }
+
+  if(!post || post.detail === 'Post not found.') {
+    return (
+      <div className='article-container'>
+        <FailedCard />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      { post.current_user_is_blocked ?
+        <div className='article-container'>
+          <BlockedCard creator={ post.creator } />
+        </div>
+      :
+        <div>
+          { post.parent_deleted ?
+            <div className='parent-container article-container'>
+              <DeletedCard />
+            </div>
+          :  
+            post.parent ?
+              <ParentCard post={ post } />
+            :
+              <></>
+          }
+          <div className='article-container'>
+            <PostCard data={ post } />
+          </div>
+            {
+              isAuthenticated ?
+                <div className='reply-container'>
+                  <ReplyBar parent={ post.article.id } />
+                </div>
+              :
+                <div className='no-reply-container'></div>
+            }
+          <div className='comments-container article-container'>
+            <InfiniteResourceScroll kwargs={{ parent: post.article.id }} Card={ PostCard } />
+          </div>
+        </div>
+      }
+    </>
+  )
+}
