@@ -15,5 +15,6 @@ class Ability(models.Model):
     effect = models.TextField(validators=[MaxLengthValidator()])
     article = models.OneToOneField(Article, related_name='ability', on_delete=models.CASCADE, null=True, blank=True)
     world = models.ForeignKey(World, related_name='abilities', blank=True, null=True, on_delete=models.CASCADE)
+    aura = models.BooleanField(default=False)
 
     objects = AbilityManager()
