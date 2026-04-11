@@ -11,6 +11,15 @@ docker pull postgres:<version>
 docker pull postgres:16.0
 ```
 
+### Node
+the node_modules are added as a volume to the frontend container, so you will need to install Node. As of 10/04/2023, the version we are using is v18.18.0.
+* [Download | Node.js](https://nodejs.org/en/download)
+
+then run in the frontend directory:
+```
+npm install
+```
+
 ### Build Images
 Before starting up the container, you have to build the images for the containers. Run the following command in the project directory:
 ```
@@ -53,6 +62,14 @@ backendlocal
 dev (default, spins up frontend, backend, and postgres containers)
 devlocal (spins up frontend and backendlocal containers)
 ```
+
+These profiles are related to a .env file within the /env directory. You will have to create the following .env files:
+```
+/env/.env
+/env/.env.development
+/env/.env.development.local
+```
+TODO: Create .env.template files to show which environment variables you need
 
 ### Running Tests in a Docker Container
 To run the backend tests, there are two methods you can do. First, you want to run the following command and copy either the id or name for the backend container.
